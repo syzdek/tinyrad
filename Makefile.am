@@ -79,6 +79,7 @@ sbin_PROGRAMS				=
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
 					  src/tinyrad \
+					  src/tinyradproxy \
 					  include/tinyrad.h
 
 
@@ -103,7 +104,8 @@ CLEANFILES				= \
 					  @PACKAGE_TARNAME@-*.tar.* \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
-DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings
+DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings \
+					  --enable-tinyradproxy
 
 
 # conditional build
@@ -116,6 +118,9 @@ else
 endif
 if WANT_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
+endif
+if WANT_TINYRADPROXY
+   sbin_PROGRAMS			+= src/tinyradproxy
 endif
 
 
@@ -159,6 +164,19 @@ src_tinyrad_SOURCES			= include/tinyrad.h \
 					  src/client/ccommon.h \
 					  src/client/cmain.c \
 					  src/client/cmain.h
+
+
+# macros for src/tinyradproxy
+src_tinyradproxy_DEPENDENCIES		= $(lib_LTLIBRARIES) \
+					  $(noinst_LIBRARIES)
+src_tinyradproxy_CFLAGS			= $(AM_CFLAGS)
+src_tinyradproxy_CPPFLAGS		= $(AM_CPPFLAGS)
+src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
+src_tinyradproxy_LIBS			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyradproxy_SOURCES		= include/tinyrad.h \
+					  src/proxy/pcommon.h \
+					  src/proxy/pmain.c \
+					  src/proxy/pmain.h
 
 
 # Makefile includes

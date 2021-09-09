@@ -72,4 +72,24 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
 ])dnl
 
 
+# AC_TINYRAD_TINYRADPROXY()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_TINYRADPROXY],[dnl
+   enableval=""
+   AC_ARG_ENABLE(
+      tinyradproxy,
+      [AS_HELP_STRING([--enable-tinyradproxy], [enable tinyrad proxy])],
+      [ ETINYRADPROXY=$enableval ],
+      [ ETINYRADPROXY=$enableval ]
+   )
+   if test "x${ETINYRADPROXY}" != "xyes";then
+      WANT_TINYRADPROXY="no"
+   else
+      WANT_TINYRADPROXY="yes"
+   fi
+   AM_CONDITIONAL([WANT_TINYRADPROXY],   [test "$WANT_TINYRADPROXY" = "yes"])
+   AM_CONDITIONAL([UNWANT_TINYRADPROXY], [test "$WANT_TINYRADPROXY" = "no"])
+])dnl
+
+
 # end of m4 file

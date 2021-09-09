@@ -173,6 +173,7 @@ AC_BINDLE_GIT_PACKAGE_VERSION([contrib/bindletools/build-aux/git-package-version
 AC_BINDLE_ENABLE_WARNINGS([-Wno-unknown-pragmas], [])
 AC_TINYRAD_LIBTINYRAD
 AC_TINYRAD_TINYRAD
+AC_TINYRAD_TINYRADPROXY
 
 
 # Creates outputs
@@ -187,6 +188,7 @@ AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Options:])
 AC_MSG_NOTICE([      Install libtinyrad.la      ${WANT_LIBTINYRAD}])
 AC_MSG_NOTICE([      Install tinyrad            ${WANT_TINYRAD}])
+AC_MSG_NOTICE([      Install tinyradproxy       ${WANT_TINYRADPROXY}])
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Please send suggestions to:   $PACKAGE_BUGREPORT])
 AC_MSG_NOTICE([ ])
