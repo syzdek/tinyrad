@@ -161,9 +161,8 @@ src_tinyrad_CPPFLAGS			= $(AM_CPPFLAGS)
 src_tinyrad_LDFLAGS			= $(AM_LDFLAGS)
 src_tinyrad_LIBS			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= include/tinyrad.h \
-					  src/client/ccommon.h \
-					  src/client/cmain.c \
-					  src/client/cmain.h
+					  src/client/common.h \
+					  src/client/tinyrad.c
 
 
 # macros for src/tinyradproxy
