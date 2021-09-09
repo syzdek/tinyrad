@@ -71,7 +71,7 @@ noinst_LTLIBRARIES			=
 noinst_LIBRARIES			=
 noinst_HEADERS				=
 noinst_PROGRAMS				=
-bin_PROGRAMS				=
+bin_PROGRAMS				= src/tinyrad/tinyrad
 bin_SCRIPTS				=
 pkgdata_DATA				=
 sbin_SCRIPTS				=
@@ -105,7 +105,8 @@ DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings
 lib_libtinyrad_la_DEPENDENCIES		= Makefile \
 					  config.h \
 					  lib/libtinyrad/libtinyrad.sym
-lib_libtinyrad_la_CPPFLAGS		= $(AM_CPPFLAGS) -I$(srcdir)/lib/libtinyrad
+lib_libtinyrad_la_CPPFLAGS		= $(AM_CPPFLAGS) \
+					  -I$(srcdir)/lib/libtinyrad
 lib_libtinyrad_la_CFLAGS		= $(AM_CFLAGS)
 lib_libtinyrad_la_LDFLAGS		= -rpath'$(libdir)' \
 					  -version-info $(LIB_VERSION_INFO) \
@@ -115,6 +116,16 @@ lib_libtinyrad_la_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.h \
 					  lib/libtinyrad/lmemory.c \
 					  lib/libtinyrad/lmemory.h
+
+
+# macros for src/tinyrad/tinyrad
+src_tinyrad_tinyrad_DEPENDENCIES	= config.h
+src_tinyrad_tinyrad_CFLAGS		= $(AM_CFLAGS)
+src_tinyrad_tinyrad_CPPFLAGS		= $(AM_CPPFLAGS)
+src_tinyrad_tinyrad_LDFLAGS		= $(AM_LDFLAGS)
+src_tinyrad_tinyrad_SOURCES		= src/tinyrad/tcommon.h \
+					  src/tinyrad/tmain.c \
+					  src/tinyrad/tmain.h
 
 
 # Makefile includes
