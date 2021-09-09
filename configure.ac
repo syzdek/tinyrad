@@ -36,7 +36,7 @@ AC_PREREQ([2.65])
 
 AC_COPYRIGHT([Copyright (C) 2021 David M. Syzdek <david@syzdek.net>.])
 AC_REVISION(0.1)
-AC_INIT([Tiny RADIUS Client Library],[0.0],[syzdek@bindlebinaries.com],[tinyrad],[https://github.com/syzdek/tinyrad/])
+AC_INIT([Tiny RADIUS Client Library],[0.0],[david@syzdek.net],[tinyrad],[https://github.com/syzdek/tinyrad/])
 
 
 AC_SUBST([RELEASE_MONTH],["September 2021"])
@@ -171,6 +171,8 @@ AC_BINDLE_GIT_PACKAGE_VERSION([contrib/bindletools/build-aux/git-package-version
 
 # custom configure options
 AC_BINDLE_ENABLE_WARNINGS([-Wno-unknown-pragmas], [])
+AC_TINYRAD_LIBTINYRAD
+AC_TINYRAD_TINYRAD
 
 
 # Creates outputs
@@ -182,8 +184,10 @@ AC_OUTPUT
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Tiny RADIUS Client Library $GIT_PACKAGE_VERSION ($GIT_PACKAGE_BUILD)])
 AC_MSG_NOTICE([ ])
-#AC_MSG_NOTICE([   Support:])
-#AC_MSG_NOTICE([ ])
+AC_MSG_NOTICE([   Options:])
+AC_MSG_NOTICE([      Install libtinyrad.la      ${WANT_LIBTINYRAD}])
+AC_MSG_NOTICE([      Install tinyrad            ${WANT_TINYRAD}])
+AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Please send suggestions to:   $PACKAGE_BUGREPORT])
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   run 'make all'])

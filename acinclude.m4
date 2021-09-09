@@ -32,4 +32,44 @@
 #
 
 
+# AC_TINYRAD_LIBTINYRAD()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_LIBTINYRAD],[dnl
+   enableval=""
+   AC_ARG_ENABLE(
+      libtinyrad,
+      [AS_HELP_STRING([--disable-libtinyrad], [disable tinyrad library])],
+      [ ELIBTINYRAD=$enableval ],
+      [ ELIBTINYRAD=$enableval ]
+   )
+   if test "x${ELIBTINYRAD}" != "xno";then
+      WANT_LIBTINYRAD="yes"
+   else
+      WANT_LIBTINYRAD="no"
+   fi
+   AM_CONDITIONAL([WANT_LIBTINYRAD],   [test "$WANT_LIBTINYRAD" = "yes"])
+   AM_CONDITIONAL([UNWANT_LIBTINYRAD], [test "$WANT_LIBTINYRAD" = "no"])
+])dnl
+
+
+# AC_TINYRAD_TINYRAD()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
+   enableval=""
+   AC_ARG_ENABLE(
+      tinyrad,
+      [AS_HELP_STRING([--disable-tinyrad], [disable tinyrad client])],
+      [ ETINYRAD=$enableval ],
+      [ ETINYRAD=$enableval ]
+   )
+   if test "x${ETINYRAD}" != "xno";then
+      WANT_TINYRAD="yes"
+   else
+      WANT_TINYRAD="no"
+   fi
+   AM_CONDITIONAL([WANT_TINYRAD],   [test "$WANT_TINYRAD" = "yes"])
+   AM_CONDITIONAL([UNWANT_TINYRAD], [test "$WANT_TINYRAD" = "no"])
+])dnl
+
+
 # end of m4 file

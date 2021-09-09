@@ -63,19 +63,23 @@ doc_DATA				= \
 					  README.md \
 					  TODO.md
 include_HEADERS				= include/tinyrad.h
-lib_LTLIBRARIES				= lib/libtinyrad.la
-#lib_LIBRARIES				= lib/libtinyrad.a
+lib_LTLIBRARIES				=
+lib_LIBRARIES				=
 man_MANS				=
 info_TEXINFOS				=
 noinst_LTLIBRARIES			=
 noinst_LIBRARIES			=
 noinst_HEADERS				=
 noinst_PROGRAMS				=
-bin_PROGRAMS				= src/tinyrad/tinyrad
+bin_PROGRAMS				=
 bin_SCRIPTS				=
 pkgdata_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
+EXTRA					= lib/libtinyrad.a \
+					  lib/libtinyrad.la \
+					  src/tinyrad/tinyrad \
+					  include/tinyrad.h
 
 
 # lists
@@ -86,6 +90,7 @@ XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
 					  $(doc_DATA) \
+					  include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.sym
 CLEANFILES				= \
 					  $(builddir)/a.out   $(srcdir)/a.out \
@@ -99,6 +104,31 @@ CLEANFILES				= \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
 DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings
+
+
+# conditional build
+if WANT_LIBTINYRAD
+   include_HEADERS			+= include/tinyrad.h
+   lib_LTLIBRARIES			+= lib/libtinyrad.la
+else
+   noinst_HEADERS			+= include/tinyrad.h
+   noinst_LIBRARIES			+= lib/libtinyrad.a
+endif
+if WANT_TINYRAD
+   bin_PROGRAMS				+= src/tinyrad/tinyrad
+endif
+
+
+# macros for lib/libtinyrad.a
+lib_libtinyrad_a_DEPENDENCIES		= Makefile \
+					  config.h
+lib_libtinyrad_a_CPPFLAGS		= $(AM_CPPFLAGS) \
+					  -I$(srcdir)/lib/libtinyrad
+lib_libtinyrad_a_CFLAGS			= $(AM_CFLAGS)
+lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
+					  lib/libtinyrad/libtinyrad.h \
+					  lib/libtinyrad/lmemory.c \
+					  lib/libtinyrad/lmemory.h
 
 
 # macros for lib/libtinyrad.la
@@ -119,11 +149,13 @@ lib_libtinyrad_la_SOURCES		= include/tinyrad.h \
 
 
 # macros for src/tinyrad/tinyrad
-src_tinyrad_tinyrad_DEPENDENCIES	= config.h
+src_tinyrad_tinyrad_DEPENDENCIES	= config.h $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_tinyrad_CFLAGS		= $(AM_CFLAGS)
 src_tinyrad_tinyrad_CPPFLAGS		= $(AM_CPPFLAGS)
 src_tinyrad_tinyrad_LDFLAGS		= $(AM_LDFLAGS)
-src_tinyrad_tinyrad_SOURCES		= src/tinyrad/tcommon.h \
+src_tinyrad_tinyrad_LIBS		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_tinyrad_SOURCES		= include/tinyrad.h \
+					  src/tinyrad/tcommon.h \
 					  src/tinyrad/tmain.c \
 					  src/tinyrad/tmain.h
 
