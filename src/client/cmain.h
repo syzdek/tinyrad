@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _SRC_TINYRAD_LMAIN_C 1
-#include "tmain.h"
+#ifndef _SRC_CLIENT_CMAIN_H
+#define _SRC_CLIENT_CMAIN_H 1
 
 
 ///////////////
@@ -39,10 +39,15 @@
 ///////////////
 #pragma mark - Headers
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <strings.h>
+#include "ccommon.h"
+
+
+///////////////////
+//               //
+//  Definitions  //
+//               //
+///////////////////
+#pragma mark - Definitions
 
 
 //////////////////
@@ -52,23 +57,5 @@
 //////////////////
 #pragma mark - Prototypes
 
-int main(int argc, char * argv[]);
 
-
-/////////////////
-//             //
-//  Functions  //
-//             //
-/////////////////
-#pragma mark - Functions
-
-int main(int argc, char * argv[])
-{
-   int i;
-   for(i = 0; (i < argc); i++)
-      printf("%s: arg %i: %s\n", PROGRAM_NAME, i, argv[i]);
-   return(0);
-}
-
-
-/* end of source */
+#endif /* end of header */

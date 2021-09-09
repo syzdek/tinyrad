@@ -78,7 +78,7 @@ sbin_SCRIPTS				=
 sbin_PROGRAMS				=
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
-					  src/tinyrad/tinyrad \
+					  src/tinyrad \
 					  include/tinyrad.h
 
 
@@ -115,7 +115,7 @@ else
    noinst_LIBRARIES			+= lib/libtinyrad.a
 endif
 if WANT_TINYRAD
-   bin_PROGRAMS				+= src/tinyrad/tinyrad
+   bin_PROGRAMS				+= src/tinyrad
 endif
 
 
@@ -148,16 +148,17 @@ lib_libtinyrad_la_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/lmemory.h
 
 
-# macros for src/tinyrad/tinyrad
-src_tinyrad_tinyrad_DEPENDENCIES	= config.h $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_tinyrad_CFLAGS		= $(AM_CFLAGS)
-src_tinyrad_tinyrad_CPPFLAGS		= $(AM_CPPFLAGS)
-src_tinyrad_tinyrad_LDFLAGS		= $(AM_LDFLAGS)
-src_tinyrad_tinyrad_LIBS		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_tinyrad_SOURCES		= include/tinyrad.h \
-					  src/tinyrad/tcommon.h \
-					  src/tinyrad/tmain.c \
-					  src/tinyrad/tmain.h
+# macros for src/tinyrad
+src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) \
+					  $(noinst_LIBRARIES)
+src_tinyrad_CFLAGS			= $(AM_CFLAGS)
+src_tinyrad_CPPFLAGS			= $(AM_CPPFLAGS)
+src_tinyrad_LDFLAGS			= $(AM_LDFLAGS)
+src_tinyrad_LIBS			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_SOURCES			= include/tinyrad.h \
+					  src/client/ccommon.h \
+					  src/client/cmain.c \
+					  src/client/cmain.h
 
 
 # Makefile includes
