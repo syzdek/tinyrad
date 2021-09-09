@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _SRC_PROXY_PMAIN_H
-#define _SRC_PROXY_PMAIN_H 1
+#ifndef _SRC_PROXY_COMMON_H
+#define _SRC_PROXY_COMMON_H 1
 
 
 ///////////////
@@ -39,7 +39,7 @@
 ///////////////
 #pragma mark - Headers
 
-#include "pcommon.h"
+#include <tinyrad.h>
 
 
 ///////////////////
@@ -48,6 +48,9 @@
 //               //
 ///////////////////
 #pragma mark - Definitions
+
+#undef PROGRAM_NAME
+#define PROGRAM_NAME "tinyradproxy"
 
 
 //////////////////

@@ -173,9 +173,8 @@ src_tinyradproxy_CPPFLAGS		= $(AM_CPPFLAGS)
 src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
 src_tinyradproxy_LIBS			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
-					  src/proxy/pcommon.h \
-					  src/proxy/pmain.c \
-					  src/proxy/pmain.h
+					  src/proxy/common.h \
+					  src/proxy/tinyradproxy.c
 
 
 # Makefile includes
