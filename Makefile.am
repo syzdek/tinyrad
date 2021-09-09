@@ -48,7 +48,6 @@ AM_CPPFLAGS				= -O2 \
 					  -DHAVE_CONFIG_H=1 \
 					  -I$(top_builddir)/include \
 					  -I$(top_srcdir)/include \
-					  -I$(top_srcdir)/src/common \
 					  -DSYSCONFDIR="\"$(sysconfdir)\""
 ACLOCAL_AMFLAGS				= -I m4 -W all -W error
 AM_MAKEINFOFLAGS                        = --no-split
@@ -63,8 +62,9 @@ doc_DATA				= \
 					  COPYING.md \
 					  README.md \
 					  TODO.md
-include_HEADERS				=
-lib_LTLIBRARIES				=
+include_HEADERS				= include/tinyrad.h
+lib_LTLIBRARIES				= lib/libtinyrad.la
+#lib_LIBRARIES				= lib/libtinyrad.a
 man_MANS				=
 info_TEXINFOS				=
 noinst_LTLIBRARIES			=
@@ -85,7 +85,8 @@ TESTS					=
 XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
-					  $(doc_DATA)
+					  $(doc_DATA) \
+					  lib/libtinyrad/libtinyrad.sym
 CLEANFILES				= \
 					  $(builddir)/a.out   $(srcdir)/a.out \
 					  $(builddir)/*/a.out $(srcdir)/*/a.out \
@@ -100,30 +101,20 @@ CLEANFILES				= \
 DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings
 
 
-# macros for lib/libcorcfg.a
-lib_libcorcfg_a_DEPENDENCIES		= \
-					  Makefile \
+# macros for lib/libtinyrad.la
+lib_libtinyrad_la_DEPENDENCIES		= Makefile \
 					  config.h \
-					  lib/libcorcfg/libcorcfg.sym
-lib_libcorcfg_a_SOURCES			= \
-					  include/corset_common.h \
-					  lib/libcorcfg/libcorcfg.h \
-					  lib/libcorcfg/memory.c \
-					  lib/libcorcfg/memory.h
-
-
-# macros for lib/libcorset.a
-lib_libcorset_a_DEPENDENCIES		= \
-					  Makefile \
-					  config.h \
-					  lib/libcorset/libcorset.sym
-lib_libcorset_a_SOURCES			= \
-					  include/corset_common.h \
-					  lib/libcorset/libcorset.h \
-					  lib/libcorset/conf.c \
-					  lib/libcorset/conf.h \
-					  lib/libcorset/version.c \
-					  lib/libcorset/version.h
+					  lib/libtinyrad/libtinyrad.sym
+lib_libtinyrad_la_CPPFLAGS		= $(AM_CPPFLAGS) -I$(srcdir)/lib/libtinyrad
+lib_libtinyrad_la_CFLAGS		= $(AM_CFLAGS)
+lib_libtinyrad_la_LDFLAGS		= -rpath'$(libdir)' \
+					  -version-info $(LIB_VERSION_INFO) \
+					  $(AM_LDFLAGS) \
+					  -export-symbols $(srcdir)/lib/libtinyrad/libtinyrad.sym
+lib_libtinyrad_la_SOURCES		= include/tinyrad.h \
+					  lib/libtinyrad/libtinyrad.h \
+					  lib/libtinyrad/lmemory.c \
+					  lib/libtinyrad/lmemory.h
 
 
 # Makefile includes
