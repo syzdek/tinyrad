@@ -62,7 +62,7 @@ doc_DATA				= \
 					  COPYING.md \
 					  README.md \
 					  TODO.md
-include_HEADERS				= include/tinyrad.h
+include_HEADERS				=
 lib_LTLIBRARIES				=
 lib_LIBRARIES				=
 man_MANS				=
