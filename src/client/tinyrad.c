@@ -42,6 +42,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <unistd.h>
+#include <getopt.h>
 
 #include "common.h"
 
@@ -55,6 +57,9 @@
 
 int main(int argc, char * argv[]);
 
+void my_usage(void);
+void my_version(void);
+
 
 /////////////////
 //             //
@@ -65,10 +70,72 @@ int main(int argc, char * argv[]);
 
 int main(int argc, char * argv[])
 {
-   int i;
-   for(i = 0; (i < argc); i++)
-      printf("%s: arg %i: %s\n", PROGRAM_NAME, i, argv[i]);
+   int            c;
+   int            opt_index;
+
+   // getopt options
+   static char          short_opt[] = "hqVv";
+   static struct option long_opt[] =
+   {
+      {"help",             no_argument,       NULL, 'h' },
+      {"quiet",            no_argument,       NULL, 'q' },
+      {"silent",           no_argument,       NULL, 'q' },
+      {"version",          no_argument,       NULL, 'V' },
+      {"verbose",          no_argument,       NULL, 'v' },
+      { NULL, 0, NULL, 0 }
+   };
+
+   while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
+   {
+      switch(c)
+      {
+         case -1:       /* no more arguments */
+         case 0:        /* long options toggles */
+         break;
+
+         case 'h':
+         my_usage();
+         return(0);
+
+         case 'V':
+         my_version();
+         return(0);
+
+         case 'v':
+         break;
+
+         case '?':
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+
+         default:
+         fprintf(stderr, "%s: unrecognized option `--%c'\n", PROGRAM_NAME, c);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+      };
+   };
+
    return(0);
+}
+
+
+void my_usage(void)
+{
+   printf("Usage: %s [OPTIONS]\n", PROGRAM_NAME);
+   printf("OPTIONS:\n");
+   printf("  -h, --help                print this help and exit\n");
+   printf("  -q, --quiet, --silent     do not print messages\n");
+   printf("  -V, --version             print version number and exit\n");
+   printf("  -v, --verbose             print verbose messages\n");
+   printf("\n");
+   return;
+}
+
+
+void my_version(void)
+{
+   printf("%s (%s) %s\n", PROGRAM_NAME, PACKAGE_NAME, PACKAGE_VERSION);
+   return;
 }
 
 
