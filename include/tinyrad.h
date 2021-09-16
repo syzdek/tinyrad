@@ -39,6 +39,7 @@
 ///////////////
 #pragma mark - Headers
 
+#include <stddef.h>
 #include <inttypes.h>
 
 
@@ -93,9 +94,41 @@
 ///////////////////
 #pragma mark - Definitions
 
-#define TINYRAD_SUCCESS             0x0000
-#define TINYRAD_EUNKNOWN            0x0001
-#define TINYRAD_EMEMORY             0x0002
+#define TRAD_SUCCESS                0x0000
+#define TRAD_EUNKNOWN               0x0001 ///< unknown error
+#define TRAD_ENOMEM                 0x0002 ///< out of virtual memory
+#define TRAD_EACCES                 0x0003 ///< permission denied
+#define TRAD_ENOENT                 0x0004 ///< no such file or directory
+#define TRAD_ESYNTAX                0x0005 ///< dictionary syntax error
+
+
+// library options
+#define TRAD_TCP                    0x0001
+#define TRAD_BUILTIN                0x0002
+#define TRAD_CATHOLIC               0x0004
+
+
+// RADIUS codes
+#define TRAD_ACCESS_REQ             1
+#define TRAD_ACCESS_ACCEPT          2
+#define TRAD_ACCESS_REJECT          3
+#define TRAD_ACCOUNT_REQ            4
+#define TRAD_ACCOUNT_RES            5
+#define TRAD_ACCESS_CHALLENGE       11
+#define TRAD_STATUS_SERVER          12
+#define TRAD_STATUS_CLIENT          13
+#define TRAD_DISCONNECT_REQ         40
+#define TRAD_DISCONNECT_ACK         41
+#define TRAD_DISCONNECT_NAK         42
+#define TRAD_COA_REQ                43
+#define TRAD_COA_ACK                44
+#define TRAD_COA_NAK                45
+
+
+// Tiny RADIUS Crypto Methods
+#define TRAD_MD5                    1
+#define TRAD_SHA1                   2
+#define TRAD_SHA512                 3
 
 
 //////////////////
@@ -105,9 +138,13 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct _tinyrad      tinyrad;
-typedef struct _tinyrad_avp  tinyrad_avp;
-typedef struct _tinyrad_dict tinyrad_dict;
+typedef struct _tinyrad                TinyRad;
+typedef struct _tinyrad_avp            TinyRadAVP;
+typedef struct _tinyrad_dict           TinyRadDict;
+typedef struct _tinyrad_dict_buff      TinyRadDictBuff;
+typedef struct _tinyrad_dict_vendor    TinyRadDictVendor;
+typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
+typedef struct _tinyrad_dict_val       TinyRadDictVal;
 
 
 //////////////////
@@ -122,15 +159,46 @@ typedef struct _tinyrad_dict tinyrad_dict;
 //----------------------//
 #pragma mark dictionary functions
 
+_TINYRAD_F int
+tinyrad_dict_add_path(
+         TinyRadDict *                 dict,
+         const char *                  path );
+
+
 _TINYRAD_F void
 tinyrad_dict_destroy(
-         tinyrad_dict *                dict );
+         TinyRadDict *                 dict );
+
+
+_TINYRAD_F int
+tinyrad_dict_import(
+         TinyRadDict *                 dict,
+         const char *                  file,
+         char ***                      msgsp,
+         uint32_t                      opts );
 
 
 _TINYRAD_F int
 tinyrad_dict_initialize(
-         tinyrad_dict **               dictp,
-         uint64_t                      opts );
+         TinyRadDict **                dictp,
+         uint32_t                      opts );
+
+
+//------------------//
+// error functions //
+//------------------//
+#pragma mark error functions
+
+_TINYRAD_F char *
+tinyrad_strerror(
+         int                           errnum );
+
+
+_TINYRAD_F int
+tinyrad_strerror_r(
+         int                           errnum,
+         char *                        strerrbuf,
+         size_t                        buflen );
 
 
 //------------------//
@@ -141,14 +209,19 @@ tinyrad_dict_initialize(
 
 _TINYRAD_F void
 tinyrad_destroy(
-         tinyrad *                     tr );
+         TinyRad *                     tr );
 
 
 _TINYRAD_F int
 tinyrad_initialize(
-         tinyrad **                    trp,
+         TinyRad **                    trp,
          const char *                  server,
          uint64_t                      opts );
+
+
+_TINYRAD_I void
+tinyrad_strings_free(
+         char **                       strs );
 
 
 #endif /* end of header */

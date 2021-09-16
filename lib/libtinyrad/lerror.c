@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_LIBTINYRAD_H
-#define _LIB_LIBTINYRAD_LIBTINYRAD_H 1
+#define _LIB_LIBTINYRAD_LERROR_C 1
+#include "lerror.h"
 
 
 ///////////////
@@ -39,83 +39,68 @@
 ///////////////
 #pragma mark - Headers
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <assert.h>
-
-#include <tinyrad.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 
 
-///////////////////
-//               //
-//  Definitions  //
-//               //
-///////////////////
-#pragma mark - Definitions
+/////////////////
+//             //
+//  Functions  //
+//             //
+/////////////////
+#pragma mark - Functions
 
 
-//////////////////
-//              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-struct _tinyrad
+/// Return error string of error code
+///
+/// @param[in]  errnum        error number
+/// @return returns error string
+char *
+tinyrad_strerror(
+         int                           errnum )
 {
-   TinyRadDict *         dict;
-   uint32_t              opts;
-   uint32_t              pad32;
-};
+   static char buff[128];
+   tinyrad_strerror_r(errnum, buff, sizeof(buff));
+   return(buff);
+}
 
 
-struct _tinyrad_avp
+/// Copy error string into buffer
+///
+/// @param[in]  errnum        error number
+/// @param[out] strerrbuf     string buffer
+/// @param[in]  buflen        size of string buffer
+/// @return returns error code
+int
+tinyrad_strerror_r(
+         int                           errnum,
+         char *                        strerrbuf,
+         size_t                        buflen )
 {
-   uint64_t              opts;
-};
+   const char * msg;
 
+   assert(strerrbuf != NULL);
+   assert(buflen    != 0);
 
-struct _tinyrad_dict
-{
-   uint32_t              opts;
-   uint32_t              pad32;
-   size_t                vendors_len;
-   size_t                attrs_len;
-   size_t                paths_len;
-   TinyRadDictVendor **  vendors;
-   TinyRadDictAttr   **  attrs;
-   char              **  paths;
-};
+   switch(errnum)
+   {
+      case TRAD_SUCCESS:    msg = "success";                         break;
+      case TRAD_ENOMEM:     msg = "out of virtual memory";           break;
+      case TRAD_EACCES:     msg = "permission denied";               break;
+      case TRAD_ENOENT:     msg = "no such file or directory";       break;
+      case TRAD_ESYNTAX:    msg = "invalid or unrecognized syntax";  break;
 
+      default:
+      snprintf(strerrbuf, buflen, "unknown error code %i", errnum);
+      return(TRAD_SUCCESS);
+   };
 
-struct _tinyrad_dict_vendor
-{
-   char *                name;
-   uint32_t              number;
-   uint8_t               type_octs; 
-   uint8_t               len_octs; 
-   uint16_t              pad16;
-};
+   strncpy(strerrbuf, msg, buflen);
+   strerrbuf[buflen-1] = '\0';
 
+   return(TRAD_SUCCESS);
+}
 
-struct _tinyrad_dict_attr
-{
-   TinyRadDictVendor *   vendor;
-   char *                name;
-   char *                oid;
-   uint32_t              type;
-   uint32_t              flags;
-};
-
-
-//////////////////
-//              //
-//  Prototypes  //
-//              //
-//////////////////
-#pragma mark - Prototypes
-
-
-#endif /* end of header */
+/* end of source */

@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_LIBTINYRAD_H
-#define _LIB_LIBTINYRAD_LIBTINYRAD_H 1
+#ifndef _LIB_LIBTINYRAD_LDICT_H
+#define _LIB_LIBTINYRAD_LDICT_H 1
 
 
 ///////////////
@@ -39,13 +39,7 @@
 ///////////////
 #pragma mark - Headers
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <assert.h>
-
-#include <tinyrad.h>
+#include "libtinyrad.h"
 
 
 ///////////////////
@@ -58,64 +52,19 @@
 
 //////////////////
 //              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-struct _tinyrad
-{
-   TinyRadDict *         dict;
-   uint32_t              opts;
-   uint32_t              pad32;
-};
-
-
-struct _tinyrad_avp
-{
-   uint64_t              opts;
-};
-
-
-struct _tinyrad_dict
-{
-   uint32_t              opts;
-   uint32_t              pad32;
-   size_t                vendors_len;
-   size_t                attrs_len;
-   size_t                paths_len;
-   TinyRadDictVendor **  vendors;
-   TinyRadDictAttr   **  attrs;
-   char              **  paths;
-};
-
-
-struct _tinyrad_dict_vendor
-{
-   char *                name;
-   uint32_t              number;
-   uint8_t               type_octs; 
-   uint8_t               len_octs; 
-   uint16_t              pad16;
-};
-
-
-struct _tinyrad_dict_attr
-{
-   TinyRadDictVendor *   vendor;
-   char *                name;
-   char *                oid;
-   uint32_t              type;
-   uint32_t              flags;
-};
-
-
-//////////////////
-//              //
 //  Prototypes  //
 //              //
 //////////////////
 #pragma mark - Prototypes
+
+void
+tinyrad_dict_attr_destroy(
+         TinyRadDictAttr *             attr );
+
+
+void
+tinyrad_dict_vend_destroy(
+         TinyRadDictVendor *           vendor );
 
 
 #endif /* end of header */

@@ -41,6 +41,10 @@
 
 #include "libtinyrad.h"
 
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+
 
 ///////////////////
 //               //
@@ -56,6 +60,91 @@
 //              //
 //////////////////
 #pragma mark - Prototypes
+
+_TINYRAD_I int
+tinyrad_strings_append(
+         char ***                      strsp,
+         const char *                  str );
+
+
+_TINYRAD_I size_t
+tinyrad_strings_count(
+         char **                       strs );
+
+
+////////////////////////
+//                    //
+//  Inline Functions  //
+//                    //
+////////////////////////
+#pragma mark - Inline Functions
+
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  str           string to append to array
+/// @return returns error code
+_TINYRAD_I int
+tinyrad_strings_append(
+         char ***                      strsp,
+         const char *                  str )
+{
+   size_t     count;
+   char **    strs;
+
+   assert(strsp != NULL);
+   assert(str   != str);
+
+   count = tinyrad_strings_count(*strsp);
+
+   // increase size of array
+   if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)
+      return(TRAD_ENOMEM);
+   *strsp        = strs;
+
+   // copy string
+   if ((strs[count] = strdup(str)) == NULL)
+      return(TRAD_ENOMEM);
+
+   // terminate array
+   count++;
+   strs[count] = NULL;
+
+   return(TRAD_SUCCESS);
+}
+
+
+/// counts number of strings in NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+/// @return number of strings in array
+_TINYRAD_I size_t tinyrad_strings_count(
+         char **                       strs )
+{
+   size_t count;
+   for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
+   return(count);
+}
+
+
+/// frees NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+_TINYRAD_I void
+tinyrad_strings_free(
+         char **                       strs )
+{
+   int i;
+   if (!(strs))
+      return;
+   for(i = 0; ((strs[i])); i++)
+   {  
+      free(strs[i]);
+      strs[i] = NULL;
+   };
+   free(strs);
+   return;
+}
 
 
 #endif /* end of header */

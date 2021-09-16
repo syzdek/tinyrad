@@ -31,10 +31,17 @@
 #   lib/libtinyrad/libtinyrad.sym - list of symbols to export
 #
 # dictionary functions
-#tinyrad_dict_destroy
-#tinyrad_dict_initialize
+tinyrad_dict_add_path
+tinyrad_dict_destroy
+tinyrad_dict_import
+tinyrad_dict_initialize
+#
+# error functions
+tinyrad_strerror
+tinyrad_strerror_r
 #
 # memory functions
 tinyrad_destroy
 tinyrad_initialize
+tinyrad_strings_free
 # end of symbol export file

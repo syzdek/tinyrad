@@ -39,6 +39,7 @@
 #pragma mark - Headers
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -55,10 +56,11 @@
 //////////////////
 #pragma mark - Prototypes
 
-int main(int argc, char * argv[]);
+int main( int argc, char * argv[] );
 
-void my_usage(void);
-void my_version(void);
+void my_error( const char * fmt, ... );
+void my_usage( void );
+void my_version( void );
 
 
 /////////////////
@@ -72,9 +74,12 @@ int main(int argc, char * argv[])
 {
    int            c;
    int            opt_index;
+   int            rc;
+   TinyRadDict *  dict;
+   char **        errs;
 
    // getopt options
-   static char          short_opt[] = "hqVv";
+   static char          short_opt[] = "D:hI:qVv";
    static struct option long_opt[] =
    {
       {"help",             no_argument,       NULL, 'h' },
@@ -85,6 +90,14 @@ int main(int argc, char * argv[])
       { NULL, 0, NULL, 0 }
    };
 
+
+   if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
+   {
+      fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
+      return(1);
+   };
+
+
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
       switch(c)
@@ -93,9 +106,27 @@ int main(int argc, char * argv[])
          case 0:        /* long options toggles */
          break;
 
+         case 'D':
+         if ((rc = tinyrad_dict_import(dict, optarg, &errs, 0)) != TRAD_SUCCESS)
+         {
+            tinyrad_dict_destroy(dict);
+            my_error("%s: %s", optarg, tinyrad_strerror(rc));
+            return(1);
+         };
+         break;
+
          case 'h':
          my_usage();
          return(0);
+
+         case 'I':
+         if ((rc = tinyrad_dict_add_path(dict, optarg)) != TRAD_SUCCESS)
+         {
+            tinyrad_dict_destroy(dict);
+            my_error("%s: %s", optarg, tinyrad_strerror(rc));
+            return(1);
+         };
+         break;
 
          case 'V':
          my_version();
@@ -119,10 +150,26 @@ int main(int argc, char * argv[])
 }
 
 
+void my_error( const char * fmt, ... )
+{
+   va_list args;
+
+   fprintf(stderr, "%s: ", PROGRAM_NAME);
+
+   va_start(args, fmt);
+   vfprintf(stderr, fmt, args);
+   va_end(args);
+   fprintf(stderr, "\n");
+
+   return;
+}
+
+
 void my_usage(void)
 {
    printf("Usage: %s [OPTIONS]\n", PROGRAM_NAME);
    printf("OPTIONS:\n");
+   printf("  -D dictionary             include dictionary\n");
    printf("  -h, --help                print this help and exit\n");
    printf("  -q, --quiet, --silent     do not print messages\n");
    printf("  -V, --version             print version number and exit\n");

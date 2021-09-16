@@ -132,6 +132,10 @@ lib_libtinyrad_a_CPPFLAGS		= $(AM_CPPFLAGS) \
 lib_libtinyrad_a_CFLAGS			= $(AM_CFLAGS)
 lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.h \
+					  lib/libtinyrad/ldict.c \
+					  lib/libtinyrad/ldict.h \
+					  lib/libtinyrad/lerror.c \
+					  lib/libtinyrad/lerror.h \
 					  lib/libtinyrad/lmemory.c \
 					  lib/libtinyrad/lmemory.h
 
@@ -147,10 +151,7 @@ lib_libtinyrad_la_LDFLAGS		= -rpath'$(libdir)' \
 					  -version-info $(LIB_VERSION_INFO) \
 					  $(AM_LDFLAGS) \
 					  -export-symbols $(srcdir)/lib/libtinyrad/libtinyrad.sym
-lib_libtinyrad_la_SOURCES		= include/tinyrad.h \
-					  lib/libtinyrad/libtinyrad.h \
-					  lib/libtinyrad/lmemory.c \
-					  lib/libtinyrad/lmemory.h
+lib_libtinyrad_la_SOURCES		= $(lib_libtinyrad_a_SOURCES)
 
 
 # macros for src/tinyrad
@@ -159,7 +160,8 @@ src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) \
 src_tinyrad_CFLAGS			= $(AM_CFLAGS)
 src_tinyrad_CPPFLAGS			= $(AM_CPPFLAGS)
 src_tinyrad_LDFLAGS			= $(AM_LDFLAGS)
-src_tinyrad_LIBS			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
+					  $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= include/tinyrad.h \
 					  src/client/common.h \
 					  src/client/tinyrad.c
@@ -171,7 +173,8 @@ src_tinyradproxy_DEPENDENCIES		= $(lib_LTLIBRARIES) \
 src_tinyradproxy_CFLAGS			= $(AM_CFLAGS)
 src_tinyradproxy_CPPFLAGS		= $(AM_CPPFLAGS)
 src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
-src_tinyradproxy_LIBS			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
+					  $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  src/proxy/common.h \
 					  src/proxy/tinyradproxy.c

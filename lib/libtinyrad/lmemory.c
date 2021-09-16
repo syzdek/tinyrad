@@ -44,6 +44,29 @@
 #include <strings.h>
 
 
+////////////////////////
+//                    //
+//  Inline Functions  //
+//                    //
+////////////////////////
+#pragma mark - Inline Functions
+
+extern inline int
+tinyrad_strings_append(
+         char ***                      strsp,
+         const char *                  str );
+
+
+extern inline size_t
+tinyrad_strings_count(
+         char **                       strs );
+
+
+extern inline void
+tinyrad_strings_free(
+         char **                       strs );
+
+
 /////////////////
 //             //
 //  Functions  //
@@ -51,25 +74,40 @@
 /////////////////
 #pragma mark - Functions
 
-void tinyrad_destroy( tinyrad * tr )
+/// destroy Tiny RADIUS reference
+///
+/// @param[in]  tr            dictionary reference
+void
+tinyrad_destroy(
+         TinyRad *                     tr )
 {
    assert(tr != NULL);
 
-   bzero(tr, sizeof(tinyrad));
+   bzero(tr, sizeof(TinyRad));
    free(tr);
 
    return;
 }
 
 
-int tinyrad_initialize( tinyrad ** trp, const char * server, uint64_t opts )
+/// initialize Tiny RADIUS reference
+///
+/// @param[out] trp           pointer to Tiny RADIUS reference
+/// @param[in]  server        RADIUS server
+/// @param[in]  opts          initialization options
+/// @return returns error code
+int
+tinyrad_initialize(
+         TinyRad **                    trp,
+         const char *                  server,
+         uint64_t                      opts )
 {
    assert(trp != NULL);
 
    server  = ((server)) ? server : "localhost";
    opts   |= 0x0001;
 
-   return(TINYRAD_SUCCESS);
+   return(TRAD_SUCCESS);
 }
 
 
