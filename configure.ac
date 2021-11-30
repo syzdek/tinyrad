@@ -69,6 +69,7 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_USE_SYSTEM_EXTENSIONS # replaces AC_AIX AC_GNU_SOURCE AC_MINIX
 AC_C_BIGENDIAN
+AC_C_INLINE
 
 
 # Version Info:
@@ -112,6 +113,7 @@ AC_TYPE_INT8_T
 AC_TYPE_INT16_T
 AC_TYPE_INT32_T
 AC_TYPE_INT64_T
+AC_TYPE_MODE_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
@@ -158,7 +160,7 @@ AC_CHECK_HEADERS([time.h],      [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([unistd.h],    [], [AC_MSG_ERROR([missing required headers])])
 
 # GNU Libtool Support
-LT_INIT(dlopen disable-fast-install win32-dll)
+LT_INIT(dlopen disable-fast-install)
 
 
 # initiates bindle tools macros
