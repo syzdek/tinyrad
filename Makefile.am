@@ -173,7 +173,7 @@ src_tinyradproxy_DEPENDENCIES		= $(lib_LTLIBRARIES) \
 src_tinyradproxy_CFLAGS			= $(AM_CFLAGS)
 src_tinyradproxy_CPPFLAGS		= $(AM_CPPFLAGS)
 src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
-src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
+src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  src/proxy/common.h \
