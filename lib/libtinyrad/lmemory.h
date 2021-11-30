@@ -61,7 +61,7 @@
 //////////////////
 #pragma mark - Prototypes
 
-_TINYRAD_I int
+inline int
 tinyrad_strings_append(
          char ***                      strsp,
          const char *                  str );
@@ -84,7 +84,7 @@ tinyrad_strings_count(
 /// @param[out] strsp         pointer to string array
 /// @param[in]  str           string to append to array
 /// @return returns error code
-_TINYRAD_I int
+inline int
 tinyrad_strings_append(
          char ***                      strsp,
          const char *                  str )
