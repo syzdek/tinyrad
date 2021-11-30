@@ -418,7 +418,7 @@ tinyrad_dict_import(
             buff->pos = pos + 1;
             if (buff->argc == 0)
                continue;
-printf("%s: %3i: ----", __FUNCTION__, buff->line);
+printf("%s: %3i: ----", "tinyrad_dict_import", buff->line);
 for(rc = 0; (rc < (int)buff->argc); rc++)
    printf(" %s", buff->argv[rc]);
 printf("\n");
