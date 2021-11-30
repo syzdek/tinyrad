@@ -44,6 +44,8 @@
 #include <string.h>
 #include <strings.h>
 
+#include "lmemory.h"
+
 
 /////////////////
 //             //
