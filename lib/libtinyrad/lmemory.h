@@ -131,7 +131,7 @@ tinyrad_strings_count(
 /// frees NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array
-_TINYRAD_I void
+inline void
 tinyrad_strings_free(
          char **                       strs )
 {
