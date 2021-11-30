@@ -58,29 +58,31 @@
 #undef _TINYRAD_F
 #undef _TINYRAD_V
 #if defined(__cplusplus) || defined(c_plusplus)
-#   define _TINYRAD_I             extern "C" inline
 #   define TINYRAD_C_DECLS        "C"             ///< exports as C functions
 #   define TINYRAD_BEGIN_C_DECLS  extern "C" {    ///< exports as C functions
 #   define TINYRAD_END_C_DECLS    }               ///< exports as C functions
 #else
-#   define _TINYRAD_I             inline
 #   define TINYRAD_C_DECLS        /* empty */     ///< exports as C functions
 #   define TINYRAD_BEGIN_C_DECLS  /* empty */     ///< exports as C functions
 #   define TINYRAD_END_C_DECLS    /* empty */     ///< exports as C functions
 #endif
 #ifdef WIN32
 #   ifdef _LIB_LIBTINYRAD_H
+#      define _TINYRAD_I   inline
 #      define _TINYRAD_F   extern TINYRAD_C_DECLS __declspec(dllexport)   ///< used for library calls
 #      define _TINYRAD_V   extern TINYRAD_C_DECLS __declspec(dllexport)   ///< used for library calls
 #   else
+#      define _TINYRAD_I   extern TINYRAD_C_DECLS __declspec(dllimport)   ///< used for library calls
 #      define _TINYRAD_F   extern TINYRAD_C_DECLS __declspec(dllimport)   ///< used for library calls
 #      define _TINYRAD_V   extern TINYRAD_C_DECLS __declspec(dllimport)   ///< used for library calls
 #   endif
 #else
 #   ifdef _LIB_LIBTINYRAD_H
+#      define _TINYRAD_I   inline
 #      define _TINYRAD_F   /* empty */                                    ///< used for library calls
 #      define _TINYRAD_V   extern TINYRAD_C_DECLS                         ///< used for library calls
 #   else
+#      define _TINYRAD_I   extern TINYRAD_C_DECLS                         ///< used for library calls
 #      define _TINYRAD_F   extern TINYRAD_C_DECLS                         ///< used for library calls
 #      define _TINYRAD_V   extern TINYRAD_C_DECLS                         ///< used for library calls
 #   endif
