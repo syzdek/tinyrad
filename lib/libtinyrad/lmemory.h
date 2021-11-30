@@ -67,7 +67,7 @@ tinyrad_strings_append(
          const char *                  str );
 
 
-_TINYRAD_I size_t
+inline size_t
 tinyrad_strings_count(
          char **                       strs );
 
@@ -118,7 +118,8 @@ tinyrad_strings_append(
 ///
 /// @param[in]  strs          pointer to string array
 /// @return number of strings in array
-_TINYRAD_I size_t tinyrad_strings_count(
+inline size_t
+tinyrad_strings_count(
          char **                       strs )
 {
    size_t count;
