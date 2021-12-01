@@ -2,6 +2,9 @@
 *.lo
 *.o
 *.swp
+*.sublime-project
+*.sublime-workspace
+*.xcodeproj
 .DS_Store
 .deps
 .dirstamp
