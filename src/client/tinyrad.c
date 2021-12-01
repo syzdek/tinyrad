@@ -49,6 +49,30 @@
 #include "common.h"
 
 
+///////////////////
+//               //
+//  Definitions  //
+//               //
+///////////////////
+#pragma mark - Definitions
+
+#ifndef PROGRAM_NAME
+#   define PROGRAM_NAME "numconvert"
+#endif
+#ifndef PACKAGE_BUGREPORT
+#   define PACKAGE_BUGREPORT "david@syzdek.net"
+#endif
+#ifndef PACKAGE_COPYRIGHT
+#   define PACKAGE_COPYRIGHT ""
+#endif
+#ifndef PACKAGE_NAME
+#   define PACKAGE_NAME ""
+#endif
+#ifndef PACKAGE_VERSION
+#   define PACKAGE_VERSION ""
+#endif
+
+
 //////////////////
 //              //
 //  Prototypes  //
