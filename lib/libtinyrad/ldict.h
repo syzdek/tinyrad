@@ -57,14 +57,5 @@
 //////////////////
 #pragma mark - Prototypes
 
-void
-tinyrad_dict_attr_destroy(
-         TinyRadDictAttr *             attr );
-
-
-void
-tinyrad_dict_vend_destroy(
-         TinyRadDictVendor *           vendor );
-
 
 #endif /* end of header */

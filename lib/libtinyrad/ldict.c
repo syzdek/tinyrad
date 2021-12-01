@@ -93,6 +93,11 @@ struct _tinyrad_dict_buff
 #pragma mark - Prototypes
 
 void
+tinyrad_dict_attr_destroy(
+         TinyRadDictAttr *             attr );
+
+
+void
 tinyrad_dict_buff_destroy(
        TinyRadDictBuff *             buff );
 
@@ -124,6 +129,11 @@ tinyrad_dict_stat(
          const char *                  path,
          struct stat *                 sbpi,
          mode_t                        type );
+
+
+void
+tinyrad_dict_vend_destroy(
+         TinyRadDictVendor *           vendor );
 
 
 /////////////////
