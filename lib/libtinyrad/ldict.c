@@ -108,9 +108,8 @@ int
 tinyrad_dict_buff_init(
          TinyRadDict *                 dict,
          TinyRadDictBuff **            buffp,
-         TinyRadDictBuff *             parent,
          const char *                  path,
-         uint32_t                      opts );
+         TinyRadDictBuff *             parent );
 
 
 int
@@ -254,16 +253,14 @@ tinyrad_dict_buff_error(
 ///
 /// @param[in]  dict          dictionary reference
 /// @param[out] buffp         pointer to buffer reference
-/// @param[in]  parent        parent buffer reference
 /// @param[in]  path          path to included file
-/// @param[in]  opts          buffer options
+/// @param[in]  parent        parent buffer reference
 /// @return returns error code
 int tinyrad_dict_buff_init(
        TinyRadDict *                 dict,
        TinyRadDictBuff **            buffp,
-       TinyRadDictBuff *             parent,
        const char *                  path,
-       uint32_t                      opts )
+       TinyRadDictBuff *             parent )
 {
    size_t                  pos;
    int                     rc;
@@ -274,9 +271,8 @@ int tinyrad_dict_buff_init(
    assert(dict  != NULL);
    assert(buffp != NULL);
    assert(path  != NULL);
-   assert(opts  == 0);
 
-   // search paths for file
+   // search dictionary paths for file
    fullpath[0] = '\0';
    if (path[0] != '/')
    {
@@ -287,17 +283,16 @@ int tinyrad_dict_buff_init(
          {
             pos = dict->paths_len;
             continue;
-         } else {
-            fullpath[0] = '\0';
          };
+         fullpath[0] = '\0';
       };
    };
 
    // fall back to relative path
    if (fullpath[0] == '\0')
    {
-      strcpy(fullpath, path);
-      if ((rc = tinyrad_dict_stat(fullpath, &sb, S_IFDIR)) != TRAD_SUCCESS)
+      strncpy(fullpath, path, sizeof(fullpath));
+      if ((rc = tinyrad_dict_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
          return(rc);
    };
 
@@ -305,15 +300,16 @@ int tinyrad_dict_buff_init(
    if ((buff = malloc(sizeof(TinyRadDictBuff))) == NULL)
       return(TRAD_ENOMEM);
    bzero(buff, sizeof(TinyRadDictBuff));
-
    buff->parent = parent;
 
+   // open dictionary for reading
    if ((buff->fd = open(fullpath, O_RDONLY)) == -1)
    {
       tinyrad_dict_buff_destroy(buff);
       return(TRAD_EACCES);
    };
 
+   // store dictionary file name
    if ((buff->path = strdup(fullpath)) == NULL)
    {
       tinyrad_dict_buff_destroy(buff);
@@ -395,7 +391,7 @@ tinyrad_dict_import(
       *msgsp = NULL;
 
    // initialize buffer
-   if ((rc = tinyrad_dict_buff_init(dict, &buff, NULL, path, opts)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_buff_init(dict, &buff, path, NULL)) != TRAD_SUCCESS)
       return(rc);
 
    while((buff))
