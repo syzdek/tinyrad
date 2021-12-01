@@ -70,6 +70,7 @@
 //////////////////
 #pragma mark - Data Types
 
+typedef struct _tinyrad_dict_buff TinyRadDictBuff;
 struct _tinyrad_dict_buff
 {
    int                 line;
