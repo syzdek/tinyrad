@@ -208,8 +208,9 @@ tinyrad_dict_buff_destroy(
 
 /// Add directory to search path for dictionary files
 ///
-/// @param[in]  dict          dictionary reference
-/// @param[in]  path          string contain directory name
+/// @param[in]  buff          dictionary reference
+/// @param[in]  errnum        string contain directory name
+/// @param[out] msgsp         string contain directory name
 /// @return returns error code
 int
 tinyrad_dict_buff_error(
@@ -495,7 +496,7 @@ tinyrad_dict_initialize(
 
 /// splits line into argv and argc style elements
 ///
-/// @param[in]  dictp         dictionary reference
+/// @param[in]  dict          dictionary reference
 /// @param[in]  buff          file buffer
 /// @param[in]  opts          dictionary options
 /// @return returns error code
@@ -566,7 +567,7 @@ tinyrad_dict_parse(
 /// wrapper around stat() for dictionary processing
 ///
 /// @param[in]  path          file system path
-/// @param[in]  buff          stat buffer
+/// @param[in]  sbp           stat buffer
 /// @param[in]  type          file type expecting
 /// @return returns error code
 int
