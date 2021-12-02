@@ -54,38 +54,6 @@
 #include "lmemory.h"
 
 
-///////////////////
-//               //
-//  Definitions  //
-//               //
-///////////////////
-#pragma mark - Definitions
-
-#define TRAD_ARGV_SIZE              10
-
-
-//////////////////
-//              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-typedef struct _tinyrad_dict_buff TinyRadDictBuff;
-struct _tinyrad_dict_buff
-{
-   int                 line;
-   int                 fd;
-   size_t              pos;
-   size_t              len;
-   size_t              argc;
-   char *              path;
-   TinyRadDictBuff *   parent;
-   char *              argv[TRAD_ARGV_SIZE];
-   char                data[256];
-};
-
-
 //////////////////
 //              //
 //  Prototypes  //
