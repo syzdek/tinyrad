@@ -87,6 +87,49 @@ tinyrad_file_destroy(
 }
 
 
+/// Add directory to search path for dictionary files
+///
+/// @param[in]  file          dictionary reference
+/// @param[in]  errnum        string contain directory name
+/// @param[out] msgsp         string contain directory name
+/// @return returns error code
+int
+tinyrad_file_error(
+         TinyRadFile *                 file,
+         int                           errnum,
+         char ***                      msgsp )
+{
+   int    rc;
+   char   err[128];
+   char   msg[256];
+
+   if (msgsp == NULL)
+      return(errnum);
+   if (file == NULL)
+      return(errnum);
+
+   // reset error
+   tinyrad_strerror_r(errnum, err, sizeof(err));
+   tinyrad_strings_free(*msgsp);
+   *msgsp = NULL;
+
+   // record error
+   snprintf(msg, sizeof(msg), "%s: %i: %s", file->path, file->line, err);
+   if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
+      return(errnum);
+
+   // record call stack
+   while((file = file->parent) != NULL)
+   {
+      snprintf(msg, sizeof(msg), "%s: %i: included dictionary file", file->path, file->line);
+      if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
+         return(errnum);
+   };
+
+   return(errnum);
+}
+
+
 /// Initialize dicitionary file buffer
 ///
 /// @param[out] filep         pointer to buffer reference

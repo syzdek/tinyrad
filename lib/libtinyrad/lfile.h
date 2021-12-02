@@ -89,6 +89,13 @@ tinyrad_file_destroy(
 
 
 int
+tinyrad_file_error(
+         TinyRadFile *                 file,
+         int                           errnum,
+         char ***                      msgsp );
+
+
+int
 tinyrad_file_init(
          TinyRadFile **                filep,
          const char *                  path,

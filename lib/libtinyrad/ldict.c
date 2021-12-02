@@ -67,13 +67,6 @@ tinyrad_dict_attr_destroy(
 
 
 int
-tinyrad_dict_buff_error(
-         TinyRadFile *                 buff,
-         int                           errnum,
-         char ***                      msgsp );
-
-
-int
 tinyrad_dict_parse(
          TinyRadDict *                 dict,
          TinyRadFile *                 buff,
@@ -143,49 +136,6 @@ tinyrad_dict_attr_destroy(
    bzero(attr, sizeof(TinyRadDictAttr));
    free(attr);
    return;
-}
-
-
-/// Add directory to search path for dictionary files
-///
-/// @param[in]  buff          dictionary reference
-/// @param[in]  errnum        string contain directory name
-/// @param[out] msgsp         string contain directory name
-/// @return returns error code
-int
-tinyrad_dict_buff_error(
-         TinyRadFile *                 buff,
-         int                           errnum,
-         char ***                      msgsp )
-{
-   int    rc;
-   char   err[128];
-   char   msg[256];
-
-   if (msgsp == NULL)
-      return(errnum);
-   if (buff == NULL)
-      return(errnum);
-
-   // reset error
-   tinyrad_strerror_r(errnum, err, sizeof(err));
-   tinyrad_strings_free(*msgsp);
-   *msgsp = NULL;
-
-   // record error
-   snprintf(msg, sizeof(msg), "%s: %i: %s", buff->path, buff->line, err);
-   if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
-      return(errnum);
-
-   // record call stack
-   while((buff = buff->parent) != NULL)
-   {
-      snprintf(msg, sizeof(msg), "%s: %i: included dictionary file", buff->path, buff->line);
-      if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
-         return(errnum);
-   };
-
-   return(errnum);
 }
 
 
