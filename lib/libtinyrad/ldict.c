@@ -201,7 +201,7 @@ tinyrad_dict_import(
       *msgsp = NULL;
 
    // initialize buffer
-   if ((rc = tinyrad_file_init(&buff, path, (const char **)dict->paths, NULL)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_file_init(&buff, path, dict->paths, NULL)) != TRAD_SUCCESS)
       return(rc);
 
    while((buff))

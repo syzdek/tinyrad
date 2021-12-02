@@ -139,7 +139,7 @@ tinyrad_file_error(
 int tinyrad_file_init(
        TinyRadFile **                filep,
        const char *                  path,
-       const char **                 paths,
+       char **                       paths,
        TinyRadFile *                 parent )
 {
    size_t                  pos;

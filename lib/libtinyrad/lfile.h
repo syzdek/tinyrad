@@ -99,7 +99,7 @@ int
 tinyrad_file_init(
          TinyRadFile **                filep,
          const char *                  path,
-         const char **                 pathes,
+         char **                       paths,
          TinyRadFile *                 parent );
 
 
