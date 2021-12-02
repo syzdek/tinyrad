@@ -110,6 +110,25 @@
 #define TRAD_CATHOLIC               0x0004
 
 
+// RADIUS Attribute Types
+#define TRAD_STRING                 1      ///< UTF-8 printable text (the RFCs call this "text")
+#define TRAD_OCTETS                 2      ///< opaque binary data (the RFCs call this "string")
+#define TRAD_IPADDR                 3      ///< IPv4 address
+#define TRAD_DATE                   4      ///< Seconds since January 1, 1970 (32-bits)
+#define TRAD_INTEGER                5      ///< 32-bit unsigned integer
+#define TRAD_IPV6ADDR               6      ///< IPv6 Address
+#define TRAD_IPV6PREFIX             7      ///< IPV6 prefix, with mask
+#define TRAD_IFID                   8      ///< Interface Id (hex:hex:hex:hex)
+#define TRAD_INTEGER64              9      ///< 64-bit unsigned integer
+#define TRAD_ETHER                 10      ///< Ethernet MAC address
+#define TRAD_ABINARY               11      ////< Ascend binary filter format
+#define TRAD_BYTE                  12      ////< 8-bit unsigned integer
+#define TRAD_SHORT                 13      ////< 16-bit unsigned integer
+#define TRAD_SIGNED                14      ////< 31-bit signed integer (packed into 32-bit field)
+#define TRAD_TLV                   15      ////< Type-Length-Value (allows nested attributes)
+#define TRAD_IPV4PREFIX            16      ////< IPv4 Prefix as given in RFC 6572.
+
+
 // RADIUS codes
 #define TRAD_ACCESS_REQ             1
 #define TRAD_ACCESS_ACCEPT          2
