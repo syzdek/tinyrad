@@ -97,6 +97,15 @@ struct _tinyrad_dict_vendor
    uint8_t               type_octs; 
    uint8_t               len_octs; 
    uint16_t              pad16;
+   size_t                vsas_len;
+   TinyRadDictVSA **     vsas;
+};
+
+
+struct _tinyrad_dict_vsa
+{
+   char *                name;
+   uint64_t              number;
 };
 
 

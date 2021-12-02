@@ -143,6 +143,7 @@
 typedef struct _tinyrad                TinyRad;
 typedef struct _tinyrad_avp            TinyRadAVP;
 typedef struct _tinyrad_dict           TinyRadDict;
+typedef struct _tinyrad_dict_vsa       TinyRadDictVSA;
 typedef struct _tinyrad_dict_vendor    TinyRadDictVendor;
 typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
 typedef struct _tinyrad_dict_val       TinyRadDictVal;
