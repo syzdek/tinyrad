@@ -89,6 +89,14 @@ tinyrad_file_destroy(
 
 
 int
+tinyrad_file_init(
+         TinyRadFile **                filep,
+         const char *                  path,
+         const char **                 pathes,
+         TinyRadFile *                 parent );
+
+
+int
 tinyrad_stat(
          const char *                  path,
          struct stat *                 sbpi,

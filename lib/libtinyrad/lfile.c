@@ -87,6 +87,74 @@ tinyrad_file_destroy(
 }
 
 
+/// Initialize dicitionary file buffer
+///
+/// @param[out] filep         pointer to buffer reference
+/// @param[in]  path          path to included file
+/// @param[in]  parent        parent buffer reference
+/// @return returns error code
+int tinyrad_file_init(
+       TinyRadFile **                filep,
+       const char *                  path,
+       const char **                 paths,
+       TinyRadFile *                 parent )
+{
+   size_t                  pos;
+   int                     rc;
+   TinyRadFile *           file;
+   struct stat             sb;
+   char                    fullpath[256];
+
+   assert(filep != NULL);
+   assert(path  != NULL);
+
+   // search dictionary paths for file
+   fullpath[0] = '\0';
+   if ( (path[0] != '/') && ((paths)) )
+   {
+      for(pos = 0; ( ((paths[pos])) && (fullpath[0] == '\0') ); pos++)
+      {
+         snprintf(fullpath, sizeof(fullpath), "%s/%s", paths[pos], path);
+         if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) == TRAD_SUCCESS)
+            continue;
+         fullpath[0] = '\0';
+      };
+   };
+
+   // fall back to relative path
+   if (fullpath[0] == '\0')
+   {
+      strncpy(fullpath, path, sizeof(fullpath));
+      if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
+         return(rc);
+   };
+
+   // initialize buffer
+   if ((file = malloc(sizeof(TinyRadFile))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(file, sizeof(TinyRadFile));
+   file->parent = parent;
+
+   // open dictionary for reading
+   if ((file->fd = open(fullpath, O_RDONLY)) == -1)
+   {
+      tinyrad_file_destroy(file);
+      return(TRAD_EACCES);
+   };
+
+   // store dictionary file name
+   if ((file->path = strdup(fullpath)) == NULL)
+   {
+      tinyrad_file_destroy(file);
+      return(TRAD_ENOMEM);
+   };
+
+   *filep = file;
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// splits line into argv and argc style elements
 ///
 /// @param[in]  dict          dictionary reference
