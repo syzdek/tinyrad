@@ -91,6 +91,7 @@ tinyrad_strerror_r(
       case TRAD_SUCCESS:    msg = "success";                         break;
       case TRAD_ENOMEM:     msg = "out of virtual memory";           break;
       case TRAD_EACCES:     msg = "permission denied";               break;
+      case TRAD_ENOBUFS:    msg = "no buffer space available";       break;
       case TRAD_ENOENT:     msg = "no such file or directory";       break;
       case TRAD_ESYNTAX:    msg = "invalid or unrecognized syntax";  break;
 

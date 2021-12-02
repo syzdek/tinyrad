@@ -102,6 +102,7 @@
 #define TRAD_EACCES                 0x0003 ///< permission denied
 #define TRAD_ENOENT                 0x0004 ///< no such file or directory
 #define TRAD_ESYNTAX                0x0005 ///< dictionary syntax error
+#define TRAD_ENOBUFS                0x0006 ///< no buffer space available
 
 
 // library options
