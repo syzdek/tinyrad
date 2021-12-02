@@ -200,19 +200,16 @@ int tinyrad_file_init(
 
 /// splits line into argv and argc style elements
 ///
-/// @param[in]  dict          dictionary reference
 /// @param[in]  file          file buffer
 /// @param[in]  opts          dictionary options
 /// @return returns error code
 int
-tinyrad_file_parse_line(
-         TinyRadDict *                dict,
+tinyrad_file_readline(
          TinyRadFile *                file,
          uint32_t                     opts )
 {
    size_t  pos;
 
-   assert(dict != NULL);
    assert(file != NULL);
    assert(opts == 0);
 

@@ -66,13 +66,6 @@ tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr );
 
 
-int
-tinyrad_dict_parse(
-         TinyRadDict *                 dict,
-         TinyRadFile *                 buff,
-         uint32_t                      opts );
-
-
 void
 tinyrad_dict_vend_destroy(
          TinyRadDictVendor *           vendor );
@@ -220,7 +213,7 @@ tinyrad_dict_import(
          {
             buff->line++;
             buff->buff[pos] = '\0';
-            if ((rc = tinyrad_dict_parse(dict, buff, opts)) != TRAD_SUCCESS)
+            if ((rc = tinyrad_file_readline(buff, opts)) != TRAD_SUCCESS)
             {
                while((buff))
                {
@@ -303,76 +296,6 @@ tinyrad_dict_initialize(
    dict->paths[0] = NULL;
 
    *dictp = dict;
-
-   return(TRAD_SUCCESS);
-}
-
-
-/// splits line into argv and argc style elements
-///
-/// @param[in]  dict          dictionary reference
-/// @param[in]  buff          file buffer
-/// @param[in]  opts          dictionary options
-/// @return returns error code
-int
-tinyrad_dict_parse(
-         TinyRadDict *                dict,
-         TinyRadFile *                buff,
-         uint32_t                     opts )
-{
-   size_t  pos;
-
-   assert(dict != NULL);
-   assert(buff != NULL);
-   assert(opts == 0);
-
-   buff->argc = 0;
-   pos        = buff->pos;
-
-   // process line
-   while ((buff->buff[pos] != '\0') && (buff->argc < TRAD_ARGV_SIZE))
-   {
-      switch(buff->buff[pos])
-      {
-         case ' ':
-         case '\t':
-         break;
-
-         case '#':
-         case '\0':
-         buff->buff[pos] = '\0';
-         return(TRAD_SUCCESS);
-
-         default:
-         buff->argv[buff->argc] = &buff->buff[pos];
-         buff->argc++;
-         while (buff->buff[pos] != '\0')
-         {
-            pos++;
-            switch(buff->buff[pos])
-            {
-               case '\0':
-               case '#':
-               return(TRAD_SUCCESS);
-
-               case ' ':
-               case '\t':
-               buff->buff[pos] = '\0';
-               break;
-
-               default:
-               if (buff->buff[pos] < '$')
-                  return(TRAD_EUNKNOWN);
-               if (buff->buff[pos] > 'z')
-                  return(TRAD_EUNKNOWN);
-               break;
-            };
-         };
-         break;
-      };
-
-      pos++;
-   };
 
    return(TRAD_SUCCESS);
 }
