@@ -85,8 +85,8 @@ struct _tinyrad_dict
    size_t                attrs_len;
    size_t                paths_len;
    TinyRadDictVendor **  vendors;
-   TinyRadDictAttr   **  attrs;
-   char              **  paths;
+   TinyRadDictAttr **    attrs;
+   char **               paths;
 };
 
 
