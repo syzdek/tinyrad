@@ -54,6 +54,21 @@
 #include "lmemory.h"
 
 
+///////////////////
+//               //
+//  Definitions  //
+//               //
+///////////////////
+#pragma mark - Definitions
+
+#define TRAD_DICT_INCLUDE           1
+#define TRAD_DICT_ATTRIBUTE         2
+#define TRAD_DICT_VALUE             3
+#define TRAD_DICT_VENDOR            4
+#define TRAD_DICT_BEGIN_VENDOR      5
+#define TRAD_DICT_END_VENDOR        6
+
+
 //////////////////
 //              //
 //  Prototypes  //
@@ -189,17 +204,20 @@ tinyrad_dict_import(
    int                   rc;
    TinyRadFile *         file;
    TinyRadFile *         parent;
-   
+   TinyRadFile *         incl;
+   int                   action;
+
    assert(dict != NULL);
    assert(path != NULL);
 
    if ((msgsp))
       *msgsp = NULL;
 
-   // initialize buffer
+   // initialize file buffer
    if ((rc = tinyrad_file_init(&file, path, dict->paths, NULL)) != TRAD_SUCCESS)
       return(rc);
 
+   // loops through dictionary file
    while((file))
    {
       // reads next line
@@ -208,23 +226,46 @@ tinyrad_dict_import(
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(rc);
       };
-
-      // close processed file
       if (!(file->argc))
       {
          parent = file->parent;
          tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
          file = parent;
-         if (!(file))
-            return(TRAD_SUCCESS);
          continue;
       };
 
+      // interprets arguments
+      if      (!(strcasecmp(file->argv[0], "$INCLUDE")))     action = TRAD_DICT_INCLUDE;
+      else if (!(strcasecmp(file->argv[0], "ATTRIBUTE")))    action = TRAD_DICT_ATTRIBUTE;
+      else if (!(strcasecmp(file->argv[0], "BEGIN-VENDOR"))) action = TRAD_DICT_BEGIN_VENDOR;
+      else if (!(strcasecmp(file->argv[0], "END-VENDOR")))   action = TRAD_DICT_END_VENDOR;
+      else if (!(strcasecmp(file->argv[0], "VALUE")))        action = TRAD_DICT_VALUE;
+      else if (!(strcasecmp(file->argv[0], "VENDOR")))       action = TRAD_DICT_VENDOR;
+      else
+      {
+         tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+         return(TRAD_ESYNTAX);
+      };
+
+      // perform requested action
+      switch(action)
+      {
+         case TRAD_DICT_INCLUDE:
+         if ((rc = tinyrad_file_init(&incl, file->argv[1], dict->paths, file)) != TRAD_SUCCESS)
+         {
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(rc);
+         };
+         file = incl;
+         break;
+
+         default:
 printf("%s: %3i: ----", "dict", file->line);
 for(rc = 0; (rc < (int)file->argc); rc++)
    printf(" %s", file->argv[rc]);
 printf("\n");
-
+         break;
+      };
    };
 
    return(TRAD_SUCCESS);

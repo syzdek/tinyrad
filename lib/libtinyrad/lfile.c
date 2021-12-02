@@ -226,7 +226,6 @@ tinyrad_file_readline(
    size_t         size;
    ssize_t        len;
    char *         line;
-   TinyRadFile *  parent;
 
    assert(file != NULL);
    assert(opts == 0);
@@ -296,12 +295,7 @@ tinyrad_file_readline(
             line = NULL;
             continue;
          };
-         if (!(file->parent))
-            return(TRAD_SUCCESS);
-         parent = file->parent;
-         tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
-         file = parent;
-         break;
+         return(TRAD_SUCCESS);
 
          // adjust size of buffer and NULL terminate new data in buffer
          default:
