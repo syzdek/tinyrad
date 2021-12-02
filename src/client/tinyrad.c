@@ -135,6 +135,7 @@ int main(int argc, char * argv[])
          {
             tinyrad_dict_destroy(dict);
             my_error("%s: %s", optarg, tinyrad_strerror(rc));
+            tinyrad_strings_free(errs);
             return(1);
          };
          break;
@@ -195,6 +196,7 @@ void my_usage(void)
    printf("OPTIONS:\n");
    printf("  -D dictionary             include dictionary\n");
    printf("  -h, --help                print this help and exit\n");
+   printf("  -I path                   add path to dictionary search paths\n");
    printf("  -q, --quiet, --silent     do not print messages\n");
    printf("  -V, --version             print version number and exit\n");
    printf("  -v, --verbose             print verbose messages\n");
