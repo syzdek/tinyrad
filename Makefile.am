@@ -136,6 +136,8 @@ lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/ldict.h \
 					  lib/libtinyrad/lerror.c \
 					  lib/libtinyrad/lerror.h \
+					  lib/libtinyrad/lfile.c \
+					  lib/libtinyrad/lfile.h \
 					  lib/libtinyrad/lmemory.c \
 					  lib/libtinyrad/lmemory.h
 

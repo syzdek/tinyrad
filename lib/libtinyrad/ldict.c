@@ -50,6 +50,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+#include "lfile.h"
 #include "lmemory.h"
 
 
@@ -124,13 +125,6 @@ tinyrad_dict_parse(
          uint32_t                      opts );
 
 
-int
-tinyrad_dict_stat(
-         const char *                  path,
-         struct stat *                 sbpi,
-         mode_t                        type );
-
-
 void
 tinyrad_dict_vend_destroy(
          TinyRadDictVendor *           vendor );
@@ -161,7 +155,7 @@ tinyrad_dict_add_path(
    assert(dict != NULL);
    assert(path != NULL);
 
-   if ((rc = tinyrad_dict_stat(path, &sb, S_IFDIR)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_stat(path, &sb, S_IFDIR)) != TRAD_SUCCESS)
       return(rc);
 
    size = sizeof(char **) * (dict->paths_len + 2);
@@ -289,7 +283,7 @@ int tinyrad_dict_buff_init(
       for(pos = 0; (pos < dict->paths_len); pos++)
       {
          snprintf(fullpath, sizeof(fullpath), "%s/%s", dict->paths[pos], path);
-         if ((rc = tinyrad_dict_stat(fullpath, &sb, S_IFREG)) == TRAD_SUCCESS)
+         if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) == TRAD_SUCCESS)
          {
             pos = dict->paths_len;
             continue;
@@ -302,7 +296,7 @@ int tinyrad_dict_buff_init(
    if (fullpath[0] == '\0')
    {
       strncpy(fullpath, path, sizeof(fullpath));
-      if ((rc = tinyrad_dict_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
          return(rc);
    };
 
@@ -568,42 +562,6 @@ tinyrad_dict_parse(
    };
 
    return(TRAD_SUCCESS);
-}
-
-
-/// wrapper around stat() for dictionary processing
-///
-/// @param[in]  path          file system path
-/// @param[in]  sbp           stat buffer
-/// @param[in]  type          file type expecting
-/// @return returns error code
-int
-tinyrad_dict_stat(
-         const char *                 path,
-         struct stat *                sbp,
-         mode_t                       type )
-{
-   int rc;
-
-   assert(path != NULL);
-   assert(sbp  != NULL);
-
-   if ((rc = stat(path, sbp)) == 0)
-   {
-      if ((sbp->st_mode & S_IFMT) != type)
-         return(TRAD_ENOENT);
-      return(TRAD_SUCCESS);
-   };
-
-   switch(errno)
-   {
-      case EACCES:   return(TRAD_EACCES);
-      case ENOENT:   return(TRAD_ENOENT);
-      case ENOTDIR:  return(TRAD_ENOENT);
-      default:       break;
-   };
-
-   return(TRAD_EUNKNOWN);
 }
 
 
