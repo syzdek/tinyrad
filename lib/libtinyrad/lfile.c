@@ -201,28 +201,28 @@ int tinyrad_file_init(
 /// splits line into argv and argc style elements
 ///
 /// @param[in]  dict          dictionary reference
-/// @param[in]  buff          file buffer
+/// @param[in]  file          file buffer
 /// @param[in]  opts          dictionary options
 /// @return returns error code
 int
 tinyrad_file_parse_line(
          TinyRadDict *                dict,
-         TinyRadFile *                buff,
+         TinyRadFile *                file,
          uint32_t                     opts )
 {
    size_t  pos;
 
    assert(dict != NULL);
-   assert(buff != NULL);
+   assert(file != NULL);
    assert(opts == 0);
 
-   buff->argc = 0;
-   pos        = buff->pos;
+   file->argc = 0;
+   pos        = file->pos;
 
    // process line
-   while ((buff->data[pos] != '\0') && (buff->argc < TRAD_ARGV_SIZE))
+   while ((file->buff[pos] != '\0') && (file->argc < TRAD_ARGV_SIZE))
    {
-      switch(buff->data[pos])
+      switch(file->buff[pos])
       {
          case ' ':
          case '\t':
@@ -230,16 +230,16 @@ tinyrad_file_parse_line(
 
          case '#':
          case '\0':
-         buff->data[pos] = '\0';
+         file->buff[pos] = '\0';
          return(TRAD_SUCCESS);
 
          default:
-         buff->argv[buff->argc] = &buff->data[pos];
-         buff->argc++;
-         while (buff->data[pos] != '\0')
+         file->argv[file->argc] = &file->buff[pos];
+         file->argc++;
+         while (file->buff[pos] != '\0')
          {
             pos++;
-            switch(buff->data[pos])
+            switch(file->buff[pos])
             {
                case '\0':
                case '#':
@@ -247,13 +247,13 @@ tinyrad_file_parse_line(
 
                case ' ':
                case '\t':
-               buff->data[pos] = '\0';
+               file->buff[pos] = '\0';
                break;
 
                default:
-               if (buff->data[pos] < '$')
+               if (file->buff[pos] < '$')
                   return(TRAD_EUNKNOWN);
-               if (buff->data[pos] > 'z')
+               if (file->buff[pos] > 'z')
                   return(TRAD_EUNKNOWN);
                break;
             };

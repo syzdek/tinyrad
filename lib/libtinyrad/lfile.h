@@ -72,7 +72,7 @@ struct _tinyrad_file
    char *              path;
    TinyRadFile *       parent;
    char *              argv[TRAD_ARGV_SIZE];
-   char                data[256];
+   char                buff[256];
 };
 
 

@@ -216,10 +216,10 @@ tinyrad_dict_import(
       // process buffer
       for(pos = buff->pos; (pos < buff->len); pos++)
       {
-         if (buff->data[pos] == '\n')
+         if (buff->buff[pos] == '\n')
          {
             buff->line++;
-            buff->data[pos] = '\0';
+            buff->buff[pos] = '\0';
             if ((rc = tinyrad_dict_parse(dict, buff, opts)) != TRAD_SUCCESS)
             {
                while((buff))
@@ -242,13 +242,13 @@ printf("\n");
 
       // shift unprocessed data to start of  buffer
       for(x = 0; (x <= (buff->len - buff->pos)); x++)
-         buff->data[x] = buff->data[x + buff->pos];
+         buff->buff[x] = buff->buff[x + buff->pos];
       buff->len             -= buff->pos;
       buff->pos              = 0;
 
       // attempt to fill buffer
-      size = sizeof(buff->data) - buff->len - 1;
-      switch (len = read(buff->fd, &buff->data[buff->len], size))
+      size = sizeof(buff->buff) - buff->len - 1;
+      switch (len = read(buff->fd, &buff->buff[buff->len], size))
       {
          case -1:
          while((buff))
@@ -267,7 +267,7 @@ printf("\n");
 
          default:
          buff->len             += len;
-         buff->data[buff->len]  = '\0';
+         buff->buff[buff->len]  = '\0';
          break;
       };
    };
@@ -330,9 +330,9 @@ tinyrad_dict_parse(
    pos        = buff->pos;
 
    // process line
-   while ((buff->data[pos] != '\0') && (buff->argc < TRAD_ARGV_SIZE))
+   while ((buff->buff[pos] != '\0') && (buff->argc < TRAD_ARGV_SIZE))
    {
-      switch(buff->data[pos])
+      switch(buff->buff[pos])
       {
          case ' ':
          case '\t':
@@ -340,16 +340,16 @@ tinyrad_dict_parse(
 
          case '#':
          case '\0':
-         buff->data[pos] = '\0';
+         buff->buff[pos] = '\0';
          return(TRAD_SUCCESS);
 
          default:
-         buff->argv[buff->argc] = &buff->data[pos];
+         buff->argv[buff->argc] = &buff->buff[pos];
          buff->argc++;
-         while (buff->data[pos] != '\0')
+         while (buff->buff[pos] != '\0')
          {
             pos++;
-            switch(buff->data[pos])
+            switch(buff->buff[pos])
             {
                case '\0':
                case '#':
@@ -357,13 +357,13 @@ tinyrad_dict_parse(
 
                case ' ':
                case '\t':
-               buff->data[pos] = '\0';
+               buff->buff[pos] = '\0';
                break;
 
                default:
-               if (buff->data[pos] < '$')
+               if (buff->buff[pos] < '$')
                   return(TRAD_EUNKNOWN);
-               if (buff->data[pos] > 'z')
+               if (buff->buff[pos] > 'z')
                   return(TRAD_EUNKNOWN);
                break;
             };
