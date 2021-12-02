@@ -66,11 +66,6 @@ tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr );
 
 
-void
-tinyrad_dict_buff_destroy(
-       TinyRadFile *                   buff );
-
-
 int
 tinyrad_dict_buff_error(
          TinyRadFile *                 buff,
@@ -155,25 +150,6 @@ tinyrad_dict_attr_destroy(
       free(attr->oid);
    bzero(attr, sizeof(TinyRadDictAttr));
    free(attr);
-   return;
-}
-
-
-/// Destroys and frees resources of a RADIUS dictionary buffer
-///
-/// @param[in]  buff          dictionary buffer reference
-void
-tinyrad_dict_buff_destroy(
-         TinyRadFile *                 buff)
-{
-   if (!(buff))
-      return;
-   if ((buff->path))
-      free(buff->path);
-   if (buff->fd != -1)
-      close(buff->fd);
-   bzero(buff, sizeof(TinyRadFile));
-   free(buff);
    return;
 }
 
@@ -277,14 +253,14 @@ int tinyrad_dict_buff_init(
    // open dictionary for reading
    if ((buff->fd = open(fullpath, O_RDONLY)) == -1)
    {
-      tinyrad_dict_buff_destroy(buff);
+      tinyrad_file_destroy(buff);
       return(TRAD_EACCES);
    };
 
    // store dictionary file name
    if ((buff->path = strdup(fullpath)) == NULL)
    {
-      tinyrad_dict_buff_destroy(buff);
+      tinyrad_file_destroy(buff);
       return(TRAD_ENOMEM);
    };
 
@@ -380,7 +356,7 @@ tinyrad_dict_import(
                while((buff))
                {
                   parent = buff->parent;
-                  tinyrad_dict_buff_destroy(buff);
+                  tinyrad_file_destroy(buff);
                   buff = parent;
                };
                return(rc);
@@ -409,14 +385,14 @@ printf("\n");
          while((buff))
          {
             parent = buff->parent;
-            tinyrad_dict_buff_destroy(buff);
+            tinyrad_file_destroy(buff);
             buff = parent;
          };
          return(TRAD_EUNKNOWN);
 
          case 0:
          parent = buff->parent;
-         tinyrad_dict_buff_destroy(buff);
+         tinyrad_file_destroy(buff);
          buff = parent;
          break;
 

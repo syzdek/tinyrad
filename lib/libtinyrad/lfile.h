@@ -83,6 +83,11 @@ struct _tinyrad_file
 //////////////////
 #pragma mark - Prototypes
 
+void
+tinyrad_file_destroy(
+       TinyRadFile *                   file );
+
+
 int
 tinyrad_stat(
          const char *                  path,

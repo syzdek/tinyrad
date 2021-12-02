@@ -68,6 +68,93 @@
 /////////////////
 #pragma mark - Functions
 
+/// Destroys and frees resources of a RADIUS dictionary buffer
+///
+/// @param[in]  file          dictionary buffer reference
+void
+tinyrad_file_destroy(
+         TinyRadFile *                 file)
+{
+   if (!(file))
+      return;
+   if ((file->path))
+      free(file->path);
+   if (file->fd != -1)
+      close(file->fd);
+   bzero(file, sizeof(TinyRadFile));
+   free(file);
+   return;
+}
+
+
+/// splits line into argv and argc style elements
+///
+/// @param[in]  dict          dictionary reference
+/// @param[in]  buff          file buffer
+/// @param[in]  opts          dictionary options
+/// @return returns error code
+int
+tinyrad_file_parse_line(
+         TinyRadDict *                dict,
+         TinyRadFile *                buff,
+         uint32_t                     opts )
+{
+   size_t  pos;
+
+   assert(dict != NULL);
+   assert(buff != NULL);
+   assert(opts == 0);
+
+   buff->argc = 0;
+   pos        = buff->pos;
+
+   // process line
+   while ((buff->data[pos] != '\0') && (buff->argc < TRAD_ARGV_SIZE))
+   {
+      switch(buff->data[pos])
+      {
+         case ' ':
+         case '\t':
+         break;
+
+         case '#':
+         case '\0':
+         buff->data[pos] = '\0';
+         return(TRAD_SUCCESS);
+
+         default:
+         buff->argv[buff->argc] = &buff->data[pos];
+         buff->argc++;
+         while (buff->data[pos] != '\0')
+         {
+            pos++;
+            switch(buff->data[pos])
+            {
+               case '\0':
+               case '#':
+               return(TRAD_SUCCESS);
+
+               case ' ':
+               case '\t':
+               buff->data[pos] = '\0';
+               break;
+
+               default:
+               if (buff->data[pos] < '$')
+                  return(TRAD_EUNKNOWN);
+               if (buff->data[pos] > 'z')
+                  return(TRAD_EUNKNOWN);
+               break;
+            };
+         };
+         break;
+      };
+
+      pos++;
+   };
+
+   return(TRAD_SUCCESS);
+}
 
 
 /// wrapper around stat() for dictionary processing
