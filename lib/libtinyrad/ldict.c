@@ -187,12 +187,8 @@ tinyrad_dict_import(
          uint32_t                     opts )
 {
    int                   rc;
-   size_t                pos;
-   size_t                x;
-   size_t                size;
-   ssize_t               len;
-   TinyRadFile *     buff;
-   TinyRadFile *     parent;
+   TinyRadFile *         buff;
+   TinyRadFile *         parent;
    
    assert(dict != NULL);
    assert(path != NULL);
@@ -206,63 +202,34 @@ tinyrad_dict_import(
 
    while((buff))
    {
-      // process buffer
-      for(pos = buff->pos; (pos < buff->len); pos++)
+      // reads next line
+      if ((rc = tinyrad_file_readline(buff, opts)) != TRAD_SUCCESS)
       {
-         if (buff->buff[pos] == '\n')
-         {
-            buff->line++;
-            buff->buff[pos] = '\0';
-            if ((rc = tinyrad_file_readline(buff, opts)) != TRAD_SUCCESS)
-            {
-               while((buff))
-               {
-                  parent = buff->parent;
-                  tinyrad_file_destroy(buff);
-                  buff = parent;
-               };
-               return(rc);
-            };
-            buff->pos = pos + 1;
-            if (buff->argc == 0)
-               continue;
-printf("%s: %3i: ----", "tinyrad_dict_import", buff->line);
-for(rc = 0; (rc < (int)buff->argc); rc++)
-   printf(" %s", buff->argv[rc]);
-printf("\n");
-         };
-      };
-
-      // shift unprocessed data to start of  buffer
-      for(x = 0; (x <= (buff->len - buff->pos)); x++)
-         buff->buff[x] = buff->buff[x + buff->pos];
-      buff->len             -= buff->pos;
-      buff->pos              = 0;
-
-      // attempt to fill buffer
-      size = sizeof(buff->buff) - buff->len - 1;
-      switch (len = read(buff->fd, &buff->buff[buff->len], size))
-      {
-         case -1:
          while((buff))
          {
             parent = buff->parent;
             tinyrad_file_destroy(buff);
             buff = parent;
          };
-         return(TRAD_EUNKNOWN);
+         return(rc);
+      };
 
-         case 0:
+      // close processed file
+      if (!(buff->argc))
+      {
          parent = buff->parent;
          tinyrad_file_destroy(buff);
          buff = parent;
-         break;
-
-         default:
-         buff->len             += len;
-         buff->buff[buff->len]  = '\0';
-         break;
+         if (!(buff))
+            return(TRAD_SUCCESS);
+         continue;
       };
+
+printf("%s: %3i: ----", "dict", buff->line);
+for(rc = 0; (rc < (int)buff->argc); rc++)
+   printf(" %s", buff->argv[rc]);
+printf("\n");
+
    };
 
    return(TRAD_SUCCESS);

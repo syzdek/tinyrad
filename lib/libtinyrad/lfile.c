@@ -60,6 +60,12 @@
 //////////////////
 #pragma mark - Prototypes
 
+int
+tinyrad_file_readline_split(
+         TinyRadFile *                file,
+         char *                       line,
+         uint32_t                     opts );
+
 
 /////////////////
 //             //
@@ -208,18 +214,132 @@ tinyrad_file_readline(
          TinyRadFile *                file,
          uint32_t                     opts )
 {
-   size_t  pos;
+   int            rc;
+   size_t         pos;
+   size_t         size;
+   ssize_t        len;
+   char *         line;
+   TinyRadFile *  parent;
 
    assert(file != NULL);
    assert(opts == 0);
 
+   // reset argc
    file->argc = 0;
-   pos        = file->pos;
+   line       = NULL;
+
+   // search for end of line
+   while (!(line))
+   {
+      // skip leaing newlines
+      while(file->buff[file->pos] == '\n')
+      {
+         file->line++;
+         file->pos++;
+      };
+
+      // find new line
+      for(pos = file->pos; ((pos < file->len) && (file->buff[pos] != '\n')); pos++);
+      if (file->buff[pos] == '\n')
+      {
+         line            = &file->buff[file->pos];
+         file->buff[pos] = '\0';
+         file->pos       = pos + 1;
+         file->line++;
+          if ((rc = tinyrad_file_readline_split(file, line, opts)) != TRAD_SUCCESS)
+            return(rc);
+         if (file->argc != 0)
+            return(TRAD_SUCCESS);
+         line = NULL;
+         continue;
+      };
+
+      // veifies that line does not exceed buffer space
+      if ( (!(file->pos)) && ((file->len+1) >= sizeof(file->buff)) )
+         return(TRAD_ENOBUFS);
+
+      // shift unprocessed data to start of  buffer
+      if ((file->pos))
+      {
+         for(pos = 0; (pos <= (file->len - file->pos)); pos++)
+            file->buff[pos] = file->buff[pos + file->pos];
+         file->len -= file->pos;
+         file->pos  = 0;
+      };
+
+      // attempt to fill buffer
+      size = sizeof(file->buff) - file->len - 1;
+      switch (len = read(file->fd, &file->buff[file->len], size))
+      {
+         // read error occurred
+         case -1:
+         while((file))
+         {
+            parent = file->parent;
+            tinyrad_file_destroy(file);
+            file = parent;
+         };
+         return(TRAD_EUNKNOWN);
+
+         // read to end of file
+         case 0:
+         if (file->pos < file->len)
+         {
+            line            = &file->buff[file->pos];
+            file->pos       = file->len;
+            file->line++;
+            if ((rc = tinyrad_file_readline_split(file, line, opts)) != TRAD_SUCCESS)
+               return(rc);
+            if (file->argc != 0)
+               return(TRAD_SUCCESS);
+            line = NULL;
+            continue;
+         };
+         if (!(file->parent))
+            return(TRAD_SUCCESS);
+         parent = file->parent;
+         tinyrad_file_destroy(file);
+         file = parent;
+         break;
+
+         // adjust size of buffer and NULL terminate new data in buffer
+         default:
+         if (len < 1)
+            return(TRAD_EUNKNOWN);
+         file->len               += len;
+         file->buff[file->len]    = '\0';
+      };
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
+/// splits line into argv and argc style elements
+///
+/// @param[in]  file          file buffer
+/// @param[in]  opts          dictionary options
+/// @return returns error code
+int
+tinyrad_file_readline_split(
+         TinyRadFile *                file,
+         char *                       line,
+         uint32_t                     opts )
+{
+   size_t         pos;
+
+   assert(file != NULL);
+   assert(line != NULL);
+   assert(opts == 0);
+
+//file->argv[0] = line;
+//file->argc = 1;
 
    // process line
-   while ((file->buff[pos] != '\0') && (file->argc < TRAD_ARGV_SIZE))
+   pos = 0;
+   while ((line[pos] != '\0') && (file->argc < TRAD_ARGV_SIZE))
    {
-      switch(file->buff[pos])
+      switch(line[pos])
       {
          case ' ':
          case '\t':
@@ -227,30 +347,31 @@ tinyrad_file_readline(
 
          case '#':
          case '\0':
-         file->buff[pos] = '\0';
+         line[pos] = '\0';
          return(TRAD_SUCCESS);
 
          default:
-         file->argv[file->argc] = &file->buff[pos];
+         file->argv[file->argc] = &line[pos];
          file->argc++;
-         while (file->buff[pos] != '\0')
+         while (line[pos] != '\0')
          {
             pos++;
-            switch(file->buff[pos])
+            switch(line[pos])
             {
                case '\0':
                case '#':
+               line[pos] = '\0';
                return(TRAD_SUCCESS);
 
                case ' ':
                case '\t':
-               file->buff[pos] = '\0';
+               line[pos] = '\0';
                break;
 
                default:
-               if (file->buff[pos] < '$')
+               if (line[pos] < '!')
                   return(TRAD_EUNKNOWN);
-               if (file->buff[pos] > 'z')
+               if (line[pos] > '~')
                   return(TRAD_EUNKNOWN);
                break;
             };
