@@ -187,7 +187,7 @@ tinyrad_dict_import(
          uint32_t                     opts )
 {
    int                   rc;
-   TinyRadFile *         buff;
+   TinyRadFile *         file;
    TinyRadFile *         parent;
    
    assert(dict != NULL);
@@ -197,37 +197,37 @@ tinyrad_dict_import(
       *msgsp = NULL;
 
    // initialize buffer
-   if ((rc = tinyrad_file_init(&buff, path, dict->paths, NULL)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_file_init(&file, path, dict->paths, NULL)) != TRAD_SUCCESS)
       return(rc);
 
-   while((buff))
+   while((file))
    {
       // reads next line
-      if ((rc = tinyrad_file_readline(buff, opts)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_file_readline(file, opts)) != TRAD_SUCCESS)
       {
-         while((buff))
+         while((file))
          {
-            parent = buff->parent;
-            tinyrad_file_destroy(buff);
-            buff = parent;
+            parent = file->parent;
+            tinyrad_file_destroy(file);
+            file = parent;
          };
          return(rc);
       };
 
       // close processed file
-      if (!(buff->argc))
+      if (!(file->argc))
       {
-         parent = buff->parent;
-         tinyrad_file_destroy(buff);
-         buff = parent;
-         if (!(buff))
+         parent = file->parent;
+         tinyrad_file_destroy(file);
+         file = parent;
+         if (!(file))
             return(TRAD_SUCCESS);
          continue;
       };
 
-printf("%s: %3i: ----", "dict", buff->line);
-for(rc = 0; (rc < (int)buff->argc); rc++)
-   printf(" %s", buff->argv[rc]);
+printf("%s: %3i: ----", "dict", file->line);
+for(rc = 0; (rc < (int)file->argc); rc++)
+   printf(" %s", file->argv[rc]);
 printf("\n");
 
    };
