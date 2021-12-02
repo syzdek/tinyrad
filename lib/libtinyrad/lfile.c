@@ -79,16 +79,23 @@ tinyrad_file_readline_split(
 /// @param[in]  file          dictionary buffer reference
 void
 tinyrad_file_destroy(
-         TinyRadFile *                 file)
+         TinyRadFile *                 file,
+         int                           recurse )
 {
-   if (!(file))
-      return;
-   if ((file->path))
-      free(file->path);
-   if (file->fd != -1)
-      close(file->fd);
-   bzero(file, sizeof(TinyRadFile));
-   free(file);
+   TinyRadFile * parent;
+
+   while((file))
+   {
+      parent = (recurse == TRAD_FILE_RECURSE) ? file->parent : NULL;
+      if ((file->path))
+         free(file->path);
+      if (file->fd != -1)
+         close(file->fd);
+      bzero(file, sizeof(TinyRadFile));
+      free(file);
+      file = parent;
+   };
+
    return;
 }
 
@@ -187,14 +194,14 @@ int tinyrad_file_init(
    // open dictionary for reading
    if ((file->fd = open(fullpath, O_RDONLY)) == -1)
    {
-      tinyrad_file_destroy(file);
+      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_EACCES);
    };
 
    // store dictionary file name
    if ((file->path = strdup(fullpath)) == NULL)
    {
-      tinyrad_file_destroy(file);
+      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_ENOMEM);
    };
 
@@ -273,12 +280,6 @@ tinyrad_file_readline(
       {
          // read error occurred
          case -1:
-         while((file))
-         {
-            parent = file->parent;
-            tinyrad_file_destroy(file);
-            file = parent;
-         };
          return(TRAD_EUNKNOWN);
 
          // read to end of file
@@ -298,7 +299,7 @@ tinyrad_file_readline(
          if (!(file->parent))
             return(TRAD_SUCCESS);
          parent = file->parent;
-         tinyrad_file_destroy(file);
+         tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
          file = parent;
          break;
 

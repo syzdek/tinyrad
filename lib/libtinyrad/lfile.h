@@ -52,6 +52,8 @@
 #pragma mark - Definitions
 
 #define TRAD_ARGV_SIZE              10
+#define TRAD_FILE_RECURSE           1
+#define TRAD_FILE_NORECURSE         0
 
 
 //////////////////
@@ -85,7 +87,8 @@ struct _tinyrad_file
 
 void
 tinyrad_file_destroy(
-       TinyRadFile *                   file );
+       TinyRadFile *                   file,
+       int                             recurse );
 
 
 int

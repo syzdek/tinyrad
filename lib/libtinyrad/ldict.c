@@ -205,12 +205,7 @@ tinyrad_dict_import(
       // reads next line
       if ((rc = tinyrad_file_readline(file, opts)) != TRAD_SUCCESS)
       {
-         while((file))
-         {
-            parent = file->parent;
-            tinyrad_file_destroy(file);
-            file = parent;
-         };
+         tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(rc);
       };
 
@@ -218,7 +213,7 @@ tinyrad_dict_import(
       if (!(file->argc))
       {
          parent = file->parent;
-         tinyrad_file_destroy(file);
+         tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
          file = parent;
          if (!(file))
             return(TRAD_SUCCESS);
