@@ -61,8 +61,8 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct _tinyrad_dict_buff TinyRadDictBuff;
-struct _tinyrad_dict_buff
+typedef struct _tinyrad_file TinyRadFile;
+struct _tinyrad_file
 {
    int                 line;
    int                 fd;
@@ -70,7 +70,7 @@ struct _tinyrad_dict_buff
    size_t              len;
    size_t              argc;
    char *              path;
-   TinyRadDictBuff *   parent;
+   TinyRadFile *       parent;
    char *              argv[TRAD_ARGV_SIZE];
    char                data[256];
 };

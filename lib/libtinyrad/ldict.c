@@ -68,12 +68,12 @@ tinyrad_dict_attr_destroy(
 
 void
 tinyrad_dict_buff_destroy(
-       TinyRadDictBuff *             buff );
+       TinyRadFile *                   buff );
 
 
 int
 tinyrad_dict_buff_error(
-         TinyRadDictBuff *             buff,
+         TinyRadFile *                 buff,
          int                           errnum,
          char ***                      msgsp );
 
@@ -81,15 +81,15 @@ tinyrad_dict_buff_error(
 int
 tinyrad_dict_buff_init(
          TinyRadDict *                 dict,
-         TinyRadDictBuff **            buffp,
+         TinyRadFile **                buffp,
          const char *                  path,
-         TinyRadDictBuff *             parent );
+         TinyRadFile *                 parent );
 
 
 int
 tinyrad_dict_parse(
          TinyRadDict *                 dict,
-         TinyRadDictBuff *             buff,
+         TinyRadFile *                 buff,
          uint32_t                      opts );
 
 
@@ -164,7 +164,7 @@ tinyrad_dict_attr_destroy(
 /// @param[in]  buff          dictionary buffer reference
 void
 tinyrad_dict_buff_destroy(
-         TinyRadDictBuff *             buff)
+         TinyRadFile *                 buff)
 {
    if (!(buff))
       return;
@@ -172,7 +172,7 @@ tinyrad_dict_buff_destroy(
       free(buff->path);
    if (buff->fd != -1)
       close(buff->fd);
-   bzero(buff, sizeof(TinyRadDictBuff));
+   bzero(buff, sizeof(TinyRadFile));
    free(buff);
    return;
 }
@@ -186,7 +186,7 @@ tinyrad_dict_buff_destroy(
 /// @return returns error code
 int
 tinyrad_dict_buff_error(
-         TinyRadDictBuff *             buff,
+         TinyRadFile *                 buff,
          int                           errnum,
          char ***                      msgsp )
 {
@@ -230,13 +230,13 @@ tinyrad_dict_buff_error(
 /// @return returns error code
 int tinyrad_dict_buff_init(
        TinyRadDict *                 dict,
-       TinyRadDictBuff **            buffp,
+       TinyRadFile **                buffp,
        const char *                  path,
-       TinyRadDictBuff *             parent )
+       TinyRadFile *                 parent )
 {
    size_t                  pos;
    int                     rc;
-   TinyRadDictBuff *       buff;
+   TinyRadFile *           buff;
    struct stat             sb;
    char                    fullpath[256];
 
@@ -269,9 +269,9 @@ int tinyrad_dict_buff_init(
    };
 
    // initialize buffer
-   if ((buff = malloc(sizeof(TinyRadDictBuff))) == NULL)
+   if ((buff = malloc(sizeof(TinyRadFile))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(buff, sizeof(TinyRadDictBuff));
+   bzero(buff, sizeof(TinyRadFile));
    buff->parent = parent;
 
    // open dictionary for reading
@@ -353,8 +353,8 @@ tinyrad_dict_import(
    size_t                x;
    size_t                size;
    ssize_t               len;
-   TinyRadDictBuff *     buff;
-   TinyRadDictBuff *     parent;
+   TinyRadFile *     buff;
+   TinyRadFile *     parent;
    
    assert(dict != NULL);
    assert(path != NULL);
@@ -472,7 +472,7 @@ tinyrad_dict_initialize(
 int
 tinyrad_dict_parse(
          TinyRadDict *                dict,
-         TinyRadDictBuff *            buff,
+         TinyRadFile *                buff,
          uint32_t                     opts )
 {
    size_t  pos;
