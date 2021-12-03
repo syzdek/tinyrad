@@ -216,6 +216,7 @@ tinyrad_dict_import(
    // initialize file buffer
    if ((rc = tinyrad_file_init(&file, path, dict->paths, NULL)) != TRAD_SUCCESS)
    {
+      tinyrad_file_error(file, rc, msgsp);
       tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
       return(rc);
    };
@@ -226,6 +227,7 @@ tinyrad_dict_import(
       // reads next line
       if ((rc = tinyrad_file_readline(file, opts)) != TRAD_SUCCESS)
       {
+         tinyrad_file_error(file, rc, msgsp);
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(rc);
       };
@@ -246,6 +248,7 @@ tinyrad_dict_import(
       else if (!(strcasecmp(file->argv[0], "VENDOR")))       action = TRAD_DICT_VENDOR;
       else
       {
+         tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(TRAD_ESYNTAX);
       };
@@ -257,6 +260,7 @@ tinyrad_dict_import(
          if ((rc = tinyrad_file_init(&incl, file->argv[1], dict->paths, file)) != TRAD_SUCCESS)
          {
             file = ((incl)) ? incl : file;
+            tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
          };
@@ -272,6 +276,7 @@ printf("\n");
       };
    };
 
+   tinyrad_file_error(NULL, TRAD_SUCCESS, msgsp);
    return(TRAD_SUCCESS);
 }
 
