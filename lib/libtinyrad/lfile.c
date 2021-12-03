@@ -119,29 +119,37 @@ tinyrad_file_error(
          int                           errnum,
          char ***                      msgsp )
 {
-   int    rc;
-   char   err[128];
-   char   msg[256];
-
-   if (msgsp == NULL)
-      return(errnum);
-   if (file == NULL)
-      return(errnum);
+   int           rc;
+   char          err[128];
+   char          msg[256];
+   const char *  path;
 
    // reset error
-   tinyrad_strerror_r(errnum, err, sizeof(err));
+   if (!(msgsp))
+      return(errnum);
    tinyrad_strings_free(*msgsp);
    *msgsp = NULL;
+   tinyrad_strerror_r(errnum, err, sizeof(err));
+
+   // determine file path
+   if (!(file))
+   {
+      snprintf(msg, sizeof(msg), "%s", err);
+      tinyrad_strings_append(msgsp, err);
+      return(errnum);
+   };
+   path = ((file->fullpath)) ? file->fullpath : file->path;
 
    // record error
-   snprintf(msg, sizeof(msg), "%s: %i: %s", file->path, file->line, err);
+   snprintf(msg, sizeof(msg), "%s: %i: %s", path, file->line, err);
    if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
       return(errnum);
 
    // record call stack
    while((file = file->parent) != NULL)
    {
-      snprintf(msg, sizeof(msg), "%s: %i: included dictionary file", file->path, file->line);
+      path = ((file->fullpath)) ? file->fullpath : file->path;
+      snprintf(msg, sizeof(msg), "%s: %i: included file", path, file->line);
       if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
          return(errnum);
    };
