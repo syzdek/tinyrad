@@ -134,7 +134,7 @@ int main(int argc, char * argv[])
          if ((rc = tinyrad_dict_import(dict, optarg, &errs, 0)) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
-            my_error(errs, "%s: %s", optarg, tinyrad_strerror(rc));
+            my_error(errs, NULL);
             tinyrad_strings_free(errs);
             return(1);
          };
