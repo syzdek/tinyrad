@@ -123,6 +123,9 @@ tinyrad_file_error(
    char          err[128];
    char          msg[256];
    const char *  path;
+   size_t        max;
+   size_t        pos;
+   void *        ptr;
 
    // reset error
    if (!(msgsp))
@@ -152,6 +155,15 @@ tinyrad_file_error(
       snprintf(msg, sizeof(msg), "in file included from %s:%i:", path, file->line);
       if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
          return(errnum);
+   };
+
+   // invert errors
+   max = tinyrad_strings_count(*msgsp);
+   for(pos = 0; (pos < (max >> 1)); pos++)
+   {
+      ptr                 = (*msgsp)[pos];
+      (*msgsp)[pos]       = (*msgsp)[max-pos-1];
+      (*msgsp)[max-pos-1] = ptr;
    };
 
    return(errnum);
