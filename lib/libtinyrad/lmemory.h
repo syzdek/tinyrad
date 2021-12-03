@@ -93,7 +93,7 @@ tinyrad_strings_append(
    char **    strs;
 
    assert(strsp != NULL);
-   assert(str   != str);
+   assert(str   != NULL);
 
    count = tinyrad_strings_count(*strsp);
 
@@ -123,6 +123,8 @@ tinyrad_strings_count(
          char **                       strs )
 {
    size_t count;
+   if (!(strs))
+      return(0);
    for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
    return(count);
 }
