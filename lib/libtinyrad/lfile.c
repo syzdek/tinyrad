@@ -141,7 +141,7 @@ tinyrad_file_error(
    path = ((file->fullpath)) ? file->fullpath : file->path;
 
    // record error
-   snprintf(msg, sizeof(msg), "%s: %i: %s", path, file->line, err);
+   snprintf(msg, sizeof(msg), "%s:%i: %s", path, file->line, err);
    if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
       return(errnum);
 
@@ -149,7 +149,7 @@ tinyrad_file_error(
    while((file = file->parent) != NULL)
    {
       path = ((file->fullpath)) ? file->fullpath : file->path;
-      snprintf(msg, sizeof(msg), "%s: %i: included file", path, file->line);
+      snprintf(msg, sizeof(msg), "in file included from %s:%i:", path, file->line);
       if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
          return(errnum);
    };
