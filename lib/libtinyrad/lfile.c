@@ -142,7 +142,7 @@ tinyrad_file_error(
 
    // record error
    snprintf(msg, sizeof(msg), "%s: %i: %s", path, file->line, err);
-   if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
       return(errnum);
 
    // record call stack
@@ -150,7 +150,7 @@ tinyrad_file_error(
    {
       path = ((file->fullpath)) ? file->fullpath : file->path;
       snprintf(msg, sizeof(msg), "%s: %i: included file", path, file->line);
-      if ((rc = tinyrad_strings_append(msgsp, err)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
          return(errnum);
    };
 
