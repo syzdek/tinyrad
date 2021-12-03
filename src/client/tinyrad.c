@@ -82,7 +82,7 @@
 
 int main( int argc, char * argv[] );
 
-void my_error( const char * fmt, ... );
+void my_error( char ** errs, const char * fmt, ... );
 void my_usage( void );
 void my_version( void );
 
@@ -134,7 +134,7 @@ int main(int argc, char * argv[])
          if ((rc = tinyrad_dict_import(dict, optarg, &errs, 0)) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
-            my_error("%s: %s", optarg, tinyrad_strerror(rc));
+            my_error(errs, "%s: %s", optarg, tinyrad_strerror(rc));
             tinyrad_strings_free(errs);
             return(1);
          };
@@ -148,7 +148,7 @@ int main(int argc, char * argv[])
          if ((rc = tinyrad_dict_add_path(dict, optarg)) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
-            my_error("%s: %s", optarg, tinyrad_strerror(rc));
+            my_error(NULL, "%s: %s", optarg, tinyrad_strerror(rc));
             return(1);
          };
          break;
@@ -175,12 +175,19 @@ int main(int argc, char * argv[])
 }
 
 
-void my_error( const char * fmt, ... )
+void my_error( char ** errs, const char * fmt, ... )
 {
+   int     pos;
    va_list args;
 
-   fprintf(stderr, "%s: ", PROGRAM_NAME);
+   if ((errs))
+      for(pos = 0; ((errs[pos])); pos++)
+         fprintf(stderr, "%s: %s\n", PROGRAM_NAME, errs[pos]);
 
+   if (!(fmt))
+      return;
+
+   fprintf(stderr, "%s: ", PROGRAM_NAME);
    va_start(args, fmt);
    vfprintf(stderr, fmt, args);
    va_end(args);
