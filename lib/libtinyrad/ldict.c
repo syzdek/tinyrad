@@ -215,7 +215,10 @@ tinyrad_dict_import(
 
    // initialize file buffer
    if ((rc = tinyrad_file_init(&file, path, dict->paths, NULL)) != TRAD_SUCCESS)
+   {
+      tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
       return(rc);
+   };
 
    // loops through dictionary file
    while((file))
@@ -253,6 +256,7 @@ tinyrad_dict_import(
          case TRAD_DICT_INCLUDE:
          if ((rc = tinyrad_file_init(&incl, file->argv[1], dict->paths, file)) != TRAD_SUCCESS)
          {
+            file = ((incl)) ? incl : file;
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
          };

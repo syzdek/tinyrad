@@ -86,13 +86,20 @@ tinyrad_file_destroy(
 
    while((file))
    {
+      // record parent
       parent = (recurse == TRAD_FILE_RECURSE) ? file->parent : NULL;
+
+      // free resources
+      if ((file->fullpath))
+         free(file->fullpath);
       if ((file->path))
          free(file->path);
       if (file->fd != -1)
          close(file->fd);
       bzero(file, sizeof(TinyRadFile));
       free(file);
+
+      // pivot to parent handle
       file = parent;
    };
 
@@ -164,6 +171,20 @@ int tinyrad_file_init(
    assert(filep != NULL);
    assert(path  != NULL);
 
+   // initialize buffer
+   if ((*filep = malloc(sizeof(TinyRadFile))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(*filep, sizeof(TinyRadFile));
+   file         = *filep;
+   file->parent = parent;
+
+   // store dictionary file name
+   if ((file->path = strdup(path)) == NULL)
+   {
+      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
+      return(TRAD_ENOMEM);
+   };
+
    // search dictionary paths for file
    fullpath[0] = '\0';
    if ( (path[0] != '/') && ((paths)) )
@@ -185,27 +206,13 @@ int tinyrad_file_init(
          return(rc);
    };
 
-   // initialize buffer
-   if ((file = malloc(sizeof(TinyRadFile))) == NULL)
-      return(TRAD_ENOMEM);
-   bzero(file, sizeof(TinyRadFile));
-   file->parent = parent;
-
    // open dictionary for reading
    if ((file->fd = open(fullpath, O_RDONLY)) == -1)
-   {
-      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_EACCES);
-   };
 
    // store dictionary file name
-   if ((file->path = strdup(fullpath)) == NULL)
-   {
-      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
+   if ((file->fullpath = strdup(fullpath)) == NULL)
       return(TRAD_ENOMEM);
-   };
-
-   *filep = file;
 
    return(TRAD_SUCCESS);
 }

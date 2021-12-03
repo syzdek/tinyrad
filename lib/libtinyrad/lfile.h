@@ -72,6 +72,7 @@ struct _tinyrad_file
    size_t              len;
    size_t              argc;
    char *              path;
+   char *              fullpath;
    TinyRadFile *       parent;
    char *              argv[TRAD_ARGV_SIZE];
    char                buff[256];
