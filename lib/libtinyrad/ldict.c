@@ -159,6 +159,7 @@ tinyrad_dict_destroy(
    if (!(dict))
       return;
 
+   // free attributes
    if ((dict->attrs))
    {
       for(pos = 0; (pos < dict->attrs_len); pos++)
@@ -166,6 +167,7 @@ tinyrad_dict_destroy(
       free(dict->attrs);
    };
 
+   // free paths
    if ((dict->paths))
    {
       for(pos = 0; (pos < dict->paths_len); pos++)
@@ -173,6 +175,7 @@ tinyrad_dict_destroy(
       free(dict->paths);
    };
 
+   // free vendors
    if ((dict->vendors))
    {
       for(pos = 0; (pos < dict->vendors_len); pos++)
