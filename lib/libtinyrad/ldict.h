@@ -52,6 +52,54 @@
 
 //////////////////
 //              //
+//  Data Types  //
+//              //
+//////////////////
+#pragma mark - Data Types
+
+struct _tinyrad_dict
+{
+   uint32_t              opts;
+   uint32_t              pad32;
+   size_t                vendors_len;
+   size_t                attrs_len;
+   size_t                paths_len;
+   TinyRadDictVendor **  vendors;
+   TinyRadDictAttr **    attrs;
+   char **               paths;
+};
+
+
+struct _tinyrad_dict_vendor
+{
+   char *                name;
+   uint32_t              number;
+   uint8_t               type_octs;
+   uint8_t               len_octs;
+   uint16_t              pad16;
+   size_t                vsas_len;
+   TinyRadDictVSA **     vsas;
+};
+
+
+struct _tinyrad_dict_vsa
+{
+   char *                name;
+   uint64_t              number;
+};
+
+
+struct _tinyrad_dict_attr
+{
+   TinyRadDictVendor *   vendor;
+   char *                name;
+   char *                oid;
+   uint32_t              type;
+   uint32_t              flags;
+};
+
+//////////////////
+//              //
 //  Prototypes  //
 //              //
 //////////////////
