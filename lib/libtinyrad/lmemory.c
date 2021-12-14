@@ -57,9 +57,27 @@ tinyrad_strings_append(
          const char *                  str );
 
 
+extern inline int
+tinyrad_strings_append_int(
+         char ***                      strsp,
+         intmax_t                      i );
+
+
+extern inline int
+tinyrad_strings_append_uint(
+         char ***                      strsp,
+         uintmax_t                     uint );
+
+
 extern inline size_t
 tinyrad_strings_count(
          char **                       strs );
+
+
+extern inline int
+tinyrad_strings_dup(
+         char **                       strs,
+         char ***                      strsp );
 
 
 extern inline void

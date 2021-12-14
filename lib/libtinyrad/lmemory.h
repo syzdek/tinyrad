@@ -41,6 +41,7 @@
 
 #include "libtinyrad.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -67,9 +68,27 @@ tinyrad_strings_append(
          const char *                  str );
 
 
+inline int
+tinyrad_strings_append_int(
+         char ***                      strsp,
+         intmax_t                      i );
+
+
+inline int
+tinyrad_strings_append_uint(
+         char ***                      strsp,
+         uintmax_t                     uint );
+
+
 inline size_t
 tinyrad_strings_count(
          char **                       strs );
+
+
+inline int
+tinyrad_strings_dup(
+         char **                       strs,
+         char ***                      strsp );
 
 
 ////////////////////////
@@ -114,6 +133,40 @@ tinyrad_strings_append(
 }
 
 
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  i             string to append to array
+/// @return returns error code
+inline int
+tinyrad_strings_append_int(
+         char ***                      strsp,
+         intmax_t                      i )
+{
+   char str[128];
+   assert(strsp != NULL);
+   snprintf(str, sizeof(str), "%ji", i);
+   return(tinyrad_strings_append(strsp, str));
+}
+
+
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  uint          string to append to array
+/// @return returns error code
+inline int
+tinyrad_strings_append_uint(
+         char ***                      strsp,
+         uintmax_t                     uint )
+{
+   char str[128];
+   assert(strsp != NULL);
+   snprintf(str, sizeof(str), "%ju", uint);
+   return(tinyrad_strings_append(strsp, str));
+}
+
+
 /// counts number of strings in NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array
@@ -127,6 +180,39 @@ tinyrad_strings_count(
       return(0);
    for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
    return(count);
+}
+
+
+/// Duplicate array of strings
+///
+/// @param[in]  strs          existing array of strings
+/// @param[out] strsp         pointer to string new array
+/// @return returns error code
+inline int
+tinyrad_strings_dup(
+         char **                       strs,
+         char ***                      strsp )
+{
+   char **     ptr;
+   size_t      count;
+   size_t      pos;
+
+   count  = tinyrad_strings_count( *strsp );
+
+   if ((ptr = malloc((count+1) * sizeof(char*))) == NULL)
+      return(TRAD_ENOMEM);
+
+   for(pos = 0; (pos < count); pos++)
+   {
+      if ((ptr[pos] = strdup(strs[pos])) == NULL)
+      {
+         tinyrad_strings_free(ptr);
+         return(TRAD_ENOMEM);
+      };
+   };
+   ptr[pos] = NULL;
+
+   return(TRAD_SUCCESS);
 }
 
 
