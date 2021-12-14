@@ -87,8 +87,8 @@ tinyrad_strings_count(
 
 inline int
 tinyrad_strings_dup(
-         char **                       strs,
-         char ***                      strsp );
+         char **                       src,
+         char ***                      destp );
 
 
 ////////////////////////
@@ -185,32 +185,34 @@ tinyrad_strings_count(
 
 /// Duplicate array of strings
 ///
-/// @param[in]  strs          existing array of strings
-/// @param[out] strsp         pointer to string new array
+/// @param[in]  src           existing array of strings
+/// @param[out] destp         pointer to string new array
 /// @return returns error code
 inline int
 tinyrad_strings_dup(
-         char **                       strs,
-         char ***                      strsp )
+         char **                       src,
+         char ***                      destp )
 {
    char **     ptr;
    size_t      count;
    size_t      pos;
 
-   count  = tinyrad_strings_count( *strsp );
+   count  = tinyrad_strings_count( src );
 
    if ((ptr = malloc((count+1) * sizeof(char*))) == NULL)
       return(TRAD_ENOMEM);
 
    for(pos = 0; (pos < count); pos++)
    {
-      if ((ptr[pos] = strdup(strs[pos])) == NULL)
+      if ((ptr[pos] = strdup(src[pos])) == NULL)
       {
          tinyrad_strings_free(ptr);
          return(TRAD_ENOMEM);
       };
    };
    ptr[pos] = NULL;
+
+   *destp = ptr;
 
    return(TRAD_SUCCESS);
 }

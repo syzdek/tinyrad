@@ -76,8 +76,8 @@ tinyrad_strings_count(
 
 extern inline int
 tinyrad_strings_dup(
-         char **                       strs,
-         char ***                      strsp );
+         char **                       src,
+         char ***                      destp );
 
 
 extern inline void
