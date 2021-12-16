@@ -119,7 +119,6 @@ tinyrad_file_error(
          int                           errnum,
          char ***                      msgsp )
 {
-   int           rc;
    char          err[128];
    char          msg[256];
    char **       msgs;
@@ -146,15 +145,18 @@ tinyrad_file_error(
 
    // record error
    snprintf(msg, sizeof(msg), "%s:%i: %s", path, file->line, err);
-   if ((rc = tinyrad_strings_append(&msgs, msg)) != TRAD_SUCCESS)
+   if (tinyrad_strings_append(&msgs, msg) != TRAD_SUCCESS)
+   {
+      tinyrad_strings_free(msgs);
       return(errnum);
+   };
 
    // record call stack
    while((file = file->parent) != NULL)
    {
       path = ((file->fullpath)) ? file->fullpath : file->path;
       snprintf(msg, sizeof(msg), "in file included from %s:%i:", path, file->line);
-      if ((rc = tinyrad_strings_append(&msgs, msg)) != TRAD_SUCCESS)
+      if (tinyrad_strings_append(&msgs, msg) != TRAD_SUCCESS)
       {
          tinyrad_strings_free(msgs);
          return(errnum);
@@ -162,7 +164,7 @@ tinyrad_file_error(
    };
 
    // invert errors
-   max = tinyrad_strings_count(*msgsp);
+   max = tinyrad_strings_count(msgs);
    for(pos = 0; (pos < (max >> 1)); pos++)
    {
       ptr             = msgs[pos];
