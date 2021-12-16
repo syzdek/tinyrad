@@ -118,7 +118,7 @@ int main(int argc, char * argv[])
 
    dictdump = 0;
 
-   if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
+   if (tinyrad_dict_initialize(&dict, 0) != TRAD_SUCCESS)
    {
       fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
       return(1);
@@ -137,7 +137,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'D':
-         if ((rc = tinyrad_dict_import(dict, optarg, &errs, 0)) != TRAD_SUCCESS)
+         if (tinyrad_dict_import(dict, optarg, &errs, 0) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
             my_error(errs, NULL);
