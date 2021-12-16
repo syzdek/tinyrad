@@ -191,12 +191,12 @@ int tinyrad_file_init(
    assert(filep != NULL);
    assert(path  != NULL);
 
+   *filep = NULL;
+
    // initialize buffer
-   if ((*filep = malloc(sizeof(TinyRadFile))) == NULL)
+   if ((file = malloc(sizeof(TinyRadFile))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(*filep, sizeof(TinyRadFile));
-   file         = *filep;
-   file->parent = parent;
+   bzero(file, sizeof(TinyRadFile));
 
    // store dictionary file name
    if ((file->path = strdup(path)) == NULL)
@@ -223,16 +223,28 @@ int tinyrad_file_init(
    {
       strncpy(fullpath, path, sizeof(fullpath));
       if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
+      {
+         tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
          return(rc);
+      };
    };
 
    // open dictionary for reading
    if ((file->fd = open(fullpath, O_RDONLY)) == -1)
+   {
+      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_EACCES);
+   };
 
    // store dictionary file name
    if ((file->fullpath = strdup(fullpath)) == NULL)
+   {
+      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_ENOMEM);
+   };
+
+   file->parent = parent;
+   *filep = file;
 
    return(TRAD_SUCCESS);
 }
