@@ -305,12 +305,35 @@ tinyrad_dict_initialize(
    bzero(dict, sizeof(TinyRadDict));
    dict->opts = opts;
 
-   if ((dict->paths = malloc(sizeof(char **))) == NULL)
+   // initializes paths
+   if ((dict->paths = malloc(sizeof(char *))) == NULL)
    {
       tinyrad_dict_destroy(dict);
       return(-1);
    };
    dict->paths[0] = NULL;
+
+   // intializes vendors
+   if ((dict->vendors = malloc(sizeof(TinyRadDictVendor *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->vendors[0] = NULL;
+   if ((dict->vendors_id = malloc(sizeof(TinyRadDictVendor *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->vendors_id[0] = NULL;
+
+   // initializes attributes
+   if ((dict->attrs = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->attrs[0] = NULL;
 
    *dictp = dict;
 
