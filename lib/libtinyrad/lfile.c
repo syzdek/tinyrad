@@ -220,7 +220,7 @@ int tinyrad_file_init(
       for(pos = 0; ( ((paths[pos])) && (fullpath[0] == '\0') ); pos++)
       {
          snprintf(fullpath, sizeof(fullpath), "%s/%s", paths[pos], path);
-         if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) == TRAD_SUCCESS)
+         if (tinyrad_stat(fullpath, &sb, S_IFREG) == TRAD_SUCCESS)
             continue;
          fullpath[0] = '\0';
       };
@@ -440,12 +440,10 @@ tinyrad_stat(
          struct stat *                sbp,
          mode_t                       type )
 {
-   int rc;
-
    assert(path != NULL);
    assert(sbp  != NULL);
 
-   if ((rc = stat(path, sbp)) == 0)
+   if (stat(path, sbp) == 0)
    {
       if ((sbp->st_mode & S_IFMT) != type)
          return(TRAD_ENOENT);

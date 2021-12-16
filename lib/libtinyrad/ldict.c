@@ -572,9 +572,9 @@ tinyrad_dict_lookup(
       mid = (high + low) / 2;
    };
 
-   if ((rc = (*compar)(list[mid], idx)) == 0)
+   if ((*compar)(list[mid], idx) == 0)
       return(list[mid]);
-   if ((rc = (*compar)(list[high], idx)) == 0)
+   if ((*compar)(list[high], idx) == 0)
       return(list[high]);
 
    return(NULL);
