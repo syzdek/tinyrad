@@ -101,6 +101,7 @@ int main(int argc, char * argv[])
    int            rc;
    TinyRadDict *  dict;
    char **        errs;
+   uint8_t        dictdump;
 
    // getopt options
    static char          short_opt[] = "D:hI:qVv";
@@ -111,9 +112,11 @@ int main(int argc, char * argv[])
       {"silent",           no_argument,       NULL, 'q' },
       {"version",          no_argument,       NULL, 'V' },
       {"verbose",          no_argument,       NULL, 'v' },
+      {"dictionary-dump",  no_argument,       NULL, 1   },
       { NULL, 0, NULL, 0 }
    };
 
+   dictdump = 0;
 
    if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
    {
@@ -121,13 +124,16 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
       switch(c)
       {
          case -1:       /* no more arguments */
          case 0:        /* long options toggles */
+         break;
+
+         case 1:
+         dictdump++;
          break;
 
          case 'D':
@@ -171,6 +177,15 @@ int main(int argc, char * argv[])
       };
    };
 
+   if ((dictdump))
+   {
+      tinyrad_dict_print(dict, 0xffff);
+      tinyrad_dict_destroy(dict);
+      return(0);
+   };
+
+   tinyrad_dict_destroy(dict);
+
    return(0);
 }
 
@@ -207,6 +222,7 @@ void my_usage(void)
    printf("  -q, --quiet, --silent     do not print messages\n");
    printf("  -V, --version             print version number and exit\n");
    printf("  -v, --verbose             print verbose messages\n");
+   printf("  --dictionary-dump         print imported dictionaries\n");
    printf("\n");
    return;
 }
