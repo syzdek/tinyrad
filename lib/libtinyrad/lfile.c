@@ -122,6 +122,7 @@ tinyrad_file_error(
    int           rc;
    char          err[128];
    char          msg[256];
+   char **       msgs;
    const char *  path;
    size_t        max;
    size_t        pos;
@@ -130,22 +131,22 @@ tinyrad_file_error(
    // reset error
    if (!(msgsp))
       return(errnum);
-   tinyrad_strings_free(*msgsp);
-   *msgsp = NULL;
+   msgs = NULL;
    tinyrad_strerror_r(errnum, err, sizeof(err));
 
    // determine file path
    if (!(file))
    {
       snprintf(msg, sizeof(msg), "%s", err);
-      tinyrad_strings_append(msgsp, err);
+      tinyrad_strings_append(&msgs, err);
+      *msgsp = msgs;
       return(errnum);
    };
    path = ((file->fullpath)) ? file->fullpath : file->path;
 
    // record error
    snprintf(msg, sizeof(msg), "%s:%i: %s", path, file->line, err);
-   if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_strings_append(&msgs, msg)) != TRAD_SUCCESS)
       return(errnum);
 
    // record call stack
@@ -153,18 +154,23 @@ tinyrad_file_error(
    {
       path = ((file->fullpath)) ? file->fullpath : file->path;
       snprintf(msg, sizeof(msg), "in file included from %s:%i:", path, file->line);
-      if ((rc = tinyrad_strings_append(msgsp, msg)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_strings_append(&msgs, msg)) != TRAD_SUCCESS)
+      {
+         tinyrad_strings_free(msgs);
          return(errnum);
+      };
    };
 
    // invert errors
    max = tinyrad_strings_count(*msgsp);
    for(pos = 0; (pos < (max >> 1)); pos++)
    {
-      ptr                 = (*msgsp)[pos];
-      (*msgsp)[pos]       = (*msgsp)[max-pos-1];
-      (*msgsp)[max-pos-1] = ptr;
+      ptr             = msgs[pos];
+      msgs[pos]       = msgs[max-pos-1];
+      msgs[max-pos-1] = ptr;
    };
+
+   *msgsp = msgs;
 
    return(errnum);
 }
