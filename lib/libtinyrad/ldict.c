@@ -382,7 +382,7 @@ tinyrad_dict_import(
          {
             tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(rc);
+            return(TRAD_ESYNTAX);
          };
          if ((rc = tinyrad_dict_import_vendor(dict, file, opts)) != TRAD_SUCCESS)
          {
