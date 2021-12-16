@@ -215,6 +215,12 @@ tinyrad_dict_initialize(
          uint32_t                      opts );
 
 
+_TINYRAD_F void
+tinyrad_dict_print(
+         TinyRadDict *                 dict,
+         uint32_t                      opts );
+
+
 //------------------//
 // error functions //
 //------------------//

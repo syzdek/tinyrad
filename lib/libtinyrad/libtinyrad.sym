@@ -35,6 +35,7 @@ tinyrad_dict_add_path
 tinyrad_dict_destroy
 tinyrad_dict_import
 tinyrad_dict_initialize
+tinyrad_dict_print
 #
 # error functions
 tinyrad_strerror

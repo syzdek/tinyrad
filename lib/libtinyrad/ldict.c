@@ -81,9 +81,71 @@ tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr );
 
 
+int
+tinyrad_dict_attr_initialize(
+         TinyRadDictAttr **            attrp,
+         const char *                  name,
+         uint32_t                      type,
+         uint32_t                      datatype );
+
+
+int
+tinyrad_dict_import_vendor(
+         TinyRadDict *                dict,
+         TinyRadFile *                file,
+         uint32_t                     opts );
+
+
 void
 tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *           vendor );
+
+
+int
+tinyrad_dict_vendor_cmp_id(
+         const void *                 ptr1,
+         const void *                 ptr2 );
+
+
+void *
+tinyrad_dict_lookup(
+         void **                      list,
+         size_t                       len,
+         const void *                 idx,
+         int (*compar)(const void *, const void *) );
+
+
+int
+tinyrad_dict_vendor_cmp_name(
+         const void *                 ptr1,
+         const void *                 ptr2 );
+
+
+int
+tinyrad_dict_vendor_add(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         const char *                 name,
+         uint32_t                     id );
+
+
+TinyRadDictVendor *
+tinyrad_dict_vendor_lookup(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     id );
+
+
+int
+tinyrad_dict_vendor_lookup_id(
+         const void *                 data,
+         const void *                 idx );
+
+
+int
+tinyrad_dict_vendor_lookup_name(
+         const void *                 data,
+         const void *                 idx );
 
 
 /////////////////
@@ -139,11 +201,45 @@ tinyrad_dict_attr_destroy(
       return;
    if ((attr->name))
       free(attr->name);
-   if ((attr->oid))
-      free(attr->oid);
    bzero(attr, sizeof(TinyRadDictAttr));
    free(attr);
    return;
+}
+
+
+/// Destroys and frees resources of a RADIUS dictionary attribute
+///
+/// @param[out] attrp         reference to dictionary attribute
+int
+tinyrad_dict_attr_initialize(
+         TinyRadDictAttr **            attrp,
+         const char *                  name,
+         uint32_t                      type,
+         uint32_t                      datatype )
+{
+   TinyRadDictAttr *    attr;
+
+   assert(attrp   != NULL);
+   assert(name    != NULL);
+
+   // allocate initial memory
+   if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(attr, sizeof(TinyRadDictAttr));
+   attr->type      = type;
+   attr->data_type = datatype;
+
+   // save attribute name
+   if ((attr->name = strdup(name)) == NULL)
+   {
+      tinyrad_dict_attr_destroy(attr);
+      return(TRAD_ENOMEM);
+   };
+
+   // save attribute
+   *attrp = attr;
+
+   return(TRAD_SUCCESS);
 }
 
 
@@ -236,7 +332,7 @@ tinyrad_dict_import(
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(rc);
       };
-      if (!(file->argc))
+      if (file->argc < 2)
       {
          parent = file->parent;
          tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
@@ -261,7 +357,16 @@ tinyrad_dict_import(
       // perform requested action
       switch(action)
       {
+         case TRAD_DICT_ATTRIBUTE:
+         break;
+
          case TRAD_DICT_INCLUDE:
+         if (file->argc != 2)
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(rc);
+         };
          if ((rc = tinyrad_file_init(&incl, file->argv[1], dict->paths, file)) != TRAD_SUCCESS)
          {
             file = ((incl)) ? incl : file;
@@ -272,17 +377,109 @@ tinyrad_dict_import(
          file = incl;
          break;
 
+         case TRAD_DICT_VENDOR:
+         if ((file->argc < 3) || (file->argc > 4))
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(rc);
+         };
+         if ((rc = tinyrad_dict_import_vendor(dict, file, opts)) != TRAD_SUCCESS)
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(rc);
+         };
+         break;
+
          default:
-printf("%s: %3i: ----", "dict", file->line);
-for(rc = 0; (rc < (int)file->argc); rc++)
-   printf(" %s", file->argv[rc]);
-printf("\n");
+//printf("%s: %3i: ----", "dict", file->line);
+//for(rc = 0; (rc < (int)file->argc); rc++)
+//   printf(" %s", file->argv[rc]);
+//printf("\n");
          break;
       };
    };
 
    tinyrad_file_error(NULL, TRAD_SUCCESS, msgsp);
    return(TRAD_SUCCESS);
+}
+
+
+/// Imports file into dictionary
+///
+/// @param[in]  dict          dictionary reference
+/// @param[in]  file          path to import file
+/// @param[in]  opts          import options
+/// @return returns error code
+int
+tinyrad_dict_import_vendor(
+         TinyRadDict *                dict,
+         TinyRadFile *                file,
+         uint32_t                     opts )
+{
+   int                     rc;
+   char *                  endptr;
+   char *                  str;
+   uint32_t                id;
+   uint32_t                type_octs;
+   uint32_t                len_octs;
+
+   TinyRadDictVendor *     vendor;
+
+   assert(dict != NULL);
+   assert(file != NULL);
+   assert(opts == 0);
+
+   // initializes flags
+   type_octs = 1;
+   len_octs  = 1;
+
+   // verifies arguments list length
+   if ((file->argc < 3) || (file->argc > 4))
+      return(TRAD_ESYNTAX);
+
+   // process vendor-id
+   id = (uint32_t)strtoul(file->argv[2], &endptr, 10);
+   if (endptr[0] != '\0')
+      return(TRAD_ESYNTAX);
+
+   // process flags
+   if (file->argc == 4)
+   {
+      // initial string checks
+      if (!(strcmp("format=", file->argv[3])))
+         return(TRAD_ESYNTAX);
+      str = index(file->argv[3], '=');
+      str++;
+
+      // parse type length
+      type_octs = (uint32_t)strtoul(str, &endptr, 10);
+      if (endptr == str)
+         return(TRAD_ESYNTAX);
+      if (endptr[0] != ',')
+         return(TRAD_ESYNTAX);
+      str = &endptr[1];
+      if ( (type_octs != 1) && (type_octs != 2) && (type_octs != 4) )
+         return(TRAD_ESYNTAX);
+
+      // parse value length
+      len_octs = (uint32_t)strtoul(str, &endptr, 10);
+      if (endptr == str)
+         return(TRAD_ESYNTAX);
+      if (endptr[0] != '\0')
+         return(TRAD_ESYNTAX);
+      if (len_octs > 2)
+         return(TRAD_ESYNTAX);
+   };
+
+   // initialize vendor struct
+   if ((rc = tinyrad_dict_vendor_add(dict, &vendor, file->argv[1], id)) != TRAD_SUCCESS)
+      return(rc);
+   vendor->type_octs = (uint8_t)type_octs;
+   vendor->len_octs  = (uint8_t)len_octs;
+
+   return(0);
 }
 
 
@@ -527,5 +724,65 @@ tinyrad_dict_vendor_destroy(
    return;
 }
 
+
+/// wrapper around stat() for dictionary processing
+///
+TinyRadDictVendor *
+tinyrad_dict_vendor_lookup(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     id )
+{
+   void **         list;
+   const void *    idx;
+   int (*compar)(const void *, const void *);
+
+   assert(dict   != NULL);
+
+   if ((name))
+   {
+      list   = (void **)dict->vendors;
+      idx    = name;
+      compar = tinyrad_dict_vendor_lookup_name;
+   } else {
+      list   = (void **)dict->vendors_id;
+      idx    = &id;
+      compar = tinyrad_dict_vendor_lookup_id;
+   };
+
+   return(tinyrad_dict_lookup(list, dict->vendors_len, idx, compar));
+}
+
+
+/// wrapper around stat() for dictionary processing
+///
+int
+tinyrad_dict_vendor_lookup_id(
+         const void *                 data,
+         const void *                 idx )
+{
+   const TinyRadDictVendor *  vendor;
+   uint32_t                   id;
+   vendor = data;
+   id     = *((const uint32_t *)idx);
+   if (vendor->id == id)
+      return(0);
+   return( (vendor->id < id) ? -1 : 1 );
+}
+
+
+/// wrapper around stat() for dictionary processing
+///
+int
+tinyrad_dict_vendor_lookup_name(
+         const void *                 data,
+         const void *                 idx )
+{
+   const TinyRadDictVendor *  vendor;
+   const char *               name;
+   vendor = data;
+   name   = idx;
+   return(strcasecmp(vendor->name, name));
+}
 
 /* end of source */
