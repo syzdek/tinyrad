@@ -120,10 +120,17 @@ tinyrad_initialize(
          const char *                  server,
          uint64_t                      opts )
 {
-   assert(trp != NULL);
+   TinyRad   * tr;
 
-   server  = ((server)) ? server : "localhost";
-   opts   |= 0x0001;
+   assert(trp    != NULL);
+   assert(server != NULL);
+
+   if ((tr = malloc(sizeof(TinyRad))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(tr, sizeof(TinyRad));
+   tr->opts = (uint32_t)opts;
+
+   *trp = tr;
 
    return(TRAD_SUCCESS);
 }
