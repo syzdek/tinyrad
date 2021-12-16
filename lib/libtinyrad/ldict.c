@@ -82,7 +82,7 @@ tinyrad_dict_attr_destroy(
 
 
 void
-tinyrad_dict_vend_destroy(
+tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *           vendor );
 
 
@@ -179,7 +179,7 @@ tinyrad_dict_destroy(
    if ((dict->vendors))
    {
       for(pos = 0; (pos < dict->vendors_len); pos++)
-         tinyrad_dict_vend_destroy(dict->vendors[pos]);
+         tinyrad_dict_vendor_destroy(dict->vendors[pos]);
       free(dict->vendors);
    };
    if ((dict->vendors_id))
@@ -341,11 +341,181 @@ tinyrad_dict_initialize(
 }
 
 
+void *
+tinyrad_dict_lookup(
+         void **                      list,
+         size_t                       len,
+         const void *                 idx,
+         int (*compar)(const void *, const void *) )
+{
+   int         rc;
+   size_t      low;
+   size_t      mid;
+   size_t      high;
+
+   assert(idx  != NULL);
+
+   if (!(list))
+      return(NULL);
+   if (!(len))
+      return(NULL);
+
+   low  = 0;
+   high = (len - 1);
+   mid  = len / 2;
+
+   while(mid > low)
+   {
+      if ((rc = (*compar)(list[mid], idx)) == 0)
+         return(list[mid]);
+      else if (rc < 0)
+         high = mid;
+      else
+         low = mid;
+      mid = (high + low) / 2;
+   };
+
+   if ((rc = (*compar)(list[mid], idx)) == 0)
+      return(list[mid]);
+   if ((rc = (*compar)(list[high], idx)) == 0)
+      return(list[high]);
+
+   return(NULL);
+}
+
+
+void
+tinyrad_dict_print(
+         TinyRadDict *                 dict,
+         uint32_t                      opts )
+{
+   size_t     pos;
+
+   assert(dict   != NULL);
+   assert(opts   != 0);
+
+   printf("# processed dictionary\n");
+
+   for(pos = 0; (pos < dict->vendors_len); pos++)
+      printf("VENDOR %s %" PRIu32 "\n", dict->vendors[pos]->name, dict->vendors[pos]->id);
+
+   printf("# end of processed dictionary\n");
+
+   return;
+}
+
+
+/// wrapper around stat() for dictionary processing
+///
+/// @param[out] vendorp       dictionar vendor reference
+int
+tinyrad_dict_vendor_add(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         const char *                 name,
+         uint32_t                     id )
+{
+   size_t               size;
+   size_t               vendors_len;
+   void *               ptr;
+   TinyRadDictVendor *  vendor;
+
+   assert(dict   != NULL);
+   assert(name   != NULL);
+
+   // verify attribute doesn't exist
+   if ((tinyrad_dict_vendor_lookup(dict, name, 0)))
+      return(TRAD_EEXISTS);
+   if ((tinyrad_dict_vendor_lookup(dict, NULL, id)))
+      return(TRAD_EEXISTS);
+
+   // resize vendor lists
+   vendors_len = dict->vendors_len + 1;
+   size = sizeof(TinyRadDictVendor *) * (dict->vendors_len + 2);
+   if ((ptr = realloc(dict->vendors, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->vendors = ptr;
+   if ((ptr = realloc(dict->vendors_id, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->vendors_id = ptr;
+
+   // initialize vendor
+   if ((vendor = malloc(sizeof(TinyRadDictVendor))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(vendor, sizeof(TinyRadDictVendor));
+   vendor->id        = id;
+   vendor->type_octs = 1;
+   vendor->len_octs  = 1;
+
+   // copy vendor name
+   if ((vendor->name = strdup(name)) == NULL)
+   {
+      tinyrad_dict_vendor_destroy(vendor);
+      return(TRAD_ENOMEM);
+   };
+
+   // save vendor
+   dict->vendors[    dict->vendors_len ] = vendor;
+   dict->vendors_id[ dict->vendors_len ] = vendor;
+   dict->vendors_len++;
+   dict->vendors[    dict->vendors_len ] = NULL;
+   dict->vendors_id[ dict->vendors_len ] = NULL;
+   if ((vendorp))
+      *vendorp = vendor;
+
+   // sort vendors
+   qsort(dict->vendors,    dict->vendors_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_name);
+   qsort(dict->vendors_id, dict->vendors_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_id);
+
+   return(0);
+}
+
+
+/// wrapper around stat() for dictionary processing
+///
+int
+tinyrad_dict_vendor_cmp_id(
+         const void *                 ptr1,
+         const void *                 ptr2 )
+{
+   const TinyRadDictVendor *  vendor1;
+   const TinyRadDictVendor *  vendor2;
+
+   assert(ptr1 != NULL);
+   assert(ptr2 != NULL);
+
+   vendor1 = *((const TinyRadDictVendor * const *)ptr1);
+   vendor2 = *((const TinyRadDictVendor * const *)ptr2);
+
+   return( (int)(((int64_t)vendor1->id) - ((int64_t)vendor1->id)) );
+}
+
+
+/// wrapper around stat() for dictionary processing
+///
+int
+tinyrad_dict_vendor_cmp_name(
+         const void *                 ptr1,
+         const void *                 ptr2 )
+{
+   const TinyRadDictVendor * vendor1;
+   const TinyRadDictVendor * vendor2;
+
+   assert(ptr1 != NULL);
+   assert(ptr2 != NULL);
+
+   vendor1 = *((const TinyRadDictVendor * const *)ptr1);
+   vendor2 = *((const TinyRadDictVendor * const *)ptr2);
+
+   return(strcasecmp(vendor1->name, vendor2->name));
+}
+
+
 /// wrapper around stat() for dictionary processing
 ///
 /// @param[in]  vendor        dictionar vendor reference
 void
-tinyrad_dict_vend_destroy(
+tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *          vendor )
 {
    if (!(vendor))
