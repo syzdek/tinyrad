@@ -182,6 +182,8 @@ tinyrad_dict_destroy(
          tinyrad_dict_vend_destroy(dict->vendors[pos]);
       free(dict->vendors);
    };
+   if ((dict->vendors_id))
+      free(dict->vendors_id);
 
    bzero(dict, sizeof(TinyRadDict));
    free(dict);
