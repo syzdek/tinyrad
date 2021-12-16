@@ -94,6 +94,7 @@ tinyrad_strerror_r(
       case TRAD_ENOBUFS:    msg = "no buffer space available";       break;
       case TRAD_ENOENT:     msg = "no such file or directory";       break;
       case TRAD_ESYNTAX:    msg = "invalid or unrecognized syntax";  break;
+      case TRAD_EEXISTS:    msg = "dictionary object exists";        break;
 
       default:
       snprintf(strerrbuf, buflen, "unknown error code %i", errnum);
