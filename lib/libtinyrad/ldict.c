@@ -613,7 +613,6 @@ tinyrad_dict_vendor_add(
          uint32_t                     id )
 {
    size_t               size;
-   size_t               vendors_len;
    void *               ptr;
    TinyRadDictVendor *  vendor;
 
@@ -627,7 +626,6 @@ tinyrad_dict_vendor_add(
       return(TRAD_EEXISTS);
 
    // resize vendor lists
-   vendors_len = dict->vendors_len + 1;
    size = sizeof(TinyRadDictVendor *) * (dict->vendors_len + 2);
    if ((ptr = realloc(dict->vendors, size)) == NULL)
       return(TRAD_ENOMEM);
