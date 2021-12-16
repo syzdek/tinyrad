@@ -684,7 +684,7 @@ tinyrad_dict_vendor_cmp_id(
    vendor1 = *((const TinyRadDictVendor * const *)ptr1);
    vendor2 = *((const TinyRadDictVendor * const *)ptr2);
 
-   return( (int)(((int64_t)vendor1->id) - ((int64_t)vendor1->id)) );
+   return( (int)(((int64_t)vendor1->id) - ((int64_t)vendor2->id)) );
 }
 
 
