@@ -306,6 +306,7 @@ tinyrad_dict_import(
    TinyRadFile *         file;
    TinyRadFile *         parent;
    TinyRadFile *         incl;
+   TinyRadDictVendor *   vendor;
    int                   action;
 
    assert(dict != NULL);
@@ -313,6 +314,8 @@ tinyrad_dict_import(
 
    if ((msgsp))
       *msgsp = NULL;
+
+   vendor = NULL;
 
    // initialize file buffer
    if ((rc = tinyrad_file_init(&file, path, dict->paths, NULL)) != TRAD_SUCCESS)
@@ -358,6 +361,37 @@ tinyrad_dict_import(
       switch(action)
       {
          case TRAD_DICT_ATTRIBUTE:
+         break;
+
+         case TRAD_DICT_BEGIN_VENDOR:
+         if ( (file->argc != 2) || ((vendor)) )
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(TRAD_ESYNTAX);
+         };
+         if ((vendor = tinyrad_dict_vendor_lookup(dict, file->argv[1], 0)) == NULL)
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(TRAD_ESYNTAX);
+         };
+         break;
+
+         case TRAD_DICT_END_VENDOR:
+         if ( (file->argc != 2) || (!(vendor)) )
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(TRAD_ESYNTAX);
+         };
+         if ((strcasecmp(vendor->name, file->argv[1])))
+         {
+            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(TRAD_ESYNTAX);
+         };
+         vendor = NULL;
          break;
 
          case TRAD_DICT_INCLUDE:
