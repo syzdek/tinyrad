@@ -1109,8 +1109,9 @@ tinyrad_dict_print_attribute(
          TinyRadDict *                 dict,
          TinyRadDictAttr *             attr )
 {
-   size_t   pos;
-   uint32_t flags;
+   size_t              pos;
+   uint32_t            flags;
+   TinyRadDictValue *  value;
 
    assert(dict != NULL);
    assert(attr != NULL);
@@ -1129,6 +1130,12 @@ tinyrad_dict_print_attribute(
       };
    };
    printf("\n");
+
+   for(pos = 0; (pos < attr->values_len); pos++)
+   {
+      value = attr->values_numeric[pos];
+      printf("VALUE %s %s %" PRIu64 "\n", attr->name, value->name, value->value );
+   };
 
    return;
 }
