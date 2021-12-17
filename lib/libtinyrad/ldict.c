@@ -287,6 +287,45 @@ tinyrad_dict_attr_initialize(
 }
 
 
+TinyRadDictAttr *
+tinyrad_dict_attr_lookup(
+         TinyRadDict *                dict,
+         uint32_t                     vendor_id,
+         const char *                 name,
+         uint32_t                     type )
+{
+   TinyRadDictVendor *  vendor;
+   size_t               len;
+   void **              list;
+   const void *         idx;
+   int (*compar)(const void *, const void *);
+
+   assert(dict   != NULL);
+
+   if ((name))
+   {
+      list   = (void **)dict->attrs;
+      len    = dict->attrs_len;
+      idx    = name;
+      compar = tinyrad_dict_attr_lookup_name;
+   } else {
+      list   = (void **)dict->attrs_type;
+      len    = dict->attrs_len;
+      if ((vendor_id))
+      {
+         if ((vendor = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id)) == NULL)
+            return(NULL);
+         list = (void **)vendor->attrs_type;
+         len  = vendor->attrs_len;
+      };
+      idx    = &type;
+      compar = tinyrad_dict_attr_lookup_type;
+   };
+
+   return(tinyrad_dict_lookup(list, len, idx, compar));
+}
+
+
 int
 tinyrad_dict_attr_lookup_name(
          const void *                 data,
