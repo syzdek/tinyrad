@@ -153,6 +153,14 @@ tinyrad_dict_import_vendor(
 
 
 int
+tinyrad_dict_value_add(
+         TinyRadDictAttr *             attr,
+         TinyRadDictValue **           valuep,
+         const char *                  name,
+         uint64_t                      numeral );
+
+
+int
 tinyrad_dict_value_cmp_name(
          const void *                 ptr1,
          const void *                 ptr2 );
@@ -1105,6 +1113,61 @@ tinyrad_dict_print_vendor(
    printf("END-VENDOR %s\n", vendor->name);
 
    return;
+}
+
+
+int
+tinyrad_dict_value_add(
+         TinyRadDictAttr *             attr,
+         TinyRadDictValue **           valuep,
+         const char *                  name,
+         uint64_t                      numeral )
+{
+   TinyRadDictValue *   value;
+   size_t               size;
+   void *               ptr;
+
+   assert(attr      != NULL);
+   assert(name      != NULL);
+
+   // verify value doesn't exist
+   if (tinyrad_dict_value_lookup(attr, name, 0) != NULL)
+      return(TRAD_SUCCESS);
+   if ((tinyrad_dict_value_lookup(attr, NULL, numeral)))
+      return(TRAD_EEXISTS);
+
+   // resize attribute lists
+   size = sizeof(TinyRadDictValue *) * (attr->values_len+2);
+   if ((ptr = realloc(attr->values_name, size)) == NULL)
+      return(TRAD_ENOMEM);
+   attr->values_name = ptr;
+   if ((ptr = realloc(attr->values_numeric, size)) == NULL)
+      return(TRAD_ENOMEM);
+   attr->values_numeric = ptr;
+
+   // allocate memory
+   if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(value, sizeof(TinyRadDictValue));
+   value->value = numeral;
+   if ((value->name = strdup(name)) == NULL)
+   {
+      tinyrad_dict_value_destroy(value);
+      return(TRAD_ENOMEM);
+   };
+
+   // save attribute
+   attr->values_name[    attr->values_len + 0 ] = value;
+   attr->values_name[    attr->values_len + 1 ] = NULL;
+   attr->values_numeric[ attr->values_len + 0 ] = value;
+   attr->values_numeric[ attr->values_len + 1 ] = NULL;
+   attr->values_len++;
+   qsort(attr->values_name,    attr->values_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_name);
+   qsort(attr->values_numeric, attr->values_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_numeric);
+   if ((valuep))
+      *valuep = value;
+
+   return(TRAD_SUCCESS);
 }
 
 
