@@ -77,17 +77,15 @@
 //////////////////
 #pragma mark - Prototypes
 
-void
-tinyrad_dict_attr_destroy(
-         TinyRadDictAttr *             attr );
-
-
 int
-tinyrad_dict_attr_initialize(
+tinyrad_dict_attr_add(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor,
          TinyRadDictAttr **            attrp,
          const char *                  name,
          uint32_t                      type,
-         uint32_t                      datatype );
+         uint8_t                       datatype,
+         uint32_t                      flags );
 
 
 int
@@ -100,6 +98,11 @@ int
 tinyrad_dict_attr_cmp_type(
          const void *                 ptr1,
          const void *                 ptr2 );
+
+
+void
+tinyrad_dict_attr_destroy(
+         TinyRadDictAttr *             attr );
 
 
 int
@@ -248,44 +251,81 @@ tinyrad_dict_add_path(
 
 /// Destroys and frees resources of a RADIUS dictionary attribute
 ///
-/// @param[in]  attr          reference to dictionary attribute
-void
-tinyrad_dict_attr_destroy(
-         TinyRadDictAttr *             attr )
-{
-   if (!(attr))
-      return;
-   if ((attr->name))
-      free(attr->name);
-   bzero(attr, sizeof(TinyRadDictAttr));
-   free(attr);
-   return;
-}
-
-
-/// Destroys and frees resources of a RADIUS dictionary attribute
-///
 /// @param[out] attrp         reference to dictionary attribute
 int
-tinyrad_dict_attr_initialize(
+tinyrad_dict_attr_add(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor,
          TinyRadDictAttr **            attrp,
          const char *                  name,
          uint32_t                      type,
-         uint32_t                      datatype )
+         uint8_t                       datatype,
+         uint32_t                      flags )
 {
+   uint32_t             vendor_id;
+   size_t               size;
+   void *               ptr;
    TinyRadDictAttr *    attr;
 
-   assert(attrp   != NULL);
-   assert(name    != NULL);
+   assert(dict      != NULL);
+   assert(attrp     != NULL);
+   assert(name      != NULL);
+   assert(type      != 0);
+   assert(datatype  != 0);
 
-   // allocate initial memory
+   vendor_id = ((vendor)) ? vendor->id : 0;
+
+   // verify attribute doesn't exist
+   if ((attr = tinyrad_dict_attr_lookup(dict, vendor_id, name, 0)) != NULL)
+   {
+      if ((attr->flags & TRAD_DFLT_ATTR) == 0)
+         return(TRAD_EEXISTS);
+      if (attr->type != type)
+         return(TRAD_EEXISTS);
+      if (attr->vendor_id != vendor_id)
+         return(TRAD_EEXISTS);
+      if ((attrp))
+         *attrp = attr;
+      return(TRAD_SUCCESS);
+   };
+   if ((tinyrad_dict_attr_lookup(dict, vendor_id, NULL, type)))
+      return(TRAD_EEXISTS);
+
+   // resize attribute lists
+   size = sizeof(TinyRadDictAttr *) * (dict->attrs_len+2);
+   if ((ptr = realloc(dict->attrs, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->attrs = ptr;
+   if ((vendor))
+   {
+      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_len+2);
+      if ((ptr = realloc(vendor->attrs, size)) == NULL)
+         return(TRAD_ENOMEM);
+      vendor->attrs = ptr;
+
+      if ((ptr = realloc(vendor->attrs_type, size)) == NULL)
+         return(TRAD_ENOMEM);
+      vendor->attrs_type = ptr;
+   } else {
+      size = sizeof(TinyRadDictAttr *) * (dict->attrs_type_len+2);
+      if ((ptr = realloc(dict->attrs_type, size)) == NULL)
+         return(TRAD_ENOMEM);
+      dict->attrs_type= ptr;
+   };
+
+   // allocate memory
    if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
       return(TRAD_ENOMEM);
    bzero(attr, sizeof(TinyRadDictAttr));
    attr->type      = type;
    attr->data_type = datatype;
-
-   // save attribute name
+   attr->flags     = flags;
+   if ((vendor))
+   {
+      attr->vendor_id = vendor->id;
+      attr->type_octs = vendor->type_octs;
+      attr->len_octs  = vendor->len_octs;
+   };
    if ((attr->name = strdup(name)) == NULL)
    {
       tinyrad_dict_attr_destroy(attr);
@@ -293,6 +333,25 @@ tinyrad_dict_attr_initialize(
    };
 
    // save attribute
+   dict->attrs[dict->attrs_len + 0] = attr;
+   dict->attrs[dict->attrs_len + 1] = NULL;
+   dict->attrs_len++;
+   qsort(dict->attrs, dict->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+   if ((vendor))
+   {
+      vendor->attrs[      vendor->attrs_len + 0 ] = attr;
+      vendor->attrs[      vendor->attrs_len + 1 ] = NULL;
+      vendor->attrs_type[ vendor->attrs_len + 0 ] = attr;
+      vendor->attrs_type[ vendor->attrs_len + 1 ] = NULL;
+      vendor->attrs_len++;
+      qsort(vendor->attrs,      vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+      qsort(vendor->attrs_type, vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
+   } else {
+      dict->attrs_type[dict->attrs_type_len + 0] = attr;
+      dict->attrs_type[dict->attrs_type_len + 1] = NULL;
+      dict->attrs_type_len++;
+      qsort(dict->attrs_type, dict->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
+   }
    *attrp = attr;
 
    return(TRAD_SUCCESS);

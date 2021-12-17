@@ -137,6 +137,7 @@
 #define TRAD_ENCRYPT3               0x0004 ////< encrypted as per Ascend's definitions for the Ascend-Send-Secret attribute
 #define TRAD_ENCRYPT_MASK           0x00FF ////< encrypt method mask
 #define TRAD_HAS_TAG                0x0100 ////< attribute may have tag as defined in RFC 2868
+#define TRAD_DFLT_ATTR              0x0200 ////< default/built-in attribute
 
 
 // RADIUS codes
@@ -175,7 +176,7 @@ typedef struct _tinyrad_dict           TinyRadDict;
 typedef struct _tinyrad_dict_vsa       TinyRadDictVSA;
 typedef struct _tinyrad_dict_vendor    TinyRadDictVendor;
 typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
-typedef struct _tinyrad_dict_val       TinyRadDictVal;
+typedef struct _tinyrad_dict_value     TinyRadDictValue;
 typedef struct _tinyrad_map            TinyRadMap;
 
 
