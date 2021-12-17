@@ -287,6 +287,23 @@ tinyrad_dict_attr_initialize(
 }
 
 
+/// Destroys and frees resources of a RADIUS dictionary attribute
+///
+/// @param[in]  attr          reference to dictionary attribute
+void
+tinyrad_dict_attr_destroy(
+         TinyRadDictAttr *             attr )
+{
+   if (!(attr))
+      return;
+   if ((attr->name))
+      free(attr->name);
+   bzero(attr, sizeof(TinyRadDictAttr));
+   free(attr);
+   return;
+}
+
+
 TinyRadDictAttr *
 tinyrad_dict_attr_lookup(
          TinyRadDict *                dict,
