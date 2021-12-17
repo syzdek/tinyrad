@@ -91,6 +91,12 @@ tinyrad_dict_attr_initialize(
 
 
 int
+tinyrad_dict_attr_cmp_name(
+         const void *                 ptr1,
+         const void *                 ptr2 );
+
+
+int
 tinyrad_dict_attr_lookup_name(
          const void *                 data,
          const void *                 idx );
@@ -284,6 +290,24 @@ tinyrad_dict_attr_initialize(
    *attrp = attr;
 
    return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_attr_cmp_name(
+         const void *                 ptr1,
+         const void *                 ptr2 )
+{
+   const TinyRadDictAttr * attr1;
+   const TinyRadDictAttr * attr2;
+
+   assert(ptr1 != NULL);
+   assert(ptr2 != NULL);
+
+   attr1 = *((const TinyRadDictAttr * const *)ptr1);
+   attr2 = *((const TinyRadDictAttr * const *)ptr2);
+
+   return(strcasecmp(attr1->name, attr2->name));
 }
 
 
