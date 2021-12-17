@@ -546,9 +546,9 @@ tinyrad_dict_lookup(
          int (*compar)(const void *, const void *) )
 {
    int         rc;
-   size_t      low;
-   size_t      mid;
-   size_t      high;
+   ssize_t     low;
+   ssize_t     mid;
+   ssize_t     high;
 
    assert(idx  != NULL);
 
@@ -559,14 +559,14 @@ tinyrad_dict_lookup(
 
    low  = 0;
    high = (len - 1);
-   mid  = len / 2;
+   mid  = (len - 1) / 2;
 
    while(mid > low)
    {
       if ((rc = (*compar)(list[mid], idx)) == 0)
          return(list[mid]);
       else if (rc < 0)
-         high = mid;
+         high = mid - 1;
       else
          low = mid;
       mid = (high + low) / 2;
@@ -780,7 +780,7 @@ tinyrad_dict_vendor_lookup_name(
    const char *               name;
    vendor = data;
    name   = idx;
-   return(strcasecmp(vendor->name, name));
+   return(strcasecmp(name, vendor->name));
 }
 
 /* end of source */
