@@ -52,6 +52,7 @@
 
 #include "lfile.h"
 #include "lmemory.h"
+#include "lmap.h"
 
 
 ///////////////////
@@ -166,6 +167,24 @@ int
 tinyrad_dict_vendor_lookup_name(
          const void *                 data,
          const void *                 idx );
+
+
+/////////////////
+//             //
+//  Variables  //
+//             //
+/////////////////
+
+const TinyRadMap tinyrad_dict_options[] =
+{
+   { "$INCLUDE",        TRAD_DICT_INCLUDE},
+   { "ATTRIBUTE",       TRAD_DICT_ATTRIBUTE},
+   { "BEGIN-VENDOR",    TRAD_DICT_BEGIN_VENDOR},
+   { "END-VENDOR",      TRAD_DICT_END_VENDOR},
+   { "VALUE",           TRAD_DICT_VALUE},
+   { "VENDOR",          TRAD_DICT_VENDOR},
+   { NULL, 0 }
+};
 
 
 /////////////////
@@ -326,7 +345,6 @@ tinyrad_dict_import(
    TinyRadFile *         file;
    TinyRadFile *         parent;
    TinyRadDictVendor *   vendor;
-   int                   action;
 
    assert(dict != NULL);
    assert(path != NULL);
@@ -362,22 +380,8 @@ tinyrad_dict_import(
          continue;
       };
 
-      // interprets arguments
-      if      (!(strcasecmp(file->argv[0], "$INCLUDE")))     action = TRAD_DICT_INCLUDE;
-      else if (!(strcasecmp(file->argv[0], "ATTRIBUTE")))    action = TRAD_DICT_ATTRIBUTE;
-      else if (!(strcasecmp(file->argv[0], "BEGIN-VENDOR"))) action = TRAD_DICT_BEGIN_VENDOR;
-      else if (!(strcasecmp(file->argv[0], "END-VENDOR")))   action = TRAD_DICT_END_VENDOR;
-      else if (!(strcasecmp(file->argv[0], "VALUE")))        action = TRAD_DICT_VALUE;
-      else if (!(strcasecmp(file->argv[0], "VENDOR")))       action = TRAD_DICT_VENDOR;
-      else
-      {
-         tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
-         tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-         return(TRAD_ESYNTAX);
-      };
-
       // perform requested action
-      switch(action)
+      switch(tinyrad_map_lookup_name(tinyrad_dict_options, file->argv[0], NULL))
       {
          case TRAD_DICT_ATTRIBUTE:
          break;
