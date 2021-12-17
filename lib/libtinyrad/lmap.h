@@ -98,12 +98,8 @@ tinyrad_map_lookup(
          uint64_t                      value,
          const TinyRadMap **           mapp )
 {
-   size_t               pos;
-
    assert(map  != NULL);
    assert(mapp != NULL);
-
-   pos   = 0;
 
    if (!(name))
       tinyrad_map_lookup_name(map, name, mapp);
@@ -123,7 +119,6 @@ tinyrad_map_lookup_name(
    size_t  pos;
    assert(map  != NULL);
    assert(name != NULL);
-   pos = 0;
    for(pos = 0; ((map[pos].name)); pos++)
    {
       if (!(strcasecmp(map[pos].name, name)))
@@ -147,7 +142,6 @@ tinyrad_map_lookup_value(
 {
    size_t  pos;
    assert(map  != NULL);
-   pos = 0;
    for(pos = 0; ((map[pos].name)); pos++)
    {
       if (map[pos].value == value)
