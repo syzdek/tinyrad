@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_H
-#define _LIB_LIBTINYRAD_H 1
+#define _LIB_LIBTINYRAD_LMAP_C 1
+#include "lmap.h"
 
 
 ///////////////
@@ -39,57 +39,42 @@
 ///////////////
 #pragma mark - Headers
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
-#include <assert.h>
+////////////////////////
+//                    //
+//  Inline Functions  //
+//                    //
+////////////////////////
+#pragma mark - Inline Functions
 
-#include <tinyrad.h>
-
-
-///////////////////
-//               //
-//  Definitions  //
-//               //
-///////////////////
-#pragma mark - Definitions
-
-
-//////////////////
-//              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-struct _tinyrad
-{
-   TinyRadDict *         dict;
-   uint32_t              opts;
-   uint32_t              pad32;
-};
+extern inline int
+tinyrad_map_lookup(
+         const TinyRadMap *            map,
+         const char *                  name,
+         uint64_t                      value,
+         const TinyRadMap **           mapp );
 
 
-struct _tinyrad_avp
-{
-   uint64_t              opts;
-};
+extern inline uint64_t
+tinyrad_map_lookup_name(
+         const TinyRadMap *            map,
+         const char *                  name,
+         const TinyRadMap **          mapp );
 
 
-struct _tinyrad_map
-{
-   const char *          name;
-   uint64_t              value;
-};
+extern inline const char *
+tinyrad_map_lookup_value(
+         const TinyRadMap *            map,
+         uint64_t                      value,
+         const TinyRadMap **           mapp );
 
 
-//////////////////
-//              //
-//  Prototypes  //
-//              //
-//////////////////
-#pragma mark - Prototypes
+/////////////////
+//             //
+//  Functions  //
+//             //
+/////////////////
+#pragma mark - Functions
 
 
-#endif /* end of header */
+/* end of source */
