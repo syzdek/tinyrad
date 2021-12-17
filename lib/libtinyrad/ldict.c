@@ -412,12 +412,6 @@ tinyrad_dict_import(
          break;
 
          case TRAD_DICT_VENDOR:
-         if ((file->argc < 3) || (file->argc > 4))
-         {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
-            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(TRAD_ESYNTAX);
-         };
          if ((rc = tinyrad_dict_import_vendor(dict, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
@@ -464,6 +458,10 @@ tinyrad_dict_import_vendor(
    assert(dict != NULL);
    assert(file != NULL);
    assert(opts == 0);
+
+   // checks arguments
+   if ((file->argc < 3) || (file->argc > 4))
+      return(TRAD_ESYNTAX);
 
    // initializes flags
    type_octs = 1;
