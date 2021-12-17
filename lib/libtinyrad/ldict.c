@@ -412,7 +412,7 @@ tinyrad_dict_import(
          case TRAD_DICT_VENDOR:
          if ((rc = tinyrad_dict_import_vendor(dict, file, opts)) != TRAD_SUCCESS)
          {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
          };
