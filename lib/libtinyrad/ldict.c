@@ -91,6 +91,12 @@ tinyrad_dict_attr_initialize(
 
 
 int
+tinyrad_dict_attr_lookup_type(
+         const void *                 data,
+         const void *                 idx );
+
+
+int
 tinyrad_dict_import_begin_vendor(
          TinyRadDict *                dict,
          TinyRadDictVendor **         vendorp,
@@ -272,6 +278,21 @@ tinyrad_dict_attr_initialize(
    *attrp = attr;
 
    return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_attr_lookup_type(
+         const void *                 data,
+         const void *                 idx )
+{
+   const TinyRadDictAttr *    attr = data;
+   uint32_t                   type = *((const uint32_t *)idx);
+   if (attr->type == type)
+      return(0);
+   if (attr->type < type)
+      return(-1);
+   return(1);
 }
 
 
