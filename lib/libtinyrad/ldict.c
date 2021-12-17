@@ -104,6 +104,12 @@ tinyrad_dict_import_end_vendor(
 
 
 int
+tinyrad_dict_import_include(
+         TinyRadDict *                dict,
+         TinyRadFile **               filep );
+
+
+int
 tinyrad_dict_import_vendor(
          TinyRadDict *                dict,
          TinyRadFile *                file,
@@ -319,7 +325,6 @@ tinyrad_dict_import(
    int                   rc;
    TinyRadFile *         file;
    TinyRadFile *         parent;
-   TinyRadFile *         incl;
    TinyRadDictVendor *   vendor;
    int                   action;
 
@@ -396,20 +401,12 @@ tinyrad_dict_import(
          break;
 
          case TRAD_DICT_INCLUDE:
-         if (file->argc != 2)
+         if ((rc = tinyrad_dict_import_include(dict, &file)) != TRAD_SUCCESS)
          {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
-            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(TRAD_ESYNTAX);
-         };
-         if ((rc = tinyrad_file_init(&incl, file->argv[1], dict->paths, file)) != TRAD_SUCCESS)
-         {
-            file = ((incl)) ? incl : file;
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
          };
-         file = incl;
          break;
 
          case TRAD_DICT_VENDOR:
@@ -472,6 +469,32 @@ tinyrad_dict_import_end_vendor(
       return(TRAD_ESYNTAX);
 
    *vendorp = NULL;
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_import_include(
+         TinyRadDict *                dict,
+         TinyRadFile **               filep )
+{
+   int            rc;
+   TinyRadFile *  incl;
+
+   assert(dict  != NULL);
+   assert(filep != NULL);
+
+   if ((*filep)->argc != 2)
+      return(TRAD_ESYNTAX);
+
+   if ((rc = tinyrad_file_init(&incl, (*filep)->argv[1], dict->paths, *filep)) != TRAD_SUCCESS)
+   {
+      *filep = ((incl)) ? incl : *filep;
+      return(rc);
+   };
+
+   *filep = incl;
 
    return(TRAD_SUCCESS);
 }
