@@ -152,6 +152,12 @@ tinyrad_dict_import_vendor(
          uint32_t                     opts );
 
 
+int
+tinyrad_dict_value_lookup_value(
+         const void *                 data,
+         const void *                 idx );
+
+
 void
 tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *           vendor );
@@ -1076,6 +1082,21 @@ tinyrad_dict_print_vendor(
    printf("END-VENDOR %s\n", vendor->name);
 
    return;
+}
+
+
+int
+tinyrad_dict_value_lookup_value(
+         const void *                 data,
+         const void *                 idx )
+{
+   const TinyRadDictValue *  value;
+   uint64_t                  val;
+   value = data;
+   val   = *((const uint64_t *)idx);
+   if (value->value == val)
+      return(0);
+   return( (value->value < val) ? -1 : 1 );
 }
 
 

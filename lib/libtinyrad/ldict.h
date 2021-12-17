@@ -105,6 +105,14 @@ struct _tinyrad_dict_attr
    uint32_t              flags;
 };
 
+
+struct _tinyrad_dict_value
+{
+   char *                name;
+   uint64_t              value;
+};
+
+
 //////////////////
 //              //
 //  Prototypes  //
