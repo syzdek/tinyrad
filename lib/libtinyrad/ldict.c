@@ -371,6 +371,8 @@ tinyrad_dict_destroy(
          tinyrad_dict_attr_destroy(dict->attrs[pos]);
       free(dict->attrs);
    };
+   if ((dict->attrs_type))
+      free(dict->attrs_type);
 
    // free paths
    if ((dict->paths))
@@ -703,6 +705,12 @@ tinyrad_dict_initialize(
       return(-1);
    };
    dict->attrs[0] = NULL;
+   if ((dict->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->attrs_type[0] = NULL;
 
    *dictp = dict;
 
@@ -821,6 +829,20 @@ tinyrad_dict_vendor_add(
       return(TRAD_ENOMEM);
    };
 
+   // initialize vendor attribute lists
+   if ((vendor->attrs = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   {
+      tinyrad_dict_vendor_destroy(vendor);
+      return(TRAD_ENOMEM);
+   };
+   vendor->attrs[0] = NULL;
+   if ((vendor->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   {
+      tinyrad_dict_vendor_destroy(vendor);
+      return(TRAD_ENOMEM);
+   };
+   vendor->attrs_type[0] = NULL;
+
    // save vendor
    dict->vendors[    dict->vendors_len ] = vendor;
    dict->vendors_id[ dict->vendors_len ] = vendor;
@@ -887,10 +909,18 @@ tinyrad_dict_vendor_destroy(
 {
    if (!(vendor))
       return;
+
    if ((vendor->name))
       free(vendor->name);
+
+   if ((vendor->attrs))
+      free(vendor->attrs);
+   if ((vendor->attrs_type))
+      free(vendor->attrs_type);
+
    bzero(vendor, sizeof(TinyRadDictVendor));
    free(vendor);
+
    return;
 }
 

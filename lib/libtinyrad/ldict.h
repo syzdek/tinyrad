@@ -67,6 +67,7 @@ struct _tinyrad_dict
    TinyRadDictVendor **  vendors;
    TinyRadDictVendor **  vendors_id;
    TinyRadDictAttr **    attrs;
+   TinyRadDictAttr **    attrs_type;
    char **               paths;
 };
 
@@ -74,6 +75,9 @@ struct _tinyrad_dict
 struct _tinyrad_dict_vendor
 {
    char *                name;
+   TinyRadDictAttr **    attrs;
+   TinyRadDictAttr **    attrs_type;
+   size_t                attrs_len;
    uint32_t              id;
    uint8_t               type_octs;
    uint8_t               len_octs;
@@ -91,7 +95,7 @@ struct _tinyrad_dict_vsa
 struct _tinyrad_dict_attr
 {
    char *                name;
-   uint32_t              vendor;
+   uint32_t              vendor_id;
    uint32_t              type;
    uint8_t               data_type;
    uint8_t               type_octs;
