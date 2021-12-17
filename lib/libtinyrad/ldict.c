@@ -159,7 +159,7 @@ tinyrad_dict_value_lookup_name(
 
 
 int
-tinyrad_dict_value_lookup_value(
+tinyrad_dict_value_lookup_numeric(
          const void *                 data,
          const void *                 idx );
 
@@ -1091,6 +1091,33 @@ tinyrad_dict_print_vendor(
 }
 
 
+TinyRadDictValue *
+tinyrad_dict_value_lookup(
+         TinyRadDictAttr *            attr,
+         const char *                 name,
+         uint64_t                     num )
+{
+   void **         list;
+   const void *    idx;
+   int (*compar)(const void *, const void *);
+
+   assert(attr   != NULL);
+
+   if ((name))
+   {
+      list   = (void **)attr->values_name;
+      idx    = name;
+      compar = tinyrad_dict_value_lookup_name;
+   } else {
+      list   = (void **)attr->values_numeric;
+      idx    = &num;
+      compar = tinyrad_dict_value_lookup_numeric;
+   };
+
+   return(tinyrad_dict_lookup(list, attr->values_len, idx, compar));
+}
+
+
 int
 tinyrad_dict_value_lookup_name(
          const void *                 data,
@@ -1105,7 +1132,7 @@ tinyrad_dict_value_lookup_name(
 
 
 int
-tinyrad_dict_value_lookup_value(
+tinyrad_dict_value_lookup_numeric(
          const void *                 data,
          const void *                 idx )
 {

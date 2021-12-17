@@ -103,6 +103,9 @@ struct _tinyrad_dict_attr
    uint8_t               len_octs;
    uint8_t               pad8;
    uint32_t              flags;
+   size_t                values_len;
+   TinyRadDictValue **   values_name;
+   TinyRadDictValue **   values_numeric;
 };
 
 
@@ -126,6 +129,13 @@ tinyrad_dict_attr_lookup(
          uint32_t                     vendor_id,
          const char *                 name,
          uint32_t                     id );
+
+
+TinyRadDictValue *
+tinyrad_dict_value_lookup(
+         TinyRadDictAttr *            attr,
+         const char *                 name,
+         uint64_t                     num );
 
 
 TinyRadDictVendor *
