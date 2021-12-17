@@ -146,6 +146,13 @@ tinyrad_dict_import_include(
 
 
 int
+tinyrad_dict_import_value(
+         TinyRadDict *                dict,
+         TinyRadFile *                file,
+         uint32_t                     opts );
+
+
+int
 tinyrad_dict_import_vendor(
          TinyRadDict *                dict,
          TinyRadFile *                file,
@@ -705,6 +712,15 @@ tinyrad_dict_import(
          };
          break;
 
+         case TRAD_DICT_VALUE:
+         if ((rc = tinyrad_dict_import_value(dict, file, opts)) != TRAD_SUCCESS)
+         {
+            tinyrad_file_error(file, rc, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(rc);
+         };
+         break;
+
          case TRAD_DICT_VENDOR:
          if ((rc = tinyrad_dict_import_vendor(dict, file, opts)) != TRAD_SUCCESS)
          {
@@ -843,6 +859,36 @@ tinyrad_dict_import_include(
    };
 
    *filep = incl;
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_import_value(
+         TinyRadDict *                dict,
+         TinyRadFile *                file,
+         uint32_t                     opts )
+{
+   TinyRadDictAttr *  attr;
+   uint64_t           number;
+   int                rc;
+   char *             ptr;
+
+   assert(dict != NULL);
+   assert(file != NULL);
+   assert(opts == 0);
+
+   if (file->argc == 3)
+      return(TRAD_ESYNTAX);
+   if ((attr = tinyrad_dict_attr_lookup(dict, 0, file->argv[1], 0)) == NULL)
+      return(TRAD_ESYNTAX);
+   number = (uint64_t)strtoull(file->argv[3], &ptr, 0);
+   if ((ptr[0] != '\0') || (file->argv[3] == ptr))
+      return(TRAD_ESYNTAX);
+
+   if ((rc = tinyrad_dict_value_add(attr, NULL, file->argv[2], number)) != TRAD_SUCCESS)
+      return(rc);
 
    return(TRAD_SUCCESS);
 }
