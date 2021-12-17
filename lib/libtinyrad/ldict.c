@@ -153,6 +153,12 @@ tinyrad_dict_import_vendor(
 
 
 int
+tinyrad_dict_value_lookup_name(
+         const void *                 data,
+         const void *                 idx );
+
+
+int
 tinyrad_dict_value_lookup_value(
          const void *                 data,
          const void *                 idx );
@@ -1082,6 +1088,19 @@ tinyrad_dict_print_vendor(
    printf("END-VENDOR %s\n", vendor->name);
 
    return;
+}
+
+
+int
+tinyrad_dict_value_lookup_name(
+         const void *                 data,
+         const void *                 idx )
+{
+   const TinyRadDictValue *  value;
+   const char *              name;
+   value = data;
+   name  = idx;
+   return(strcasecmp(name, value->name));
 }
 
 
