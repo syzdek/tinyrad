@@ -90,6 +90,20 @@ tinyrad_dict_attr_initialize(
 
 
 int
+tinyrad_dict_import_begin_vendor(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         TinyRadFile *                file );
+
+
+int
+tinyrad_dict_import_end_vendor(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         TinyRadFile *                file );
+
+
+int
 tinyrad_dict_import_vendor(
          TinyRadDict *                dict,
          TinyRadFile *                file,
@@ -364,34 +378,21 @@ tinyrad_dict_import(
          break;
 
          case TRAD_DICT_BEGIN_VENDOR:
-         if ( (file->argc != 2) || ((vendor)) )
+         if ((rc = tinyrad_dict_import_begin_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
          {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(TRAD_ESYNTAX);
-         };
-         if ((vendor = tinyrad_dict_vendor_lookup(dict, file->argv[1], 0)) == NULL)
-         {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
-            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(TRAD_ESYNTAX);
+            return(rc);
          };
          break;
 
          case TRAD_DICT_END_VENDOR:
-         if ( (file->argc != 2) || (!(vendor)) )
+         if ((rc = tinyrad_dict_import_end_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
          {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+            tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(TRAD_ESYNTAX);
+            return(rc);
          };
-         if ((strcasecmp(vendor->name, file->argv[1])))
-         {
-            tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
-            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(TRAD_ESYNTAX);
-         };
-         vendor = NULL;
          break;
 
          case TRAD_DICT_INCLUDE:
@@ -430,6 +431,48 @@ tinyrad_dict_import(
    };
 
    tinyrad_file_error(NULL, TRAD_SUCCESS, msgsp);
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_import_begin_vendor(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         TinyRadFile *                file )
+{
+   assert(dict    != NULL);
+   assert(vendorp != NULL);
+
+   if (file->argc != 2)
+      return(TRAD_ESYNTAX);
+   if ((*vendorp))
+      return(TRAD_ESYNTAX);
+   if ((*vendorp = tinyrad_dict_vendor_lookup(dict, file->argv[1], 0)) == NULL)
+      return(TRAD_ESYNTAX);
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_import_end_vendor(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         TinyRadFile *                file )
+{
+   assert(dict    != NULL);
+   assert(vendorp != NULL);
+
+   if (file->argc != 2)
+      return(TRAD_ESYNTAX);
+   if (!(*vendorp))
+      return(TRAD_ESYNTAX);
+   if ((strcasecmp((*vendorp)->name, file->argv[1])))
+      return(TRAD_ESYNTAX);
+
+   *vendorp = NULL;
+
    return(TRAD_SUCCESS);
 }
 
