@@ -129,6 +129,7 @@
 #define TRAD_SIGNED                14      ////< 31-bit signed integer (packed into 32-bit field)
 #define TRAD_TLV                   15      ////< Type-Length-Value (allows nested attributes)
 #define TRAD_IPV4PREFIX            16      ////< IPv4 Prefix as given in RFC 6572.
+#define TRAD_VSA                   17      ////< Vendor specific attribute
 
 
 // RADIUS Attribute flags

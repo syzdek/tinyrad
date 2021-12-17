@@ -118,6 +118,14 @@ tinyrad_dict_attr_lookup_type(
 
 
 int
+tinyrad_dict_import_attribute(
+         TinyRadDict *                dict,
+         TinyRadDictVendor *          vendor,
+         TinyRadFile *                file,
+         uint32_t                     opts );
+
+
+int
 tinyrad_dict_import_begin_vendor(
          TinyRadDict *                dict,
          TinyRadDictVendor **         vendorp,
@@ -195,6 +203,39 @@ tinyrad_dict_vendor_lookup_name(
 //             //
 /////////////////
 
+const TinyRadMap tinyrad_dict_data_type[] =
+{
+   { "ABINARY",      TRAD_ABINARY},
+   { "BYTE",         TRAD_BYTE},
+   { "DATE",         TRAD_DATE},
+   { "ETHER",        TRAD_ETHER},
+   { "IFID",         TRAD_IFID},
+   { "INTEGER",      TRAD_INTEGER},
+   { "INTEGER64",    TRAD_INTEGER64},
+   { "IPADDR",       TRAD_IPADDR},
+   { "IPV4PREFIX",   TRAD_IPV4PREFIX},
+   { "IPV6ADDR ",    TRAD_IPV6ADDR},
+   { "IPV6PREFIX ",  TRAD_IPV6PREFIX},
+   { "OCTETS",       TRAD_OCTETS},
+   { "RAD_TLV",      TRAD_TLV},
+   { "SHORT",        TRAD_SHORT},
+   { "SIGNED",       TRAD_SIGNED},
+   { "STRING",       TRAD_STRING },
+   { "VSA",          TRAD_VSA },
+   { NULL, 0 }
+};
+
+
+const TinyRadMap tinyrad_dict_attr_flags[] =
+{
+   { "encrypt=1",    TRAD_ENCRYPT1},
+   { "encrypt=2",    TRAD_ENCRYPT2},
+   { "encrypt=3",    TRAD_ENCRYPT3},
+   { "has_tag",      TRAD_HAS_TAG},
+   { NULL, 0 }
+};
+
+
 const TinyRadMap tinyrad_dict_options[] =
 {
    { "$INCLUDE",        TRAD_DICT_INCLUDE},
@@ -268,7 +309,6 @@ tinyrad_dict_attr_add(
    TinyRadDictAttr *    attr;
 
    assert(dict      != NULL);
-   assert(attrp     != NULL);
    assert(name      != NULL);
    assert(type      != 0);
    assert(datatype  != 0);
@@ -352,7 +392,8 @@ tinyrad_dict_attr_add(
       dict->attrs_type_len++;
       qsort(dict->attrs_type, dict->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
    }
-   *attrp = attr;
+   if ((attrp))
+      *attrp = attr;
 
    return(TRAD_SUCCESS);
 }
@@ -580,6 +621,12 @@ tinyrad_dict_import(
       switch(tinyrad_map_lookup_name(tinyrad_dict_options, file->argv[0], NULL))
       {
          case TRAD_DICT_ATTRIBUTE:
+         if ((rc = tinyrad_dict_import_attribute(dict, vendor, file, opts)) != TRAD_SUCCESS)
+         {
+            tinyrad_file_error(file, rc, msgsp);
+            tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+            return(rc);
+         };
          break;
 
          case TRAD_DICT_BEGIN_VENDOR:
@@ -628,6 +675,58 @@ tinyrad_dict_import(
    };
 
    tinyrad_file_error(NULL, TRAD_SUCCESS, msgsp);
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_import_attribute(
+         TinyRadDict *                dict,
+         TinyRadDictVendor *          vendor,
+         TinyRadFile *                file,
+         uint32_t                     opts )
+{
+   uint32_t    datatype;
+   uint32_t    type;
+   uint32_t    flags;
+   uint32_t    flag;
+   int         rc;
+   char *      ptr;
+   char *      str;
+
+   assert(dict != NULL);
+   assert(file != NULL);
+   assert(opts == 0);
+
+   if ( (file->argc < 4) || (file->argc > 5) )
+      return(TRAD_ESYNTAX);
+   if ((datatype = (uint32_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
+      return(TRAD_ESYNTAX);
+   if ((type = (uint32_t)strtoull(file->argv[2], &ptr, 10)) == 0)
+      return(TRAD_ESYNTAX);
+   if ((ptr[0] != '\0') || (file->argv[2] == ptr))
+      return(TRAD_ESYNTAX);
+
+   flags = 0;
+   if (file->argc == 5)
+   {
+      ptr = file->argv[4];
+      while ((str = ptr) != NULL)
+      {
+         if ((ptr = index(str, ',')) != NULL)
+            ptr[0] = '\0';
+         if ((flag = (uint32_t)tinyrad_map_lookup_name(tinyrad_dict_attr_flags, str, NULL)) == 0)
+            return(TRAD_ESYNTAX);
+         if ( ((flag & TRAD_ENCRYPT_MASK) != 0) && ((flags & TRAD_ENCRYPT_MASK) != 0) )
+            return(TRAD_ESYNTAX);
+         flags |= flag;
+         ptr = ((ptr)) ? &ptr[1] : NULL;
+      };
+   };
+
+   if ((rc = tinyrad_dict_attr_add(dict, vendor, NULL, file->argv[1], type, datatype, flags)) != TRAD_SUCCESS)
+      return(rc);
+
    return(TRAD_SUCCESS);
 }
 
