@@ -365,7 +365,7 @@ tinyrad_dict_import(
          {
             tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
-            return(rc);
+            return(TRAD_ESYNTAX);
          };
          if ((rc = tinyrad_file_init(&incl, file->argv[1], dict->paths, file)) != TRAD_SUCCESS)
          {
