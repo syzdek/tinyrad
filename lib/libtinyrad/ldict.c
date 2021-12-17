@@ -171,6 +171,18 @@ tinyrad_dict_lookup(
          int (*compar)(const void *, const void *) );
 
 
+void
+tinyrad_dict_print_attribute(
+         TinyRadDict *                 dict,
+         TinyRadDictAttr *             attr );
+
+
+void
+tinyrad_dict_print_vendor(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor );
+
+
 int
 tinyrad_dict_vendor_cmp_name(
          const void *                 ptr1,
@@ -996,10 +1008,72 @@ tinyrad_dict_print(
 
    printf("# processed dictionary\n");
 
+   for(pos = 0; (pos < dict->attrs_type_len); pos ++)
+      if (!(dict->attrs_type[pos]->vendor_id))
+         tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
+
    for(pos = 0; (pos < dict->vendors_len); pos++)
-      printf("VENDOR %s %" PRIu32 "\n", dict->vendors[pos]->name, dict->vendors[pos]->id);
+      tinyrad_dict_print_vendor(dict, dict->vendors[pos]);
 
    printf("# end of processed dictionary\n");
+
+   return;
+}
+
+
+void
+tinyrad_dict_print_attribute(
+         TinyRadDict *                 dict,
+         TinyRadDictAttr *             attr )
+{
+   size_t   pos;
+   uint32_t flags;
+
+   assert(dict != NULL);
+   assert(attr != NULL);
+
+   printf("ATTRIBUTE %s ", attr->name);
+   printf("%" PRIu32 " ", attr->type);
+   printf("%s", tinyrad_map_lookup_value(tinyrad_dict_data_type, attr->type, NULL));
+
+   flags = 0;
+   for(pos = 0; ((tinyrad_dict_attr_flags[pos].name)); pos++)
+   {
+      if ((attr->flags & tinyrad_dict_attr_flags[pos].value) != 0)
+      {
+         printf("%c%s", ((!(flags)) ? ' ' : ','), tinyrad_dict_attr_flags[pos].name);
+         flags++;
+      };
+   };
+   printf("\n");
+
+   return;
+}
+
+
+void
+tinyrad_dict_print_vendor(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor )
+{
+   size_t pos;
+
+   assert(dict   != NULL);
+   assert(vendor != NULL);
+
+   printf("VENDOR %s ", vendor->name);
+   printf("%" PRIu32, vendor->id);
+   if ( (vendor->len_octs != 1) || (vendor->type_octs != 1) )
+      printf(" format=%" PRIu8 ",%" PRIu8, vendor->type_octs, vendor->len_octs);
+   printf("\n");
+
+   if (!(vendor->attrs_len))
+      return;
+
+   printf("BEGIN-VENDOR %s\n", vendor->name);
+   for(pos = 0; (pos < vendor->attrs_len); pos++)
+      tinyrad_dict_print_attribute(dict, vendor->attrs_type[pos]);
+   printf("END-VENDOR %s\n", vendor->name);
 
    return;
 }
