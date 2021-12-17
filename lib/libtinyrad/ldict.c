@@ -164,6 +164,11 @@ tinyrad_dict_value_cmp_numeric(
          const void *                 ptr2 );
 
 
+void
+tinyrad_dict_value_destroy(
+         TinyRadDictValue *           value );
+
+
 int
 tinyrad_dict_value_lookup_name(
          const void *                 data,
@@ -1136,6 +1141,23 @@ tinyrad_dict_value_cmp_numeric(
    value2 = *((const TinyRadDictValue * const *)ptr2);
 
    return( (int)(((int64_t)value1->value) - ((int64_t)value2->value)) );
+}
+
+
+void
+tinyrad_dict_value_destroy(
+         TinyRadDictValue *           value )
+{
+   if (!(value))
+      return;
+
+   if ((value->name))
+      free(value->name);
+
+   bzero(value, sizeof(TinyRadDictValue));
+   free(value);
+
+   return;
 }
 
 
