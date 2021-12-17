@@ -91,6 +91,12 @@ tinyrad_dict_attr_initialize(
 
 
 int
+tinyrad_dict_attr_lookup_name(
+         const void *                 data,
+         const void *                 idx );
+
+
+int
 tinyrad_dict_attr_lookup_type(
          const void *                 data,
          const void *                 idx );
@@ -278,6 +284,17 @@ tinyrad_dict_attr_initialize(
    *attrp = attr;
 
    return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_attr_lookup_name(
+         const void *                 data,
+         const void *                 idx )
+{
+   const TinyRadDictVendor *  vendor = data;
+   const char *               name   = idx;
+   return(strcasecmp(name, vendor->name));
 }
 
 
