@@ -150,13 +150,6 @@ tinyrad_dict_vendor_add(
          uint32_t                     id );
 
 
-TinyRadDictVendor *
-tinyrad_dict_vendor_lookup(
-         TinyRadDict *                dict,
-         const char *                 name,
-         uint32_t                     id );
-
-
 int
 tinyrad_dict_vendor_lookup_id(
          const void *                 data,

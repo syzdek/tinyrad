@@ -107,5 +107,11 @@ struct _tinyrad_dict_attr
 //////////////////
 #pragma mark - Prototypes
 
+TinyRadDictVendor *
+tinyrad_dict_vendor_lookup(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     id );
+
 
 #endif /* end of header */
