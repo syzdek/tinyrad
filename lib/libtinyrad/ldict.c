@@ -159,6 +159,12 @@ tinyrad_dict_value_cmp_name(
 
 
 int
+tinyrad_dict_value_cmp_numeric(
+         const void *                 ptr1,
+         const void *                 ptr2 );
+
+
+int
 tinyrad_dict_value_lookup_name(
          const void *                 data,
          const void *                 idx );
@@ -1112,6 +1118,24 @@ tinyrad_dict_value_cmp_name(
    value2 = *((const TinyRadDictValue * const *)ptr2);
 
    return(strcasecmp(value1->name, value2->name));
+}
+
+
+int
+tinyrad_dict_value_cmp_numeric(
+         const void *                 ptr1,
+         const void *                 ptr2 )
+{
+   const TinyRadDictValue * value1;
+   const TinyRadDictValue * value2;
+
+   assert(ptr1 != NULL);
+   assert(ptr2 != NULL);
+
+   value1 = *((const TinyRadDictValue * const *)ptr1);
+   value2 = *((const TinyRadDictValue * const *)ptr2);
+
+   return( (int)(((int64_t)value1->value) - ((int64_t)value2->value)) );
 }
 
 
