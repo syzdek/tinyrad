@@ -124,6 +124,13 @@ int main(int argc, char * argv[])
       return(1);
    };
 
+   if ((rc = tinyrad_dict_defaults(dict, 0)) != TRAD_SUCCESS)
+   {
+      my_error(NULL, "%s: %s", optarg, tinyrad_strerror(rc));
+      tinyrad_dict_destroy(dict);
+      return(1);
+   };
+
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
       switch(c)
