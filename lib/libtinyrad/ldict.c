@@ -260,7 +260,7 @@ tinyrad_dict_vendor_lookup_name(
 /////////////////
 #pragma mark - Variables
 
-const TinyRadMap tinyrad_dict_data_type[] =
+static const TinyRadMap tinyrad_dict_data_type[] =
 {
    { "ABINARY",      TRAD_ABINARY},
    { "BYTE",         TRAD_BYTE},
@@ -283,7 +283,7 @@ const TinyRadMap tinyrad_dict_data_type[] =
 };
 
 
-const TinyRadMap tinyrad_dict_attr_flags[] =
+static const TinyRadMap tinyrad_dict_attr_flags[] =
 {
    { "encrypt=1",    TRAD_ENCRYPT1},
    { "encrypt=2",    TRAD_ENCRYPT2},
@@ -293,7 +293,7 @@ const TinyRadMap tinyrad_dict_attr_flags[] =
 };
 
 
-const TinyRadMap tinyrad_dict_options[] =
+static const TinyRadMap tinyrad_dict_options[] =
 {
    { "$INCLUDE",        TRAD_DICT_INCLUDE},
    { "ATTRIBUTE",       TRAD_DICT_ATTRIBUTE},
@@ -305,7 +305,7 @@ const TinyRadMap tinyrad_dict_options[] =
 };
 
 
-const struct
+static const struct
 {
    const char *          name;
    uint64_t              type;
@@ -370,7 +370,7 @@ const struct
 };
 
 
-const struct
+static const struct
 {
    const char *          attr_name;
    const char *          value_name;
