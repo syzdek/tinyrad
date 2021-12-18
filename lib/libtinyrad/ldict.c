@@ -159,6 +159,26 @@ tinyrad_dict_import_vendor(
          uint32_t                     opts );
 
 
+void *
+tinyrad_dict_lookup(
+         void **                      list,
+         size_t                       len,
+         const void *                 idx,
+         int (*compar)(const void *, const void *) );
+
+
+void
+tinyrad_dict_print_attribute(
+         TinyRadDict *                 dict,
+         TinyRadDictAttr *             attr );
+
+
+void
+tinyrad_dict_print_vendor(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor );
+
+
 int
 tinyrad_dict_value_add(
          TinyRadDictAttr *             attr,
@@ -196,9 +216,12 @@ tinyrad_dict_value_lookup_numeric(
          const void *                 idx );
 
 
-void
-tinyrad_dict_vendor_destroy(
-         TinyRadDictVendor *           vendor );
+int
+tinyrad_dict_vendor_add(
+         TinyRadDict *                dict,
+         TinyRadDictVendor **         vendorp,
+         const char *                 name,
+         uint32_t                     id );
 
 
 int
@@ -207,38 +230,15 @@ tinyrad_dict_vendor_cmp_id(
          const void *                 ptr2 );
 
 
-void *
-tinyrad_dict_lookup(
-         void **                      list,
-         size_t                       len,
-         const void *                 idx,
-         int (*compar)(const void *, const void *) );
-
-
-void
-tinyrad_dict_print_attribute(
-         TinyRadDict *                 dict,
-         TinyRadDictAttr *             attr );
-
-
-void
-tinyrad_dict_print_vendor(
-         TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor );
-
-
 int
 tinyrad_dict_vendor_cmp_name(
          const void *                 ptr1,
          const void *                 ptr2 );
 
 
-int
-tinyrad_dict_vendor_add(
-         TinyRadDict *                dict,
-         TinyRadDictVendor **         vendorp,
-         const char *                 name,
-         uint32_t                     id );
+void
+tinyrad_dict_vendor_destroy(
+         TinyRadDictVendor *           vendor );
 
 
 int
