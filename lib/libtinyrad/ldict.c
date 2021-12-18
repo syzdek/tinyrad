@@ -258,6 +258,7 @@ tinyrad_dict_vendor_lookup_name(
 //  Variables  //
 //             //
 /////////////////
+#pragma mark - Variables
 
 const TinyRadMap tinyrad_dict_data_type[] =
 {
