@@ -350,6 +350,18 @@ const struct
    { "Framed-AppleTalk-Link",     37,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.37  Framed-AppleTalk-Link
    { "Framed-AppleTalk-Network",  38,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.38  Framed-AppleTalk-Network
    { "Framed-AppleTalk-Zone",     39,   TRAD_STRING,   0 },              // RFC2865 Section 5.39  Framed-AppleTalk-Zone
+   { "Acct-Status-Type",          40,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.1   Acct-Status-Type
+   { "Acct-Delay-Time",           41,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.2   Acct-Delay-Time
+   { "Acct-Input-Octets",         42,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.3   Acct-Input-Octets
+   { "Acct-Output-Octets",        43,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.4   Acct-Output-Octets
+   { "Acct-Session-Id",           44,   TRAD_STRING,   0 },              // RFC2866 Section 5.5   Acct-Session-Id
+   { "Acct-Authentic",            45,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.6   Acct-Authentic
+   { "Acct-Session-Time",         46,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.7   Acct-Session-Time
+   { "Acct-Input-Packets",        47,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.8   Acct-Input-Packets
+   { "Acct-Output-Packets",       48,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.9   Acct-Output-Packets
+   { "Acct-Terminate-Cause",      49,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.10  Acct-Terminate-Cause
+   { "Acct-Multi-Session-Id",     50,   TRAD_STRING,   0 },              // RFC2866 Section 5.11  Acct-Multi-Session-Id
+   { "Acct-Link-Count",           51,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.12  Acct-Link-Count
    { "CHAP-Challenge",            60,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.40  CHAP-Challenge
    { "NAS-Port-Type",             61,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.41  NAS-Port-Type
    { "Port-Limit",                62,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.42  Port-Limit
@@ -365,6 +377,37 @@ const struct
    uint64_t              data;
 } tinyrad_dict_default_values[] =
 {
+   { "Acct-Authentic",            "RADIUS",                    1 },  // RFC2866 Section 5.6 Acct-Authentic
+   { "Acct-Authentic",            "Local",                     2 },  // RFC2866 Section 5.6 Acct-Authentic
+   { "Acct-Authentic",            "Remote",                    3 },  // RFC2866 Section 5.6 Acct-Authentic
+   { "Acct-Authentic",            "Diameter",                  4 },  // RFC2866 Section 5.6 Acct-Authentic
+
+   { "Acct-Status-Type",          "Start",                     1 },  // RFC2866 Section 5.1 Acct-Status-Type
+   { "Acct-Status-Type",          "Stop",                      2 },  // RFC2866 Section 5.1 Acct-Status-Type
+   { "Acct-Status-Type",          "Interim-Update",            3 },  // RFC2866 Section 5.1 Acct-Status-Type
+   { "Acct-Status-Type",          "Accounting-On",             7 },  // RFC2866 Section 5.1 Acct-Status-Type
+   { "Acct-Status-Type",          "Accounting-Off",            8 },  // RFC2866 Section 5.1 Acct-Status-Type
+   { "Acct-Status-Type",          "Failed",                   15 },  // RFC2866 Section 5.1 Acct-Status-Type
+
+   { "Acct-Terminate-Cause",      "User-Request",              1 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Lost-Carrier",              2 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Lost-Service",              3 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Idle-Timeout",              4 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Session-Timeout",           5 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Admin-Reset",               6 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Admin-Reboot",              7 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Port-Error",                8 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "NAS-Error",                 9 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "NAS-Request",              10 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "NAS-Reboot",               11 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Port-Unneeded",            12 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Port-Preempted",           13 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Port-Suspended",           14 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Service-Unavailable",      15 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Callback",                 16 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "User-Error",               17 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+   { "Acct-Terminate-Cause",      "Host-Request",             18 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
+
    { "Framed-Compression",        "None",                      0 },  // RFC2865 Section 5.13 Framed-Compression
    { "Framed-Compression",        "Van-Jacobson-TCP-IP",       1 },  // RFC2865 Section 5.13 Framed-Compression
    { "Framed-Compression",        "IPX-Header-Compression",    2 },  // RFC2865 Section 5.13 Framed-Compression
