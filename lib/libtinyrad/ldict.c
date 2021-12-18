@@ -1340,7 +1340,7 @@ tinyrad_dict_print_attribute(
 
    printf("ATTRIBUTE %s ", attr->name);
    printf("%" PRIu32 " ", attr->type);
-   printf("%s", tinyrad_map_lookup_value(tinyrad_dict_data_type, attr->type, NULL));
+   printf("%s", tinyrad_map_lookup_value(tinyrad_dict_data_type, attr->data_type, NULL));
 
    flags = 0;
    for(pos = 0; ((tinyrad_dict_attr_flags[pos].name)); pos++)
