@@ -199,6 +199,12 @@ tinyrad_dict_add_path(
          const char *                  path );
 
 
+_TINYRAD_F int
+tinyrad_dict_defaults(
+         TinyRadDict *                dict,
+         uint32_t                     opts );
+
+
 _TINYRAD_F void
 tinyrad_dict_destroy(
          TinyRadDict *                 dict );

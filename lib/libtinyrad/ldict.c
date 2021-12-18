@@ -305,6 +305,136 @@ const TinyRadMap tinyrad_dict_options[] =
 };
 
 
+const struct
+{
+   const char *          name;
+   uint64_t              type;
+   uint64_t              data_type;
+   uint64_t              flags;
+} tinyrad_dict_default_attrs[] =
+{
+   { "User-Name",                  1,   TRAD_STRING,   0 },              // RFC2865 Section 5.1  User-Name
+   { "User-Password",              2,   TRAD_STRING,   TRAD_ENCRYPT1 },  // RFC2865 Section 5.2  User-Password
+   { "CHAP-Password",              3,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.3   CHAP-Password
+   { "NAS-IP-Address",             4,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.4   NAS-IP-Address
+   { "NAS-Port",                   5,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.5   NAS-Port
+   { "Service-Type",               6,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.6   Service-Type
+   { "Framed-Protocol",            7,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.7   Framed-Protocol
+   { "Framed-IP-Address",          8,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.8   Framed-IP-Address
+   { "Framed-IP-Netmask",          9,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.9   Framed-IP-Netmask
+   { "Framed-Routing",            10,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.10  Framed-Routing
+   { "Filter-Id",                 11,   TRAD_STRING,   0 },              // RFC2865 Section 5.11  Filter-Id
+   { "Framed-MTU",                12,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.12  Framed-MTU
+   { "Framed-Compression",        13,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.13  Framed-Compression
+   { "Login-IP-Host",             14,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.14  Login-IP-Host
+   { "Login-Service",             15,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.15  Login-Service
+   { "Login-TCP-Port",            16,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.16  Login-TCP-Port
+   { "Reply-Message",             18,   TRAD_STRING,   0 },              // RFC2865 Section 5.18  Reply-Message
+   { "Callback-Number",           19,   TRAD_STRING,   0 },              // RFC2865 Section 5.19  Callback-Number
+   { "Callback-Id",               20,   TRAD_STRING,   0 },              // RFC2865 Section 5.20  Callback-Id
+   { "Framed-Route",              22,   TRAD_STRING,   0 },              // RFC2865 Section 5.22  Framed-Route
+   { "Framed-IPX-Network",        23,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.23  Framed-IPX-Network
+   { "State",                     24,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.24  State
+   { "Class",                     25,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.25  Class
+   { "Vendor-Specific",           26,   TRAD_VSA,      0 },              // RFC2865 Section 5.26  Vendor-Specific
+   { "Session-Timeout",           27,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.27  Session-Timeout
+   { "Idle-Timeout",              28,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.28  Idle-Timeout
+   { "Termination-Action",        29,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.29  Termination-Action
+   { "Called-Station-Id",         30,   TRAD_STRING,   0 },              // RFC2865 Section 5.30  Called-Station-Id
+   { "Calling-Station-Id",        31,   TRAD_STRING,   0 },              // RFC2865 Section 5.31  Calling-Station-Id
+   { "NAS-Identifier",            32,   TRAD_STRING,   0 },              // RFC2865 Section 5.32  NAS-Identifier
+   { "Proxy-State",               33,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.33  Proxy-State
+   { "Login-LAT-Service",         34,   TRAD_STRING,   0 },              // RFC2865 Section 5.34  Login-LAT-Service
+   { "Login-LAT-Node",            35,   TRAD_STRING,   0 },              // RFC2865 Section 5.35  Login-LAT-Node
+   { "Login-LAT-Group",           36,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.36  Login-LAT-Group
+   { "Framed-AppleTalk-Link",     37,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.37  Framed-AppleTalk-Link
+   { "Framed-AppleTalk-Network",  38,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.38  Framed-AppleTalk-Network
+   { "Framed-AppleTalk-Zone",     39,   TRAD_STRING,   0 },              // RFC2865 Section 5.39  Framed-AppleTalk-Zone
+   { "CHAP-Challenge",            60,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.40  CHAP-Challenge
+   { "NAS-Port-Type",             61,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.41  NAS-Port-Type
+   { "Port-Limit",                62,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.42  Port-Limit
+   { "Login-LAT-Port",            63,   TRAD_STRING,   0 },              // RFC2865 Section 5.43  Login-LAT-Port
+   { NULL, 0, 0, 0 }
+};
+
+
+const struct
+{
+   const char *          attr_name;
+   const char *          value_name;
+   uint64_t              data;
+} tinyrad_dict_default_values[] =
+{
+   { "Framed-Compression",        "None",                      0 },  // RFC2865 Section 5.13 Framed-Compression
+   { "Framed-Compression",        "Van-Jacobson-TCP-IP",       1 },  // RFC2865 Section 5.13 Framed-Compression
+   { "Framed-Compression",        "IPX-Header-Compression",    2 },  // RFC2865 Section 5.13 Framed-Compression
+   { "Framed-Compression",        "Stac-LZS",                  3 },  // RFC2865 Section 5.13 Framed-Compression
+
+   { "Framed-Protocol",           "PPP",                       1 },  // RFC2865 Section 5.7 Framed-Protocol
+   { "Framed-Protocol",           "SLIP",                      2 },  // RFC2865 Section 5.7 Framed-Protocol
+   { "Framed-Protocol",           "ARAP",                      3 },  // RFC2865 Section 5.7 Framed-Protocol
+   { "Framed-Protocol",           "Gandalf-SLML",              4 },  // RFC2865 Section 5.7 Framed-Protocol
+   { "Framed-Protocol",           "Xylogics-IPX-SLIP",         5 },  // RFC2865 Section 5.7 Framed-Protocol
+   { "Framed-Protocol",           "X.75-Synchronous",          6 },  // RFC2865 Section 5.7 Framed-Protocol
+
+   { "Framed-Routing",            "None",                      0 },  // RFC2865 Section 5.10 Framed-Routing
+   { "Framed-Routing",            "Broadcast",                 1 },  // RFC2865 Section 5.10 Framed-Routing
+   { "Framed-Routing",            "Listen",                    2 },  // RFC2865 Section 5.10 Framed-Routing
+   { "Framed-Routing",            "Broadcast-Listen",          3 },  // RFC2865 Section 5.10 Framed-Routing
+
+   { "Login-Service",             "Telnet",                    0 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "Rlogin",                    1 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "TCP-Clear",                 2 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "PortMaster",                3 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "LAT",                       4 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "X25-PAD",                   5 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "X25-T3POS",                 6 },  // RFC2865 Section 5.15 Login-Service
+   { "Login-Service",             "TCP-Clear-Quiet",           8 },  // RFC2865 Section 5.15 Login-Service
+
+   { "Login-TCP-Port",            "Telnet",                   23 },  // RFC2865 Section 5.16 Login-TCP-Port
+   { "Login-TCP-Port",            "Rlogin",                  513 },  // RFC2865 Section 5.16 Login-TCP-Port
+   { "Login-TCP-Port",            "Rsh",                     514 },  // RFC2865 Section 5.16 Login-TCP-Port
+
+   { "NAS-Port-Type",             "Async",                     0 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "Sync",                      1 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "ISDN",                      2 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "ISDN-V120",                 3 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "ISDN-V110",                 4 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "Virtual",                   5 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "PIAFS",                     6 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "HDLC-Clear-Channel",        7 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "X.25",                      8 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "X.75",                      9 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "G.3-Fax",                  10 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "SDSL",                     11 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "ADSL-CAP",                 12 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "ADSL-DMT",                 13 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "IDSL",                     14 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "Ethernet",                 15 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "xDSL",                     16 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "Cable",                    17 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "Wireless-Other",           18 },  // RFC2865 Section 5.41 NAS-Port-Type
+   { "NAS-Port-Type",             "Wireless-802.11",          19 },  // RFC2865 Section 5.41 NAS-Port-Type
+
+   { "Service-Type",              "Login-User",                1 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Framed-User",               2 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Callback-Login-User",       3 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Callback-Framed-User",      4 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Outbound-User",             5 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Administrative-User",       6 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "NAS-Prompt-User",           7 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Authenticate-Only",         8 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Callback-NAS-Prompt",       9 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Call-Check",               10 },  // RFC2865 Section 5.6 Service-Type
+   { "Service-Type",              "Callback-Administrative",  11 },  // RFC2865 Section 5.6 Service-Type
+
+   { "Termination-Action",        "Default",                   0 },  // RFC2865 Section 5.29 Termination-Action
+   { "Termination-Action",        "RADIUS-Request",            1 },  // RFC2865 Section 5.29 Termination-Action
+
+   { NULL, NULL, 0}
+};
+
+
 /////////////////
 //             //
 //  Functions  //
@@ -571,6 +701,54 @@ tinyrad_dict_attr_lookup_type(
    if (attr->type < type)
       return(-1);
    return(1);
+}
+
+
+_TINYRAD_F int
+tinyrad_dict_defaults(
+         TinyRadDict *                dict,
+         uint32_t                     opts )
+{
+   int                rc;
+   size_t             pos;
+   uint32_t           type;
+   uint8_t            datatype;
+   uint32_t           flags;
+   uint64_t           data;
+   const char *       attr_name;
+   const char *       value_name;
+   TinyRadDictAttr *  attr;
+
+   assert(dict != NULL);
+   assert(opts == 0);
+
+   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
+   {
+      attr_name = tinyrad_dict_default_attrs[pos].name;
+      type      = (uint32_t)tinyrad_dict_default_attrs[pos].type;
+      datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
+      flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
+      flags    |= TRAD_DFLT_ATTR;
+      if ((rc = tinyrad_dict_attr_add(dict, NULL, NULL, attr_name, type, datatype, flags)) != TRAD_SUCCESS)
+         return(rc);
+   };
+
+   attr = NULL;
+   for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
+   {
+      attr_name  = tinyrad_dict_default_values[pos].attr_name;
+      value_name = tinyrad_dict_default_values[pos].value_name;
+      data       = tinyrad_dict_default_values[pos].data;
+      if ((attr))
+         if ((strcasecmp(attr_name, attr->name)))
+            attr = NULL;
+      if (!(attr))
+         attr = tinyrad_dict_attr_lookup(dict, 0, attr_name, 0);
+      if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
+         return(rc);
+   };
+
+   return(TRAD_SUCCESS);
 }
 
 
