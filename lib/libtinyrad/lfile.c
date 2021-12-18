@@ -348,7 +348,7 @@ tinyrad_file_readline(
          default:
          if (len < 1)
             return(TRAD_EUNKNOWN);
-         file->len               += len;
+         file->len               += (size_t)len;
          file->buff[file->len]    = '\0';
       };
    };
