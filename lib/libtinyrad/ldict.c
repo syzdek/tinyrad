@@ -1278,8 +1278,8 @@ tinyrad_dict_lookup(
       return(NULL);
 
    low  = 0;
-   high = (len - 1);
-   mid  = (len - 1) / 2;
+   high = (ssize_t)(len - 1);
+   mid  = (ssize_t)((len - 1) / 2);
 
    while(mid > low)
    {
