@@ -973,7 +973,7 @@ tinyrad_dict_import_attribute(
          TinyRadFile *                file,
          uint32_t                     opts )
 {
-   uint32_t    datatype;
+   uint8_t      datatype;
    uint32_t    type;
    uint32_t    flags;
    uint32_t    flag;
@@ -987,7 +987,7 @@ tinyrad_dict_import_attribute(
 
    if ( (file->argc < 4) || (file->argc > 5) )
       return(TRAD_ESYNTAX);
-   if ((datatype = (uint32_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
+   if ((datatype = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
       return(TRAD_ESYNTAX);
    if ((type = (uint32_t)strtoull(file->argv[2], &ptr, 10)) == 0)
       return(TRAD_ESYNTAX);
