@@ -46,6 +46,17 @@
 
 #include "lmemory.h"
 
+//////////////////
+//              //
+//  Prototypes  //
+//              //
+//////////////////
+#pragma mark - Prototypes
+
+const char *
+tinyrad_error_map(
+         int                           errnum );
+
 
 /////////////////
 //             //
@@ -54,6 +65,24 @@
 /////////////////
 #pragma mark - Functions
 
+const char *
+tinyrad_error_map(
+         int                           errnum )
+{
+   switch(errnum)
+   {
+      case TRAD_SUCCESS:    return("success");
+      case TRAD_ENOMEM:     return("out of virtual memory");
+      case TRAD_EACCES:     return("permission denied");
+      case TRAD_ENOBUFS:    return("no buffer space available");
+      case TRAD_ENOENT:     return("no such file or directory");
+      case TRAD_ESYNTAX:    return("invalid or unrecognized syntax");
+      case TRAD_EEXISTS:    return("dictionary object exists");
+      default:
+      break;
+   };
+   return("unknown error code");
+}
 
 /// Return error string of error code
 ///
