@@ -88,13 +88,14 @@ tinyrad_error_map(
 ///
 /// @param[in]  errnum        error number
 /// @return returns error string
-char *
+const char *
 tinyrad_strerror(
          int                           errnum )
 {
-   static char buff[128];
-   tinyrad_strerror_r(errnum, buff, sizeof(buff));
-   return(buff);
+   const char * msg;
+   if ((msg = tinyrad_error_map(errnum)) == NULL)
+      msg = "unknown error code";
+   return(msg);
 }
 
 

@@ -235,7 +235,7 @@ tinyrad_dict_print(
 //------------------//
 #pragma mark error functions
 
-_TINYRAD_F char *
+_TINYRAD_F const char *
 tinyrad_strerror(
          int                           errnum );
 
