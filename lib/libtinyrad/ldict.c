@@ -366,8 +366,18 @@ static const struct
    { "NAS-Port-Type",             61,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.41  NAS-Port-Type
    { "Port-Limit",                62,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.42  Port-Limit
    { "Login-LAT-Port",            63,   TRAD_STRING,   0 },              // RFC2865 Section 5.43  Login-LAT-Port
+   { "Tunnel-Type",               64,   TRAD_INTEGER,  TRAD_HAS_TAG },   // RFC2868 Section 3.1   Tunnel-Type
+   { "Tunnel-Medium-Type",        65,   TRAD_INTEGER,  TRAD_HAS_TAG },   // RFC2868 Section 3.2   Tunnel-Medium-Type
+   { "Tunnel-Client-Endpoint",    66,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.3   Tunnel-Client-Endpoint
+   { "Tunnel-Server-Endpoint",    67,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.4   Tunnel-Server-Endpoint
    { "Acct-Tunnel-Connection",    68,   TRAD_STRING,   0 },              // RFC2867 Section 4.1   Acct-Tunnel-Connection
+   { "Tunnel-Password",           69,   TRAD_STRING,   TRAD_HAS_TAG|TRAD_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
+   { "Tunnel-Private-Group-Id",   81,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.6   Tunnel-Private-Group-Id
+   { "Tunnel-Assignment-Id",      82,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.7   Tunnel-Assignment-Id
+   { "Tunnel-Preference",         83,   TRAD_INTEGER,  TRAD_HAS_TAG },   // RFC2868 Section 3.8   Tunnel-Preference
    { "Acct-Tunnel-Packets-Lost",  86,   TRAD_INTEGER,  0 },              // RFC2867 Section 4.2   Acct-Tunnel-Packets-Lost
+   { "Tunnel-Client-Auth-Id",     90,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.9   Tunnel-Client-Auth-Id
+   { "Tunnel-Server-Auth-Id",     91,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.10  Tunnel-Server-Auth-Id
    { NULL, 0, 0, 0 }
 };
 
@@ -481,6 +491,36 @@ static const struct
 
    { "Termination-Action",        "Default",                   0 },  // RFC2865 Section 5.29 Termination-Action
    { "Termination-Action",        "RADIUS-Request",            1 },  // RFC2865 Section 5.29 Termination-Action
+
+   { "Tunnel-Medium-Type",        "IP",                        1 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "IPv4",                      1 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "IPv6",                      2 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "NSAP",                      3 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "HDLC",                      4 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "BBN-1822",                  5 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "IEEE-802",                  6 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "E.163",                     7 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "E.164",                     8 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "F.69",                      9 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "X.121",                    10 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "IPX",                      11 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "Appletalk",                12 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "DecNet-IV",                13 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "Banyan-Vines",             14 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+   { "Tunnel-Medium-Type",        "E.164-NSAP",               15 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
+
+   { "Tunnel-Type",               "PPTP",                      1 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "L2F",                       2 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "L2TP",                      3 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "ATMP",                      4 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "VTP",                       5 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "AH",                        6 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "IP",                        7 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "MIN-IP",                    8 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "ESP",                       9 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "GRE",                      10 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "DVS",                      11 },  // RFC2868 Section 3.1  Tunnel-Type
+   { "Tunnel-Type",               "IP-in-IP",                 12 },  // RFC2868 Section 3.1  Tunnel-Type
 
    { NULL, NULL, 0}
 };

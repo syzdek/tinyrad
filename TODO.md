@@ -54,7 +54,7 @@ RADIUS Attributes
    * [x] RFC 2865
    * [x] RFC 2866
    * [x] RFC 2867
-   * [ ] RFC 2868
+   * [x] RFC 2868
    * [ ] RFC 2869
 
 RADIUS Attribute Data Types
