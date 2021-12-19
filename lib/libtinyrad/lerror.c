@@ -116,17 +116,8 @@ tinyrad_strerror_r(
    assert(strerrbuf != NULL);
    assert(buflen    != 0);
 
-   switch(errnum)
+   if ((msg = tinyrad_error_map(errnum)) == NULL)
    {
-      case TRAD_SUCCESS:    msg = "success";                         break;
-      case TRAD_ENOMEM:     msg = "out of virtual memory";           break;
-      case TRAD_EACCES:     msg = "permission denied";               break;
-      case TRAD_ENOBUFS:    msg = "no buffer space available";       break;
-      case TRAD_ENOENT:     msg = "no such file or directory";       break;
-      case TRAD_ESYNTAX:    msg = "invalid or unrecognized syntax";  break;
-      case TRAD_EEXISTS:    msg = "dictionary object exists";        break;
-
-      default:
       snprintf(strerrbuf, buflen, "unknown error code %i", errnum);
       return(TRAD_SUCCESS);
    };
