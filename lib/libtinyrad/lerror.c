@@ -107,12 +107,12 @@ tinyrad_error_msgs(
       va_start(args, fmt);
       vsnprintf(msg, sizeof(msg), fmt, args);
       va_end(args);
+      msg[sizeof(msg)-1] = '\0';
    };
 
    errmsg = tinyrad_strerror(errnum);
-   strcat(msg, errmsg);
-
-   tinyrad_strings_append(msgsp, errmsg);
+   strncat(msg, errmsg, sizeof(msg)-strlen(msg)-1);
+   tinyrad_strings_append(msgsp, msg);
 
    return(errnum);
 }
