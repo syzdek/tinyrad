@@ -596,11 +596,13 @@ tinyrad_dict_attr_add(
    // verify attribute doesn't exist
    if ((attr = tinyrad_dict_attr_lookup(dict, vendor_id, name, 0)) != NULL)
    {
-      if ((attr->flags & TRAD_DFLT_ATTR) == 0)
+      if ((attr->flags & (~TRAD_DFLT_ATTR)) != (flags & (~TRAD_DFLT_ATTR)))
          return(TRAD_EEXISTS);
       if (attr->type != type)
          return(TRAD_EEXISTS);
       if (attr->vendor_id != vendor_id)
+         return(TRAD_EEXISTS);
+      if (attr->data_type != datatype)
          return(TRAD_EEXISTS);
       if ((attrp))
          *attrp = attr;
