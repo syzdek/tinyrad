@@ -493,7 +493,6 @@ static const struct
    { "Termination-Action",        "Default",                   0 },  // RFC2865 Section 5.29 Termination-Action
    { "Termination-Action",        "RADIUS-Request",            1 },  // RFC2865 Section 5.29 Termination-Action
 
-   { "Tunnel-Medium-Type",        "IP",                        1 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
    { "Tunnel-Medium-Type",        "IPv4",                      1 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
    { "Tunnel-Medium-Type",        "IPv6",                      2 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
    { "Tunnel-Medium-Type",        "NSAP",                      3 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
