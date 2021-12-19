@@ -222,7 +222,9 @@ tinyrad_dict_vendor_add(
          TinyRadDict *                dict,
          TinyRadDictVendor **         vendorp,
          const char *                 name,
-         uint32_t                     id );
+         uint32_t                     id,
+         uint8_t                      type_octs,
+         uint8_t                      len_octs );
 
 
 int
@@ -1243,12 +1245,10 @@ tinyrad_dict_import_vendor(
    };
 
    // initialize vendor struct
-   if ((rc = tinyrad_dict_vendor_add(dict, &vendor, file->argv[1], id)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_vendor_add(dict, &vendor, file->argv[1], id, type_octs, len_octs)) != TRAD_SUCCESS)
       return(rc);
-   vendor->type_octs = (uint8_t)type_octs;
-   vendor->len_octs  = (uint8_t)len_octs;
 
-   return(0);
+   return(TRAD_SUCCESS);
 }
 
 
@@ -1623,7 +1623,9 @@ tinyrad_dict_vendor_add(
          TinyRadDict *                dict,
          TinyRadDictVendor **         vendorp,
          const char *                 name,
-         uint32_t                     id )
+         uint32_t                     id,
+         uint8_t                      type_octs,
+         uint8_t                      len_octs )
 {
    size_t               size;
    void *               ptr;
@@ -1633,8 +1635,18 @@ tinyrad_dict_vendor_add(
    assert(name   != NULL);
 
    // verify attribute doesn't exist
-   if ((tinyrad_dict_vendor_lookup(dict, name, 0)))
-      return(TRAD_EEXISTS);
+   if ((vendor = tinyrad_dict_vendor_lookup(dict, name, 0)) != NULL)
+   {
+      if (vendor->id != id)
+         return(TRAD_EEXISTS);
+      if (vendor->type_octs != type_octs)
+         return(TRAD_EEXISTS);
+      if (vendor->len_octs != len_octs)
+         return(TRAD_EEXISTS);
+      if ((vendorp))
+         *vendorp = vendor;
+      return(TRAD_SUCCESS);
+   };
    if ((tinyrad_dict_vendor_lookup(dict, NULL, id)))
       return(TRAD_EEXISTS);
 
@@ -1652,8 +1664,8 @@ tinyrad_dict_vendor_add(
       return(TRAD_ENOMEM);
    bzero(vendor, sizeof(TinyRadDictVendor));
    vendor->id        = id;
-   vendor->type_octs = 1;
-   vendor->len_octs  = 1;
+   vendor->type_octs = type_octs;
+   vendor->len_octs  = len_octs;
 
    // copy vendor name
    if ((vendor->name = strdup(name)) == NULL)
