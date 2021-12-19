@@ -935,7 +935,7 @@ tinyrad_dict_import(
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(rc);
       };
-      if (file->argc < 2)
+      if (file->argc < 1)
       {
          parent = file->parent;
          tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
@@ -1001,15 +1001,14 @@ tinyrad_dict_import(
          break;
 
          default:
-//printf("%s: %3i: ----", "dict", file->line);
-//for(rc = 0; (rc < (int)file->argc); rc++)
-//   printf(" %s", file->argv[rc]);
-//printf("\n");
-         break;
+         tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
+         tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+         return(TRAD_ESYNTAX);
       };
    };
 
    tinyrad_file_error(NULL, TRAD_SUCCESS, msgsp);
+
    return(TRAD_SUCCESS);
 }
 
