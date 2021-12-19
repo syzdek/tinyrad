@@ -202,6 +202,7 @@ tinyrad_dict_add_path(
 _TINYRAD_F int
 tinyrad_dict_defaults(
          TinyRadDict *                 dict,
+         char ***                      msgsp,
          uint32_t                      opts );
 
 

@@ -124,9 +124,10 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   if ((rc = tinyrad_dict_defaults(dict, 0)) != TRAD_SUCCESS)
+
+   if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
    {
-      my_error(NULL, "%s: %s", optarg, tinyrad_strerror(rc));
+      my_error(errs, NULL);
       tinyrad_dict_destroy(dict);
       return(1);
    };
@@ -144,6 +145,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'D':
+
          if (tinyrad_dict_import(dict, optarg, &errs, 0) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
@@ -190,8 +192,10 @@ int main(int argc, char * argv[])
       tinyrad_dict_destroy(dict);
       return(0);
    };
+printf("got here 3,000,000,000\n");
 
    tinyrad_dict_destroy(dict);
+printf("got here 4,000,000,000\n");
 
    return(0);
 }

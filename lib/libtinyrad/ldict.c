@@ -50,6 +50,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+#include "lerror.h"
 #include "lfile.h"
 #include "lmemory.h"
 #include "lmap.h"
@@ -798,6 +799,7 @@ tinyrad_dict_attr_lookup_type(
 _TINYRAD_F int
 tinyrad_dict_defaults(
          TinyRadDict *                 dict,
+         char ***                      msgsp,
          uint32_t                      opts )
 {
    int                rc;
@@ -813,6 +815,9 @@ tinyrad_dict_defaults(
    assert(dict != NULL);
    assert(opts == 0);
 
+   if ((msgsp))
+      *msgsp = NULL;
+
    for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
    {
       attr_name = tinyrad_dict_default_attrs[pos].name;
@@ -821,7 +826,7 @@ tinyrad_dict_defaults(
       flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
       flags    |= TRAD_DFLT_ATTR;
       if ((rc = tinyrad_dict_attr_add(dict, NULL, NULL, attr_name, type, datatype, flags)) != TRAD_SUCCESS)
-         return(rc);
+         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
    };
 
    attr = NULL;
@@ -835,8 +840,10 @@ tinyrad_dict_defaults(
             attr = NULL;
       if (!(attr))
          attr = tinyrad_dict_attr_lookup(dict, 0, attr_name, 0);
+      if (!(attr))
+         return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
       if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
-         return(rc);
+         return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
    };
 
    return(TRAD_SUCCESS);
