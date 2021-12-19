@@ -201,8 +201,8 @@ tinyrad_dict_add_path(
 
 _TINYRAD_F int
 tinyrad_dict_defaults(
-         TinyRadDict *                dict,
-         uint32_t                     opts );
+         TinyRadDict *                 dict,
+         uint32_t                      opts );
 
 
 _TINYRAD_F void

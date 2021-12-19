@@ -797,8 +797,8 @@ tinyrad_dict_attr_lookup_type(
 
 _TINYRAD_F int
 tinyrad_dict_defaults(
-         TinyRadDict *                dict,
-         uint32_t                     opts )
+         TinyRadDict *                 dict,
+         uint32_t                      opts )
 {
    int                rc;
    size_t             pos;
