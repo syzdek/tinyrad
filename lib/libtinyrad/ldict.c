@@ -598,7 +598,7 @@ tinyrad_dict_attr_add(
    // verify attribute doesn't exist
    if ((attr = tinyrad_dict_attr_lookup(dict, vendor_id, name, 0)) != NULL)
    {
-      if ((attr->flags & (~TRAD_DFLT_ATTR)) != (flags & (~TRAD_DFLT_ATTR)))
+      if ( (attr->flags|TRAD_DFLT_ATTR) != (flags|TRAD_DFLT_ATTR) )
          return(TRAD_EEXISTS);
       if (attr->type != type)
          return(TRAD_EEXISTS);
@@ -1245,7 +1245,7 @@ tinyrad_dict_import_vendor(
    };
 
    // initialize vendor struct
-   if ((rc = tinyrad_dict_vendor_add(dict, &vendor, file->argv[1], id, type_octs, len_octs)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_vendor_add(dict, &vendor, file->argv[1], id, (uint8_t)type_octs, (uint8_t)len_octs)) != TRAD_SUCCESS)
       return(rc);
 
    return(TRAD_SUCCESS);
