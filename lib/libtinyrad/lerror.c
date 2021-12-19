@@ -43,6 +43,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <stdarg.h>
 
 #include "lmemory.h"
 
@@ -83,6 +84,39 @@ tinyrad_error_map(
    };
    return("unknown error code");
 }
+
+
+int
+tinyrad_error_msgs(
+         int                           errnum,
+         char ***                      msgsp,
+         const char *                  fmt,
+         ... )
+{
+   const char *   errmsg;
+   char           msg[256];
+   va_list        args;
+
+   if (!(msgsp))
+      return(errnum);
+
+   msg[0] = '\0';
+
+   if (!(fmt))
+   {
+      va_start(args, fmt);
+      vsnprintf(msg, sizeof(msg), fmt, args);
+      va_end(args);
+   };
+
+   errmsg = tinyrad_strerror(errnum);
+   strcat(msg, errmsg);
+
+   tinyrad_strings_append(msgsp, errmsg);
+
+   return(errnum);
+}
+
 
 /// Return error string of error code
 ///

@@ -57,5 +57,12 @@
 //////////////////
 #pragma mark - Prototypes
 
+int
+tinyrad_error_msgs(
+         int                           errnum,
+         char ***                      msgsp,
+         const char *                  fmt,
+         ... );
+
 
 #endif /* end of header */
