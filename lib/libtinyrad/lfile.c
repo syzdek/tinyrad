@@ -196,6 +196,9 @@ int tinyrad_file_init(
       return(TRAD_ENOMEM);
    };
 
+   file->parent = parent;
+   *filep = file;
+
    // search dictionary paths for file
    fullpath[0] = '\0';
    if ( (path[0] != '/') && ((paths)) )
@@ -214,28 +217,16 @@ int tinyrad_file_init(
    {
       strncpy(fullpath, path, sizeof(fullpath));
       if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
-      {
-         tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
          return(rc);
-      };
-   };
-
-   // open dictionary for reading
-   if ((file->fd = open(fullpath, O_RDONLY)) == -1)
-   {
-      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
-      return(TRAD_EACCES);
    };
 
    // store dictionary file name
    if ((file->fullpath = strdup(fullpath)) == NULL)
-   {
-      tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_ENOMEM);
-   };
 
-   file->parent = parent;
-   *filep = file;
+   // open dictionary for reading
+   if ((file->fd = open(fullpath, O_RDONLY)) == -1)
+      return(TRAD_EACCES);
 
    return(TRAD_SUCCESS);
 }
