@@ -366,6 +366,8 @@ static const struct
    { "NAS-Port-Type",             61,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.41  NAS-Port-Type
    { "Port-Limit",                62,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.42  Port-Limit
    { "Login-LAT-Port",            63,   TRAD_STRING,   0 },              // RFC2865 Section 5.43  Login-LAT-Port
+   { "Acct-Tunnel-Connection",    68,   TRAD_STRING,   0 },              // RFC2867 Section 4.1   Acct-Tunnel-Connection
+   { "Acct-Tunnel-Packets-Lost",  86,   TRAD_INTEGER,  0 },              // RFC2867 Section 4.2   Acct-Tunnel-Packets-Lost
    { NULL, 0, 0, 0 }
 };
 
@@ -387,6 +389,12 @@ static const struct
    { "Acct-Status-Type",          "Interim-Update",            3 },  // RFC2866 Section 5.1 Acct-Status-Type
    { "Acct-Status-Type",          "Accounting-On",             7 },  // RFC2866 Section 5.1 Acct-Status-Type
    { "Acct-Status-Type",          "Accounting-Off",            8 },  // RFC2866 Section 5.1 Acct-Status-Type
+   { "Acct-Status-Type",          "Tunnel-Start",              9 },  // RFC2867 Section 3.1 Tunnel-Start
+   { "Acct-Status-Type",          "Tunnel-Stop",              10 },  // RFC2867 Section 3.2 Tunnel-Stop
+   { "Acct-Status-Type",          "Tunnel-Reject",            11 },  // RFC2867 Section 3.3 Tunnel-Reject
+   { "Acct-Status-Type",          "Tunnel-Link-Start",        12 },  // RFC2867 Section 3.4 Tunnel-Link-Start
+   { "Acct-Status-Type",          "Tunnel-Link-Stop",         13 },  // RFC2867 Section 3.5 Tunnel-Link-Stop
+   { "Acct-Status-Type",          "Tunnel-Link-Reject",       14 },  // RFC2867 Section 3.6 Tunnel-Link-Reject
    { "Acct-Status-Type",          "Failed",                   15 },  // RFC2866 Section 5.1 Acct-Status-Type
 
    { "Acct-Terminate-Cause",      "User-Request",              1 },  // RFC2866 Section 5.10 Acct-Terminate-Cause
