@@ -51,6 +51,7 @@
 #include <errno.h>
 
 #include "lmemory.h"
+#include "lerror.h"
 
 
 //////////////////
@@ -119,10 +120,8 @@ tinyrad_file_error(
          int                           errnum,
          char ***                      msgsp )
 {
-   char          err[128];
    char          msg[256];
    char **       msgs;
-   const char *  path;
    size_t        max;
    size_t        pos;
    void *        ptr;
@@ -130,37 +129,21 @@ tinyrad_file_error(
    // reset error
    if (!(msgsp))
       return(errnum);
-   msgs = NULL;
-   tinyrad_strerror_r(errnum, err, sizeof(err));
+   msgs   = NULL;
+   *msgsp = NULL;
 
    // determine file path
    if (!(file))
-   {
-      snprintf(msg, sizeof(msg), "%s", err);
-      tinyrad_strings_append(&msgs, err);
-      *msgsp = msgs;
-      return(errnum);
-   };
-   path = ((file->fullpath)) ? file->fullpath : file->path;
+      return(tinyrad_error_msgs(errnum, msgsp, NULL));
 
    // record error
-   snprintf(msg, sizeof(msg), "%s:%i: %s", path, file->line, err);
-   if (tinyrad_strings_append(&msgs, msg) != TRAD_SUCCESS)
-   {
-      tinyrad_strings_free(msgs);
-      return(errnum);
-   };
+   tinyrad_error_msgs(errnum, &msgs, "%s:%i: ", file->path, file->line);
 
    // record call stack
    while((file = file->parent) != NULL)
    {
-      path = ((file->fullpath)) ? file->fullpath : file->path;
-      snprintf(msg, sizeof(msg), "in file included from %s:%i:", path, file->line);
-      if (tinyrad_strings_append(&msgs, msg) != TRAD_SUCCESS)
-      {
-         tinyrad_strings_free(msgs);
-         return(errnum);
-      };
+      snprintf(msg, sizeof(msg), "in file included from %s:%i:", file->path, file->line);
+      tinyrad_strings_append(&msgs, msg);
    };
 
    // invert errors
