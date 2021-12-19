@@ -1461,8 +1461,14 @@ tinyrad_dict_value_add(
    assert(name      != NULL);
 
    // verify value doesn't exist
-   if (tinyrad_dict_value_lookup(attr, name, 0) != NULL)
+   if ((value = tinyrad_dict_value_lookup(attr, name, 0)) != NULL)
+   {
+      if (numeral != value->value)
+         return(TRAD_EEXISTS);
+      if ((valuep))
+         *valuep = value;
       return(TRAD_SUCCESS);
+   };
    if ((tinyrad_dict_value_lookup(attr, NULL, numeral)))
       return(TRAD_EEXISTS);
 
