@@ -102,7 +102,7 @@ tinyrad_error_msgs(
 
    msg[0] = '\0';
 
-   if (!(fmt))
+   if ((fmt))
    {
       va_start(args, fmt);
       vsnprintf(msg, sizeof(msg), fmt, args);
