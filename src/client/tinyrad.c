@@ -102,6 +102,7 @@ int main(int argc, char * argv[])
    TinyRadDict *  dict;
    char **        errs;
    uint8_t        dictdump;
+   uint8_t        dictloaded;
 
    // getopt options
    static char          short_opt[] = "D:hI:qVv";
@@ -112,23 +113,17 @@ int main(int argc, char * argv[])
       {"silent",           no_argument,       NULL, 'q' },
       {"version",          no_argument,       NULL, 'V' },
       {"verbose",          no_argument,       NULL, 'v' },
+      {"defaults",         no_argument,       NULL, 2   },
       {"dictionary-dump",  no_argument,       NULL, 1   },
       { NULL, 0, NULL, 0 }
    };
 
-   dictdump = 0;
+   dictdump   = 0;
+   dictloaded = 0;
 
    if (tinyrad_dict_initialize(&dict, 0) != TRAD_SUCCESS)
    {
       fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
-      return(1);
-   };
-
-
-   if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
-   {
-      my_error(errs, NULL);
-      tinyrad_dict_destroy(dict);
       return(1);
    };
 
@@ -144,6 +139,16 @@ int main(int argc, char * argv[])
          dictdump++;
          break;
 
+         case 2:
+         if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
+         {
+            my_error(errs, NULL);
+            tinyrad_dict_destroy(dict);
+            return(1);
+         };
+         dictloaded++;
+         break;
+
          case 'D':
 
          if (tinyrad_dict_import(dict, optarg, &errs, 0) != TRAD_SUCCESS)
@@ -153,6 +158,7 @@ int main(int argc, char * argv[])
             tinyrad_strings_free(errs);
             return(1);
          };
+         dictloaded++;
          break;
 
          case 'h':
@@ -182,6 +188,16 @@ int main(int argc, char * argv[])
          default:
          fprintf(stderr, "%s: unrecognized option `--%c'\n", PROGRAM_NAME, c);
          fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+      };
+   };
+
+   if (!(dictloaded))
+   {
+      if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
+      {
+         my_error(errs, NULL);
+         tinyrad_dict_destroy(dict);
          return(1);
       };
    };
@@ -233,6 +249,7 @@ void my_usage(void)
    printf("  -q, --quiet, --silent     do not print messages\n");
    printf("  -V, --version             print version number and exit\n");
    printf("  -v, --verbose             print verbose messages\n");
+   printf("  --defaults                load default dictionaries\n");
    printf("  --dictionary-dump         print imported dictionaries\n");
    printf("\n");
    return;
