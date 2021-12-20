@@ -172,6 +172,8 @@ AC_BINDLE_GIT_PACKAGE_VERSION([contrib/bindletools/build-aux/git-package-version
 
 # custom configure options
 AC_BINDLE_ENABLE_WARNINGS([-Wno-unknown-pragmas -Wno-missing-format-attribute -Wno-poison-system-directories], [])
+AC_TINYRAD_IPV4
+AC_TINYRAD_IPV6
 AC_TINYRAD_LIBTINYRAD
 AC_TINYRAD_TINYRAD
 AC_TINYRAD_TINYRADPROXY
@@ -185,6 +187,13 @@ AC_OUTPUT
 # Show local config
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Tiny RADIUS Client Library $GIT_PACKAGE_VERSION ($GIT_PACKAGE_BUILD)])
+AC_MSG_NOTICE([ ])
+AC_MSG_NOTICE([   Features:])
+AC_MSG_NOTICE([      IPv4 Networking            ${ENABLE_IPV4}])
+AC_MSG_NOTICE([      IPv6 Networking            ${ENABLE_IPV6}])
+AC_MSG_NOTICE([      RADIUS over UDP            yes])
+AC_MSG_NOTICE([      RADIUS over TCP            not supported])
+AC_MSG_NOTICE([      TLS RADIUS (RadSec)        not supported])
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Options:])
 AC_MSG_NOTICE([      Install libtinyrad.la      ${WANT_LIBTINYRAD}])
