@@ -144,7 +144,9 @@ lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/lmap.c \
 					  lib/libtinyrad/lmap.h \
 					  lib/libtinyrad/lmemory.c \
-					  lib/libtinyrad/lmemory.h
+					  lib/libtinyrad/lmemory.h \
+					  lib/libtinyrad/lproto.c \
+					  lib/libtinyrad/lproto.h
 
 
 # macros for lib/libtinyrad.la
