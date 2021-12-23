@@ -79,6 +79,8 @@ tinyrad_error_map(
       case TRAD_ENOENT:     return("no such file or directory");
       case TRAD_ESYNTAX:    return("invalid or unrecognized syntax");
       case TRAD_EEXISTS:    return("dictionary object exists");
+      case TRAD_EURL:       return("invalid RADIUS URL");
+
       default:
       break;
    };

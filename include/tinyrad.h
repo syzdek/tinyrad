@@ -104,13 +104,29 @@
 #define TRAD_ESYNTAX                0x0005 ///< dictionary syntax error
 #define TRAD_ENOBUFS                0x0006 ///< no buffer space available
 #define TRAD_EEXISTS                0x0007 ///< dictionary object exists
+#define TRAD_EURL                   0x0008 ///< invalid RADIUS URL
 
+// library user options
+#define TRAD_OPTS_USER              0x000FFFFF
+#define TRAD_IPV4                   0x00000004
+#define TRAD_IPV6                   0x00000008
+#define TRAD_IP_UNSPEC              (TRAD_IPV4 | TRAD_IPV6)
+#define TRAD_CATHOLIC               0x00000010
+#define TRAD_SERVER                 0x00000020
 
-// library options
-#define TRAD_TCP                    0x0001
-#define TRAD_BUILTIN                0x0002
-#define TRAD_CATHOLIC               0x0004
+// library internal options
+#define TRAD_OPTS_INTERNAL          (~TRAD_OPTS_USER)
+#define TRAD_RADIUS                 0x00100000
+#define TRAD_RADIUS_ACCT            0x00200000
+#define TRAD_RADIUS_DYNAUTH         0x00400000
+#define TRAD_TLS                    0x00800000
+#define TRAD_SCHEME                 0x00F00000
+#define TRAD_RADSEC                 (TRAD_RADIUS | TRAD_RADIUS_ACCT | TRAD_RADIUS_DYNAUTH | TRAD_TLS)
+#define TRAD_TCP                    0x01000000
+#define TRAD_IPV6_ADDR              0x02000000
 
+#define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
+#define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
 
 // RADIUS Attribute Types
 #define TRAD_STRING                 1      ///< UTF-8 printable text (the RFCs call this "text")
@@ -179,6 +195,26 @@ typedef struct _tinyrad_dict_vendor    TinyRadDictVendor;
 typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
 typedef struct _tinyrad_dict_value     TinyRadDictValue;
 typedef struct _tinyrad_map            TinyRadMap;
+
+
+// Support RADIUS URLs
+//    radius://hostport/secret[?proto]          (default proto: udp, port: 1812) [RFC2865]
+//    radius-acct://hostport/secret[?proto]     (default proto: udp, port: 1813) [RFC2866]
+//    radsec://hostport/[?proto]                (default proto: tcp, port: 2083) [RFC6614/RFC7360]
+//    radius-dynauth://hostport/secret[?proto]  (default proto: udp, port: 3799) [RFC5176]
+#ifdef _LIB_LIBTINYRAD_H
+   typedef struct _tinyrad_url         TinyRadURLDesc;
+#else
+   typedef struct tinyrad_url_desc     TinyRadURLDesc;
+#endif
+struct tinyrad_url_desc
+{
+   char *      trud_host;
+   char *      trud_secret;
+   int         trud_port;
+   int         trud_opts;
+   /* may contain additional fields for internal use */
+};
 
 
 //////////////////
@@ -270,5 +306,30 @@ _TINYRAD_I void
 tinyrad_strings_free(
          char **                       strs );
 
+
+//------------------//
+// URL functions //
+//------------------//
+#pragma mark URL functions
+
+_TINYRAD_I void
+tinyrad_free_urldesc(
+         TinyRadURLDesc *              trudp );
+
+
+_TINYRAD_I int
+tinyrad_is_radius_url(
+         const char *                  url );
+
+
+_TINYRAD_I char *
+tinyrad_url_desc2str(
+         TinyRadURLDesc *              trudp );
+
+
+_TINYRAD_I int
+tinyrad_url_parse(
+         const char *                  url,
+         TinyRadURLDesc **             trudpp );
 
 #endif /* end of header */
