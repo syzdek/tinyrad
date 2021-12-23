@@ -73,7 +73,8 @@ info_TEXINFOS				=
 noinst_LTLIBRARIES			=
 noinst_LIBRARIES			=
 noinst_HEADERS				=
-noinst_PROGRAMS				=
+noinst_PROGRAMS				= tests/tinyrad-url-desc2str \
+					  tests/tinyrad-url-parse
 bin_PROGRAMS				=
 bin_SCRIPTS				=
 pkgdata_DATA				=
@@ -89,7 +90,9 @@ EXTRA					= lib/libtinyrad.a \
 # lists
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
-TESTS					=
+TESTS					= \
+					  tests/tinyrad-url-desc2str \
+					  tests/tinyrad-url-parse
 XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
@@ -189,6 +192,14 @@ src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  src/proxy/common.h \
 					  src/proxy/tinyradproxy.c
+
+
+# macros for tests/tinyrad-url-desc2str
+tests_tinyrad_url_desc2str_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+
+
+# macros for tests/tinyrad-url-parse
+tests_tinyrad_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 
 
 # Makefile includes
