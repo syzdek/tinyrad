@@ -295,6 +295,11 @@ tinyrad_destroy(
          TinyRad *                     tr );
 
 
+_TINYRAD_F void
+tinyrad_free(
+         void *                        ptr );
+
+
 _TINYRAD_F int
 tinyrad_initialize(
          TinyRad **                    trp,

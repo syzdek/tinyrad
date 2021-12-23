@@ -108,6 +108,15 @@ tinyrad_destroy(
 }
 
 
+void
+tinyrad_free(
+         void *                        ptr )
+{
+   free(ptr);
+   return;
+}
+
+
 /// initialize Tiny RADIUS reference
 ///
 /// @param[out] trp           pointer to Tiny RADIUS reference
