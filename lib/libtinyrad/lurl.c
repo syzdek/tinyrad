@@ -257,10 +257,12 @@ tinyrad_url_parser(
             continue;
          if ( (trud_host[pos] >= '0') && (trud_host[pos] <= '9') )
             continue;
-         if (trud_host[pos] >= '.')
+         if ( (trud_host[pos] == '.') || (trud_host[pos] == '-') )
+         {
+            if ( (trud_host[pos+1] == '.') || (trud_host[pos+1] == '-') )
+               return(TRAD_EURL);
             continue;
-         if (trud_host[pos] >= '-')
-            continue;
+         };
          return(TRAD_EURL);
       };
       ptr = &trud_host[pos];
