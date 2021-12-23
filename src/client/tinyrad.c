@@ -113,8 +113,8 @@ int main(int argc, char * argv[])
       {"silent",           no_argument,       NULL, 'q' },
       {"version",          no_argument,       NULL, 'V' },
       {"verbose",          no_argument,       NULL, 'v' },
-      {"defaults",         no_argument,       NULL, 2   },
-      {"dictionary-dump",  no_argument,       NULL, 1   },
+      {"defaults",         no_argument,       NULL,  2  },
+      {"dictionary-dump",  no_argument,       NULL,  1  },
       { NULL, 0, NULL, 0 }
    };
 
