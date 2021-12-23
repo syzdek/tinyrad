@@ -208,10 +208,8 @@ int main(int argc, char * argv[])
       tinyrad_dict_destroy(dict);
       return(0);
    };
-printf("got here 3,000,000,000\n");
 
    tinyrad_dict_destroy(dict);
-printf("got here 4,000,000,000\n");
 
    return(0);
 }
