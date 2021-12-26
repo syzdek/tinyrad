@@ -115,9 +115,9 @@ char *
 tinyrad_url_desc2str(
          TinyRadURLDesc *              trudp )
 {
-   size_t     len;
-   char       buff[512];
-   int        def_port;
+   size_t            len;
+   char              buff[512];
+   int               def_port;
    struct in6_addr   sin6_addr;
 
    assert(trudp != NULL);
