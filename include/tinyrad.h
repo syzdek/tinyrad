@@ -205,12 +205,12 @@ typedef struct tinyrad_url_desc        TinyRadURLDesc;
 //    radius-dynauth://hostport/secret[?proto]  (default proto: udp, port: 3799) [RFC5176]
 struct tinyrad_url_desc
 {
-   char *            trud_str;
-   char *            trud_host;
-   char *            trud_secret;
-   int               trud_port;
-   int               trud_opts;
-   TinyRadURLDesc *  trud_next;
+   char *               trud_str;
+   char *               trud_host;
+   char *               trud_secret;
+   int                  trud_port;
+   int                  trud_opts;
+   TinyRadURLDesc *     trud_next;
 
    /* may contain additional fields for internal use */
 };
