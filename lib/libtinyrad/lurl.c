@@ -76,10 +76,10 @@ tinyrad_free_urldesc(
    if (!(trudp))
       return;
 
-   if ((trudp->trud_desc.trud_host))
-      free(trudp->trud_desc.trud_host);
-   if ((trudp->trud_desc.trud_secret))
-      free(trudp->trud_desc.trud_secret);
+   if ((trudp->trud_host))
+      free(trudp->trud_host);
+   if ((trudp->trud_secret))
+      free(trudp->trud_secret);
    if ((trudp->trud_str))
       free(trudp->trud_str);
 
@@ -122,7 +122,7 @@ tinyrad_url_desc2str(
    assert(trudp != NULL);
 
    // add URL scheme
-   switch(trudp->trud_desc.trud_opts & TRAD_SCHEME)
+   switch(trudp->trud_opts & TRAD_SCHEME)
    {
       case TRAD_RADIUS:          strcpy(buff, "radius://");         break;
       case TRAD_RADIUS_ACCT:     strcpy(buff, "radius-acct://");    break;
@@ -132,36 +132,36 @@ tinyrad_url_desc2str(
    };
 
    // add URL host
-   if ((trudp->trud_desc.trud_opts & TRAD_IPV6_ADDR) != 0)
+   if ((trudp->trud_opts & TRAD_IPV6_ADDR) != 0)
       strncat(buff, "[", (sizeof(buff)-strlen(buff)-1));
-   strncat(buff, trudp->trud_desc.trud_host, (sizeof(buff)-strlen(buff)-1));
-   if ((trudp->trud_desc.trud_opts & TRAD_IPV6_ADDR) != 0)
+   strncat(buff, trudp->trud_host, (sizeof(buff)-strlen(buff)-1));
+   if ((trudp->trud_opts & TRAD_IPV6_ADDR) != 0)
       strncat(buff, "]", (sizeof(buff)-strlen(buff)-1));
 
    // add URL port
    len = strlen(buff);
-   switch(trudp->trud_desc.trud_opts & TRAD_SCHEME)
+   switch(trudp->trud_opts & TRAD_SCHEME)
    {
       case TRAD_RADIUS_ACCT:     def_port = 1813; break;
       case TRAD_RADIUS_DYNAUTH:  def_port = 3799; break;
       case TRAD_RADSEC:          def_port = 2083; break;
       default:                   def_port = 1812; break;
    };
-   if (trudp->trud_desc.trud_port != def_port)
-         snprintf(&buff[len], sizeof(buff)-len-1, ":%i", trudp->trud_desc.trud_port);
+   if (trudp->trud_port != def_port)
+         snprintf(&buff[len], sizeof(buff)-len-1, ":%i", trudp->trud_port);
 
    // add URL secret
    strncat(buff, "/", (sizeof(buff)-strlen(buff)-1));
-   if ( (trudp->trud_desc.trud_opts & TRAD_SCHEME) != TRAD_RADSEC)
-      strncat(buff, trudp->trud_desc.trud_secret, (sizeof(buff)-strlen(buff)-1));
+   if ( (trudp->trud_opts & TRAD_SCHEME) != TRAD_RADSEC)
+      strncat(buff, trudp->trud_secret, (sizeof(buff)-strlen(buff)-1));
 
    // add URL proto
-   if ((trudp->trud_desc.trud_opts & TRAD_SCHEME) == TRAD_RADSEC)
+   if ((trudp->trud_opts & TRAD_SCHEME) == TRAD_RADSEC)
    {
-      if (!(trudp->trud_desc.trud_opts & TRAD_TCP))
+      if (!(trudp->trud_opts & TRAD_TCP))
          strncat(buff, "?udp", (sizeof(buff)-strlen(buff)-1));
    } else {
-      if ((trudp->trud_desc.trud_opts & TRAD_TCP))
+      if ((trudp->trud_opts & TRAD_TCP))
          strncat(buff, "?tcp", (sizeof(buff)-strlen(buff)-1));
    };
 
@@ -329,8 +329,8 @@ tinyrad_url_parser(
    if ((trudp = malloc(sizeof(TinyRadURLDesc))) == NULL)
       return(TRAD_ENOMEM);
    bzero(trudp, sizeof(TinyRadURLDesc));
-   trudp->trud_desc.trud_port       = trud_port;
-   trudp->trud_desc.trud_opts       = trud_opts;
+   trudp->trud_port       = trud_port;
+   trudp->trud_opts       = trud_opts;
 
    if ((trudp->trud_str = strdup(url)) == NULL)
    {
@@ -338,13 +338,13 @@ tinyrad_url_parser(
       return(TRAD_ENOMEM);
    };
 
-   if ((trudp->trud_desc.trud_host = strdup(trud_host)) == NULL)
+   if ((trudp->trud_host = strdup(trud_host)) == NULL)
    {
       tinyrad_free_urldesc(trudp);
       return(TRAD_ENOMEM);
    };
 
-   if ((trudp->trud_desc.trud_secret = strdup(trud_secret)) == NULL)
+   if ((trudp->trud_secret = strdup(trud_secret)) == NULL)
    {
       tinyrad_free_urldesc(trudp);
       return(TRAD_ENOMEM);

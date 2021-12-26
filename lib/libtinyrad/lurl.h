@@ -59,14 +59,6 @@
 //////////////////
 #pragma mark - Data Types
 
-struct _tinyrad_url
-{
-   struct tinyrad_url_desc    trud_desc;
-   char *                     trud_str;
-   TinyRadURLDesc *           trud_prev;
-   TinyRadURLDesc *           trud_next;
-};
-
 
 //////////////////
 //              //

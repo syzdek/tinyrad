@@ -195,6 +195,7 @@ typedef struct _tinyrad_dict_vendor    TinyRadDictVendor;
 typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
 typedef struct _tinyrad_dict_value     TinyRadDictValue;
 typedef struct _tinyrad_map            TinyRadMap;
+typedef struct tinyrad_url_desc        TinyRadURLDesc;
 
 
 // Support RADIUS URLs
@@ -202,17 +203,15 @@ typedef struct _tinyrad_map            TinyRadMap;
 //    radius-acct://hostport/secret[?proto]     (default proto: udp, port: 1813) [RFC2866]
 //    radsec://hostport/[?proto]                (default proto: tcp, port: 2083) [RFC6614/RFC7360]
 //    radius-dynauth://hostport/secret[?proto]  (default proto: udp, port: 3799) [RFC5176]
-#ifdef _LIB_LIBTINYRAD_H
-   typedef struct _tinyrad_url         TinyRadURLDesc;
-#else
-   typedef struct tinyrad_url_desc     TinyRadURLDesc;
-#endif
 struct tinyrad_url_desc
 {
-   char *      trud_host;
-   char *      trud_secret;
-   int         trud_port;
-   int         trud_opts;
+   char *            trud_str;
+   char *            trud_host;
+   char *            trud_secret;
+   int               trud_port;
+   int               trud_opts;
+   TinyRadURLDesc *  trud_next;
+
    /* may contain additional fields for internal use */
 };
 
