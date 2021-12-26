@@ -123,7 +123,6 @@
 #define TRAD_SCHEME                 0x00F00000
 #define TRAD_RADSEC                 (TRAD_RADIUS | TRAD_RADIUS_ACCT | TRAD_RADIUS_DYNAUTH | TRAD_TLS)
 #define TRAD_TCP                    0x01000000
-#define TRAD_IPV6_ADDR              0x02000000
 
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS

@@ -118,6 +118,7 @@ tinyrad_url_desc2str(
    size_t     len;
    char       buff[512];
    int        def_port;
+   struct in6_addr   sin6_addr;
 
    assert(trudp != NULL);
 
@@ -132,11 +133,14 @@ tinyrad_url_desc2str(
    };
 
    // add URL host
-   if ((trudp->trud_opts & TRAD_IPV6_ADDR) != 0)
+   if (inet_pton(AF_INET6, trudp->trud_host, &sin6_addr) == 1)
+   {
       strncat(buff, "[", (sizeof(buff)-strlen(buff)-1));
-   strncat(buff, trudp->trud_host, (sizeof(buff)-strlen(buff)-1));
-   if ((trudp->trud_opts & TRAD_IPV6_ADDR) != 0)
+      strncat(buff, trudp->trud_host, (sizeof(buff)-strlen(buff)-1));
       strncat(buff, "]", (sizeof(buff)-strlen(buff)-1));
+   } else {
+      strncat(buff, trudp->trud_host, (sizeof(buff)-strlen(buff)-1));
+   };
 
    // add URL port
    len = strlen(buff);
@@ -233,7 +237,6 @@ tinyrad_url_parser(
    if (trud_host[0] == '[')
    {
       trud_host  = &trud_host[1];
-      trud_opts |= TRAD_IPV6_ADDR;
       for(pos = 0; ( ((trud_host[pos])) && (trud_host[pos] != ']')); pos++);
       if (trud_host[pos] != ']')
          return(TRAD_EURL);
