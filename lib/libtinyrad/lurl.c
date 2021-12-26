@@ -180,7 +180,6 @@ tinyrad_url_parser(
    size_t                     pos;
    TinyRadURLDesc *           trudp;
    char *                     trud_host;
-   const char *               trud_scheme_str;
    const char *               trud_secret;
    int                        trud_port;
    int                        trud_opts;
@@ -189,9 +188,7 @@ tinyrad_url_parser(
    assert(url    != NULL);
 
    trud_host     = NULL;
-   trud_port     = 0;
    trud_secret   = NULL;
-   trud_opts     = 0;
 
    // parse URL scheme
    for(pos = 0; ( ((url[pos])) && (url[pos] != ':') ); pos++);
@@ -208,22 +205,18 @@ tinyrad_url_parser(
    switch(trud_opts)
    {
       case TRAD_RADIUS:
-      trud_scheme_str   = "radius";
       trud_port         = 1812;
       break;
 
       case TRAD_RADIUS_ACCT:
-      trud_scheme_str   = "radius-acct";
       trud_port         = 1813;
       break;
 
       case TRAD_RADIUS_DYNAUTH:
-      trud_scheme_str   = "radius-dynauth";
       trud_port         = 3799;
       break;
 
       case TRAD_RADSEC:
-      trud_scheme_str   = "radsec";
       trud_port         = 2083;
       trud_secret       = TRAD_RADSEC_SECRET_TCP;
       trud_opts         |= TRAD_TCP;
@@ -313,7 +306,6 @@ tinyrad_url_parser(
          trud_opts |= TRAD_TCP;
       else
          return(TRAD_EURL);
-      ptr = &ptr[3];
    };
 
    if (!(trud_host[0]))
