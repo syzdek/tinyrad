@@ -80,8 +80,6 @@ tinyrad_free_urldesc(
       free(trudp->trud_host);
    if ((trudp->trud_secret))
       free(trudp->trud_secret);
-   if ((trudp->trud_str))
-      free(trudp->trud_str);
 
    bzero(trudp, sizeof(TinyRadURLDesc));
 
@@ -340,12 +338,6 @@ tinyrad_url_parser(
       return(rc);
    trudp->trud_port       = trud_port;
    trudp->trud_opts       = trud_opts;
-
-   if ((trudp->trud_str = strdup(url)) == NULL)
-   {
-      tinyrad_free_urldesc(trudp);
-      return(TRAD_ENOMEM);
-   };
 
    if ((trudp->trud_host = strdup(trud_host)) == NULL)
    {
