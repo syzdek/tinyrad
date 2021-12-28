@@ -324,14 +324,14 @@ tinyrad_is_radius_url(
          const char *                  url );
 
 
+_TINYRAD_I char *
+tinyrad_urldesc2str(
+         TinyRadURLDesc *              trudp );
+
+
 _TINYRAD_I int
 tinyrad_urldesc_alloc(
          TinyRadURLDesc **             trudpp );
-
-
-_TINYRAD_I char *
-tinyrad_url_desc2str(
-         TinyRadURLDesc *              trudp );
 
 
 _TINYRAD_I int

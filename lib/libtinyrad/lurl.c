@@ -119,7 +119,7 @@ tinyrad_urldesc_alloc(
 
 
 char *
-tinyrad_url_desc2str(
+tinyrad_urldesc2str(
          TinyRadURLDesc *              trudp )
 {
    size_t            len;
