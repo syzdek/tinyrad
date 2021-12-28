@@ -329,11 +329,11 @@ int my_test_bad(const char * url, int verbose)
    if ((verbose))
       printf("testing bad url:  \"%s\" ...\n", url);
 
-   if (tinyrad_url_parse(url, &trudp) == TRAD_SUCCESS)
+   if (tinyrad_urldesc_parse(url, &trudp) == TRAD_SUCCESS)
    {
       if ((verbose))
          printf(">>> syntax parser missed error\n");
-      tinyrad_free_urldesc(trudp);
+      tinyrad_urldesc_free(trudp);
       return(1);
    };
 
@@ -349,23 +349,23 @@ int my_test_good(const char * url, int verbose)
    if ((verbose))
       printf("testing good url: \"%s\" ...\n", url);
 
-   if (tinyrad_url_parse(url, &trudp) != TRAD_SUCCESS)
+   if (tinyrad_urldesc_parse(url, &trudp) != TRAD_SUCCESS)
    {
       if ((verbose))
          printf(">>> syntax error\n");
       return(1);
    };
 
-   if ((str = tinyrad_url_desc2str(trudp)) == NULL)
+   if ((str = tinyrad_urldesc2str(trudp)) == NULL)
    {
       if ((verbose))
          printf(">>> error generating URL\n");
-      tinyrad_free_urldesc(trudp);
+      tinyrad_urldesc_free(trudp);
       return(1);
    };
 
    tinyrad_free(str);
-   tinyrad_free_urldesc(trudp);
+   tinyrad_urldesc_free(trudp);
 
    return(0);
 }

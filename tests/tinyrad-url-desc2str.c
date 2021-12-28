@@ -236,18 +236,18 @@ int my_test(const char * url, int verbose)
    if ((verbose))
       printf("test \"%s\" ...\n", url);
 
-   if (tinyrad_url_parse(url, &trudp) != TRAD_SUCCESS)
+   if (tinyrad_urldesc_parse(url, &trudp) != TRAD_SUCCESS)
    {
       if ((verbose))
          printf("syntax error: %s\n", url);
       return(1);
    };
 
-   if ((str = tinyrad_url_desc2str(trudp)) == NULL)
+   if ((str = tinyrad_urldesc2str(trudp)) == NULL)
    {
       if ((verbose))
          printf("error generating URL\n");
-      tinyrad_free_urldesc(trudp);
+      tinyrad_urldesc_free(trudp);
       return(1);
    };
 
@@ -259,12 +259,12 @@ int my_test(const char * url, int verbose)
          printf("generated URL does not match original\n");
       };
       tinyrad_free(str);
-      tinyrad_free_urldesc(trudp);
+      tinyrad_urldesc_free(trudp);
       return(1);
    };
 
    tinyrad_free(str);
-   tinyrad_free_urldesc(trudp);
+   tinyrad_urldesc_free(trudp);
 
    return(0);
 }
