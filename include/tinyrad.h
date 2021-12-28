@@ -325,7 +325,7 @@ tinyrad_is_radius_url(
 
 
 _TINYRAD_I int
-tinyrad_url_alloc(
+tinyrad_urldesc_alloc(
          TinyRadURLDesc **             trudpp );
 
 

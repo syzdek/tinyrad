@@ -105,7 +105,7 @@ tinyrad_is_radius_url(
 
 
 int
-tinyrad_url_alloc(
+tinyrad_urldesc_alloc(
          TinyRadURLDesc **             trudpp )
 {
    TinyRadURLDesc * trudp;
@@ -340,7 +340,7 @@ tinyrad_url_parser(
    if (!(trudpp))
       return(TRAD_SUCCESS);
 
-   if ((rc = tinyrad_url_alloc(&trudp)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_urldesc_alloc(&trudp)) != TRAD_SUCCESS)
       return(rc);
    trudp->trud_port       = trud_port;
    trudp->trud_opts       = trud_opts;

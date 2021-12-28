@@ -51,7 +51,7 @@ tinyrad_strings_free
 # URL functions
 tinyrad_free_urldesc
 tinyrad_is_ldap_url
-tinyrad_url_alloc
+tinyrad_urldesc_alloc
 tinyrad_url_desc2str
 tinyrad_url_parse
 # end of symbol export file
