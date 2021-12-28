@@ -314,11 +314,6 @@ tinyrad_strings_free(
 //------------------//
 #pragma mark URL functions
 
-_TINYRAD_I void
-tinyrad_free_urldesc(
-         TinyRadURLDesc *              trudp );
-
-
 _TINYRAD_I int
 tinyrad_is_radius_url(
          const char *                  url );
@@ -332,6 +327,11 @@ tinyrad_urldesc2str(
 _TINYRAD_I int
 tinyrad_urldesc_alloc(
          TinyRadURLDesc **             trudpp );
+
+
+_TINYRAD_I void
+tinyrad_urldesc_free(
+         TinyRadURLDesc *              trudp );
 
 
 _TINYRAD_I int

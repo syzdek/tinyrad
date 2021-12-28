@@ -69,32 +69,6 @@ tinyrad_url_parser(
 /////////////////
 #pragma mark - Functions
 
-void
-tinyrad_free_urldesc(
-         TinyRadURLDesc *              trudp )
-{
-   TinyRadURLDesc * next;
-
-   while ((trudp))
-   {
-      next = trudp->trud_next;
-
-      if ((trudp->trud_host))
-         free(trudp->trud_host);
-      if ((trudp->trud_secret))
-         free(trudp->trud_secret);
-
-      bzero(trudp, sizeof(TinyRadURLDesc));
-
-      free(trudp);
-
-      trudp = next;
-   };
-
-   return;
-}
-
-
 int
 tinyrad_is_radius_url(
          const char *                  url )
@@ -177,6 +151,32 @@ tinyrad_urldesc2str(
    };
 
    return(strdup(buff));
+}
+
+
+void
+tinyrad_urldesc_free(
+         TinyRadURLDesc *              trudp )
+{
+   TinyRadURLDesc * next;
+
+   while ((trudp))
+   {
+      next = trudp->trud_next;
+
+      if ((trudp->trud_host))
+         free(trudp->trud_host);
+      if ((trudp->trud_secret))
+         free(trudp->trud_secret);
+
+      bzero(trudp, sizeof(TinyRadURLDesc));
+
+      free(trudp);
+
+      trudp = next;
+   };
+
+   return;
 }
 
 
@@ -347,13 +347,13 @@ tinyrad_url_parser(
 
    if ((trudp->trud_host = strdup(trud_host)) == NULL)
    {
-      tinyrad_free_urldesc(trudp);
+      tinyrad_urldesc_free(trudp);
       return(TRAD_ENOMEM);
    };
 
    if ((trudp->trud_secret = strdup(trud_secret)) == NULL)
    {
-      tinyrad_free_urldesc(trudp);
+      tinyrad_urldesc_free(trudp);
       return(TRAD_ENOMEM);
    };
 
