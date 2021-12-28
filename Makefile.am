@@ -197,10 +197,12 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 
 
 # macros for tests/tinyrad-url-desc2str
+tests_tinyrad_url_desc2str_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_tinyrad_url_desc2str_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 
 
 # macros for tests/tinyrad-url-parse
+tests_tinyrad_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_tinyrad_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 
 
