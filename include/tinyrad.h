@@ -335,7 +335,7 @@ tinyrad_url_desc2str(
 
 
 _TINYRAD_I int
-tinyrad_url_parse(
+tinyrad_urldesc_parse(
          const char *                  url,
          TinyRadURLDesc **             trudpp );
 
