@@ -118,17 +118,6 @@ tinyrad_url_alloc(
 }
 
 
-int
-tinyrad_url_parse(
-         const char *                  url,
-         TinyRadURLDesc **             trudpp )
-{
-   assert(url    != NULL);
-   assert(trudpp != NULL);
-   return(tinyrad_url_parser(url, trudpp));
-}
-
-
 char *
 tinyrad_url_desc2str(
          TinyRadURLDesc *              trudp )
@@ -188,6 +177,17 @@ tinyrad_url_desc2str(
    };
 
    return(strdup(buff));
+}
+
+
+int
+tinyrad_url_parse(
+         const char *                  url,
+         TinyRadURLDesc **             trudpp )
+{
+   assert(url    != NULL);
+   assert(trudpp != NULL);
+   return(tinyrad_url_parser(url, trudpp));
 }
 
 
