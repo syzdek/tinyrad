@@ -73,17 +73,23 @@ void
 tinyrad_free_urldesc(
          TinyRadURLDesc *              trudp )
 {
-   if (!(trudp))
-      return;
+   TinyRadURLDesc * next;
 
-   if ((trudp->trud_host))
-      free(trudp->trud_host);
-   if ((trudp->trud_secret))
-      free(trudp->trud_secret);
+   while ((trudp))
+   {
+      next = trudp->trud_next;
 
-   bzero(trudp, sizeof(TinyRadURLDesc));
+      if ((trudp->trud_host))
+         free(trudp->trud_host);
+      if ((trudp->trud_secret))
+         free(trudp->trud_secret);
 
-   free(trudp);
+      bzero(trudp, sizeof(TinyRadURLDesc));
+
+      free(trudp);
+
+      trudp = next;
+   };
 
    return;
 }
