@@ -101,6 +101,20 @@ tinyrad_is_radius_url(
 
 
 int
+tinyrad_url_alloc(
+         TinyRadURLDesc **             trudpp )
+{
+   TinyRadURLDesc * trudp;
+   assert(trudpp != NULL);
+   if ((trudp = malloc(sizeof(TinyRadURLDesc))) == NULL)
+      return(TRAD_ENOMEM);
+   bzero(trudp, sizeof(TinyRadURLDesc));
+   *trudpp = trudp;
+   return(TRAD_SUCCESS);
+}
+
+
+int
 tinyrad_url_parse(
          const char *                  url,
          TinyRadURLDesc **             trudpp )
@@ -178,6 +192,7 @@ tinyrad_url_parser(
          const char *                  url,
          TinyRadURLDesc **             trudpp )
 {
+   int                        rc;
    char                       buff[512];
    char *                     ptr;
    char *                     endptr;
@@ -321,9 +336,8 @@ tinyrad_url_parser(
    if (!(trudpp))
       return(TRAD_SUCCESS);
 
-   if ((trudp = malloc(sizeof(TinyRadURLDesc))) == NULL)
-      return(TRAD_ENOMEM);
-   bzero(trudp, sizeof(TinyRadURLDesc));
+   if ((rc = tinyrad_url_alloc(&trudp)) != TRAD_SUCCESS)
+      return(rc);
    trudp->trud_port       = trud_port;
    trudp->trud_opts       = trud_opts;
 
