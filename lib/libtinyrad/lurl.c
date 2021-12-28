@@ -57,7 +57,7 @@
 #pragma mark - Prototypes
 
 int
-tinyrad_url_parser(
+tinyrad_urldesc_parser(
          const char *                  url,
          TinyRadURLDesc **             trudpp );
 
@@ -74,7 +74,7 @@ tinyrad_is_radius_url(
          const char *                  url )
 {
    assert(url    != NULL);
-   return(tinyrad_url_parser(url, NULL));
+   return(tinyrad_urldesc_parser(url, NULL));
 }
 
 
@@ -187,12 +187,12 @@ tinyrad_urldesc_parse(
 {
    assert(url    != NULL);
    assert(trudpp != NULL);
-   return(tinyrad_url_parser(url, trudpp));
+   return(tinyrad_urldesc_parser(url, trudpp));
 }
 
 
 int
-tinyrad_url_parser(
+tinyrad_urldesc_parser(
          const char *                  url,
          TinyRadURLDesc **             trudpp )
 {
