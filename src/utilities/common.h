@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _SRC_CLIENT_COMMON_H
-#define _SRC_CLIENT_COMMON_H 1
+#ifndef _SRC_UTILITIES_COMMON_H
+#define _SRC_UTILITIES_COMMON_H 1
 
 
 ///////////////
@@ -53,8 +53,18 @@
 ///////////////////
 #pragma mark - Definitions
 
-#undef PROGRAM_NAME
-#define PROGRAM_NAME "tinyrad"
+#ifndef PACKAGE_BUGREPORT
+#   define PACKAGE_BUGREPORT "unknown"
+#endif
+#ifndef PACKAGE_COPYRIGHT
+#   define PACKAGE_COPYRIGHT "unknown"
+#endif
+#ifndef PACKAGE_NAME
+#   define PACKAGE_NAME "Tiny RADIUS Client Library"
+#endif
+#ifndef PACKAGE_VERSION
+#   define PACKAGE_VERSION "unknown"
+#endif
 
 
 //////////////////

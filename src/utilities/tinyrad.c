@@ -28,7 +28,7 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _SRC_CLIENT_TINYRAD_C 1
+#define _SRC_UTILITIES_TINYRAD_C 1
 
 
 ///////////////
@@ -56,21 +56,8 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PROGRAM_NAME
-#   define PROGRAM_NAME "numconvert"
-#endif
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "david@syzdek.net"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT ""
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME ""
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION ""
-#endif
+#undef PROGRAM_NAME
+#define PROGRAM_NAME "tinyrad"
 
 
 //////////////////
