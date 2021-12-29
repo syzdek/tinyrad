@@ -179,8 +179,8 @@ src_tinyrad_LDFLAGS			= $(AM_LDFLAGS)
 src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= include/tinyrad.h \
-					  src/client/common.h \
-					  src/client/tinyrad.c
+					  src/utilities/common.h \
+					  src/utilities/tinyrad.c
 
 
 # macros for src/tinyradproxy
