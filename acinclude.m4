@@ -183,6 +183,9 @@ AC_DEFUN([AC_TINYRAD_TINYRAD_URL],[dnl
 # AC_TINYRAD_TINYRADPROXY()
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_TINYRADPROXY],[dnl
+
+   AC_REQUIRE([AC_TINYRAD_UTILITIES])
+
    enableval=""
    AC_ARG_ENABLE(
       tinyradproxy,
@@ -190,11 +193,19 @@ AC_DEFUN([AC_TINYRAD_TINYRADPROXY],[dnl
       [ ETINYRADPROXY=$enableval ],
       [ ETINYRADPROXY=$enableval ]
    )
-   if test "x${ETINYRADPROXY}" != "xyes";then
+
+   if test "x${ETINYRADPROXY}" == "xyes";then
+      ENABLE_TINYRADPROXY="yes"
+   elif test "x${ETINYRADPROXY}" == "xno";then
+      ENABLE_TINYRADPROXY="no"
+   elif test "x${ENABLE_UTILITIES}" == "xyes";then
+      ENABLE_TINYRADPROXY="yes"
+   elif test "x${ENABLE_UTILITIES}" == "xno";then
       ENABLE_TINYRADPROXY="no"
    else
-      ENABLE_TINYRADPROXY="yes"
+      ENABLE_TINYRADPROXY="no"
    fi
+
    AM_CONDITIONAL([ENABLE_TINYRADPROXY],  [test "$ENABLE_TINYRADPROXY" = "yes"])
    AM_CONDITIONAL([DISABLE_TINYRADPROXY], [test "$ENABLE_TINYRADPROXY" = "no"])
 ])dnl
