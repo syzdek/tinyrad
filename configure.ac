@@ -192,7 +192,7 @@ AC_MSG_NOTICE([   Tiny RADIUS Client Library $GIT_PACKAGE_VERSION ($GIT_PACKAGE_
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Features:])
 AC_MSG_NOTICE([      IPv4 Networking            ${WITH_IPV4}])
-AC_MSG_NOTICE([      IPv6 Networking            ${ENABLE_IPV6}])
+AC_MSG_NOTICE([      IPv6 Networking            ${WITH_IPV6}])
 AC_MSG_NOTICE([      RADIUS over UDP            yes])
 AC_MSG_NOTICE([      RADIUS over TCP            not supported])
 AC_MSG_NOTICE([      TLS RADIUS (RadSec)        not supported])
