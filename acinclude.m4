@@ -129,12 +129,12 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
       [ ETINYRAD=$enableval ]
    )
    if test "x${ETINYRAD}" != "xno";then
-      WANT_TINYRAD="yes"
+      ENABLE_TINYRAD="yes"
    else
-      WANT_TINYRAD="no"
+      ENABLE_TINYRAD="no"
    fi
-   AM_CONDITIONAL([WANT_TINYRAD],   [test "$WANT_TINYRAD" = "yes"])
-   AM_CONDITIONAL([UNWANT_TINYRAD], [test "$WANT_TINYRAD" = "no"])
+   AM_CONDITIONAL([ENABLE_TINYRAD],  [test "$ENABLE_TINYRAD" = "yes"])
+   AM_CONDITIONAL([DISABLE_TINYRAD], [test "$ENABLE_TINYRAD" = "no"])
 ])dnl
 
 

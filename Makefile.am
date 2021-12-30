@@ -125,7 +125,7 @@ else
    noinst_HEADERS			+= include/tinyrad.h
    noinst_LIBRARIES			+= lib/libtinyrad.a
 endif
-if WANT_TINYRAD
+if ENABLE_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
 endif
 if WANT_TINYRAD_URL
