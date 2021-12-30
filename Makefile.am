@@ -223,7 +223,8 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 # macros for tests/tinyrad-url-desc2str
 tests_tinyrad_url_desc2str_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_tinyrad_url_desc2str_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_desc2str_SOURCES	= tests/common.c \
+tests_tinyrad_url_desc2str_SOURCES	= include/tinyrad.h \
+					  tests/common.c \
 					  tests/common.h \
 					  tests/tinyrad-url-desc2str.c
 
@@ -231,7 +232,8 @@ tests_tinyrad_url_desc2str_SOURCES	= tests/common.c \
 # macros for tests/tinyrad-url-parse
 tests_tinyrad_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_tinyrad_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_parse_SOURCES		= tests/common.c \
+tests_tinyrad_url_parse_SOURCES		= include/tinyrad.h \
+					  tests/common.c \
 					  tests/common.h \
 					  tests/tinyrad-url-parse.c
 
@@ -239,7 +241,8 @@ tests_tinyrad_url_parse_SOURCES		= tests/common.c \
 # macros for tests/tinyrad-url-resolve
 tests_tinyrad_url_resolve_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_tinyrad_url_resolve_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_resolve_SOURCES	= tests/common.c \
+tests_tinyrad_url_resolve_SOURCES	= include/tinyrad.h \
+					  tests/common.c \
 					  tests/common.h \
 					  tests/tinyrad-url-resolve.c
 
