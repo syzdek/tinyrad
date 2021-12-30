@@ -175,8 +175,10 @@ AC_BINDLE_ENABLE_WARNINGS([-Wno-unknown-pragmas -Wno-missing-format-attribute -W
 AC_TINYRAD_IPV4
 AC_TINYRAD_IPV6
 AC_TINYRAD_LIBTINYRAD
+AC_TINYRAD_UTILITIES
 AC_TINYRAD_TINYRAD
 AC_TINYRAD_TINYRADPROXY
+AC_TINYRAD_TINYRAD_URL
 
 
 # Creates outputs
@@ -198,6 +200,7 @@ AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Options:])
 AC_MSG_NOTICE([      Install libtinyrad.la      ${WANT_LIBTINYRAD}])
 AC_MSG_NOTICE([      Install tinyrad            ${WANT_TINYRAD}])
+AC_MSG_NOTICE([      Install tinyrad-url        ${WANT_TINYRAD_URL}])
 AC_MSG_NOTICE([      Install tinyradproxy       ${WANT_TINYRADPROXY}])
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Please send suggestions to:   $PACKAGE_BUGREPORT])

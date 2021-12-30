@@ -138,6 +138,37 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
 ])dnl
 
 
+# AC_TINYRAD_TINYRAD_URL()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_TINYRAD_URL],[dnl
+
+   AC_REQUIRE([AC_TINYRAD_UTILITIES])
+
+   enableval=""
+   AC_ARG_ENABLE(
+      tinyrad-url,
+      [AS_HELP_STRING([--enable-tinyrad-url], [enable tinyrad-url utility])],
+      [ ETINYRADURL=$enableval ],
+      [ ETINYRADURL=$enableval ]
+   )
+
+   if test "x${ETINYRADURL}" == "xyes";then
+      WANT_TINYRAD_URL="yes"
+   elif test "x${ETINYRADURL}" == "xno";then
+      WANT_TINYRAD_URL="no"
+   elif test "x${WANT_UTILITIES}" == "xyes";then
+      WANT_TINYRAD_URL="yes"
+   elif test "x${WANT_UTILITIES}" == "xno";then
+      WANT_TINYRAD_URL="no"
+   else
+      WANT_TINYRAD_URL="no"
+   fi
+
+   AM_CONDITIONAL([WANT_TINYRAD_URL],   [test "$WANT_TINYRAD_URL" = "yes"])
+   AM_CONDITIONAL([UNWANT_TINYRAD_URL], [test "$WANT_TINYRAD_URL" = "no"])
+])dnl
+
+
 # AC_TINYRAD_TINYRADPROXY()
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_TINYRADPROXY],[dnl
@@ -157,5 +188,24 @@ AC_DEFUN([AC_TINYRAD_TINYRADPROXY],[dnl
    AM_CONDITIONAL([UNWANT_TINYRADPROXY], [test "$WANT_TINYRADPROXY" = "no"])
 ])dnl
 
+
+# AC_TINYRAD_UTILS()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_UTILITIES],[dnl
+   enableval=""
+   AC_ARG_ENABLE(
+      utilities,
+      [AS_HELP_STRING([--enable-utilities], [enable all RADIUS utility])],
+      [ EUTILITIES=$enableval ],
+      [ EUTILITIES=$enableval ]
+   )
+   if test "x${EUTILITIES}" == "xyes";then
+      WANT_UTILITIES="yes"
+   elif test "x${EUTILITIES}" == "xno";then
+      WANT_UTILITIES="no"
+   else
+      WANT_UTILITIES="auto"
+   fi
+])dnl
 
 # end of m4 file

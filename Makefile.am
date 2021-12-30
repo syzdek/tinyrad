@@ -84,6 +84,7 @@ sbin_PROGRAMS				=
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
 					  src/tinyrad \
+					  src/tinyrad-url \
 					  src/tinyradproxy \
 					  include/tinyrad.h
 
@@ -126,6 +127,9 @@ else
 endif
 if WANT_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
+endif
+if WANT_TINYRAD_URL
+   bin_PROGRAMS				+= src/tinyrad-url
 endif
 if WANT_TINYRADPROXY
    sbin_PROGRAMS			+= src/tinyradproxy
@@ -184,6 +188,20 @@ src_tinyrad_SOURCES			= include/tinyrad.h \
 					  src/utilities/common.c \
 					  src/utilities/common.h \
 					  src/utilities/tinyrad.c
+
+
+# macros for src/tinyrad
+src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) \
+					  $(noinst_LIBRARIES)
+src_tinyrad_url_CFLAGS			= $(AM_CFLAGS)
+src_tinyrad_url_CPPFLAGS		= $(AM_CPPFLAGS)
+src_tinyrad_url_LDFLAGS			= $(AM_LDFLAGS)
+src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) \
+					  $(noinst_LIBRARIES)
+src_tinyrad_url_SOURCES			= include/tinyrad.h \
+					  src/utilities/common.c \
+					  src/utilities/common.h \
+					  src/utilities/tinyrad-url.c
 
 
 # macros for src/tinyradproxy
