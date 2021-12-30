@@ -114,7 +114,7 @@ CLEANFILES				= \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
 DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings \
-					  --enable-tinyradproxy
+					  --enable-utilities
 
 
 # conditional build
