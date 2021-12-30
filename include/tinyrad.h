@@ -105,6 +105,7 @@
 #define TRAD_ENOBUFS                0x0006 ///< no buffer space available
 #define TRAD_EEXISTS                0x0007 ///< dictionary object exists
 #define TRAD_EURL                   0x0008 ///< invalid RADIUS URL
+#define TRAD_ERESOLVE               0x0009 ///< unable to resolve host
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFF

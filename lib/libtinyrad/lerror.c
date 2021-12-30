@@ -80,6 +80,7 @@ tinyrad_error_map(
       case TRAD_ESYNTAX:    return("invalid or unrecognized syntax");
       case TRAD_EEXISTS:    return("dictionary object exists");
       case TRAD_EURL:       return("invalid RADIUS URL");
+      case TRAD_ERESOLVE:   return("unable to resolve host");
 
       default:
       break;
