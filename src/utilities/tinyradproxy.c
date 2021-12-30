@@ -48,6 +48,17 @@
 #include "common.h"
 
 
+///////////////////
+//               //
+//  Definitions  //
+//               //
+///////////////////
+#pragma mark - Definitions
+
+#undef PROGRAM_NAME
+#define PROGRAM_NAME "tinyradproxy"
+
+
 //////////////////
 //              //
 //  Prototypes  //

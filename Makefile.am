@@ -213,8 +213,9 @@ src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
 src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
-					  src/proxy/common.h \
-					  src/proxy/tinyradproxy.c
+					  src/utilities/common.c \
+					  src/utilities/common.h \
+					  src/utilities/tinyradproxy.c
 
 
 # macros for tests/tinyrad-url-desc2str
