@@ -49,7 +49,7 @@ tinyrad_initialize
 tinyrad_strings_free
 #
 # URL functions
-tinyrad_is_ldap_url
+tinyrad_is_radius_url
 tinyrad_urldesc2str
 tinyrad_urldesc_alloc
 tinyrad_urldesc_free
