@@ -52,6 +52,8 @@
 
 #include <tinyrad.h>
 
+#include "common.h"
+
 
 ///////////////////
 //               //
@@ -60,21 +62,8 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PROGRAM_NAME
-#   define PROGRAM_NAME "tinyrad-url-parse"
-#endif
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "david@syzdek.net"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT ""
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME ""
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION ""
-#endif
+#undef PROGRAM_NAME
+#define PROGRAM_NAME "tinyrad-url-parse"
 
 
 //////////////////
@@ -88,143 +77,6 @@ int main( int argc, char * argv[] );
 
 int my_test_bad(const char * url, int verbose);
 int my_test_good(const char * url, int verbose);
-
-
-/////////////////
-//             //
-//  Variables  //
-//             //
-/////////////////
-#pragma mark - Variables
-
-static const char * test_url_bad_strs[] =
-{
-   "rad://www.foo.org",
-
-   "radius:///drowssap",
-   "radius:/www.foo.org/drowssap",
-   "radius:///www.foo.org/drowssap",
-   "radius://www.foo.org",
-   "radius://www.foo.org/",
-   "radius://www.foo.org/?",
-   "radius://www.foo.org/?udp",
-   "radius://www.foo.org/?tcp",
-   "radius://www.foo.org/drowssap?",
-   "radius://www.foo.org/drowssap?u",
-   "radius://www.foo.org:",
-   "radius://www.foo.org:1111",
-   "radius://www.foo.org:1111/",
-   "radius://www.foo.org:1111/drowssap?",
-   "radius://www.foo.org:1111/drowssap?u",
-
-   "radius-acct:///drowssap",
-   "radius-acct:/www.foo.org/drowssap",
-   "radius-acct:///www.foo.org/drowssap",
-   "radius-acct://www.foo.org",
-   "radius-acct://www.foo.org/",
-   "radius-acct://www.foo.org/?",
-   "radius-acct://www.foo.org/?udp",
-   "radius-acct://www.foo.org/?tcp",
-   "radius-acct://www.foo.org/drowssap?",
-   "radius-acct://www.foo.org/drowssap?u",
-   "radius-acct://www.foo.org:",
-   "radius-acct://www.foo.org:1111",
-   "radius-acct://www.foo.org:1111/",
-   "radius-acct://www.foo.org:1111/drowssap?",
-   "radius-acct://www.foo.org:1111/drowssap?u",
-
-   "radius-dynauth:///drowssap",
-   "radius-dynauth:/www.foo.org/drowssap",
-   "radius-dynauth:///www.foo.org/drowssap",
-   "radius-dynauth://www.foo.org",
-   "radius-dynauth://www.foo.org/",
-   "radius-dynauth://www.foo.org/?",
-   "radius-dynauth://www.foo.org/?udp",
-   "radius-dynauth://www.foo.org/?tcp",
-   "radius-dynauth://www.foo.org/drowssap?",
-   "radius-dynauth://www.foo.org/drowssap?u",
-   "radius-dynauth://www.foo.org:",
-   "radius-dynauth://www.foo.org:1111",
-   "radius-dynauth://www.foo.org:1111/",
-   "radius-dynauth://www.foo.org:1111/drowssap?",
-   "radius-dynauth://www.foo.org:1111/drowssap?u",
-
-   "radsec:///drowssap",
-   "radsec:/www.foo.org/",
-   "radsec:/www.foo.org/drowssap",
-   "radsec:///www.foo.org/",
-   "radsec:///www.foo.org/drowssap",
-   "radsec://www.foo.org/drowssap",
-   "radsec://www.foo.org/?",
-   "radsec://www.foo.org/drowssap?",
-   "radsec://www.foo.org/drowssap?u",
-   "radsec://www.foo.org:",
-   "radsec://www.foo.org:1111/drowssap?",
-   "radsec://www.foo.org:1111/drowssap?u",
-
-   NULL
-};
-
-
-static const char * test_url_good_strs[] =
-{
-   "radius://www.foo.org/drowssap",
-   "radius://www.foo.org/drowssap?tcp",
-   "radius://www.foo.org/drowssap?udp",
-   "radius://www.foo.org:1111/drowssap",
-   "radius://www.foo.org:1111/drowssap?tcp",
-   "radius://[::1]/drowssap",
-   "radius://[::1]/drowssap?tcp",
-   "radius://[::1]/drowssap?udp",
-   "radius://[::1]:1111/drowssap",
-   "radius://[::1]:1111/drowssap?tcp",
-   "radius://[::1]:1111/drowssap?udp",
-
-   "radius-acct://www.foo.org/drowssap",
-   "radius-acct://www.foo.org/drowssap?tcp",
-   "radius-acct://www.foo.org/drowssap?udp",
-   "radius-acct://www.foo.org:1111/drowssap",
-   "radius-acct://www.foo.org:1111/drowssap?tcp",
-   "radius-acct://www.foo.org:1111/drowssap?udp",
-   "radius-acct://[::1]/drowssap",
-   "radius-acct://[::1]/drowssap?tcp",
-   "radius-acct://[::1]/drowssap?udp",
-   "radius-acct://[::1]:1111/drowssap",
-   "radius-acct://[::1]:1111/drowssap?tcp",
-   "radius-acct://[::1]:1111/drowssap?udp",
-
-   "radius-dynauth://www.foo.org/drowssap",
-   "radius-dynauth://www.foo.org/drowssap?tcp",
-   "radius-dynauth://www.foo.org/drowssap?udp",
-   "radius-dynauth://www.foo.org:1111/drowssap",
-   "radius-dynauth://www.foo.org:1111/drowssap?tcp",
-   "radius-dynauth://www.foo.org:1111/drowssap?udp",
-   "radius-dynauth://[::1]/drowssap",
-   "radius-dynauth://[::1]/drowssap?tcp",
-   "radius-dynauth://[::1]/drowssap?udp",
-   "radius-dynauth://[::1]:1111/drowssap",
-   "radius-dynauth://[::1]:1111/drowssap?tcp",
-   "radius-dynauth://[::1]:1111/drowssap?udp",
-
-   "radsec://www.foo.org",
-   "radsec://www.foo.org/",
-   "radsec://www.foo.org/?tcp",
-   "radsec://www.foo.org/?udp",
-   "radsec://www.foo.org:1111",
-   "radsec://www.foo.org:1111/",
-   "radsec://www.foo.org:1111/?tcp",
-   "radsec://www.foo.org:1111/?udp",
-   "radsec://[::1]",
-   "radsec://[::1]/",
-   "radsec://[::1]/?tcp",
-   "radsec://[::1]/?udp",
-   "radsec://[::1]:1111",
-   "radsec://[::1]:1111/",
-   "radsec://[::1]:1111/?tcp",
-   "radsec://[::1]:1111/?udp",
-
-   NULL
-};
 
 
 /////////////////
@@ -313,6 +165,14 @@ int main( int argc, char * argv[] )
 
    for(pos = 0; ((test_url_good_strs[pos])); pos++)
       if ((my_test_good(test_url_good_strs[pos], verbose)))
+         return(1);
+
+   for(pos = 0; ((test_url_resolve_strs[pos])); pos++)
+      if ((my_test_good(test_url_resolve_strs[pos], verbose)))
+         return(1);
+
+   for(pos = 0; ((test_url_desc2str_strs[pos])); pos++)
+      if ((my_test_good(test_url_desc2str_strs[pos], verbose)))
          return(1);
 
    for(pos = 0; ((test_url_bad_strs[pos])); pos++)

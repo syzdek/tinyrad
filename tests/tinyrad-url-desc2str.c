@@ -52,6 +52,8 @@
 
 #include <tinyrad.h>
 
+#include "common.h"
+
 
 ///////////////////
 //               //
@@ -60,21 +62,8 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PROGRAM_NAME
-#   define PROGRAM_NAME "radius-url"
-#endif
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "david@syzdek.net"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT ""
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME ""
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION ""
-#endif
+#undef PROGRAM_NAME
+#define PROGRAM_NAME "radius-url"
 
 
 //////////////////
@@ -96,6 +85,7 @@ int my_test(const char * url, int verbose);
 /////////////////
 #pragma mark - Variables
 
+/*
 static const char * test_url_good_strs[] =
 {
    "radius://www.foo.org/drowssap",
@@ -135,7 +125,7 @@ static const char * test_url_good_strs[] =
    "radsec://[::1]:1111/?udp",
    NULL
 };
-
+*/
 
 /////////////////
 //             //
@@ -221,8 +211,8 @@ int main( int argc, char * argv[] )
       return(0);
    };
 
-   for(pos = 0; ((test_url_good_strs[pos])); pos++)
-      if ((my_test(test_url_good_strs[pos], verbose)))
+   for(pos = 0; ((test_url_desc2str_strs[pos])); pos++)
+      if ((my_test(test_url_desc2str_strs[pos], verbose)))
          return(1);
 
    return(0);

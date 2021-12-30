@@ -52,6 +52,8 @@
 
 #include <tinyrad.h>
 
+#include "common.h"
+
 
 ///////////////////
 //               //
@@ -60,21 +62,8 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PROGRAM_NAME
-#   define PROGRAM_NAME "tinyrad-url-resolve"
-#endif
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "david@syzdek.net"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT ""
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME ""
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION ""
-#endif
+#undef PROGRAM_NAME
+#define PROGRAM_NAME "tinyrad-url-resolve"
 
 
 //////////////////
@@ -96,66 +85,6 @@ int my_test_good(const char * url, int verbose);
 //             //
 /////////////////
 #pragma mark - Variables
-
-static const char * test_url_good_strs[] =
-{
-   "radius://203.0.113.45/drowssap",
-   "radius://203.0.113.45/drowssap?tcp",
-   "radius://203.0.113.45/drowssap?udp",
-   "radius://203.0.113.45:1111/drowssap",
-   "radius://203.0.113.45:1111/drowssap?tcp",
-   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap",
-   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?tcp",
-   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?udp",
-   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap",
-   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
-   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp",
-
-   "radius-acct://203.0.113.45/drowssap",
-   "radius-acct://203.0.113.45/drowssap?tcp",
-   "radius-acct://203.0.113.45/drowssap?udp",
-   "radius-acct://203.0.113.45:1111/drowssap",
-   "radius-acct://203.0.113.45:1111/drowssap?tcp",
-   "radius-acct://203.0.113.45:1111/drowssap?udp",
-   "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap",
-   "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?tcp",
-   "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?udp",
-   "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap",
-   "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
-   "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp",
-
-   "radius-dynauth://203.0.113.45/drowssap",
-   "radius-dynauth://203.0.113.45/drowssap?tcp",
-   "radius-dynauth://203.0.113.45/drowssap?udp",
-   "radius-dynauth://203.0.113.45:1111/drowssap",
-   "radius-dynauth://203.0.113.45:1111/drowssap?tcp",
-   "radius-dynauth://203.0.113.45:1111/drowssap?udp",
-   "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap",
-   "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?tcp",
-   "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?udp",
-   "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap",
-   "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
-   "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp",
-
-   "radsec://203.0.113.45",
-   "radsec://203.0.113.45/",
-   "radsec://203.0.113.45/?tcp",
-   "radsec://203.0.113.45/?udp",
-   "radsec://203.0.113.45:1111",
-   "radsec://203.0.113.45:1111/",
-   "radsec://203.0.113.45:1111/?tcp",
-   "radsec://203.0.113.45:1111/?udp",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/?tcp",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/?udp",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/?tcp",
-   "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/?udp",
-
-   NULL
-};
 
 
 /////////////////
@@ -242,8 +171,8 @@ int main( int argc, char * argv[] )
       return(0);
    };
 
-   for(pos = 0; ((test_url_good_strs[pos])); pos++)
-      if ((my_test_good(test_url_good_strs[pos], verbose)))
+   for(pos = 0; ((test_url_resolve_strs[pos])); pos++)
+      if ((my_test_good(test_url_resolve_strs[pos], verbose)))
          return(1);
 
    return(0);
