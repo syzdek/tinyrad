@@ -191,7 +191,7 @@ src_tinyrad_SOURCES			= include/tinyrad.h \
 
 
 # macros for src/tinyrad
-src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) \
+src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyrad_url_CFLAGS			= $(AM_CFLAGS)
 src_tinyrad_url_CPPFLAGS		= $(AM_CPPFLAGS)
