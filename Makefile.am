@@ -74,7 +74,8 @@ noinst_LTLIBRARIES			=
 noinst_LIBRARIES			=
 noinst_HEADERS				=
 noinst_PROGRAMS				= tests/tinyrad-url-desc2str \
-					  tests/tinyrad-url-parse
+					  tests/tinyrad-url-parse \
+					  tests/tinyrad-url-resolve
 bin_PROGRAMS				=
 bin_SCRIPTS				=
 pkgdata_DATA				=
@@ -92,7 +93,8 @@ AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
 TESTS					= \
 					  tests/tinyrad-url-desc2str \
-					  tests/tinyrad-url-parse
+					  tests/tinyrad-url-parse \
+					  tests/tinyrad-url-resolve
 XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
@@ -205,6 +207,11 @@ tests_tinyrad_url_desc2str_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 # macros for tests/tinyrad-url-parse
 tests_tinyrad_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_tinyrad_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+
+
+# macros for tests/tinyrad-url-resolve
+tests_tinyrad_url_resolve_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_tinyrad_url_resolve_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 
 
 # Makefile includes
