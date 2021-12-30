@@ -156,9 +156,9 @@ AC_DEFUN([AC_TINYRAD_TINYRAD_URL],[dnl
       ENABLE_TINYRAD_URL="yes"
    elif test "x${ETINYRADURL}" == "xno";then
       ENABLE_TINYRAD_URL="no"
-   elif test "x${WANT_UTILITIES}" == "xyes";then
+   elif test "x${ENABLE_UTILITIES}" == "xyes";then
       ENABLE_TINYRAD_URL="yes"
-   elif test "x${WANT_UTILITIES}" == "xno";then
+   elif test "x${ENABLE_UTILITIES}" == "xno";then
       ENABLE_TINYRAD_URL="no"
    else
       ENABLE_TINYRAD_URL="no"
@@ -200,11 +200,11 @@ AC_DEFUN([AC_TINYRAD_UTILITIES],[dnl
       [ EUTILITIES=$enableval ]
    )
    if test "x${EUTILITIES}" == "xyes";then
-      WANT_UTILITIES="yes"
+      ENABLE_UTILITIES="yes"
    elif test "x${EUTILITIES}" == "xno";then
-      WANT_UTILITIES="no"
+      ENABLE_UTILITIES="no"
    else
-      WANT_UTILITIES="auto"
+      ENABLE_UTILITIES="auto"
    fi
 ])dnl
 
