@@ -73,14 +73,15 @@ info_TEXINFOS				=
 noinst_LTLIBRARIES			=
 noinst_LIBRARIES			=
 noinst_HEADERS				=
-noinst_PROGRAMS				= tests/tinyrad-url-desc2str \
-					  tests/tinyrad-url-parse \
-					  tests/tinyrad-url-resolve
+noinst_PROGRAMS				=
 bin_PROGRAMS				=
 bin_SCRIPTS				=
 pkgdata_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
+EXTRA_PROGRAMS				= tests/tinyrad-url-desc2str \
+					  tests/tinyrad-url-parse \
+					  tests/tinyrad-url-resolve
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
 					  src/tinyrad \
@@ -110,6 +111,7 @@ CLEANFILES				= \
 					  $(pkgdata_DATA) \
 					  $(bin_SCRIPTS) \
 					  $(sbin_SCRIPTS) \
+					  $(EXTRA_PROGRAMS) \
 					  @PACKAGE_TARNAME@-*.tar.* \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
