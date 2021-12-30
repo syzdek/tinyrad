@@ -196,6 +196,7 @@ typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
 typedef struct _tinyrad_dict_value     TinyRadDictValue;
 typedef struct _tinyrad_map            TinyRadMap;
 typedef struct tinyrad_url_desc        TinyRadURLDesc;
+typedef struct sockaddr_storage        TinyRadSockAddr;
 
 
 // Support RADIUS URLs
@@ -209,9 +210,10 @@ struct tinyrad_url_desc
    char *               trud_secret;
    int                  trud_port;
    int                  trud_opts;
-   TinyRadURLDesc *     trud_next;
-
    /* may contain additional fields for internal use */
+   TinyRadURLDesc *     trud_next;
+   TinyRadSockAddr **   sockaddrs;
+   size_t               sockaddrs_len;
 };
 
 
@@ -339,5 +341,11 @@ _TINYRAD_F int
 tinyrad_urldesc_parse(
          const char *                  url,
          TinyRadURLDesc **             trudpp );
+
+
+_TINYRAD_F int
+tinyrad_urldesc_resolve(
+         TinyRadURLDesc *              trudp,
+         uint32_t                      opts );
 
 #endif /* end of header */
