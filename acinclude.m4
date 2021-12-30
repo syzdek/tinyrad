@@ -35,9 +35,9 @@
 # AC_TINYRAD_IPV4
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_IPV4],[dnl
-   ENABLE_IPV4=yes
-   AM_CONDITIONAL([ENABLE_IPV4],  [test "${ENABLE_IPV4}" == "yes"])
-   AM_CONDITIONAL([DISABLE_IPV4], [test "${ENABLE_IPV4}" != "yes"])
+   WITH_IPV4=yes
+   AM_CONDITIONAL([WITH_IPV4],    [test "${WITH_IPV4}" == "yes"])
+   AM_CONDITIONAL([WITHOUT_IPV4], [test "${WITH_IPV4}" != "yes"])
 ])dnl
 
 
