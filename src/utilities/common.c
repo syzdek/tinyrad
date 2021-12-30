@@ -68,6 +68,33 @@
 #pragma mark - Functions
 
 void
+our_error(
+         const char *                  prog_name,
+         char **                       errs,
+         const char *                  fmt,
+         ... )
+{
+   int     pos;
+   va_list args;
+
+   if ((errs))
+      for(pos = 0; ((errs[pos])); pos++)
+         fprintf(stderr, "%s: %s\n", prog_name, errs[pos]);
+
+   if (!(fmt))
+      return;
+
+   fprintf(stderr, "%s: ", prog_name);
+   va_start(args, fmt);
+   vfprintf(stderr, fmt, args);
+   va_end(args);
+   fprintf(stderr, "\n");
+
+   return;
+}
+
+
+void
 our_version(
          const char *                  prog_name )
 {

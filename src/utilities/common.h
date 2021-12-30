@@ -75,6 +75,14 @@
 #pragma mark - Prototypes
 
 void
+our_error(
+         const char *                  prog_name,
+         char **                       errs,
+         const char *                  fmt,
+         ... );
+
+
+void
 our_version(
          const char *                  prog_name );
 

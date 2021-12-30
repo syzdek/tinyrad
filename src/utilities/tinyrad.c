@@ -69,7 +69,6 @@
 
 int main( int argc, char * argv[] );
 
-void my_error( char ** errs, const char * fmt, ... );
 void my_usage( void );
 
 
@@ -128,7 +127,7 @@ int main(int argc, char * argv[])
          case 2:
          if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
          {
-            my_error(errs, NULL);
+            our_error(PROGRAM_NAME, errs, NULL);
             tinyrad_dict_destroy(dict);
             return(1);
          };
@@ -139,7 +138,7 @@ int main(int argc, char * argv[])
          if (tinyrad_dict_import(dict, optarg, &errs, 0) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
-            my_error(errs, NULL);
+            our_error(PROGRAM_NAME, errs, NULL);
             tinyrad_strings_free(errs);
             return(1);
          };
@@ -154,7 +153,7 @@ int main(int argc, char * argv[])
          if ((rc = tinyrad_dict_add_path(dict, optarg)) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
-            my_error(NULL, "%s: %s", optarg, tinyrad_strerror(rc));
+            our_error(PROGRAM_NAME, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
             return(1);
          };
          break;
@@ -181,7 +180,7 @@ int main(int argc, char * argv[])
    {
       if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
       {
-         my_error(errs, NULL);
+         our_error(PROGRAM_NAME, errs, NULL);
          tinyrad_dict_destroy(dict);
          return(1);
       };
@@ -197,28 +196,6 @@ int main(int argc, char * argv[])
    tinyrad_dict_destroy(dict);
 
    return(0);
-}
-
-
-void my_error( char ** errs, const char * fmt, ... )
-{
-   int     pos;
-   va_list args;
-
-   if ((errs))
-      for(pos = 0; ((errs[pos])); pos++)
-         fprintf(stderr, "%s: %s\n", PROGRAM_NAME, errs[pos]);
-
-   if (!(fmt))
-      return;
-
-   fprintf(stderr, "%s: ", PROGRAM_NAME);
-   va_start(args, fmt);
-   vfprintf(stderr, fmt, args);
-   va_end(args);
-   fprintf(stderr, "\n");
-
-   return;
 }
 
 
