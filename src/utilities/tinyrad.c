@@ -71,7 +71,6 @@ int main( int argc, char * argv[] );
 
 void my_error( char ** errs, const char * fmt, ... );
 void my_usage( void );
-void my_version( void );
 
 
 /////////////////
@@ -161,7 +160,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'V':
-         my_version();
+         our_version(PROGRAM_NAME);
          return(0);
 
          case 'v':
@@ -236,13 +235,6 @@ void my_usage(void)
    printf("  --defaults                load default dictionaries\n");
    printf("  --dictionary-dump         print imported dictionaries\n");
    printf("\n");
-   return;
-}
-
-
-void my_version(void)
-{
-   printf("%s (%s) %s\n", PROGRAM_NAME, PACKAGE_NAME, PACKAGE_VERSION);
    return;
 }
 

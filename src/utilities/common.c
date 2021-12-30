@@ -28,8 +28,7 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _SRC_UTILITIES_COMMON_H
-#define _SRC_UTILITIES_COMMON_H 1
+#define _SRC_UTILITIES_TINYRAD_URL_C 1
 
 
 ///////////////
@@ -39,11 +38,10 @@
 ///////////////
 #pragma mark - Headers
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include <stdio.h>
+#include <stdarg.h>
 
-#include <tinyrad.h>
+#include "common.h"
 
 
 ///////////////////
@@ -53,19 +51,6 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "unknown"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT "unknown"
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME "Tiny RADIUS Client Library"
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION "unknown"
-#endif
-
 
 //////////////////
 //              //
@@ -74,9 +59,20 @@
 //////////////////
 #pragma mark - Prototypes
 
+
+/////////////////
+//             //
+//  Functions  //
+//             //
+/////////////////
+#pragma mark - Functions
+
 void
 our_version(
-         const char *                  prog_name );
+         const char *                  prog_name )
+{
+   printf("%s (%s) %s\n", prog_name, PACKAGE_NAME, PACKAGE_VERSION);
+   return;
+}
 
-
-#endif /* end of header */
+/* end of source */
