@@ -121,6 +121,9 @@ AC_DEFUN([AC_TINYRAD_LIBTINYRAD],[dnl
 # AC_TINYRAD_TINYRAD()
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
+
+   AC_REQUIRE([AC_TINYRAD_UTILITIES])
+
    enableval=""
    AC_ARG_ENABLE(
       tinyrad,
@@ -128,11 +131,19 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
       [ ETINYRAD=$enableval ],
       [ ETINYRAD=$enableval ]
    )
-   if test "x${ETINYRAD}" != "xno";then
+
+   if test "x${ETINYRAD}" == "xyes";then
       ENABLE_TINYRAD="yes"
-   else
+   elif test "x${ETINYRAD}" == "xno";then
       ENABLE_TINYRAD="no"
+   elif test "x${ENABLE_UTILITIES}" == "xyes";then
+      ENABLE_TINYRAD="yes"
+   elif test "x${ENABLE_UTILITIES}" == "xno";then
+      ENABLE_TINYRAD="no"
+   else
+      ENABLE_TINYRAD="yes"
    fi
+
    AM_CONDITIONAL([ENABLE_TINYRAD],  [test "$ENABLE_TINYRAD" = "yes"])
    AM_CONDITIONAL([DISABLE_TINYRAD], [test "$ENABLE_TINYRAD" = "no"])
 ])dnl
