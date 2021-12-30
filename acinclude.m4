@@ -109,12 +109,12 @@ AC_DEFUN([AC_TINYRAD_LIBTINYRAD],[dnl
       [ ELIBTINYRAD=$enableval ]
    )
    if test "x${ELIBTINYRAD}" != "xno";then
-      WANT_LIBTINYRAD="yes"
+      ENABLE_LIBTINYRAD="yes"
    else
-      WANT_LIBTINYRAD="no"
+      ENABLE_LIBTINYRAD="no"
    fi
-   AM_CONDITIONAL([WANT_LIBTINYRAD],   [test "$WANT_LIBTINYRAD" = "yes"])
-   AM_CONDITIONAL([UNWANT_LIBTINYRAD], [test "$WANT_LIBTINYRAD" = "no"])
+   AM_CONDITIONAL([ENABLE_LIBTINYRAD],  [test "$ENABLE_LIBTINYRAD" = "yes"])
+   AM_CONDITIONAL([DISABLE_LIBTINYRAD], [test "$ENABLE_LIBTINYRAD" = "no"])
 ])dnl
 
 

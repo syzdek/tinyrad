@@ -118,7 +118,7 @@ DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings \
 
 
 # conditional build
-if WANT_LIBTINYRAD
+if ENABLE_LIBTINYRAD
    include_HEADERS			+= include/tinyrad.h
    lib_LTLIBRARIES			+= lib/libtinyrad.la
 else
