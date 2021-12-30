@@ -243,6 +243,11 @@ const char * test_url_resolve_strs[] =
    "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap",
    "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
    "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp",
+   "radius://localhost/drowssap",
+   "radius://localhost/drowssap?tcp",
+   "radius://localhost/drowssap?udp",
+   "radius://localhost:1111/drowssap",
+   "radius://localhost:1111/drowssap?tcp",
 
    "radius-acct://203.0.113.45/drowssap",
    "radius-acct://203.0.113.45/drowssap?tcp",
@@ -256,6 +261,12 @@ const char * test_url_resolve_strs[] =
    "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap",
    "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
    "radius-acct://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp",
+   "radius-acct://localhost/drowssap",
+   "radius-acct://localhost/drowssap?tcp",
+   "radius-acct://localhost/drowssap?udp",
+   "radius-acct://localhost:1111/drowssap",
+   "radius-acct://localhost:1111/drowssap?tcp",
+   "radius-acct://localhost:1111/drowssap?udp",
 
    "radius-dynauth://203.0.113.45/drowssap",
    "radius-dynauth://203.0.113.45/drowssap?tcp",
@@ -269,6 +280,12 @@ const char * test_url_resolve_strs[] =
    "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap",
    "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
    "radius-dynauth://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp",
+   "radius-dynauth://localhost/drowssap",
+   "radius-dynauth://localhost/drowssap?tcp",
+   "radius-dynauth://localhost/drowssap?udp",
+   "radius-dynauth://localhost:1111/drowssap",
+   "radius-dynauth://localhost:1111/drowssap?tcp",
+   "radius-dynauth://localhost:1111/drowssap?udp",
 
    "radsec://203.0.113.45",
    "radsec://203.0.113.45/",
@@ -286,6 +303,14 @@ const char * test_url_resolve_strs[] =
    "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/",
    "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/?tcp",
    "radsec://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/?udp",
+   "radsec://localhost",
+   "radsec://localhost/",
+   "radsec://localhost/?tcp",
+   "radsec://localhost/?udp",
+   "radsec://localhost:1111",
+   "radsec://localhost:1111/",
+   "radsec://localhost:1111/?tcp",
+   "radsec://localhost:1111/?udp",
 
    NULL
 };
