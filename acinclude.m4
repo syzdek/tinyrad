@@ -153,19 +153,19 @@ AC_DEFUN([AC_TINYRAD_TINYRAD_URL],[dnl
    )
 
    if test "x${ETINYRADURL}" == "xyes";then
-      WANT_TINYRAD_URL="yes"
+      ENABLE_TINYRAD_URL="yes"
    elif test "x${ETINYRADURL}" == "xno";then
-      WANT_TINYRAD_URL="no"
+      ENABLE_TINYRAD_URL="no"
    elif test "x${WANT_UTILITIES}" == "xyes";then
-      WANT_TINYRAD_URL="yes"
+      ENABLE_TINYRAD_URL="yes"
    elif test "x${WANT_UTILITIES}" == "xno";then
-      WANT_TINYRAD_URL="no"
+      ENABLE_TINYRAD_URL="no"
    else
-      WANT_TINYRAD_URL="no"
+      ENABLE_TINYRAD_URL="no"
    fi
 
-   AM_CONDITIONAL([WANT_TINYRAD_URL],   [test "$WANT_TINYRAD_URL" = "yes"])
-   AM_CONDITIONAL([UNWANT_TINYRAD_URL], [test "$WANT_TINYRAD_URL" = "no"])
+   AM_CONDITIONAL([ENABLE_TINYRAD_URL],  [test "$ENABLE_TINYRAD_URL" = "yes"])
+   AM_CONDITIONAL([DISABLE_TINYRAD_URL], [test "$ENABLE_TINYRAD_URL" = "no"])
 ])dnl
 
 

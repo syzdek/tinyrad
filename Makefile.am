@@ -128,7 +128,7 @@ endif
 if ENABLE_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
 endif
-if WANT_TINYRAD_URL
+if ENABLE_TINYRAD_URL
    bin_PROGRAMS				+= src/tinyrad-url
 endif
 if WANT_TINYRADPROXY
