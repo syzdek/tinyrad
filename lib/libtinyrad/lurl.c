@@ -405,64 +405,69 @@ tinyrad_urldesc_resolve(
       break;
    };
 
-   bzero(&hints, sizeof(struct addrinfo));
-   hints.ai_flags    = ai_flags;
-   hints.ai_family   = ai_family;
-   hints.ai_socktype = ((opts & TRAD_TCP) == 0) ? SOCK_DGRAM  : SOCK_STREAM;
-   hints.ai_protocol = ((opts & TRAD_TCP) == 0) ? IPPROTO_UDP : IPPROTO_TCP;
-   hintsp            = &hints;
-
-   if (getaddrinfo(trudp->trud_host, NULL, hintsp, &res) != 0)
-      return(TRAD_ERESOLVE);
-
-   // initialize memory
-   sas_len = ((trudp->sockaddrs_len)) ? trudp->sockaddrs_len : 0;
-   if ((sasp = trudp->sockaddrs) == NULL)
+   while ((trudp))
    {
-      if ((sasp = malloc(sizeof(struct sockaddr_storage *))) == NULL)
-         return(TRAD_ENOMEM);
-      sasp[0]              = NULL;
-      trudp->sockaddrs     = sasp;
-      sas_len              = 0;
-      trudp->sockaddrs_len = sas_len;
-   };
+      bzero(&hints, sizeof(struct addrinfo));
+      hints.ai_flags    = ai_flags;
+      hints.ai_family   = ai_family;
+      hints.ai_socktype = ((opts & TRAD_TCP) == 0) ? SOCK_DGRAM  : SOCK_STREAM;
+      hints.ai_protocol = ((opts & TRAD_TCP) == 0) ? IPPROTO_UDP : IPPROTO_TCP;
+      hintsp            = &hints;
 
-   next = res;
-   while((next))
-   {
-      size = sizeof(struct sockaddr_storage *) * (sas_len+2);
-      if ((ptr = realloc(sasp, size)) == NULL)
-         return(TRAD_ENOMEM);
-      sasp              = ptr;
-      trudp->sockaddrs  = ptr;
-      sasp[sas_len+1]   = NULL;
+      if (getaddrinfo(trudp->trud_host, NULL, hintsp, &res) != 0)
+         return(TRAD_ERESOLVE);
 
-      if ((sasp[sas_len] = malloc(sizeof(struct sockaddr_storage))) == NULL)
-         return(TRAD_ENOMEM);
-      bzero(sasp[sas_len],  sizeof(struct sockaddr_storage));
-      memcpy(sasp[sas_len], next->ai_addr, next->ai_addrlen);
-
-      switch(sasp[sas_len]->ss_family)
+      // initialize memory
+      sas_len = ((trudp->sockaddrs_len)) ? trudp->sockaddrs_len : 0;
+      if ((sasp = trudp->sockaddrs) == NULL)
       {
-         case AF_INET:
-         ((struct sockaddr_in *)sasp[sas_len])->sin_port = htons((uint16_t)trudp->trud_port);
-         break;
-
-         case AF_INET6:
-         ((struct sockaddr_in6 *)sasp[sas_len])->sin6_port = htons((uint16_t)trudp->trud_port);
-         break;
-
-         default:
-         break;
+         if ((sasp = malloc(sizeof(struct sockaddr_storage *))) == NULL)
+            return(TRAD_ENOMEM);
+         sasp[0]              = NULL;
+         trudp->sockaddrs     = sasp;
+         sas_len              = 0;
+         trudp->sockaddrs_len = sas_len;
       };
 
-      sas_len++;
-      trudp->sockaddrs_len = sas_len;
+      next = res;
+      while((next))
+      {
+         size = sizeof(struct sockaddr_storage *) * (sas_len+2);
+         if ((ptr = realloc(sasp, size)) == NULL)
+            return(TRAD_ENOMEM);
+         sasp              = ptr;
+         trudp->sockaddrs  = ptr;
+         sasp[sas_len+1]   = NULL;
 
-      next = next->ai_next;
+         if ((sasp[sas_len] = malloc(sizeof(struct sockaddr_storage))) == NULL)
+            return(TRAD_ENOMEM);
+         bzero(sasp[sas_len],  sizeof(struct sockaddr_storage));
+         memcpy(sasp[sas_len], next->ai_addr, next->ai_addrlen);
+
+         switch(sasp[sas_len]->ss_family)
+         {
+            case AF_INET:
+            ((struct sockaddr_in *)sasp[sas_len])->sin_port = htons((uint16_t)trudp->trud_port);
+            break;
+
+            case AF_INET6:
+            ((struct sockaddr_in6 *)sasp[sas_len])->sin6_port = htons((uint16_t)trudp->trud_port);
+            break;
+
+            default:
+            break;
+         };
+
+         sas_len++;
+         trudp->sockaddrs_len = sas_len;
+
+         next = next->ai_next;
+      };
+
+      freeaddrinfo(res);
+
+      trudp = trudp->trud_next;
    };
-
-   freeaddrinfo(res);
 
    return(TRAD_SUCCESS);
 }
