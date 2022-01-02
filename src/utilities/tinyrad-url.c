@@ -278,6 +278,8 @@ void my_usage(void)
 {
    printf("Usage: %s [OPTIONS] url url ... url\n", PROGRAM_NAME);
    printf("Options:\n");
+   printf("  -4                                        use IPv4 addresses\n");
+   printf("  -6                                        use IPv6 addresses\n");
    printf("  -h, --help                                print this help and exit\n");
    printf("  -q, --quiet, --silent                     do not print messages\n");
    printf("  -V, --version                             print version number and exit\n");
