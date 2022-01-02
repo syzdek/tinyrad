@@ -70,6 +70,7 @@
 
 int main( int argc, char * argv[] );
 
+int my_print_urldesc( TinyRadURLDesc * trudp);
 void my_usage( void );
 
 
@@ -89,11 +90,7 @@ int main(int argc, char * argv[])
    int                        quiet;
    int                        resolve;
    int                        verbose;
-   char *                     str;
-   char                       addr[INET6_ADDRSTRLEN];
-   const char *               scheme;
    uint32_t                   opts;
-   struct sockaddr_storage *  sas;
    TinyRadURLDesc *           trudp;
    TinyRadURLDesc **          trudpp;
    TinyRadURLDesc *           trudp_next;
@@ -227,48 +224,68 @@ int main(int argc, char * argv[])
    trudp_next = trudp;
    while ((trudp_next))
    {
-      if ((str = tinyrad_urldesc2str(trudp_next)) == NULL)
+      if ((my_print_urldesc(trudp_next)))
       {
-         fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
          tinyrad_urldesc_free(trudp);
          return(1);
       };
-      switch(trudp_next->trud_opts & TRAD_SCHEME)
-      {
-         case TRAD_RADIUS:          scheme = "radius (RFC2865 RADIUS)"; break;;
-         case TRAD_RADIUS_ACCT:     scheme = "radius-acct (RFC2866 RADIUS Accounting)"; break;;
-         case TRAD_RADIUS_DYNAUTH:  scheme = "radius-dynauth (RFC2866 RADIUS Dynamic Authorization)"; break;;
-         case TRAD_RADSEC:          scheme = "radsec (RFC6614/RFC7360 RADIUS TLS/DTLS)"; break;;
-         default:                   scheme = "Unknown or unsupported URL scheme";  break;
-      };
-      printf("%s\n", str);
-      printf("   scheme:     %s\n", scheme);
-      printf("   host:       %s\n", trudp_next->trud_host);
-      if ( ((trudp_next->sockaddrs)) && ((trudp_next->sockaddrs[0])) )
-      {
-         for(pos = 0; ((trudp_next->sockaddrs[pos])); pos++)
-         {
-            sas = trudp_next->sockaddrs[pos];
-            switch(sas->ss_family)
-            {
-               case AF_INET:  inet_ntop(sas->ss_family, &((struct sockaddr_in  *)sas)->sin_addr,  addr, sizeof(addr)); break;
-               case AF_INET6: inet_ntop(sas->ss_family, &((struct sockaddr_in6 *)sas)->sin6_addr, addr, sizeof(addr)); break;
-               default:
-               addr[0] = '\0';
-               break;
-            };
-            printf("   %s%s\n", ((!(pos)) ? "addresses:  " : "            "), addr);
-         };
-      };
-      printf("   port:       %i\n", trudp_next->trud_port);
-      printf("   secret:     %s\n", trudp_next->trud_secret);
-      printf("   protocol:   %s\n", ((trudp_next->trud_opts & TRAD_TCP)) ? "tcp" : "udp");
-      printf("\n");
-      tinyrad_free(str);
       trudp_next = trudp_next->trud_next;
    };
 
    tinyrad_urldesc_free(trudp);
+
+   return(0);
+}
+
+
+int my_print_urldesc( TinyRadURLDesc * trudp)
+{
+   int                        pos;
+   char *                     str;
+   const char *               scheme;
+   struct sockaddr_storage *  sas;
+   char                       addr[INET6_ADDRSTRLEN];
+
+   if ((str = tinyrad_urldesc2str(trudp)) == NULL)
+   {
+      fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
+      tinyrad_urldesc_free(trudp);
+      return(1);
+   };
+   switch(trudp->trud_opts & TRAD_SCHEME)
+   {
+      case TRAD_RADIUS:          scheme = "radius (RFC2865 RADIUS)"; break;;
+      case TRAD_RADIUS_ACCT:     scheme = "radius-acct (RFC2866 RADIUS Accounting)"; break;;
+      case TRAD_RADIUS_DYNAUTH:  scheme = "radius-dynauth (RFC2866 RADIUS Dynamic Authorization)"; break;;
+      case TRAD_RADSEC:          scheme = "radsec (RFC6614/RFC7360 RADIUS TLS/DTLS)"; break;;
+      default:                   scheme = "Unknown or unsupported URL scheme";  break;
+   };
+
+   printf("%s\n", str);
+   printf("   scheme:     %s\n", scheme);
+   printf("   host:       %s\n", trudp->trud_host);
+   printf("   port:       %i\n", trudp->trud_port);
+   printf("   secret:     %s\n", trudp->trud_secret);
+   printf("   protocol:   %s\n", ((trudp->trud_opts & TRAD_TCP)) ? "tcp" : "udp");
+   if ( ((trudp->sockaddrs)) && ((trudp->sockaddrs[0])) )
+   {
+      for(pos = 0; ((trudp->sockaddrs[pos])); pos++)
+      {
+         sas = trudp->sockaddrs[pos];
+         switch(sas->ss_family)
+         {
+            case AF_INET:  inet_ntop(sas->ss_family, &((struct sockaddr_in  *)sas)->sin_addr,  addr, sizeof(addr)); break;
+            case AF_INET6: inet_ntop(sas->ss_family, &((struct sockaddr_in6 *)sas)->sin6_addr, addr, sizeof(addr)); break;
+            default:
+            addr[0] = '\0';
+            break;
+         };
+         printf("   %s%s\n", ((!(pos)) ? "addresses:  " : "            "), addr);
+      };
+   };
+   printf("\n");
+
+   tinyrad_free(str);
 
    return(0);
 }
