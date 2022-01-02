@@ -40,6 +40,8 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 
 #include "common.h"
 
@@ -329,6 +331,8 @@ const char * test_urldesc_strs_resolvable[] =
 //////////////////
 #pragma mark - Prototypes
 
+int our_urldesc_test(const char * url, int opts);
+
 
 /////////////////
 //             //
@@ -337,5 +341,97 @@ const char * test_urldesc_strs_resolvable[] =
 /////////////////
 #pragma mark - Functions
 
+
+int our_urldesc_test(const char * url, int opts)
+{
+   char *            str;
+   TinyRadURLDesc *  trudp;
+
+   // initial check
+   if ((opts & TRAD_TEST_CHECK))
+   {
+      if ((opts & TRAD_TEST_VERBOSE))
+         printf("   tinyrad_is_radius_url() ...\n");
+      if (tinyrad_is_radius_url(url) != TRAD_SUCCESS)
+      {
+         if ((opts & TRAD_TEST_VERBOSE))
+            printf(">>> syntax error\n");
+         return(1);
+      };
+   };
+
+   // parse URL
+   if (!(opts & TRAD_TEST_PARSE))
+      return(0);
+   if ((opts & TRAD_TEST_VERBOSE))
+      printf("   tinyrad_urldesc_parse() ...\n");
+   if (tinyrad_urldesc_parse(url, &trudp) != TRAD_SUCCESS)
+   {
+      if ((opts & TRAD_TEST_VERBOSE))
+         printf(">>> syntax error\n");
+      return(1);
+   };
+
+   // test regenerating URL string
+   if ((opts & TRAD_TEST_DESC2STR))
+   {
+      if ((opts & TRAD_TEST_VERBOSE))
+         printf("   tinyrad_urldesc2str() ...\n");
+      if ((str = tinyrad_urldesc2str(trudp)) == NULL)
+      {
+         if ((opts & TRAD_TEST_VERBOSE))
+            printf(">>> error generating URL\n");
+         tinyrad_urldesc_free(trudp);
+         return(1);
+      };
+      if ((opts & TRAD_TEST_VERBOSE))
+         printf("   strcasecmp() ...\n");
+      if ((strcasecmp(url, str)))
+      {
+         if ((opts & TRAD_TEST_VERBOSE))
+            printf(">>> generated URL does not match original URL\n");
+         tinyrad_free(str);
+         return(1);
+      };
+      tinyrad_free(str);
+   };
+
+   // resolve URL
+   if ((opts & TRAD_TEST_RESOLVE))
+   {
+      if ((opts & TRAD_TEST_VERBOSE))
+         printf("   tinyrad_urldesc_resolve() ...\n");
+      if (tinyrad_urldesc_resolve(trudp, 0) != TRAD_SUCCESS)
+      {
+         if ((opts & TRAD_TEST_VERBOSE))
+            printf(">>> error resolving URL\n");
+         tinyrad_urldesc_free(trudp);
+         return(1);
+      };
+   };
+
+   tinyrad_urldesc_free(trudp);
+   return(0);
+}
+
+
+int our_urldesc_test_bad(const char * url, int opts)
+{
+   if ((opts & TRAD_TEST_VERBOSE))
+      printf("testing bad url: \"%s\" ...\n", url);
+   if ((our_urldesc_test(url, opts)))
+      return(0);
+   return(1);
+}
+
+
+int our_urldesc_test_good(const char * url, int opts)
+{
+   if ((opts & TRAD_TEST_VERBOSE))
+      printf("testing good url: \"%s\" ...\n", url);
+   if ((our_urldesc_test(url, opts)))
+      return(1);
+   return(0);
+}
 
 /* end of source */

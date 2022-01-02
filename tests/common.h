@@ -67,6 +67,13 @@
 #endif
 
 
+#define TRAD_TEST_VERBOSE     0x0001
+#define TRAD_TEST_RESOLVE     0x0002
+#define TRAD_TEST_DESC2STR    0x0004
+#define TRAD_TEST_PARSE       0x0008
+#define TRAD_TEST_CHECK       0x0010
+
+
 /////////////////
 //             //
 //  Variables  //
@@ -87,6 +94,8 @@ extern const char * test_urldesc_strs_resolvable[];
 //////////////////
 #pragma mark - Prototypes
 
+int our_urldesc_test_bad(const char * url, int opts);
+int our_urldesc_test_good(const char * url, int opts);
 
 
 #endif /* end of header */

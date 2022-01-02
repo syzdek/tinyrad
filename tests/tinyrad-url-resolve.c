@@ -75,9 +75,6 @@
 
 int main( int argc, char * argv[] );
 
-int my_test_bad(const char * url, int verbose);
-int my_test_good(const char * url, int verbose);
-
 
 /////////////////
 //             //
@@ -98,7 +95,7 @@ int main( int argc, char * argv[] )
 {
    int                  c;
    int                  opt_index;
-   int                  verbose;
+   int                  opts;
    size_t               pos;
 
    // getopt options
@@ -113,7 +110,7 @@ int main( int argc, char * argv[] )
       { NULL, 0, NULL, 0 }
    };
 
-   verbose = 0;
+   opts = TRAD_TEST_CHECK | TRAD_TEST_PARSE | TRAD_TEST_RESOLVE;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
@@ -146,7 +143,7 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'v':
-         verbose = 1;
+         opts |= TRAD_TEST_VERBOSE;
          break;
 
          case '?':
@@ -164,7 +161,7 @@ int main( int argc, char * argv[] )
    {
       while (optind < argc)
       {
-         if ((my_test_good(argv[optind], verbose)))
+         if ((our_urldesc_test_good(argv[optind], opts)))
             return(1);
          optind++;
       };
@@ -172,46 +169,8 @@ int main( int argc, char * argv[] )
    };
 
    for(pos = 0; ((test_urldesc_strs_resolvable[pos])); pos++)
-      if ((my_test_good(test_urldesc_strs_resolvable[pos], verbose)))
+      if ((our_urldesc_test_good(test_urldesc_strs_resolvable[pos], opts)))
          return(1);
-
-   return(0);
-}
-
-
-int my_test_good(const char * url, int verbose)
-{
-   char *            str;
-   TinyRadURLDesc *  trudp;
-
-   if ((verbose))
-      printf("testing good url: \"%s\" ...\n", url);
-
-   if (tinyrad_urldesc_parse(url, &trudp) != TRAD_SUCCESS)
-   {
-      if ((verbose))
-         printf(">>> syntax error\n");
-      return(1);
-   };
-
-   if ((str = tinyrad_urldesc2str(trudp)) == NULL)
-   {
-      if ((verbose))
-         printf(">>> error generating URL\n");
-      tinyrad_urldesc_free(trudp);
-      return(1);
-   };
-   tinyrad_free(str);
-
-   if (tinyrad_urldesc_resolve(trudp, 0) != TRAD_SUCCESS)
-   {
-      if ((verbose))
-         printf(">>> error resolving URL\n");
-      tinyrad_urldesc_free(trudp);
-      return(1);
-   };
-
-   tinyrad_urldesc_free(trudp);
 
    return(0);
 }

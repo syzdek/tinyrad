@@ -75,8 +75,6 @@
 
 int main( int argc, char * argv[] );
 
-int my_test(const char * url, int verbose);
-
 
 /////////////////
 //             //
@@ -85,47 +83,6 @@ int my_test(const char * url, int verbose);
 /////////////////
 #pragma mark - Variables
 
-/*
-static const char * test_url_good_strs[] =
-{
-   "radius://www.foo.org/drowssap",
-   "radius://www.foo.org/drowssap?tcp",
-   "radius://www.foo.org:1111/drowssap",
-   "radius://www.foo.org:1111/drowssap?tcp",
-   "radius://[::1]/drowssap",
-   "radius://[::1]/drowssap?tcp",
-   "radius://[::1]:1111/drowssap",
-   "radius://[::1]:1111/drowssap?tcp",
-
-   "radius-acct://www.foo.org/drowssap",
-   "radius-acct://www.foo.org/drowssap?tcp",
-   "radius-acct://www.foo.org:1111/drowssap",
-   "radius-acct://www.foo.org:1111/drowssap?tcp",
-   "radius-acct://[::1]/drowssap",
-   "radius-acct://[::1]/drowssap?tcp",
-   "radius-acct://[::1]:1111/drowssap",
-   "radius-acct://[::1]:1111/drowssap?tcp",
-
-   "radius-dynauth://www.foo.org/drowssap",
-   "radius-dynauth://www.foo.org/drowssap?tcp",
-   "radius-dynauth://www.foo.org:1111/drowssap",
-   "radius-dynauth://www.foo.org:1111/drowssap?tcp",
-   "radius-dynauth://[::1]/drowssap",
-   "radius-dynauth://[::1]/drowssap?tcp",
-   "radius-dynauth://[::1]:1111/drowssap",
-   "radius-dynauth://[::1]:1111/drowssap?tcp",
-
-   "radsec://www.foo.org/",
-   "radsec://www.foo.org/?udp",
-   "radsec://www.foo.org:1111/",
-   "radsec://www.foo.org:1111/?udp",
-   "radsec://[::1]/",
-   "radsec://[::1]/?udp",
-   "radsec://[::1]:1111/",
-   "radsec://[::1]:1111/?udp",
-   NULL
-};
-*/
 
 /////////////////
 //             //
@@ -138,7 +95,7 @@ int main( int argc, char * argv[] )
 {
    int                  c;
    int                  opt_index;
-   int                  verbose;
+   int                  opts;
    size_t               pos;
 
    // getopt options
@@ -153,7 +110,7 @@ int main( int argc, char * argv[] )
       { NULL, 0, NULL, 0 }
    };
 
-   verbose = 0;
+   opts = TRAD_TEST_CHECK | TRAD_TEST_PARSE | TRAD_TEST_DESC2STR;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
@@ -186,7 +143,7 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'v':
-         verbose = 1;
+         opts |= TRAD_TEST_VERBOSE;
          break;
 
          case '?':
@@ -204,7 +161,7 @@ int main( int argc, char * argv[] )
    {
       while (optind < argc)
       {
-         if ((my_test(argv[optind], verbose)))
+         if ((our_urldesc_test_good(argv[optind], opts)))
             return(1);
          optind++;
       };
@@ -212,52 +169,12 @@ int main( int argc, char * argv[] )
    };
 
    for(pos = 0; ((test_urldesc_strs_desc2str[pos])); pos++)
-      if ((my_test(test_urldesc_strs_desc2str[pos], verbose)))
+      if ((our_urldesc_test_good(test_urldesc_strs_desc2str[pos], opts)))
          return(1);
 
    return(0);
 }
 
-int my_test(const char * url, int verbose)
-{
-   char *               str;
-   TinyRadURLDesc *     trudp;
-
-   if ((verbose))
-      printf("test \"%s\" ...\n", url);
-
-   if (tinyrad_urldesc_parse(url, &trudp) != TRAD_SUCCESS)
-   {
-      if ((verbose))
-         printf("syntax error: %s\n", url);
-      return(1);
-   };
-
-   if ((str = tinyrad_urldesc2str(trudp)) == NULL)
-   {
-      if ((verbose))
-         printf("error generating URL\n");
-      tinyrad_urldesc_free(trudp);
-      return(1);
-   };
-
-   if ((strcasecmp(url, str)))
-   {
-      if ((verbose))
-      {
-         printf("generated \"%s\" ...\n", str);
-         printf("generated URL does not match original\n");
-      };
-      tinyrad_free(str);
-      tinyrad_urldesc_free(trudp);
-      return(1);
-   };
-
-   tinyrad_free(str);
-   tinyrad_urldesc_free(trudp);
-
-   return(0);
-}
 
 /* end of source */
 
