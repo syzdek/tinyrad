@@ -162,6 +162,7 @@ int main(int argc, char * argv[])
       };
    };
 
+   // argument checks
    if (optind >= argc)
    {
       fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
@@ -175,6 +176,7 @@ int main(int argc, char * argv[])
       return(1);
    };
 
+   // preliminary URL checks
    for(pos = optind; (pos < argc); pos++)
    {
       if ((rc = tinyrad_is_radius_url(argv[pos])) != TRAD_SUCCESS)
@@ -188,6 +190,7 @@ int main(int argc, char * argv[])
       };
    };
 
+   // parse and resolve URLs
    trudpp = &trudp;
    for(pos = optind; (pos < argc); pos++)
    {
@@ -215,12 +218,14 @@ int main(int argc, char * argv[])
       trudpp = &(*trudpp)->trud_next;
    };
 
+   // exit if not displaying output
    if (!(verbose))
    {
       tinyrad_urldesc_free(trudp);
       return(0);
    };
 
+   // display URLs
    trudp_next = trudp;
    while ((trudp_next))
    {
