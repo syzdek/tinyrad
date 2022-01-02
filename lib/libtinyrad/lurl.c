@@ -59,7 +59,7 @@
 
 int
 tinyrad_urldesc_parser(
-         const char *                  url,
+         char *                        url,
          TinyRadURLDesc **             trudpp );
 
 
@@ -74,8 +74,10 @@ int
 tinyrad_is_radius_url(
          const char *                  url )
 {
+   char                       buff[512];
    assert(url    != NULL);
-   return(tinyrad_urldesc_parser(url, NULL));
+   strncpy(buff, url, sizeof(buff));
+   return(tinyrad_urldesc_parser(buff, NULL));
 }
 
 
@@ -186,19 +188,20 @@ tinyrad_urldesc_parse(
          const char *                  url,
          TinyRadURLDesc **             trudpp )
 {
+   char                       buff[512];
    assert(url    != NULL);
    assert(trudpp != NULL);
-   return(tinyrad_urldesc_parser(url, trudpp));
+   strncpy(buff, url, sizeof(buff));
+   return(tinyrad_urldesc_parser(buff, trudpp));
 }
 
 
 int
 tinyrad_urldesc_parser(
-         const char *                  url,
+         char *                        url,
          TinyRadURLDesc **             trudpp )
 {
    int                        rc;
-   char                       buff[512];
    char *                     ptr;
    char *                     endptr;
    size_t                     pos;
@@ -249,8 +252,7 @@ tinyrad_urldesc_parser(
       default:
       return(TRAD_EURL);
    };
-   strncpy(buff, &url[pos+1], sizeof(buff));
-   ptr = buff;
+   ptr = &url[pos+1];
 
    // parse URL host
    trud_host = ptr;
