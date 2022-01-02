@@ -211,8 +211,8 @@ int main( int argc, char * argv[] )
       return(0);
    };
 
-   for(pos = 0; ((test_url_desc2str_strs[pos])); pos++)
-      if ((my_test(test_url_desc2str_strs[pos], verbose)))
+   for(pos = 0; ((test_urldesc_strs_desc2str[pos])); pos++)
+      if ((my_test(test_urldesc_strs_desc2str[pos], verbose)))
          return(1);
 
    return(0);

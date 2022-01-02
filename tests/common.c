@@ -59,7 +59,7 @@
 /////////////////
 #pragma mark - Variables
 
-const char * test_url_bad_strs[] =
+const char * test_urldesc_strs_bad[] =
 {
    "rad://www.foo.org",
 
@@ -128,7 +128,7 @@ const char * test_url_bad_strs[] =
 };
 
 
-const char * test_url_desc2str_strs[] =
+const char * test_urldesc_strs_desc2str[] =
 {
    "radius://www.foo.org/drowssap",
    "radius://www.foo.org/drowssap?tcp",
@@ -169,7 +169,7 @@ const char * test_url_desc2str_strs[] =
 };
 
 
-const char * test_url_good_strs[] =
+const char * test_urldesc_strs_good[] =
 {
    "radius://www.foo.org/drowssap",
    "radius://www.foo.org/drowssap?tcp",
@@ -230,7 +230,7 @@ const char * test_url_good_strs[] =
 };
 
 
-const char * test_url_resolve_strs[] =
+const char * test_urldesc_strs_resolvable[] =
 {
    "radius://203.0.113.45/drowssap",
    "radius://203.0.113.45/drowssap?tcp",

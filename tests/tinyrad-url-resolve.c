@@ -171,8 +171,8 @@ int main( int argc, char * argv[] )
       return(0);
    };
 
-   for(pos = 0; ((test_url_resolve_strs[pos])); pos++)
-      if ((my_test_good(test_url_resolve_strs[pos], verbose)))
+   for(pos = 0; ((test_urldesc_strs_resolvable[pos])); pos++)
+      if ((my_test_good(test_urldesc_strs_resolvable[pos], verbose)))
          return(1);
 
    return(0);

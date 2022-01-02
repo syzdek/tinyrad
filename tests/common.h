@@ -74,10 +74,10 @@
 /////////////////
 #pragma mark - Variables
 
-extern const char * test_url_good_strs[];
-extern const char * test_url_desc2str_strs[];
-extern const char * test_url_bad_strs[];
-extern const char * test_url_resolve_strs[];
+extern const char * test_urldesc_strs_bad[];
+extern const char * test_urldesc_strs_desc2str[];
+extern const char * test_urldesc_strs_good[];
+extern const char * test_urldesc_strs_resolvable[];
 
 
 //////////////////

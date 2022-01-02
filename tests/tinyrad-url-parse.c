@@ -163,20 +163,20 @@ int main( int argc, char * argv[] )
       return(0);
    };
 
-   for(pos = 0; ((test_url_good_strs[pos])); pos++)
-      if ((my_test_good(test_url_good_strs[pos], verbose)))
+   for(pos = 0; ((test_urldesc_strs_good[pos])); pos++)
+      if ((my_test_good(test_urldesc_strs_good[pos], verbose)))
          return(1);
 
-   for(pos = 0; ((test_url_resolve_strs[pos])); pos++)
-      if ((my_test_good(test_url_resolve_strs[pos], verbose)))
+   for(pos = 0; ((test_urldesc_strs_resolvable[pos])); pos++)
+      if ((my_test_good(test_urldesc_strs_resolvable[pos], verbose)))
          return(1);
 
-   for(pos = 0; ((test_url_desc2str_strs[pos])); pos++)
-      if ((my_test_good(test_url_desc2str_strs[pos], verbose)))
+   for(pos = 0; ((test_urldesc_strs_desc2str[pos])); pos++)
+      if ((my_test_good(test_urldesc_strs_desc2str[pos], verbose)))
          return(1);
 
-   for(pos = 0; ((test_url_bad_strs[pos])); pos++)
-      if ((my_test_bad(test_url_bad_strs[pos], verbose)))
+   for(pos = 0; ((test_urldesc_strs_bad[pos])); pos++)
+      if ((my_test_bad(test_urldesc_strs_bad[pos], verbose)))
          return(1);
 
    return(0);
