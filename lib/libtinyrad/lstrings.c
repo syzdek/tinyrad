@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_LMEMORY_H
-#define _LIB_LIBTINYRAD_LMEMORY_H 1
+#define _LIB_LIBTINYRAD_LSTRINGS_C 1
+#include "lstrings.h"
 
 
 ///////////////
@@ -39,28 +39,75 @@
 ///////////////
 #pragma mark - Headers
 
-#include "libtinyrad.h"
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 
 
-///////////////////
-//               //
-//  Definitions  //
-//               //
-///////////////////
-#pragma mark - Definitions
+////////////////////////
+//                    //
+//  Inline Functions  //
+//                    //
+////////////////////////
+#pragma mark - Inline Functions
+
+extern inline size_t
+tinyrad_strings_count(
+         char **                       strs );
 
 
-//////////////////
-//              //
-//  Prototypes  //
-//              //
-//////////////////
-#pragma mark - Prototypes
+extern inline int
+tinyrad_strings_dup(
+         char **                       src,
+         char ***                      destp );
 
 
-#endif /* end of header */
+extern inline int
+tinyrad_strings_enqueue(
+         char ***                      strsp,
+         const char *                  str );
+
+
+extern inline int
+tinyrad_strings_enqueue_int(
+         char ***                      strsp,
+         intmax_t                      i );
+
+
+extern inline int
+tinyrad_strings_enqueue_uint(
+         char ***                      strsp,
+         uintmax_t                     uint );
+
+
+extern inline void
+tinyrad_strings_free(
+         char **                       strs );
+
+
+extern inline int
+tinyrad_strings_push(
+         char ***                      strsp,
+         const char *                  str );
+
+
+extern inline int
+tinyrad_strings_push_int(
+         char ***                      strsp,
+         intmax_t                      i );
+
+
+extern inline int
+tinyrad_strings_push_uint(
+         char ***                      strsp,
+         uintmax_t                     uint );
+
+
+/////////////////
+//             //
+//  Functions  //
+//             //
+/////////////////
+#pragma mark - Functions
+
+/* end of source */

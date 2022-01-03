@@ -164,6 +164,8 @@ lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/lnet.h \
 					  lib/libtinyrad/lproto.c \
 					  lib/libtinyrad/lproto.h \
+					  lib/libtinyrad/lstrings.c \
+					  lib/libtinyrad/lstrings.h \
 					  lib/libtinyrad/lurl.c \
 					  lib/libtinyrad/lurl.h
 

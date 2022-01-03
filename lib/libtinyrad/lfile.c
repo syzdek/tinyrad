@@ -50,7 +50,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "lmemory.h"
+#include "lstrings.h"
 #include "lerror.h"
 
 

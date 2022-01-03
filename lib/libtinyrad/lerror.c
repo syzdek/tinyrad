@@ -46,6 +46,8 @@
 #include <stdarg.h>
 
 #include "lmemory.h"
+#include "lstrings.h"
+
 
 //////////////////
 //              //
