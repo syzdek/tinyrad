@@ -67,6 +67,22 @@ tinyrad_strings_count(
          char **                       strs );
 
 
+inline char *
+tinyrad_strings_dequeue(
+         char **                       strs,
+         int                           freeit );
+
+
+inline intmax_t
+tinyrad_strings_dequeue_int(
+         char **                       strs );
+
+
+inline uintmax_t
+tinyrad_strings_dequeue_uint(
+         char **                       strs );
+
+
 inline int
 tinyrad_strings_dup(
          char **                       src,
@@ -145,6 +161,55 @@ tinyrad_strings_count(
       return(0);
    for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
    return(count);
+}
+
+
+inline char *
+tinyrad_strings_dequeue(
+         char **                       strs,
+         int                           freeit )
+{
+   char *      str;
+   size_t      pos;
+   assert(strs != NULL);
+   str = strs[0];
+   for(pos = 0; ((strs[pos])); pos++)
+      strs[pos] = strs[pos+1];
+   strs[pos] = NULL;
+   if ((freeit))
+   {
+      free(str);
+      return(NULL);
+   };
+   return(str);
+}
+
+
+inline intmax_t
+tinyrad_strings_dequeue_int(
+         char **                       strs )
+{
+   char *      str;
+   intmax_t    i;
+   assert(strs != NULL);
+   str = tinyrad_strings_dequeue(strs, 0);
+   i = (intmax_t)strtoll(str, NULL, 0);
+   free(str);
+   return(i);
+}
+
+
+inline uintmax_t
+tinyrad_strings_dequeue_uint(
+         char **                       strs )
+{
+   char *      str;
+   uintmax_t   uint;
+   assert(strs != NULL);
+   str = tinyrad_strings_dequeue(strs, 0);
+   uint = (uintmax_t)strtoull(str, NULL, 0);
+   free(str);
+   return(uint);
 }
 
 

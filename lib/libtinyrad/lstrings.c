@@ -56,6 +56,22 @@ tinyrad_strings_count(
          char **                       strs );
 
 
+extern inline char *
+tinyrad_strings_dequeue(
+         char **                       strs,
+         int                           freeit );
+
+
+extern inline intmax_t
+tinyrad_strings_dequeue_int(
+         char **                       strs );
+
+
+extern inline uintmax_t
+tinyrad_strings_dequeue_uint(
+         char **                       strs );
+
+
 extern inline int
 tinyrad_strings_dup(
          char **                       src,
