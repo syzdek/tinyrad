@@ -149,6 +149,48 @@ tinyrad_strings_dup(
 }
 
 
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  str           string to append to array
+/// @return returns error code
+inline int
+tinyrad_strings_enqueue(
+         char ***                      strsp,
+         const char *                  str )
+{
+   return(tinyrad_strings_push(strsp, str));
+}
+
+
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  i             string to append to array
+/// @return returns error code
+inline int
+tinyrad_strings_enqueue_int(
+         char ***                      strsp,
+         intmax_t                      i )
+{
+   return(tinyrad_strings_push_int(strsp, i));
+}
+
+
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  uint          string to append to array
+/// @return returns error code
+inline int
+tinyrad_strings_enqueue_uint(
+         char ***                      strsp,
+         uintmax_t                     uint )
+{
+   return(tinyrad_strings_push_uint(strsp, uint));
+}
+
+
 /// frees NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array

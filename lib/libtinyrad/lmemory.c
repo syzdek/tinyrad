@@ -62,6 +62,24 @@ tinyrad_strings_dup(
          char ***                      destp );
 
 
+extern inline int
+tinyrad_strings_enqueue(
+         char ***                      strsp,
+         const char *                  str );
+
+
+extern inline int
+tinyrad_strings_enqueue_int(
+         char ***                      strsp,
+         intmax_t                      i );
+
+
+extern inline int
+tinyrad_strings_enqueue_uint(
+         char ***                      strsp,
+         uintmax_t                     uint );
+
+
 extern inline void
 tinyrad_strings_free(
          char **                       strs );
