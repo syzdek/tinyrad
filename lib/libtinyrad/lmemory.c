@@ -52,19 +52,19 @@
 #pragma mark - Inline Functions
 
 extern inline int
-tinyrad_strings_append(
+tinyrad_strings_push(
          char ***                      strsp,
          const char *                  str );
 
 
 extern inline int
-tinyrad_strings_append_int(
+tinyrad_strings_push_int(
          char ***                      strsp,
          intmax_t                      i );
 
 
 extern inline int
-tinyrad_strings_append_uint(
+tinyrad_strings_push_uint(
          char ***                      strsp,
          uintmax_t                     uint );
 

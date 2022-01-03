@@ -63,19 +63,19 @@
 #pragma mark - Prototypes
 
 inline int
-tinyrad_strings_append(
+tinyrad_strings_push(
          char ***                      strsp,
          const char *                  str );
 
 
 inline int
-tinyrad_strings_append_int(
+tinyrad_strings_push_int(
          char ***                      strsp,
          intmax_t                      i );
 
 
 inline int
-tinyrad_strings_append_uint(
+tinyrad_strings_push_uint(
          char ***                      strsp,
          uintmax_t                     uint );
 
@@ -104,7 +104,7 @@ tinyrad_strings_dup(
 /// @param[in]  str           string to append to array
 /// @return returns error code
 inline int
-tinyrad_strings_append(
+tinyrad_strings_push(
          char ***                      strsp,
          const char *                  str )
 {
@@ -139,14 +139,14 @@ tinyrad_strings_append(
 /// @param[in]  i             string to append to array
 /// @return returns error code
 inline int
-tinyrad_strings_append_int(
+tinyrad_strings_push_int(
          char ***                      strsp,
          intmax_t                      i )
 {
    char str[128];
    assert(strsp != NULL);
    snprintf(str, sizeof(str), "%ji", i);
-   return(tinyrad_strings_append(strsp, str));
+   return(tinyrad_strings_push(strsp, str));
 }
 
 
@@ -156,14 +156,14 @@ tinyrad_strings_append_int(
 /// @param[in]  uint          string to append to array
 /// @return returns error code
 inline int
-tinyrad_strings_append_uint(
+tinyrad_strings_push_uint(
          char ***                      strsp,
          uintmax_t                     uint )
 {
    char str[128];
    assert(strsp != NULL);
    snprintf(str, sizeof(str), "%ju", uint);
-   return(tinyrad_strings_append(strsp, str));
+   return(tinyrad_strings_push(strsp, str));
 }
 
 

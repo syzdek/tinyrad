@@ -115,7 +115,7 @@ tinyrad_error_msgs(
 
    errmsg = tinyrad_strerror(errnum);
    strncat(msg, errmsg, sizeof(msg)-strlen(msg)-1);
-   tinyrad_strings_append(msgsp, msg);
+   tinyrad_strings_push(msgsp, msg);
 
    return(errnum);
 }

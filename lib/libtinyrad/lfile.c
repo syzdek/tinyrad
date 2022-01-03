@@ -143,7 +143,7 @@ tinyrad_file_error(
    while((file = file->parent) != NULL)
    {
       snprintf(msg, sizeof(msg), "in file included from %s:%i:", file->path, file->line);
-      tinyrad_strings_append(&msgs, msg);
+      tinyrad_strings_push(&msgs, msg);
    };
 
    // invert errors
