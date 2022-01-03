@@ -91,6 +91,22 @@ tinyrad_strings_enqueue_uint(
          uintmax_t                     uint );
 
 
+inline char *
+tinyrad_strings_pop(
+         char **                       strs,
+         int                           freeit );
+
+
+inline intmax_t
+tinyrad_strings_pop_int(
+         char **                       strs );
+
+
+inline uintmax_t
+tinyrad_strings_pop_uint(
+         char **                       strs );
+
+
 inline int
 tinyrad_strings_push(
          char ***                      strsp,
@@ -226,6 +242,63 @@ tinyrad_strings_free(
    };
    free(strs);
    return;
+}
+
+
+/// Appends string to NULL terminated array of strings
+///
+/// @param[in]  strs          string array
+/// @param[in]  freeit        free string instead of returning it
+/// @return returns error code
+inline char *
+tinyrad_strings_pop(
+         char **                       strs,
+         int                           freeit )
+{
+   char *      str;
+   size_t      pos;
+   assert(strs != NULL);
+   for(pos = 0; ((strs[pos])); pos++);
+   if (!(pos))
+      return(NULL);
+   str         = strs[pos-1];
+   strs[pos-1] = NULL;
+   if ((freeit))
+   {
+      free(str);
+      return(NULL);
+   };
+   return(str);
+}
+
+
+inline intmax_t
+tinyrad_strings_pop_int(
+         char **                       strs )
+{
+   intmax_t    i;
+   char *      str;
+   assert(strs != NULL);
+   if ((str = tinyrad_strings_pop(strs, 0)) == NULL)
+      return(0);
+   i = (intmax_t)strtoll(str, NULL, 0);
+   free(str);
+   return(i);
+}
+
+
+inline uintmax_t
+tinyrad_strings_pop_uint(
+         char **                       strs )
+{
+   uintmax_t   uint;
+   char *      str;
+   assert(strs != NULL);
+   if ((str = tinyrad_strings_pop(strs, 0)) == NULL)
+      return(0);
+   uint = (uintmax_t)strtoull(str, NULL, 0);
+   free(str);
+   return(uint);
 }
 
 

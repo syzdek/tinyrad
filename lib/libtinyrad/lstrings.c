@@ -85,6 +85,22 @@ tinyrad_strings_free(
          char **                       strs );
 
 
+extern inline char *
+tinyrad_strings_pop(
+         char **                       strs,
+         int                           freeit );
+
+
+inline intmax_t
+tinyrad_strings_pop_int(
+         char **                       strs );
+
+
+inline uintmax_t
+tinyrad_strings_pop_uint(
+         char **                       strs );
+
+
 extern inline int
 tinyrad_strings_push(
          char ***                      strsp,
