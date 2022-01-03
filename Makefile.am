@@ -192,14 +192,9 @@ src_tinyrad_SOURCES			= include/tinyrad.h \
 					  src/utilities/tinyrad.c
 
 
-# macros for src/tinyrad
-src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) \
-					  $(noinst_LIBRARIES)
-src_tinyrad_url_CFLAGS			= $(AM_CFLAGS)
-src_tinyrad_url_CPPFLAGS		= $(AM_CPPFLAGS)
-src_tinyrad_url_LDFLAGS			= $(AM_LDFLAGS)
-src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) \
-					  $(noinst_LIBRARIES)
+# macros for src/tinyrad-url
+src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_SOURCES			= include/tinyrad.h \
 					  src/utilities/common.c \
 					  src/utilities/common.h \
