@@ -51,6 +51,22 @@
 ////////////////////////
 #pragma mark - Inline Functions
 
+extern inline size_t
+tinyrad_strings_count(
+         char **                       strs );
+
+
+extern inline int
+tinyrad_strings_dup(
+         char **                       src,
+         char ***                      destp );
+
+
+extern inline void
+tinyrad_strings_free(
+         char **                       strs );
+
+
 extern inline int
 tinyrad_strings_push(
          char ***                      strsp,
@@ -67,22 +83,6 @@ extern inline int
 tinyrad_strings_push_uint(
          char ***                      strsp,
          uintmax_t                     uint );
-
-
-extern inline size_t
-tinyrad_strings_count(
-         char **                       strs );
-
-
-extern inline int
-tinyrad_strings_dup(
-         char **                       src,
-         char ***                      destp );
-
-
-extern inline void
-tinyrad_strings_free(
-         char **                       strs );
 
 
 /////////////////

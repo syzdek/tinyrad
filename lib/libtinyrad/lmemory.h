@@ -98,6 +98,77 @@ tinyrad_strings_dup(
 ////////////////////////
 #pragma mark - Inline Functions
 
+/// counts number of strings in NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+/// @return number of strings in array
+inline size_t
+tinyrad_strings_count(
+         char **                       strs )
+{
+   size_t count;
+   if (!(strs))
+      return(0);
+   for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
+   return(count);
+}
+
+
+/// Duplicate array of strings
+///
+/// @param[in]  src           existing array of strings
+/// @param[out] destp         pointer to string new array
+/// @return returns error code
+inline int
+tinyrad_strings_dup(
+         char **                       src,
+         char ***                      destp )
+{
+   char **     ptr;
+   size_t      count;
+   size_t      pos;
+
+   count  = tinyrad_strings_count( src );
+
+   if ((ptr = malloc((count+1) * sizeof(char*))) == NULL)
+      return(TRAD_ENOMEM);
+
+   for(pos = 0; (pos < count); pos++)
+   {
+      if ((ptr[pos] = strdup(src[pos])) == NULL)
+      {
+         tinyrad_strings_free(ptr);
+         return(TRAD_ENOMEM);
+      };
+   };
+   ptr[pos] = NULL;
+
+   *destp = ptr;
+
+   return(TRAD_SUCCESS);
+}
+
+
+/// frees NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+inline void
+tinyrad_strings_free(
+         char **                       strs )
+{
+   int i;
+   if (!(strs))
+      return;
+   for(i = 0; ((strs[i])); i++)
+   {
+      free(strs[i]);
+      strs[i] = NULL;
+   };
+   free(strs);
+   return;
+}
+
+
 /// Appends string to NULL terminated array of strings
 ///
 /// @param[out] strsp         pointer to string array
@@ -165,77 +236,5 @@ tinyrad_strings_push_uint(
    snprintf(str, sizeof(str), "%ju", uint);
    return(tinyrad_strings_push(strsp, str));
 }
-
-
-/// counts number of strings in NULL terminated array of strings
-///
-/// @param[in]  strs          pointer to string array
-/// @return number of strings in array
-inline size_t
-tinyrad_strings_count(
-         char **                       strs )
-{
-   size_t count;
-   if (!(strs))
-      return(0);
-   for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
-   return(count);
-}
-
-
-/// Duplicate array of strings
-///
-/// @param[in]  src           existing array of strings
-/// @param[out] destp         pointer to string new array
-/// @return returns error code
-inline int
-tinyrad_strings_dup(
-         char **                       src,
-         char ***                      destp )
-{
-   char **     ptr;
-   size_t      count;
-   size_t      pos;
-
-   count  = tinyrad_strings_count( src );
-
-   if ((ptr = malloc((count+1) * sizeof(char*))) == NULL)
-      return(TRAD_ENOMEM);
-
-   for(pos = 0; (pos < count); pos++)
-   {
-      if ((ptr[pos] = strdup(src[pos])) == NULL)
-      {
-         tinyrad_strings_free(ptr);
-         return(TRAD_ENOMEM);
-      };
-   };
-   ptr[pos] = NULL;
-
-   *destp = ptr;
-
-   return(TRAD_SUCCESS);
-}
-
-
-/// frees NULL terminated array of strings
-///
-/// @param[in]  strs          pointer to string array
-inline void
-tinyrad_strings_free(
-         char **                       strs )
-{
-   int i;
-   if (!(strs))
-      return;
-   for(i = 0; ((strs[i])); i++)
-   {  
-      free(strs[i]);
-      strs[i] = NULL;
-   };
-   free(strs);
-   return;
-}
-
 
 #endif /* end of header */
