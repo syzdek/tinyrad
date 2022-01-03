@@ -39,7 +39,11 @@
 #pragma mark - Headers
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
+#include <assert.h>
 
 #include "common.h"
 
@@ -90,6 +94,87 @@ our_error(
    va_end(args);
    fprintf(stderr, "\n");
 
+   return;
+}
+
+
+int
+our_exit_code(
+         int                           rc )
+{
+   switch(rc)
+   {
+      case TRAD_SUCCESS:
+      return(0);
+
+      // configuration error
+      case TRAD_EURL:
+      case TRAD_ESYNTAX:
+      return(2);
+
+      // network error
+      case TRAD_ERESOLVE:
+      return(3);
+
+      default:
+      break;
+   };
+   return(1);
+}
+
+
+int
+our_strings_append(
+         char ***                      strsp,
+         const char *                  str )
+{
+   size_t     count;
+   char **    strs;
+
+   assert(strsp != NULL);
+   assert(str   != NULL);
+
+   // initialize array
+   if (!(*strsp))
+   {
+      if ((*strsp = malloc(sizeof(char *))) == NULL)
+         return(TRAD_ENOMEM);
+      (*strsp)[0] = NULL;
+   };
+
+   // count elements
+   for(count = 0; (((*strsp)[count])); count++);
+
+   // increase size of array
+   if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)
+      return(TRAD_ENOMEM);
+   *strsp = strs;
+
+   // copy string
+   if ((strs[count] = strdup(str)) == NULL)
+      return(TRAD_ENOMEM);
+
+   // terminate array
+   count++;
+   strs[count] = NULL;
+
+   return(TRAD_SUCCESS);
+}
+
+
+void
+our_strings_free(
+         char **                       strs )
+{
+   int i;
+   if (!(strs))
+      return;
+   for(i = 0; ((strs[i])); i++)
+   {
+      free(strs[i]);
+      strs[i] = NULL;
+   };
+   free(strs);
    return;
 }
 

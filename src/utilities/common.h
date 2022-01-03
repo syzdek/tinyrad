@@ -82,6 +82,22 @@ our_error(
          ... );
 
 
+int
+our_exit_code(
+         int                           rc );
+
+
+int
+our_strings_append(
+         char ***                      strsp,
+         const char *                  str );
+
+
+void
+our_strings_free(
+         char **                       strs );
+
+
 void
 our_version(
          const char *                  prog_name );

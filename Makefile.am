@@ -85,6 +85,7 @@ EXTRA_PROGRAMS				= tests/tinyrad-url-desc2str \
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
 					  src/tinyrad \
+					  src/tinyrad-dict \
 					  src/tinyrad-url \
 					  src/tinyradproxy \
 					  include/tinyrad.h
@@ -129,6 +130,9 @@ else
 endif
 if ENABLE_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
+endif
+if ENABLE_TINYRAD_DICT
+   bin_PROGRAMS				+= src/tinyrad-dict
 endif
 if ENABLE_TINYRAD_URL
    bin_PROGRAMS				+= src/tinyrad-url
@@ -190,6 +194,15 @@ src_tinyrad_SOURCES			= include/tinyrad.h \
 					  src/utilities/common.c \
 					  src/utilities/common.h \
 					  src/utilities/tinyrad.c
+
+
+# macros for src/tinyrad-dict
+src_tinyrad_dict_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_dict_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_dict_SOURCES		= include/tinyrad.h \
+					  src/utilities/common.c \
+					  src/utilities/common.h \
+					  src/utilities/tinyrad-dict.c
 
 
 # macros for src/tinyrad-url

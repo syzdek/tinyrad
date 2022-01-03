@@ -149,6 +149,37 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
 ])dnl
 
 
+# AC_TINYRAD_TINYRAD_DICT()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_TINYRAD_DICT],[dnl
+
+   AC_REQUIRE([AC_TINYRAD_UTILITIES])
+
+   enableval=""
+   AC_ARG_ENABLE(
+      tinyrad-dict,
+      [AS_HELP_STRING([--enable-tinyrad-dict], [enable tinyrad-dict utility])],
+      [ ETINYRADDICT=$enableval ],
+      [ ETINYRADDICT=$enableval ]
+   )
+
+   if test "x${ETINYRADDICT}" == "xyes";then
+      ENABLE_TINYRAD_DICT="yes"
+   elif test "x${ETINYRADDICT}" == "xno";then
+      ENABLE_TINYRAD_DICT="no"
+   elif test "x${ENABLE_UTILITIES}" == "xyes";then
+      ENABLE_TINYRAD_DICT="yes"
+   elif test "x${ENABLE_UTILITIES}" == "xno";then
+      ENABLE_TINYRAD_DICT="no"
+   else
+      ENABLE_TINYRAD_DICT="no"
+   fi
+
+   AM_CONDITIONAL([ENABLE_TINYRAD_DICT],  [test "$ENABLE_TINYRAD_DICT" = "yes"])
+   AM_CONDITIONAL([DISABLE_TINYRAD_DICT], [test "$ENABLE_TINYRAD_DICT" = "no"])
+])dnl
+
+
 # AC_TINYRAD_TINYRAD_URL()
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_TINYRAD_URL],[dnl
