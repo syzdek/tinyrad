@@ -188,11 +188,45 @@ tinyrad_urldesc_parse(
          const char *                  url,
          TinyRadURLDesc **             trudpp )
 {
+   int                        rc;
    char                       buff[512];
+   char *                     str;
+   char *                     ptr;
+   TinyRadURLDesc **          pptr;
+
    assert(url    != NULL);
    assert(trudpp != NULL);
+
    strncpy(buff, url, sizeof(buff));
-   return(tinyrad_urldesc_parser(buff, trudpp));
+
+   pptr = trudpp;
+   str  = buff;
+
+   while((ptr = index(str, ' ')) != NULL)
+   {
+      ptr[0] = '\0';
+      if (!(str[0]))
+      {
+         str = &ptr[1];
+         continue;
+      };
+      if ((rc = tinyrad_urldesc_parser(str, pptr)) != TRAD_SUCCESS)
+         return(rc);
+      pptr = &(*pptr)->trud_next;
+      str = &ptr[1];
+   };
+
+   if ((str[0]))
+   {
+      if ((rc = tinyrad_urldesc_parser(str, pptr)) != TRAD_SUCCESS)
+         return(rc);
+      pptr = &(*pptr)->trud_next;
+   };
+
+   if (pptr == trudpp)
+      return(TRAD_EURL);
+
+   return(TRAD_SUCCESS);
 }
 
 
