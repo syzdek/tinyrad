@@ -176,20 +176,6 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   // preliminary URL checks
-   for(pos = optind; (pos < argc); pos++)
-   {
-      if ((rc = tinyrad_is_radius_url(argv[pos])) != TRAD_SUCCESS)
-      {
-         if (!(quiet))
-         {
-            fprintf(stderr, "%s: %s: %s\n", PROGRAM_NAME, argv[pos], tinyrad_strerror(rc));
-            fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-         };
-         return(1);
-      };
-   };
-
    // parse and resolve URLs
    trudpp = &trudp;
    for(pos = optind; (pos < argc); pos++)
