@@ -336,7 +336,30 @@ tinyrad_urldesc_parser(
    if (ptr[0] == '/')
    {
       ptr[0] = '\0';
-      for(pos = 1; ( ((ptr[pos])) && (ptr[pos] != '?') ); pos++);
+      for(pos = 1; ( ((ptr[pos])) && (ptr[pos] != '?') ); pos++)
+      {
+         if ( (ptr[pos] >= '0') && (ptr[pos] <= '9'))
+            continue;
+         if ( (ptr[pos] >= 'a') && (ptr[pos] <= 'z'))
+            continue;
+         if ( (ptr[pos] >= 'A') && (ptr[pos] <= 'Z'))
+            continue;
+         if (ptr[pos] == '+')
+            continue;
+         if (ptr[pos] == '%')
+         {
+            if ( ((ptr[pos+1] < 'a') || (ptr[pos+1] > 'f')) &&
+                 ((ptr[pos+1] < 'A') || (ptr[pos+1] > 'F')) &&
+                 ((ptr[pos+1] < '0') || (ptr[pos+1] > '9')) )
+               return(TRAD_EURL);
+            if ( ((ptr[pos+2] < 'a') || (ptr[pos+2] > 'f')) &&
+                 ((ptr[pos+2] < 'A') || (ptr[pos+2] > 'F')) &&
+                 ((ptr[pos+2] < '0') || (ptr[pos+2] > '9')) )
+               return(TRAD_EURL);
+            continue;
+         };
+         return(TRAD_EURL);
+      };
       switch(trud_opts & TRAD_SCHEME)
       {
          case TRAD_RADSEC:
@@ -365,8 +388,11 @@ tinyrad_urldesc_parser(
          trud_opts |= TRAD_TCP;
       else
          return(TRAD_EURL);
+      ptr = &ptr[4];
    };
 
+   if (ptr[0] != '\0')
+      return(TRAD_EURL);
    if (!(trud_host[0]))
       return(TRAD_EURL);
    if (!(trud_secret))
