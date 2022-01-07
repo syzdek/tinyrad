@@ -84,6 +84,7 @@
 extern const char * test_urldesc_strs_bad[];
 extern const char * test_urldesc_strs_desc2str[];
 extern const char * test_urldesc_strs_good[];
+extern const char * test_urldesc_strs_multiple[];
 extern const char * test_urldesc_strs_resolvable[];
 
 

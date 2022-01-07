@@ -105,7 +105,7 @@ int main( int argc, char * argv[] )
       { NULL, 0, NULL, 0 }
    };
 
-   opts = TRAD_TEST_CHECK | TRAD_TEST_PARSE;
+   opts = 0;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
@@ -164,19 +164,32 @@ int main( int argc, char * argv[] )
    };
 
    for(pos = 0; ((test_urldesc_strs_good[pos])); pos++)
-      if ((our_urldesc_test_good(test_urldesc_strs_good[pos], opts)))
+      if ((our_urldesc_test_good(test_urldesc_strs_good[pos], (opts | TRAD_TEST_CHECK))))
          return(1);
-
    for(pos = 0; ((test_urldesc_strs_resolvable[pos])); pos++)
-      if ((our_urldesc_test_good(test_urldesc_strs_resolvable[pos], opts)))
+      if ((our_urldesc_test_good(test_urldesc_strs_resolvable[pos], (opts | TRAD_TEST_CHECK))))
          return(1);
-
    for(pos = 0; ((test_urldesc_strs_desc2str[pos])); pos++)
-      if ((our_urldesc_test_good(test_urldesc_strs_desc2str[pos], opts)))
+      if ((our_urldesc_test_good(test_urldesc_strs_desc2str[pos], (opts | TRAD_TEST_CHECK))))
+         return(1);
+   for(pos = 0; ((test_urldesc_strs_bad[pos])); pos++)
+      if ((our_urldesc_test_bad(test_urldesc_strs_bad[pos], (opts | TRAD_TEST_CHECK))))
          return(1);
 
+   for(pos = 0; ((test_urldesc_strs_good[pos])); pos++)
+      if ((our_urldesc_test_good(test_urldesc_strs_good[pos], (opts | TRAD_TEST_PARSE))))
+         return(1);
+   for(pos = 0; ((test_urldesc_strs_resolvable[pos])); pos++)
+      if ((our_urldesc_test_good(test_urldesc_strs_resolvable[pos], (opts | TRAD_TEST_PARSE))))
+         return(1);
+   for(pos = 0; ((test_urldesc_strs_desc2str[pos])); pos++)
+      if ((our_urldesc_test_good(test_urldesc_strs_desc2str[pos], (opts | TRAD_TEST_PARSE))))
+         return(1);
    for(pos = 0; ((test_urldesc_strs_bad[pos])); pos++)
-      if ((our_urldesc_test_bad(test_urldesc_strs_bad[pos], opts)))
+      if ((our_urldesc_test_bad(test_urldesc_strs_bad[pos], (opts | TRAD_TEST_PARSE))))
+         return(1);
+   for(pos = 0; ((test_urldesc_strs_multiple[pos])); pos++)
+      if ((our_urldesc_test_good(test_urldesc_strs_multiple[pos], (opts | TRAD_TEST_PARSE))))
          return(1);
 
    return(0);

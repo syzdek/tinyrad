@@ -235,6 +235,21 @@ const char * test_urldesc_strs_good[] =
 };
 
 
+#pragma mark test_urldesc_strs_multiple[]
+const char * test_urldesc_strs_multiple[] =
+{
+   "radius://203.0.113.45/drowssap radius://203.0.113.45/drowssap?tcp",
+   "radius://203.0.113.45/drowssap?udp radius://203.0.113.45:1111/drowssap",
+   "radius://203.0.113.45:1111/drowssap?tcp radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap",
+   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?tcp    radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]/drowssap?udp",
+   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?tcp",
+   "radius://[2001:dB8:ffed:1a:9c4a:14fe:113a:ce4b]:1111/drowssap?udp   radius://localhost/drowssap radius://localhost/drowssap?tcp radius://localhost/drowssap?udp",
+   "radius://localhost:1111/drowssap radius://localhost:1111/drowssap?tcp",
+
+   NULL
+};
+
+
 #pragma mark test_urldesc_strs_resolvable[]
 const char * test_urldesc_strs_resolvable[] =
 {
