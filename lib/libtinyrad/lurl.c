@@ -239,11 +239,13 @@ tinyrad_urldesc_parser(
    char *                     ptr;
    char *                     endptr;
    size_t                     pos;
+   size_t                     x;
    TinyRadURLDesc *           trudp;
    char *                     trud_host;
    const char *               trud_secret;
    int                        trud_port;
    int                        trud_opts;
+   char                       hex[3];
    struct sockaddr_in6    sa6;
 
    assert(url    != NULL);
@@ -344,10 +346,16 @@ tinyrad_urldesc_parser(
             continue;
          if ( (ptr[pos] >= 'A') && (ptr[pos] <= 'Z'))
             continue;
-         if (ptr[pos] == '+')
-            continue;
-         if (ptr[pos] == '%')
+         switch(ptr[pos])
          {
+            case '+':
+            case '-':
+            case '_':
+            case '.':
+            case '~':
+            break;
+
+            case '%':
             if ( ((ptr[pos+1] < 'a') || (ptr[pos+1] > 'f')) &&
                  ((ptr[pos+1] < 'A') || (ptr[pos+1] > 'F')) &&
                  ((ptr[pos+1] < '0') || (ptr[pos+1] > '9')) )
@@ -356,9 +364,11 @@ tinyrad_urldesc_parser(
                  ((ptr[pos+2] < 'A') || (ptr[pos+2] > 'F')) &&
                  ((ptr[pos+2] < '0') || (ptr[pos+2] > '9')) )
                return(TRAD_EURL);
-            continue;
+            break;
+
+            default:
+            return(TRAD_EURL);
          };
-         return(TRAD_EURL);
       };
       switch(trud_opts & TRAD_SCHEME)
       {
@@ -418,6 +428,28 @@ tinyrad_urldesc_parser(
    {
       tinyrad_urldesc_free(trudp);
       return(TRAD_ENOMEM);
+   };
+   for(pos = 0; ((trudp->trud_secret[pos])); pos++)
+   {
+      switch(trudp->trud_secret[pos])
+      {
+         case '+':
+         trudp->trud_secret[pos] = ' ';
+         break;
+
+         case '%':
+         hex[0] = trudp->trud_secret[pos+1];
+         hex[1] = trudp->trud_secret[pos+2];
+         hex[2] = '\0';
+         trudp->trud_secret[pos] = (char)strtol(hex, NULL, 16);
+         for(x = pos+1; ((trudp->trud_secret[x+2])); x++)
+            trudp->trud_secret[x] = trudp->trud_secret[x+2];
+         trudp->trud_secret[x] = trudp->trud_secret[x+2];
+         break;
+
+         default:
+         break;
+      };
    };
 
    *trudpp = trudp;
