@@ -42,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <unistd.h>
 
 
 /////////////////
@@ -63,6 +64,10 @@ tinyrad_destroy(
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
    tr->trud = NULL;
+
+   if (tr->s != -1)
+      close(tr->s);
+   tr->s = -1;
 
    bzero(tr, sizeof(TinyRad));
    free(tr);
@@ -101,7 +106,8 @@ tinyrad_initialize(
    if ((tr = malloc(sizeof(TinyRad))) == NULL)
       return(TRAD_ENOMEM);
    bzero(tr, sizeof(TinyRad));
-   tr->opts = (uint32_t)opts;
+   tr->opts = (uint32_t)(opts & TRAD_OPTS_USER);
+   tr->s    = -1;
 
    // parses URL
    if ((rc = tinyrad_urldesc_parse(url, &tr->trud)) != TRAD_SUCCESS)
@@ -114,8 +120,6 @@ tinyrad_initialize(
       tinyrad_destroy(tr);
       return(rc);
    };
-
-   // opens socket
 
    *trp = tr;
 

@@ -66,9 +66,9 @@
 struct _tinyrad
 {
    TinyRadDict *         dict;
-   uint32_t              opts;
-   uint32_t              pad32;
    TinyRadURLDesc *      trud;
+   unsigned              opts;
+   int                   s;
 };
 
 
