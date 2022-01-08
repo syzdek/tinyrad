@@ -101,7 +101,10 @@ tinyrad_urldesc2str(
 {
    size_t            len;
    char              buff[512];
+   size_t            x;
+   size_t            y;
    int               def_port;
+   char              hex[3];
    struct in6_addr   sin6_addr;
 
    assert(trudp != NULL);
@@ -141,7 +144,34 @@ tinyrad_urldesc2str(
    // add URL secret
    strncat(buff, "/", (sizeof(buff)-strlen(buff)-1));
    if ( (trudp->trud_opts & TRAD_SCHEME) != TRAD_RADSEC)
+   {
+      len = strlen(buff);
       strncat(buff, trudp->trud_secret, (sizeof(buff)-strlen(buff)-1));
+      for(x = len; ( (x < sizeof(buff)) && ((buff[x])) ); x++)
+      {
+         if ((buff[x] >= 'a') && (buff[x] <= 'z'))
+            continue;
+         if ((buff[x] >= 'A') && (buff[x] <= 'Z'))
+            continue;
+         if ((buff[x] >= '0') && (buff[x] <= '9'))
+            continue;
+         if ( (buff[x] == '-') || (buff[x] == '_') || (buff[x] == '.') || (buff[x] == '~') )
+            continue;
+         if (buff[x] == ' ')
+         {
+            buff[x] = '+';
+            continue;
+         };
+         for(y = x; ((buff[y])); y++);
+         for(; (y > x); y--)
+            buff[y+2] = buff[y];
+         snprintf(hex, sizeof(hex), "%02x", buff[x]);
+         buff[x+0] = '%';
+         buff[x+1] = hex[0];
+         buff[x+2] = hex[1];
+         x += 2;
+      };
+   };
 
    // add URL proto
    if ((trudp->trud_opts & TRAD_SCHEME) == TRAD_RADSEC)
