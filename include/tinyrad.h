@@ -303,7 +303,7 @@ tinyrad_free(
 _TINYRAD_F int
 tinyrad_initialize(
          TinyRad **                    trp,
-         const char *                  server,
+         const char *                  url,
          uint64_t                      opts );
 
 

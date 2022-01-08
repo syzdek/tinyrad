@@ -60,6 +60,10 @@ tinyrad_destroy(
 {
    assert(tr != NULL);
 
+   if ((tr->trud))
+      tinyrad_urldesc_free(tr->trud);
+   tr->trud = NULL;
+
    bzero(tr, sizeof(TinyRad));
    free(tr);
 
@@ -79,24 +83,39 @@ tinyrad_free(
 /// initialize Tiny RADIUS reference
 ///
 /// @param[out] trp           pointer to Tiny RADIUS reference
-/// @param[in]  server        RADIUS server
+/// @param[in]  url           RADIUS server
 /// @param[in]  opts          initialization options
 /// @return returns error code
 int
 tinyrad_initialize(
          TinyRad **                    trp,
-         const char *                  server,
+         const char *                  url,
          uint64_t                      opts )
 {
    TinyRad   * tr;
+   int         rc;
 
    assert(trp    != NULL);
-   assert(server != NULL);
+   assert(url    != NULL);
 
    if ((tr = malloc(sizeof(TinyRad))) == NULL)
       return(TRAD_ENOMEM);
    bzero(tr, sizeof(TinyRad));
    tr->opts = (uint32_t)opts;
+
+   // parses URL
+   if ((rc = tinyrad_urldesc_parse(url, &tr->trud)) != TRAD_SUCCESS)
+   {
+      tinyrad_destroy(tr);
+      return(rc);
+   };
+   if ((rc = tinyrad_urldesc_resolve(tr->trud, (uint32_t)opts)) != TRAD_SUCCESS)
+   {
+      tinyrad_destroy(tr);
+      return(rc);
+   };
+
+   // opens socket
 
    *trp = tr;
 
