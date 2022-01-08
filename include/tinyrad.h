@@ -312,9 +312,9 @@ tinyrad_strings_free(
          char **                       strs );
 
 
-//------------------//
+//---------------//
 // URL functions //
-//------------------//
+//---------------//
 #pragma mark URL functions
 
 _TINYRAD_F int
