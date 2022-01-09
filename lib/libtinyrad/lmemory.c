@@ -113,6 +113,11 @@ tinyrad_get_option(
       *((int *)outvalue) = tr->opts & TRAD_IP_UNSPEC;
       break;
 
+      case TRAD_OPT_DIAGNOSTIC_MESSAGE:
+      if ((*((char **)outvalue) = strdup("unknown")) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -211,6 +216,9 @@ tinyrad_set_option(
       if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
          return(rc);
       break;
+
+      case TRAD_OPT_DIAGNOSTIC_MESSAGE:
+      return(TRAD_EOPTERR);
 
       default:
       return(TRAD_EOPTERR);

@@ -133,6 +133,7 @@
 #define TRAD_OPT_URI                3
 #define TRAD_OPT_DEBUG_LEVEL        4
 #define TRAD_OPT_ADDRESS_FAMILY     5
+#define TRAD_OPT_DIAGNOSTIC_MESSAGE 6
 
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
