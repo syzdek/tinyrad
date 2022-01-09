@@ -110,7 +110,7 @@ int main( int argc, char * argv[] )
       { NULL, 0, NULL, 0 }
    };
 
-   opts = TRAD_TEST_CHECK | TRAD_TEST_PARSE | TRAD_TEST_DESC2STR;
+   opts = TRAD_TEST_PARSE | TRAD_TEST_DESC2STR;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {

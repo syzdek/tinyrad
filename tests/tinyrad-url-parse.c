@@ -169,9 +169,6 @@ int main( int argc, char * argv[] )
    for(pos = 0; ((test_urldesc_strs_resolvable[pos])); pos++)
       if ((our_urldesc_test_good(test_urldesc_strs_resolvable[pos], (opts | TRAD_TEST_CHECK))))
          return(1);
-   for(pos = 0; ((test_urldesc_strs_desc2str[pos])); pos++)
-      if ((our_urldesc_test_good(test_urldesc_strs_desc2str[pos], (opts | TRAD_TEST_CHECK))))
-         return(1);
    for(pos = 0; ((test_urldesc_strs_bad[pos])); pos++)
       if ((our_urldesc_test_bad(test_urldesc_strs_bad[pos], (opts | TRAD_TEST_CHECK))))
          return(1);

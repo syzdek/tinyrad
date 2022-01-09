@@ -167,6 +167,12 @@ const char * test_urldesc_strs_desc2str[] =
    "radius://[::1]:1111/drow+ssap+?tcp",
    "radius://[::1]:1111/drow+ss%2aap+%2a?tcp",
 
+   "radius://[::1]/drowssap radius://www.foo.org/drowssap",
+   "radius://[::1]/drow+ssap radius://www.foo.org/drow+ssap",
+   "radius://[::1]/drow+ssap+ radius://www.foo.org/drow+ssap+",
+   "radius://[::1]/drow+ss%2aap+%2a radius://www.foo.org/drow+ss%2aap+%2a",
+   "radius://[::1]/drowssap?tcp radius://www.foo.org/drowssap?tcp",
+
    "radius-acct://www.foo.org/drowssap",
    "radius-acct://www.foo.org/drowssap?tcp",
    "radius-acct://www.foo.org:1111/drowssap",
@@ -424,7 +430,7 @@ int our_urldesc_test(const char * url, int opts)
          return(1);
       };
       if ((opts & TRAD_TEST_VERBOSE))
-         printf("   strcasecmp() ...\n");
+         printf("   strcasecmp(url, \"%s\") ...\n", str);
       if ((strcasecmp(url, str)))
       {
          if ((opts & TRAD_TEST_VERBOSE))
