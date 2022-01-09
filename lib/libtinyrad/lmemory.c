@@ -96,6 +96,10 @@ tinyrad_get_option(
 
    switch(option)
    {
+      case TRAD_OPT_DESC:
+      *((int *)outvalue) = tr->s;
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -157,6 +161,9 @@ tinyrad_set_option(
 
    switch(option)
    {
+      case TRAD_OPT_DESC:
+      return(TRAD_EOPTERR);
+
       default:
       return(TRAD_EOPTERR);
    };

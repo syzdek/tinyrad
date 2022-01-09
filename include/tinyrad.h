@@ -129,6 +129,7 @@
 // library options
 #define TRAD_OPT_OFF                0
 #define TRAD_OPT_ON                 1
+#define TRAD_OPT_DESC               2
 
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
