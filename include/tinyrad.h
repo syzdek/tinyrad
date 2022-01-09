@@ -137,6 +137,7 @@
 #define TRAD_OPT_NETWORK_TIMEOUT    7
 
 // library defaults
+#define TRAD_DFLT_DEBUG             0
 #define TRAD_DFLT_NET_TIMEOUT_SEC   10
 #define TRAD_DFLT_NET_TIMEOUT_USEC  0
 
