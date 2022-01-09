@@ -106,6 +106,7 @@
 #define TRAD_EEXISTS                0x0007 ///< dictionary object exists
 #define TRAD_EURL                   0x0008 ///< invalid RADIUS URL
 #define TRAD_ERESOLVE               0x0009 ///< unable to resolve host
+#define TRAD_EOPTERR                0x000a ///< option error
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFF
