@@ -105,6 +105,10 @@ tinyrad_get_option(
          return(TRAD_ENOMEM);
       break;
 
+      case TRAD_OPT_DEBUG_LEVEL:
+      *((int *)outvalue) = tr->debug;
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -134,8 +138,9 @@ tinyrad_initialize(
    if ((tr = malloc(sizeof(TinyRad))) == NULL)
       return(TRAD_ENOMEM);
    bzero(tr, sizeof(TinyRad));
-   tr->opts = (uint32_t)(opts & TRAD_OPTS_USER);
-   tr->s    = -1;
+   tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
+   tr->s          = -1;
+   tr->debug      = TRAD_DFLT_DEBUG;
 
    // parses URL
    if ((rc = tinyrad_urldesc_parse(url, &tr->trud)) != TRAD_SUCCESS)
@@ -185,6 +190,10 @@ tinyrad_set_option(
       if (tr->s != -1)
          close(tr->s);
       tr->s = -1;
+      break;
+
+      case TRAD_OPT_DEBUG_LEVEL:
+      tr->debug = *((const int *)invalue);
       break;
 
       default:

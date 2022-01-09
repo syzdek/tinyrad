@@ -69,6 +69,8 @@ struct _tinyrad
    TinyRadURLDesc *      trud;
    unsigned              opts;
    int                   s;
+   int                   debug;
+   int                   padint;
 };
 
 
