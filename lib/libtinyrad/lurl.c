@@ -493,6 +493,8 @@ tinyrad_urldesc_resolve(
          TinyRadURLDesc *              trudp,
          uint32_t                      opts )
 {
+   TinyRadURLDesc *              trudp_ptr;
+   size_t                        pos;
    int                           ai_family;
    int                           ai_flags;
    size_t                        size;
@@ -506,6 +508,19 @@ tinyrad_urldesc_resolve(
 
    assert(trudp            != NULL);
    assert(trudp->trud_host != NULL);
+
+   // clear existing sockaddrs
+   for(trudp_ptr = trudp; ((trudp_ptr)); trudp_ptr = trudp_ptr->trud_next)
+   {
+      if ((trudp_ptr->sockaddrs))
+      {
+         for(pos = 0; (pos < trudp_ptr->sockaddrs_len); pos++)
+            free(trudp_ptr->sockaddrs[pos]);
+         free(trudp_ptr->sockaddrs);
+      };
+      trudp_ptr->sockaddrs       = NULL;
+      trudp_ptr->sockaddrs_len   = 0;
+   };
 
    ai_flags  = ((opts & TRAD_SERVER)) ? (AI_NUMERICHOST | AI_NUMERICSERV) : 0;
    ai_flags |= AI_ADDRCONFIG;
