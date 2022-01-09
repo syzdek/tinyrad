@@ -44,6 +44,7 @@
 #endif
 
 #include <assert.h>
+#include <sys/time.h>
 
 #include <tinyrad.h>
 
@@ -67,6 +68,7 @@ struct _tinyrad
 {
    TinyRadDict *         dict;
    TinyRadURLDesc *      trud;
+   struct timeval *      net_timeout;
    unsigned              opts;
    int                   s;
    int                   debug;

@@ -134,6 +134,11 @@
 #define TRAD_OPT_DEBUG_LEVEL        4
 #define TRAD_OPT_ADDRESS_FAMILY     5
 #define TRAD_OPT_DIAGNOSTIC_MESSAGE 6
+#define TRAD_OPT_NETWORK_TIMEOUT    7
+
+// library defaults
+#define TRAD_DFLT_NET_TIMEOUT_SEC   10
+#define TRAD_DFLT_NET_TIMEOUT_USEC  0
 
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS

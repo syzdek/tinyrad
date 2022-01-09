@@ -65,6 +65,10 @@ tinyrad_destroy(
       tinyrad_urldesc_free(tr->trud);
    tr->trud = NULL;
 
+   if ((tr->net_timeout))
+      free(tr->net_timeout);
+   tr->net_timeout = NULL;
+
    if (tr->s != -1)
       close(tr->s);
    tr->s = -1;
@@ -118,6 +122,12 @@ tinyrad_get_option(
          return(TRAD_ENOMEM);
       break;
 
+      case TRAD_OPT_NETWORK_TIMEOUT:
+      if ((*((struct timeval **)outvalue) = malloc(sizeof(struct timeval))) == NULL)
+         return(TRAD_ENOMEM);
+      memcpy(*((struct timeval **)outvalue), tr->net_timeout, sizeof(struct timeval));
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -150,6 +160,16 @@ tinyrad_initialize(
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
    tr->debug      = TRAD_DFLT_DEBUG;
+
+   // sets network timeout
+   if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
+   {
+      tinyrad_destroy(tr);
+      return(TRAD_ENOMEM);
+   };
+   bzero(tr->net_timeout, sizeof(struct timeval));
+   tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
+   tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
 
    // parses URL
    if ((rc = tinyrad_urldesc_parse(url, &tr->trud)) != TRAD_SUCCESS)
@@ -219,6 +239,10 @@ tinyrad_set_option(
 
       case TRAD_OPT_DIAGNOSTIC_MESSAGE:
       return(TRAD_EOPTERR);
+
+      case TRAD_OPT_NETWORK_TIMEOUT:
+      memcpy(tr->net_timeout, ((const struct timeval *)invalue), sizeof(struct timeval));
+      break;
 
       default:
       return(TRAD_EOPTERR);
