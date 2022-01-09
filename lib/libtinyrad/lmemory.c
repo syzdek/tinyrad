@@ -131,6 +131,10 @@ tinyrad_get_option(
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       return(TRAD_EOPTERR);
 
+      case TRAD_OPT_TIMEOUT:
+      *((int *)outvalue) = tr->timeout;
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -163,6 +167,7 @@ tinyrad_initialize(
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
    tr->debug      = TRAD_DFLT_DEBUG;
+   tr->timeout    = TRAD_DFLT_TIMEOUT;
 
    // sets network timeout
    if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
@@ -249,6 +254,10 @@ tinyrad_set_option(
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       return(TRAD_EOPTERR);
+
+      case TRAD_OPT_TIMEOUT:
+      tr->timeout = *((const int *)invalue);
+      break;
 
       default:
       return(TRAD_EOPTERR);

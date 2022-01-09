@@ -72,7 +72,7 @@ struct _tinyrad
    unsigned              opts;
    int                   s;
    int                   debug;
-   int                   padint;
+   int                   timeout;
 };
 
 
