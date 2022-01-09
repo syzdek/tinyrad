@@ -302,6 +302,13 @@ tinyrad_free(
 
 
 _TINYRAD_F int
+tinyrad_get_option(
+         TinyRad *                     tr,
+         int                           option,
+         void *                        outvalue );
+
+
+_TINYRAD_F int
 tinyrad_initialize(
          TinyRad **                    trp,
          const char *                  url,

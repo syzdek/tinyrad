@@ -45,6 +45,7 @@ tinyrad_strerror_r
 # memory functions
 tinyrad_destroy
 tinyrad_free
+tinyrad_get_option
 tinyrad_initialize
 tinyrad_strings_free
 #

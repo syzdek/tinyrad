@@ -85,6 +85,25 @@ tinyrad_free(
 }
 
 
+int
+tinyrad_get_option(
+         TinyRad *                     tr,
+         int                           option,
+         void *                        outvalue )
+{
+   assert(tr       != NULL);
+   assert(outvalue != NULL);
+
+   switch(option)
+   {
+      default:
+      return(TRAD_EOPTERR);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// initialize Tiny RADIUS reference
 ///
 /// @param[out] trp           pointer to Tiny RADIUS reference
