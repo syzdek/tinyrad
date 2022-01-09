@@ -135,6 +135,7 @@
 #define TRAD_OPT_ADDRESS_FAMILY     5
 #define TRAD_OPT_DIAGNOSTIC_MESSAGE 6
 #define TRAD_OPT_NETWORK_TIMEOUT    7
+#define TRAD_OPT_SOCKET_BIND_ADDRESSES 8
 
 // library defaults
 #define TRAD_DFLT_DEBUG             0

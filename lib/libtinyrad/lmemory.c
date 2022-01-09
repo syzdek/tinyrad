@@ -128,6 +128,9 @@ tinyrad_get_option(
       memcpy(*((struct timeval **)outvalue), tr->net_timeout, sizeof(struct timeval));
       break;
 
+      case TRAD_OPT_SOCKET_BIND_ADDRESSES:
+      return(TRAD_EOPTERR);
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -243,6 +246,9 @@ tinyrad_set_option(
       case TRAD_OPT_NETWORK_TIMEOUT:
       memcpy(tr->net_timeout, ((const struct timeval *)invalue), sizeof(struct timeval));
       break;
+
+      case TRAD_OPT_SOCKET_BIND_ADDRESSES:
+      return(TRAD_EOPTERR);
 
       default:
       return(TRAD_EOPTERR);
