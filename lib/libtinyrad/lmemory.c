@@ -100,6 +100,11 @@ tinyrad_get_option(
       *((int *)outvalue) = tr->s;
       break;
 
+      case TRAD_OPT_URI:
+      if ((*((char **)outvalue) = tinyrad_urldesc2str(tr->trud)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -156,6 +161,9 @@ tinyrad_set_option(
          int                           option,
          const void *                  invalue )
 {
+   int                  rc;
+   TinyRadURLDesc *     trud;
+
    assert(tr      != NULL);
    assert(invalue != NULL);
 
@@ -163,6 +171,21 @@ tinyrad_set_option(
    {
       case TRAD_OPT_DESC:
       return(TRAD_EOPTERR);
+
+      case TRAD_OPT_URI:
+      if ((rc = tinyrad_urldesc_parse((const char *)invalue, &trud)) != TRAD_SUCCESS)
+         return(rc);
+      if ((rc = tinyrad_urldesc_resolve(trud, tr->opts)) != TRAD_SUCCESS)
+      {
+         tinyrad_urldesc_free(trud);
+         return(rc);
+      };
+      tinyrad_urldesc_free(tr->trud);
+      tr->trud = trud;
+      if (tr->s != -1)
+         close(tr->s);
+      tr->s = -1;
+      break;
 
       default:
       return(TRAD_EOPTERR);
