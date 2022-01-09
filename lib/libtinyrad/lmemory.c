@@ -146,4 +146,23 @@ tinyrad_initialize(
 }
 
 
+int
+tinyrad_set_option(
+         TinyRad *                     tr,
+         int                           option,
+         const void *                  invalue )
+{
+   assert(tr      != NULL);
+   assert(invalue != NULL);
+
+   switch(option)
+   {
+      default:
+      return(TRAD_EOPTERR);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
 /* end of source */

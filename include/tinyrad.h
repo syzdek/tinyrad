@@ -315,6 +315,13 @@ tinyrad_initialize(
          uint64_t                      opts );
 
 
+_TINYRAD_F int
+tinyrad_set_option(
+         TinyRad *                     tr,
+         int                           option,
+         const void *                  invalue );
+
+
 _TINYRAD_I void
 tinyrad_strings_free(
          char **                       strs );
