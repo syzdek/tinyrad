@@ -109,6 +109,10 @@ tinyrad_get_option(
       *((int *)outvalue) = tr->debug;
       break;
 
+      case TRAD_OPT_ADDRESS_FAMILY:
+      *((int *)outvalue) = tr->opts & TRAD_IP_UNSPEC;
+      break;
+
       default:
       return(TRAD_EOPTERR);
    };
@@ -194,6 +198,18 @@ tinyrad_set_option(
 
       case TRAD_OPT_DEBUG_LEVEL:
       tr->debug = *((const int *)invalue);
+      break;
+
+      case TRAD_OPT_ADDRESS_FAMILY:
+      if ( (tr->opts & TRAD_IP_UNSPEC) == (*(const int *)invalue) )
+         return(TRAD_SUCCESS);
+      if (tr->s != -1)
+         close(tr->s);
+      tr->s    =  -1;
+      tr->opts &= ~TRAD_IP_UNSPEC;
+      tr->opts |= (*(const int *)invalue) & TRAD_IP_UNSPEC;
+      if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
+         return(rc);
       break;
 
       default:
