@@ -639,6 +639,7 @@ tinyrad_dict_attr_add(
    if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
       return(TRAD_ENOMEM);
    bzero(attr, sizeof(TinyRadDictAttr));
+   attr->ref_count = 1;
    attr->type      = type;
    attr->data_type = datatype;
    attr->flags     = flags;
@@ -647,6 +648,7 @@ tinyrad_dict_attr_add(
       attr->vendor_id = vendor->id;
       attr->type_octs = vendor->type_octs;
       attr->len_octs  = vendor->len_octs;
+      attr->ref_count++;
    };
    if ((attr->name = strdup(name)) == NULL)
    {
@@ -725,6 +727,8 @@ tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr )
 {
    if (!(attr))
+      return;
+   if (atomic_fetch_sub(&attr->ref_count, 1) > 1)
       return;
    if ((attr->name))
       free(attr->name);
@@ -1757,6 +1761,8 @@ void
 tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *          vendor )
 {
+   size_t   pos;
+
    if (!(vendor))
       return;
 
@@ -1766,6 +1772,8 @@ tinyrad_dict_vendor_destroy(
    if ((vendor->name))
       free(vendor->name);
 
+   for(pos = 0; (pos < vendor->attrs_len); pos++)
+      tinyrad_dict_attr_destroy(vendor->attrs[pos]);
    if ((vendor->attrs))
       free(vendor->attrs);
    if ((vendor->attrs_type))

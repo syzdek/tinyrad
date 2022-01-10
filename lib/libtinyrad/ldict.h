@@ -99,6 +99,7 @@ struct _tinyrad_dict_vsa
 
 struct _tinyrad_dict_attr
 {
+   atomic_intmax_t       ref_count;
    char *                name;
    uint32_t              vendor_id;
    uint32_t              type;
