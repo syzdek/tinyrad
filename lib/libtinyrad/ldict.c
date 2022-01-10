@@ -726,12 +726,19 @@ void
 tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr )
 {
+   size_t   pos;
    if (!(attr))
       return;
    if (atomic_fetch_sub(&attr->ref_count, 1) > 1)
       return;
    if ((attr->name))
       free(attr->name);
+   for(pos = 0; (pos < attr->values_len); pos++)
+      tinyrad_dict_value_destroy(attr->values_name[pos]);
+   if ((attr->values_name))
+      free(attr->values_name);
+   if ((attr->values_numeric))
+      free(attr->values_numeric);
    bzero(attr, sizeof(TinyRadDictAttr));
    free(attr);
    return;
