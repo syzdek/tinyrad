@@ -865,6 +865,9 @@ tinyrad_dict_destroy(
    if (!(dict))
       return;
 
+   if (atomic_fetch_sub(&dict->ref_count, 1) > 1)
+      return;
+
    // free attributes
    if ((dict->attrs))
    {
@@ -1269,7 +1272,8 @@ tinyrad_dict_initialize(
    if (!(dict = malloc(sizeof(TinyRadDict))))
       return(-1);
    bzero(dict, sizeof(TinyRadDict));
-   dict->opts = opts;
+   dict->opts      = opts;
+   dict->ref_count = 1;
 
    // initializes paths
    if ((dict->paths = malloc(sizeof(char *))) == NULL)
