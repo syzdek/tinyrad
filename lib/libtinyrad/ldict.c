@@ -1670,6 +1670,7 @@ tinyrad_dict_vendor_add(
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
+   vendor->ref_count = 1;
 
    // copy vendor name
    if ((vendor->name = strdup(name)) == NULL)
@@ -1757,6 +1758,9 @@ tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *          vendor )
 {
    if (!(vendor))
+      return;
+
+   if (atomic_fetch_sub(&vendor->ref_count, 1) > 1)
       return;
 
    if ((vendor->name))
