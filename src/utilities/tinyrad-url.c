@@ -83,6 +83,7 @@ void my_usage( void );
 
 int main(int argc, char * argv[])
 {
+   int                        opt;
    int                        c;
    int                        rc;
    int                        pos;
@@ -96,9 +97,10 @@ int main(int argc, char * argv[])
    TinyRadURLDesc *           trudp_next;
 
    // getopt options
-   static char          short_opt[] = "46hqrVv";
+   static char          short_opt[] = "d:46hqrVv";
    static struct option long_opt[] =
    {
+      {"debug",            optional_argument, NULL, 'd' },
       {"help",             no_argument,       NULL, 'h' },
       {"quiet",            no_argument,       NULL, 'q' },
       {"silent",           no_argument,       NULL, 'q' },
@@ -107,6 +109,10 @@ int main(int argc, char * argv[])
       {"resolve",          no_argument,       NULL, 'r' },
       { NULL, 0, NULL, 0 }
    };
+
+   opt = TRAD_OPT_OFF;
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, PROGRAM_NAME);
 
    opts        = 0;
    quiet       = 0;
@@ -129,6 +135,11 @@ int main(int argc, char * argv[])
 
          case '6':
          opts |= TRAD_IPV6;
+         break;
+
+         case 'd':
+         opt = ((optarg)) ? (int)strtol(optarg, NULL, 0) : TRAD_DEBUG_ANY;
+         tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
          break;
 
          case 'h':
@@ -288,6 +299,7 @@ void my_usage(void)
    printf("Options:\n");
    printf("  -4                                        use IPv4 addresses\n");
    printf("  -6                                        use IPv6 addresses\n");
+   printf("  -d level, --debug=level                   print debug messages\n");
    printf("  -h, --help                                print this help and exit\n");
    printf("  -q, --quiet, --silent                     do not print messages\n");
    printf("  -V, --version                             print version number and exit\n");
