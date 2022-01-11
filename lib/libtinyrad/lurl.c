@@ -75,6 +75,7 @@ tinyrad_is_radius_url(
          const char *                  url )
 {
    char                       buff[512];
+   TinyRadDebugTrace();
    assert(url    != NULL);
    strncpy(buff, url, sizeof(buff));
    return(tinyrad_urldesc_parser(buff, NULL));
@@ -86,6 +87,7 @@ tinyrad_urldesc_alloc(
          TinyRadURLDesc **             trudpp )
 {
    TinyRadURLDesc * trudp;
+   TinyRadDebugTrace();
    assert(trudpp != NULL);
    if ((trudp = malloc(sizeof(TinyRadURLDesc))) == NULL)
       return(TRAD_ENOMEM);
@@ -106,6 +108,8 @@ tinyrad_urldesc2str(
    int               def_port;
    char              hex[3];
    struct in6_addr   sin6_addr;
+
+   TinyRadDebugTrace();
 
    assert(trudp != NULL);
 
@@ -204,6 +208,8 @@ tinyrad_urldesc_free(
 {
    TinyRadURLDesc * next;
 
+   TinyRadDebugTrace();
+
    while ((trudp))
    {
       next = trudp->trud_next;
@@ -234,6 +240,8 @@ tinyrad_urldesc_parse(
    char *                     str;
    char *                     ptr;
    TinyRadURLDesc **          pptr;
+
+   TinyRadDebugTrace();
 
    assert(url    != NULL);
    assert(trudpp != NULL);
@@ -288,6 +296,8 @@ tinyrad_urldesc_parser(
    int                        trud_opts;
    char                       hex[3];
    struct sockaddr_in6    sa6;
+
+   TinyRadDebugTrace();
 
    assert(url    != NULL);
 
@@ -516,6 +526,8 @@ tinyrad_urldesc_resolve(
    void *                        ptr;
    size_t                        sas_len;
    struct sockaddr_storage **    sasp;
+
+   TinyRadDebugTrace();
 
    assert(trudp            != NULL);
    assert(trudp->trud_host != NULL);
