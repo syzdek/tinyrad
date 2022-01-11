@@ -152,6 +152,8 @@ lib_libtinyrad_a_CPPFLAGS		= $(AM_CPPFLAGS) \
 lib_libtinyrad_a_CFLAGS			= $(AM_CFLAGS)
 lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.h \
+					  lib/libtinyrad/ldebug.c \
+					  lib/libtinyrad/ldebug.h \
 					  lib/libtinyrad/ldict.c \
 					  lib/libtinyrad/ldict.h \
 					  lib/libtinyrad/lerror.c \

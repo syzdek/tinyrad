@@ -137,9 +137,22 @@
 #define TRAD_OPT_NETWORK_TIMEOUT    7
 #define TRAD_OPT_SOCKET_BIND_ADDRESSES 8
 #define TRAD_OPT_TIMEOUT            9
+#define TRAD_OPT_DEBUG_IDENT       10
+#define TRAD_OPT_DEBUG_SYSLOG      11
+
+// library debug levels
+#define TRAD_DEBUG_NONE             0
+#define TRAD_DEBUG_TRACE            0x0000001
+#define TRAD_DEBUG_ARGS             0x0000002
+#define TRAD_DEBUG_CONNS            0x0000004
+#define TRAD_DEBUG_PACKETS          0x0000008
+#define TRAD_DEBUG_PARSE            0x0000010
+#define TRAD_DEBUG_ANY              (~0x00)
 
 // library defaults
-#define TRAD_DFLT_DEBUG             0
+#define TRAD_DFLT_DEBUG_IDENT       "libtinyrad"
+#define TRAD_DFLT_DEBUG_LEVEL       TRAD_DEBUG_NONE
+#define TRAD_DFLT_DEBUG_SYSLOG      TRAD_OPT_OFF
 #define TRAD_DFLT_TIMEOUT           10
 #define TRAD_DFLT_NET_TIMEOUT_SEC   10
 #define TRAD_DFLT_NET_TIMEOUT_USEC  0

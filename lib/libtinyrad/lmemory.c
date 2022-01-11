@@ -95,9 +95,31 @@ tinyrad_get_option(
          int                           option,
          void *                        outvalue )
 {
-   assert(tr       != NULL);
    assert(outvalue != NULL);
 
+   // get global options
+   switch(option)
+   {
+      case TRAD_OPT_DEBUG_IDENT:
+      if ((*((char **)outvalue) = strdup(tinyrad_debug_ident)) == NULL)
+         return(TRAD_ENOMEM);
+      return(TRAD_SUCCESS);
+
+      case TRAD_OPT_DEBUG_LEVEL:
+      *((int *)outvalue) = tinyrad_debug_level;
+      return(TRAD_SUCCESS);
+
+      case TRAD_OPT_DEBUG_SYSLOG:
+      *((int *)outvalue) = tinyrad_debug_syslog;
+      return(TRAD_SUCCESS);
+
+      default:
+      break;
+   };
+
+   assert(tr!= NULL);
+
+   // get instance options
    switch(option)
    {
       case TRAD_OPT_DESC:
@@ -107,10 +129,6 @@ tinyrad_get_option(
       case TRAD_OPT_URI:
       if ((*((char **)outvalue) = tinyrad_urldesc2str(tr->trud)) == NULL)
          return(TRAD_ENOMEM);
-      break;
-
-      case TRAD_OPT_DEBUG_LEVEL:
-      *((int *)outvalue) = tr->debug;
       break;
 
       case TRAD_OPT_ADDRESS_FAMILY:
@@ -166,7 +184,6 @@ tinyrad_initialize(
    bzero(tr, sizeof(TinyRad));
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
-   tr->debug      = TRAD_DFLT_DEBUG;
    tr->timeout    = TRAD_DFLT_TIMEOUT;
 
    // sets network timeout
@@ -206,9 +223,38 @@ tinyrad_set_option(
    int                  rc;
    TinyRadURLDesc *     trud;
 
-   assert(tr      != NULL);
    assert(invalue != NULL);
 
+   // set global options
+   switch(option)
+   {
+      case TRAD_OPT_DEBUG_IDENT:
+      if (!((const char *)invalue))
+         invalue = TRAD_DFLT_DEBUG_IDENT;
+      strncpy(tinyrad_debug_ident_buff, (const char *)invalue, sizeof(tinyrad_debug_ident_buff));
+      tinyrad_debug_ident = tinyrad_debug_ident_buff;
+      return(TRAD_SUCCESS);
+
+      case TRAD_OPT_DEBUG_LEVEL:
+      tinyrad_debug_level = *((const int *)invalue);
+      return(TRAD_SUCCESS);
+
+      case TRAD_OPT_DEBUG_SYSLOG:
+      switch(*((const int *)invalue))
+      {
+         case TRAD_OPT_ON:  tinyrad_debug_syslog = TRAD_OPT_ON;  break;
+         case TRAD_OPT_OFF: tinyrad_debug_syslog = TRAD_OPT_OFF; break;
+         default: return(TRAD_EOPTERR);
+      };
+      return(TRAD_SUCCESS);
+
+      default:
+      break;
+   };
+
+   assert(tr != NULL);
+
+   // set instance options
    switch(option)
    {
       case TRAD_OPT_DESC:
@@ -227,10 +273,6 @@ tinyrad_set_option(
       if (tr->s != -1)
          close(tr->s);
       tr->s = -1;
-      break;
-
-      case TRAD_OPT_DEBUG_LEVEL:
-      tr->debug = *((const int *)invalue);
       break;
 
       case TRAD_OPT_ADDRESS_FAMILY:

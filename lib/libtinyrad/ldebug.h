@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_H
-#define _LIB_LIBTINYRAD_H 1
+#ifndef _LIB_LIBTINYRAD_LDEBUG_H
+#define _LIB_LIBTINYRAD_LDEBUG_H 1
 
 
 ///////////////
@@ -39,14 +39,12 @@
 ///////////////
 #pragma mark - Headers
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "libtinyrad.h"
 
-#include <assert.h>
-#include <sys/time.h>
-
-#include <tinyrad.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 
 
 ///////////////////
@@ -57,49 +55,12 @@
 #pragma mark - Definitions
 
 
-//////////////////
-//              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-struct _tinyrad
-{
-   TinyRadDict *         dict;
-   TinyRadURLDesc *      trud;
-   struct timeval *      net_timeout;
-   unsigned              opts;
-   int                   s;
-   int                   timeout;
-   int                   padint;
-};
-
-
-struct _tinyrad_avp
-{
-   uint64_t              opts;
-};
-
-
-struct _tinyrad_map
-{
-   const char *          name;
-   uint64_t              value;
-};
-
-
 /////////////////
 //             //
 //  Variables  //
 //             //
 /////////////////
 #pragma mark - Variables
-
-extern const char *   tinyrad_debug_ident;
-extern char           tinyrad_debug_ident_buff[128];
-extern int            tinyrad_debug_level;
-extern int            tinyrad_debug_syslog;
 
 
 //////////////////

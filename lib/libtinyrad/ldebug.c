@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_H
-#define _LIB_LIBTINYRAD_H 1
+#define _LIB_LIBTINYRAD_LDEBUG_C 1
+#include "ldebug.h"
 
 
 ///////////////
@@ -39,54 +39,10 @@
 ///////////////
 #pragma mark - Headers
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <assert.h>
-#include <sys/time.h>
-
-#include <tinyrad.h>
-
-
-///////////////////
-//               //
-//  Definitions  //
-//               //
-///////////////////
-#pragma mark - Definitions
-
-
-//////////////////
-//              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-struct _tinyrad
-{
-   TinyRadDict *         dict;
-   TinyRadURLDesc *      trud;
-   struct timeval *      net_timeout;
-   unsigned              opts;
-   int                   s;
-   int                   timeout;
-   int                   padint;
-};
-
-
-struct _tinyrad_avp
-{
-   uint64_t              opts;
-};
-
-
-struct _tinyrad_map
-{
-   const char *          name;
-   uint64_t              value;
-};
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 
 
 /////////////////
@@ -96,18 +52,19 @@ struct _tinyrad_map
 /////////////////
 #pragma mark - Variables
 
-extern const char *   tinyrad_debug_ident;
-extern char           tinyrad_debug_ident_buff[128];
-extern int            tinyrad_debug_level;
-extern int            tinyrad_debug_syslog;
+// yes, global variables are evil...
+const char *   tinyrad_debug_ident     = TRAD_DFLT_DEBUG_IDENT;
+char           tinyrad_debug_ident_buff[128];
+int            tinyrad_debug_level     = TRAD_DFLT_DEBUG_LEVEL;
+int            tinyrad_debug_syslog    = TRAD_DFLT_DEBUG_SYSLOG;
 
 
-//////////////////
-//              //
-//  Prototypes  //
-//              //
-//////////////////
-#pragma mark - Prototypes
+/////////////////
+//             //
+//  Functions  //
+//             //
+/////////////////
+#pragma mark - Functions
 
 
-#endif /* end of header */
+/* end of source */
