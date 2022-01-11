@@ -72,6 +72,7 @@ const char *
 tinyrad_error_map(
          int                           errnum )
 {
+   TinyRadDebugTrace();
    switch(errnum)
    {
       case TRAD_SUCCESS:    return("success");
@@ -103,6 +104,8 @@ tinyrad_error_msgs(
    char           msg[256];
    va_list        args;
 
+   TinyRadDebugTrace();
+
    if (!(msgsp))
       return(errnum);
 
@@ -133,6 +136,7 @@ tinyrad_strerror(
          int                           errnum )
 {
    const char * msg;
+   TinyRadDebugTrace();
    if ((msg = tinyrad_error_map(errnum)) == NULL)
       msg = "unknown error code";
    return(msg);
@@ -152,6 +156,8 @@ tinyrad_strerror_r(
          size_t                        buflen )
 {
    const char * msg;
+
+   TinyRadDebugTrace();
 
    assert(strerrbuf != NULL);
    assert(buflen    != 0);
