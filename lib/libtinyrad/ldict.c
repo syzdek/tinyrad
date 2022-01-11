@@ -550,6 +550,8 @@ tinyrad_dict_add_path(
    char **         paths;
    struct stat     sb;
 
+   TinyRadDebugTrace();
+
    assert(dict != NULL);
    assert(path != NULL);
 
@@ -587,6 +589,8 @@ tinyrad_dict_attr_add(
    size_t               size;
    void *               ptr;
    TinyRadDictAttr *    attr;
+
+   TinyRadDebugTrace();
 
    assert(dict      != NULL);
    assert(name      != NULL);
@@ -691,6 +695,8 @@ tinyrad_dict_attr_cmp_name(
    const TinyRadDictAttr * attr1;
    const TinyRadDictAttr * attr2;
 
+   TinyRadDebugTrace();
+
    assert(ptr1 != NULL);
    assert(ptr2 != NULL);
 
@@ -708,6 +714,8 @@ tinyrad_dict_attr_cmp_type(
 {
    const TinyRadDictAttr *  attr1;
    const TinyRadDictAttr *  attr2;
+
+   TinyRadDebugTrace();
 
    assert(ptr1 != NULL);
    assert(ptr2 != NULL);
@@ -727,6 +735,7 @@ tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr )
 {
    size_t   pos;
+   TinyRadDebugTrace();
    if (!(attr))
       return;
    if (atomic_fetch_sub(&attr->ref_count, 1) > 1)
@@ -757,6 +766,8 @@ tinyrad_dict_attr_lookup(
    void **              list;
    const void *         idx;
    int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
 
    assert(dict   != NULL);
 
@@ -791,6 +802,7 @@ tinyrad_dict_attr_lookup_name(
 {
    const TinyRadDictVendor *  vendor = data;
    const char *               name   = idx;
+   TinyRadDebugTrace();
    return(strcasecmp(name, vendor->name));
 }
 
@@ -802,6 +814,7 @@ tinyrad_dict_attr_lookup_type(
 {
    const TinyRadDictAttr *    attr = data;
    uint32_t                   type = *((const uint32_t *)idx);
+   TinyRadDebugTrace();
    if (attr->type == type)
       return(0);
    if (attr->type < type)
@@ -825,6 +838,8 @@ tinyrad_dict_defaults(
    const char *       attr_name;
    const char *       value_name;
    TinyRadDictAttr *  attr;
+
+   TinyRadDebugTrace();
 
    assert(dict != NULL);
    assert(opts == 0);
@@ -872,6 +887,8 @@ tinyrad_dict_destroy(
          TinyRadDict *                dict )
 {
    size_t        pos;
+
+   TinyRadDebugTrace();
 
    if (!(dict))
       return;
@@ -932,6 +949,8 @@ tinyrad_dict_import(
    TinyRadFile *         file;
    TinyRadFile *         parent;
    TinyRadDictVendor *   vendor;
+
+   TinyRadDebugTrace();
 
    assert(dict != NULL);
    assert(path != NULL);
@@ -1052,6 +1071,8 @@ tinyrad_dict_import_attribute(
    char *      ptr;
    char *      str;
 
+   TinyRadDebugTrace();
+
    assert(dict != NULL);
    assert(file != NULL);
    assert(opts == 0);
@@ -1095,6 +1116,8 @@ tinyrad_dict_import_begin_vendor(
          TinyRadDictVendor **         vendorp,
          TinyRadFile *                file )
 {
+   TinyRadDebugTrace();
+
    assert(dict    != NULL);
    assert(vendorp != NULL);
 
@@ -1115,6 +1138,8 @@ tinyrad_dict_import_end_vendor(
          TinyRadDictVendor **         vendorp,
          TinyRadFile *                file )
 {
+   TinyRadDebugTrace();
+
    assert(dict    != NULL);
    assert(vendorp != NULL);
 
@@ -1138,6 +1163,8 @@ tinyrad_dict_import_include(
 {
    int            rc;
    TinyRadFile *  incl;
+
+   TinyRadDebugTrace();
 
    assert(dict  != NULL);
    assert(filep != NULL);
@@ -1167,6 +1194,8 @@ tinyrad_dict_import_value(
    uint64_t           number;
    int                rc;
    char *             ptr;
+
+   TinyRadDebugTrace();
 
    assert(dict != NULL);
    assert(file != NULL);
@@ -1207,6 +1236,8 @@ tinyrad_dict_import_vendor(
    uint32_t                len_octs;
 
    TinyRadDictVendor *     vendor;
+
+   TinyRadDebugTrace();
 
    assert(dict != NULL);
    assert(file != NULL);
@@ -1278,6 +1309,8 @@ tinyrad_dict_initialize(
 {
    TinyRadDict *    dict;
 
+   TinyRadDebugTrace();
+
    assert(dictp != NULL);
 
    if (!(dict = malloc(sizeof(TinyRadDict))))
@@ -1340,6 +1373,8 @@ tinyrad_dict_lookup(
    ssize_t     mid;
    ssize_t     high;
 
+   TinyRadDebugTrace();
+
    assert(idx  != NULL);
 
    if (!(list))
@@ -1378,6 +1413,8 @@ tinyrad_dict_print(
 {
    size_t     pos;
 
+   TinyRadDebugTrace();
+
    assert(dict   != NULL);
    assert(opts   != 0);
 
@@ -1404,6 +1441,8 @@ tinyrad_dict_print_attribute(
    size_t              pos;
    uint32_t            flags;
    TinyRadDictValue *  value;
+
+   TinyRadDebugTrace();
 
    assert(dict != NULL);
    assert(attr != NULL);
@@ -1440,6 +1479,8 @@ tinyrad_dict_print_vendor(
 {
    size_t pos;
 
+   TinyRadDebugTrace();
+
    assert(dict   != NULL);
    assert(vendor != NULL);
 
@@ -1471,6 +1512,8 @@ tinyrad_dict_value_add(
    TinyRadDictValue *   value;
    size_t               size;
    void *               ptr;
+
+   TinyRadDebugTrace();
 
    assert(attr      != NULL);
    assert(name      != NULL);
@@ -1530,6 +1573,8 @@ tinyrad_dict_value_cmp_name(
    const TinyRadDictValue * value1;
    const TinyRadDictValue * value2;
 
+   TinyRadDebugTrace();
+
    assert(ptr1 != NULL);
    assert(ptr2 != NULL);
 
@@ -1548,6 +1593,8 @@ tinyrad_dict_value_cmp_numeric(
    const TinyRadDictValue * value1;
    const TinyRadDictValue * value2;
 
+   TinyRadDebugTrace();
+
    assert(ptr1 != NULL);
    assert(ptr2 != NULL);
 
@@ -1562,6 +1609,8 @@ void
 tinyrad_dict_value_destroy(
          TinyRadDictValue *           value )
 {
+   TinyRadDebugTrace();
+
    if (!(value))
       return;
 
@@ -1584,6 +1633,8 @@ tinyrad_dict_value_lookup(
    void **         list;
    const void *    idx;
    int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
 
    assert(attr   != NULL);
 
@@ -1609,6 +1660,7 @@ tinyrad_dict_value_lookup_name(
 {
    const TinyRadDictValue *  value;
    const char *              name;
+   TinyRadDebugTrace();
    value = data;
    name  = idx;
    return(strcasecmp(name, value->name));
@@ -1622,6 +1674,7 @@ tinyrad_dict_value_lookup_numeric(
 {
    const TinyRadDictValue *  value;
    uint64_t                  val;
+   TinyRadDebugTrace();
    value = data;
    val   = *((const uint64_t *)idx);
    if (value->value == val)
@@ -1645,6 +1698,8 @@ tinyrad_dict_vendor_add(
    size_t               size;
    void *               ptr;
    TinyRadDictVendor *  vendor;
+
+   TinyRadDebugTrace();
 
    assert(dict   != NULL);
    assert(name   != NULL);
@@ -1731,6 +1786,8 @@ tinyrad_dict_vendor_cmp_id(
    const TinyRadDictVendor *  vendor1;
    const TinyRadDictVendor *  vendor2;
 
+   TinyRadDebugTrace();
+
    assert(ptr1 != NULL);
    assert(ptr2 != NULL);
 
@@ -1751,6 +1808,8 @@ tinyrad_dict_vendor_cmp_name(
    const TinyRadDictVendor * vendor1;
    const TinyRadDictVendor * vendor2;
 
+   TinyRadDebugTrace();
+
    assert(ptr1 != NULL);
    assert(ptr2 != NULL);
 
@@ -1769,6 +1828,8 @@ tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *          vendor )
 {
    size_t   pos;
+
+   TinyRadDebugTrace();
 
    if (!(vendor))
       return;
@@ -1805,6 +1866,8 @@ tinyrad_dict_vendor_lookup(
    const void *    idx;
    int (*compar)(const void *, const void *);
 
+   TinyRadDebugTrace();
+
    assert(dict   != NULL);
 
    if ((name))
@@ -1831,6 +1894,7 @@ tinyrad_dict_vendor_lookup_id(
 {
    const TinyRadDictVendor *  vendor;
    uint32_t                   id;
+   TinyRadDebugTrace();
    vendor = data;
    id     = *((const uint32_t *)idx);
    if (vendor->id == id)
@@ -1848,6 +1912,7 @@ tinyrad_dict_vendor_lookup_name(
 {
    const TinyRadDictVendor *  vendor;
    const char *               name;
+   TinyRadDebugTrace();
    vendor = data;
    name   = idx;
    return(strcasecmp(name, vendor->name));
