@@ -98,6 +98,8 @@ tinyrad_map_lookup(
          uint64_t                      value,
          const TinyRadMap **           mapp )
 {
+   TinyRadDebugTrace();
+
    assert(map  != NULL);
    assert(mapp != NULL);
 
@@ -117,6 +119,8 @@ tinyrad_map_lookup_name(
          const TinyRadMap **           mapp )
 {
    size_t  pos;
+
+   TinyRadDebugTrace();
 
    assert(map  != NULL);
    assert(name != NULL);
@@ -145,6 +149,8 @@ tinyrad_map_lookup_value(
          const TinyRadMap **           mapp )
 {
    size_t  pos;
+
+   TinyRadDebugTrace();
 
    assert(map  != NULL);
 
