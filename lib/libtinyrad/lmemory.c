@@ -106,15 +106,21 @@ tinyrad_get_option(
    switch(option)
    {
       case TRAD_OPT_DEBUG_IDENT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_IDENT, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", tinyrad_debug_ident);
       if ((*((char **)outvalue) = strdup(tinyrad_debug_ident)) == NULL)
          return(TRAD_ENOMEM);
       return(TRAD_SUCCESS);
 
       case TRAD_OPT_DEBUG_LEVEL:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_LEVEL, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: 0x%08x", tinyrad_debug_level);
       *((int *)outvalue) = tinyrad_debug_level;
       return(TRAD_SUCCESS);
 
       case TRAD_OPT_DEBUG_SYSLOG:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_SYSLOG, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", ((tinyrad_debug_syslog)) ? "TRAD_ON" : "TRAD_OFF");
       *((int *)outvalue) = tinyrad_debug_syslog;
       return(TRAD_SUCCESS);
 
@@ -128,24 +134,31 @@ tinyrad_get_option(
    switch(option)
    {
       case TRAD_OPT_DESC:
-      *((int *)outvalue) = tr->s;
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DESC, outvalue )", __FUNCTION__);
       break;
 
       case TRAD_OPT_URI:
-      if ((*((char **)outvalue) = tinyrad_urldesc2str(tr->trud)) == NULL)
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, outvalue )", __FUNCTION__);
          return(TRAD_ENOMEM);
       break;
 
       case TRAD_OPT_ADDRESS_FAMILY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_ADDRESS_FAMILY, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", (tr->opts & TRAD_IP_UNSPEC));
       *((int *)outvalue) = tr->opts & TRAD_IP_UNSPEC;
       break;
 
       case TRAD_OPT_DIAGNOSTIC_MESSAGE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "unknown");
       if ((*((char **)outvalue) = strdup("unknown")) == NULL)
          return(TRAD_ENOMEM);
       break;
 
       case TRAD_OPT_NETWORK_TIMEOUT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_NETWORK_TIMEOUT, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: tv_sec: %i", tr->net_timeout->tv_sec);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: tv_usec: %i", tr->net_timeout->tv_usec);
       if ((*((struct timeval **)outvalue) = malloc(sizeof(struct timeval))) == NULL)
          return(TRAD_ENOMEM);
       memcpy(*((struct timeval **)outvalue), tr->net_timeout, sizeof(struct timeval));
@@ -155,6 +168,8 @@ tinyrad_get_option(
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_TIMEOUT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_TIMEOUT, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", tr->timeout);
       *((int *)outvalue) = tr->timeout;
       break;
 
@@ -185,6 +200,8 @@ tinyrad_initialize(
 
    assert(trp    != NULL);
    assert(url    != NULL);
+
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( \"%s\", 0x08x )", __FUNCTION__, url, opts);
 
    if ((tr = malloc(sizeof(TinyRad))) == NULL)
       return(TRAD_ENOMEM);
@@ -238,6 +255,7 @@ tinyrad_set_option(
    switch(option)
    {
       case TRAD_OPT_DEBUG_IDENT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_IDENT, \"%s\" )", __FUNCTION__, ((!((const char *)invalue)) ? "(NULL)" : (const char *)invalue));
       if (!((const char *)invalue))
          invalue = TRAD_DFLT_DEBUG_IDENT;
       strncpy(tinyrad_debug_ident_buff, (const char *)invalue, sizeof(tinyrad_debug_ident_buff));
@@ -245,10 +263,12 @@ tinyrad_set_option(
       return(TRAD_SUCCESS);
 
       case TRAD_OPT_DEBUG_LEVEL:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_LEVEL, 0x%08x )", __FUNCTION__, *((const int *)invalue));
       tinyrad_debug_level = *((const int *)invalue);
       return(TRAD_SUCCESS);
 
       case TRAD_OPT_DEBUG_SYSLOG:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_SYSLOG, %i )", __FUNCTION__, *((const int *)invalue));
       switch(*((const int *)invalue))
       {
          case TRAD_OPT_ON:  tinyrad_debug_syslog = TRAD_OPT_ON;  break;
@@ -270,6 +290,7 @@ tinyrad_set_option(
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_URI:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, \"%s\" )", __FUNCTION__, (const char *)invalue);
       if ((rc = tinyrad_urldesc_parse((const char *)invalue, &trud)) != TRAD_SUCCESS)
          return(rc);
       if ((rc = tinyrad_urldesc_resolve(trud, tr->opts)) != TRAD_SUCCESS)
@@ -285,6 +306,7 @@ tinyrad_set_option(
       break;
 
       case TRAD_OPT_ADDRESS_FAMILY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_ADDRESS_FAMILY, %i )", __FUNCTION__, *((const int *)invalue));
       if ( (tr->opts & TRAD_IP_UNSPEC) == (*(const int *)invalue) )
          return(TRAD_SUCCESS);
       if (tr->s != -1)
@@ -297,6 +319,7 @@ tinyrad_set_option(
       break;
 
       case TRAD_OPT_DIAGNOSTIC_MESSAGE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, invalue )", __FUNCTION__);
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_NETWORK_TIMEOUT:
@@ -304,13 +327,16 @@ tinyrad_set_option(
       break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, invalue )", __FUNCTION__);
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_TIMEOUT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_TIMEOUT, %i )", __FUNCTION__, *((const int *)invalue));
       tr->timeout = *((const int *)invalue);
       break;
 
       default:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, %i, invalue )", __FUNCTION__, option);
       return(TRAD_EOPTERR);
    };
 
