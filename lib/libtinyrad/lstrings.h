@@ -157,6 +157,7 @@ tinyrad_strings_count(
          char **                       strs )
 {
    size_t count;
+   TinyRadDebugTrace();
    if (!(strs))
       return(0);
    for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
@@ -171,6 +172,7 @@ tinyrad_strings_dequeue(
 {
    char *      str;
    size_t      pos;
+   TinyRadDebugTrace();
    assert(strs != NULL);
    str = strs[0];
    for(pos = 0; ((strs[pos])); pos++)
@@ -191,6 +193,7 @@ tinyrad_strings_dequeue_int(
 {
    char *      str;
    intmax_t    i;
+   TinyRadDebugTrace();
    assert(strs != NULL);
    str = tinyrad_strings_dequeue(strs, 0);
    i = (intmax_t)strtoll(str, NULL, 0);
@@ -205,6 +208,7 @@ tinyrad_strings_dequeue_uint(
 {
    char *      str;
    uintmax_t   uint;
+   TinyRadDebugTrace();
    assert(strs != NULL);
    str = tinyrad_strings_dequeue(strs, 0);
    uint = (uintmax_t)strtoull(str, NULL, 0);
@@ -226,6 +230,8 @@ tinyrad_strings_dup(
    char **     ptr;
    size_t      count;
    size_t      pos;
+
+   TinyRadDebugTrace();
 
    count  = tinyrad_strings_count( src );
 
@@ -258,6 +264,7 @@ tinyrad_strings_enqueue(
          char ***                      strsp,
          const char *                  str )
 {
+   TinyRadDebugTrace();
    return(tinyrad_strings_push(strsp, str));
 }
 
@@ -272,6 +279,7 @@ tinyrad_strings_enqueue_int(
          char ***                      strsp,
          intmax_t                      i )
 {
+   TinyRadDebugTrace();
    return(tinyrad_strings_push_int(strsp, i));
 }
 
@@ -286,6 +294,7 @@ tinyrad_strings_enqueue_uint(
          char ***                      strsp,
          uintmax_t                     uint )
 {
+   TinyRadDebugTrace();
    return(tinyrad_strings_push_uint(strsp, uint));
 }
 
@@ -298,6 +307,7 @@ tinyrad_strings_free(
          char **                       strs )
 {
    int i;
+   TinyRadDebugTrace();
    if (!(strs))
       return;
    for(i = 0; ((strs[i])); i++)
@@ -322,6 +332,7 @@ tinyrad_strings_pop(
 {
    char *      str;
    size_t      pos;
+   TinyRadDebugTrace();
    assert(strs != NULL);
    for(pos = 0; ((strs[pos])); pos++);
    if (!(pos))
@@ -343,6 +354,7 @@ tinyrad_strings_pop_int(
 {
    intmax_t    i;
    char *      str;
+   TinyRadDebugTrace();
    assert(strs != NULL);
    if ((str = tinyrad_strings_pop(strs, 0)) == NULL)
       return(0);
@@ -358,6 +370,7 @@ tinyrad_strings_pop_uint(
 {
    uintmax_t   uint;
    char *      str;
+   TinyRadDebugTrace();
    assert(strs != NULL);
    if ((str = tinyrad_strings_pop(strs, 0)) == NULL)
       return(0);
@@ -379,6 +392,8 @@ tinyrad_strings_push(
 {
    size_t     count;
    char **    strs;
+
+   TinyRadDebugTrace();
 
    assert(strsp != NULL);
    assert(str   != NULL);
@@ -413,6 +428,7 @@ tinyrad_strings_push_int(
          intmax_t                      i )
 {
    char str[128];
+   TinyRadDebugTrace();
    assert(strsp != NULL);
    snprintf(str, sizeof(str), "%ji", i);
    return(tinyrad_strings_push(strsp, str));
@@ -430,6 +446,7 @@ tinyrad_strings_push_uint(
          uintmax_t                     uint )
 {
    char str[128];
+   TinyRadDebugTrace();
    assert(strsp != NULL);
    snprintf(str, sizeof(str), "%ju", uint);
    return(tinyrad_strings_push(strsp, str));
