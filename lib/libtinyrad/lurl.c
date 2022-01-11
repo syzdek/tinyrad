@@ -77,6 +77,7 @@ tinyrad_is_radius_url(
    char                       buff[512];
    TinyRadDebugTrace();
    assert(url    != NULL);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   ====> %s(\"%s\")", __FUNCTION__, url);
    strncpy(buff, url, sizeof(buff));
    return(tinyrad_urldesc_parser(buff, NULL));
 }
@@ -112,6 +113,12 @@ tinyrad_urldesc2str(
    TinyRadDebugTrace();
 
    assert(trudp != NULL);
+
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s(trudp)", __FUNCTION__);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_host:   %s", trudp->trud_host);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_port:   %i", trudp->trud_port);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", trudp->trud_secret);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_opts:   0x%04x", trudp->trud_opts);
 
    bzero(buff, sizeof(buff));
 
@@ -246,6 +253,8 @@ tinyrad_urldesc_parse(
    assert(url    != NULL);
    assert(trudpp != NULL);
 
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   ====> %s(\"%s\")", __FUNCTION__, url);
+
    strncpy(buff, url, sizeof(buff));
 
    pptr = trudpp;
@@ -300,6 +309,8 @@ tinyrad_urldesc_parser(
    TinyRadDebugTrace();
 
    assert(url    != NULL);
+
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   ====> %s(\"%s\")", __FUNCTION__, url);
 
    trud_host     = NULL;
    trud_secret   = NULL;
@@ -531,6 +542,12 @@ tinyrad_urldesc_resolve(
 
    assert(trudp            != NULL);
    assert(trudp->trud_host != NULL);
+
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s(trudp)", __FUNCTION__);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_host:   %s", trudp->trud_host);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_port:   %i", trudp->trud_port);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", trudp->trud_secret);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_opts:   0x%04x", trudp->trud_opts);
 
    // clear existing sockaddrs
    for(trudp_ptr = trudp; ((trudp_ptr)); trudp_ptr = trudp_ptr->trud_next)
