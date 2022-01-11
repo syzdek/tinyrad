@@ -43,6 +43,21 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include <syslog.h>
+
+
+////////////////////////
+//                    //
+//  Inline Functions  //
+//                    //
+////////////////////////
+#pragma mark - Inline Functions
+
+extern inline void
+tinyrad_debug(
+         int                           level,
+         const char *                  fmt,
+         ... );
 
 
 /////////////////
@@ -65,6 +80,5 @@ int            tinyrad_debug_syslog    = TRAD_DFLT_DEBUG_SYSLOG;
 //             //
 /////////////////
 #pragma mark - Functions
-
 
 /* end of source */

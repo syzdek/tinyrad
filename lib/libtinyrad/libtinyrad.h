@@ -43,10 +43,30 @@
 #include <config.h>
 #endif
 
+#include <stdio.h>
 #include <assert.h>
 #include <sys/time.h>
+#include <syslog.h>
+#include <stdarg.h>
 
 #include <tinyrad.h>
+
+
+//////////////
+//          //
+//  Macros  //
+//          //
+//////////////
+#pragma mark - Macros
+
+#undef Debug
+#ifdef USE_DEBUG
+#   define TinyRadDebug( level, fmt, ... ) tinyrad_debug( level, fmt, __VA_ARGS__ )
+#   define TinyRadDebugTrace() tinyrad_debug( TRAD_DEBUG_TRACE, "%s()", __FUNCTION__ )
+#else
+#   define TinyRadDebug( level, fmt, ... ) ((void)0)
+#   define TinyRadDebugTrace() ((void)0)
+#endif
 
 
 ///////////////////
@@ -109,5 +129,45 @@ extern int            tinyrad_debug_syslog;
 //////////////////
 #pragma mark - Prototypes
 
+inline void
+tinyrad_debug(
+         int                           level,
+         const char *                  fmt,
+         ... );
+
+
+////////////////////////
+//                    //
+//  Inline Functions  //
+//                    //
+////////////////////////
+#pragma mark - Inline Functions
+
+inline void
+tinyrad_debug(
+         int                           level,
+         const char *                  fmt,
+         ... )
+{
+   va_list  args;
+
+   if ( ((level & tinyrad_debug_level) == 0) || (!(fmt)) )
+      return;
+
+   if (!(tinyrad_debug_syslog))
+      printf("%s: ", tinyrad_debug_ident);
+
+   va_start(args, fmt);
+   if ((tinyrad_debug_syslog))
+      vsyslog(LOG_DEBUG, fmt, args);
+   else
+      vprintf(fmt, args);
+   va_end(args);
+
+   if (!(tinyrad_debug_syslog))
+      printf("\n");
+
+   return;
+}
 
 #endif /* end of header */
