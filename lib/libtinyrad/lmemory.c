@@ -59,6 +59,8 @@ void
 tinyrad_destroy(
          TinyRad *                     tr )
 {
+   TinyRadDebugTrace();
+
    assert(tr != NULL);
 
    if ((tr->trud))
@@ -84,6 +86,7 @@ void
 tinyrad_free(
          void *                        ptr )
 {
+   TinyRadDebugTrace();
    free(ptr);
    return;
 }
@@ -95,6 +98,8 @@ tinyrad_get_option(
          int                           option,
          void *                        outvalue )
 {
+   TinyRadDebugTrace();
+
    assert(outvalue != NULL);
 
    // get global options
@@ -176,6 +181,8 @@ tinyrad_initialize(
    TinyRad   * tr;
    int         rc;
 
+   TinyRadDebugTrace();
+
    assert(trp    != NULL);
    assert(url    != NULL);
 
@@ -222,6 +229,8 @@ tinyrad_set_option(
 {
    int                  rc;
    TinyRadURLDesc *     trud;
+
+   TinyRadDebugTrace();
 
    assert(invalue != NULL);
 
