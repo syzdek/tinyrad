@@ -88,15 +88,17 @@ int my_test_good(const char * url, int verbose);
 
 int main( int argc, char * argv[] )
 {
+   int                  opt;
    int                  c;
    int                  opt_index;
    int                  opts;
    size_t               pos;
 
    // getopt options
-   static char          short_opt[] = "hVvq";
+   static char          short_opt[] = "dhVvq";
    static struct option long_opt[] =
    {
+      {"debug",            no_argument,       NULL, 'd' },
       {"help",             no_argument,       NULL, 'h' },
       {"quiet",            no_argument,       NULL, 'q' },
       {"silent",           no_argument,       NULL, 'q' },
@@ -104,6 +106,10 @@ int main( int argc, char * argv[] )
       {"verbose",          no_argument,       NULL, 'v' },
       { NULL, 0, NULL, 0 }
    };
+
+   opt = TRAD_OPT_OFF;
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, PROGRAM_NAME);
 
    opts = 0;
 
@@ -115,9 +121,15 @@ int main( int argc, char * argv[] )
          case 0:        /* long options toggles */
          break;
 
+         case 'd':
+         opt = TRAD_DEBUG_ANY;
+         tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL,  &opt);
+         break;
+
          case 'h':
          printf("Usage: %s [OPTIONS]\n", PROGRAM_NAME);
          printf("OPTIONS:\n");
+         printf("  -d, --debug               print debug messages\n");
          printf("  -h, --help                print this help and exit\n");
          printf("  -q, --quiet, --silent     do not print messages\n");
          printf("  -V, --version             print version number and exit\n");
