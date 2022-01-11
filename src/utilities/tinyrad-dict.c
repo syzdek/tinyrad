@@ -85,6 +85,7 @@ void my_usage( void );
 
 int main(int argc, char * argv[])
 {
+   int            opt;
    int            c;
    int            opt_index;
    int            rc;
@@ -96,9 +97,10 @@ int main(int argc, char * argv[])
    char **        files;
 
    // getopt options
-   static char          short_opt[] = "D:hI:qVv";
+   static char          short_opt[] = "d:D:hI:qVv";
    static struct option long_opt[] =
    {
+      {"debug",            optional_argument, NULL, 'd' },
       {"help",             no_argument,       NULL, 'h' },
       {"quiet",            no_argument,       NULL, 'q' },
       {"silent",           no_argument,       NULL, 'q' },
@@ -108,6 +110,10 @@ int main(int argc, char * argv[])
       {"dump",             no_argument,       NULL,  1  },
       { NULL, 0, NULL, 0 }
    };
+
+   opt = TRAD_OPT_OFF;
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, PROGRAM_NAME);
 
    opts     = 0;
    paths    = NULL;
@@ -137,6 +143,11 @@ int main(int argc, char * argv[])
             our_strings_free(paths);
             return(our_exit_code(TRAD_ENOMEM));
          };
+         break;
+
+         case 'd':
+         opt = ((optarg)) ? (int)strtol(optarg, NULL, 0) : TRAD_DEBUG_ANY;
+         tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
          break;
 
          case 'h':
@@ -239,6 +250,7 @@ void my_usage(void)
    printf("Usage: %s [OPTIONS]\n", PROGRAM_NAME);
    printf("OPTIONS:\n");
    printf("  -D dictionary             include dictionary\n");
+   printf("  -d level, --debug=level   print debug messages\n");
    printf("  -h, --help                print this help and exit\n");
    printf("  -I path                   add path to dictionary search paths\n");
    printf("  -q, --quiet, --silent     do not print messages\n");
