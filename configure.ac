@@ -149,6 +149,7 @@ AC_CHECK_HEADERS([inttypes.h],    [], [AC_MSG_ERROR([missing required headers])]
 AC_CHECK_HEADERS([limits.h],      [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([netdb.h],       [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdarg.h],      [], [AC_MSG_ERROR([missing required headers])])
+AC_CHECK_HEADERS([stdatomic.h],   [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdint.h],      [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdio.h],       [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdlib.h],      [], [AC_MSG_ERROR([missing required headers])])
@@ -162,6 +163,10 @@ AC_CHECK_HEADERS([sys/stat.h],    [], [AC_MSG_ERROR([missing required headers])]
 AC_CHECK_HEADERS([termios.h],     [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([time.h],        [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([unistd.h],      [], [AC_MSG_ERROR([missing required headers])])
+
+# check for data types
+AC_CHECK_TYPES([atomic_intmax_t],   [], [AC_MSG_ERROR([missing required data type])], [#include <stdatomic.h>])
+AC_CHECK_TYPES([atomic_uintmax_t],  [], [AC_MSG_ERROR([missing required data type])], [#include <stdatomic.h>])
 
 # GNU Libtool Support
 LT_INIT(dlopen disable-fast-install)
