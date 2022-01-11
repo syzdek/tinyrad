@@ -85,6 +85,8 @@ tinyrad_file_destroy(
 {
    TinyRadFile * parent;
 
+   TinyRadDebugTrace();
+
    while((file))
    {
       // record parent
@@ -125,6 +127,8 @@ tinyrad_file_error(
    size_t        max;
    size_t        pos;
    void *        ptr;
+
+   TinyRadDebugTrace();
 
    // reset error
    if (!(msgsp))
@@ -178,6 +182,8 @@ int tinyrad_file_init(
    TinyRadFile *           file;
    struct stat             sb;
    char                    fullpath[256];
+
+   TinyRadDebugTrace();
 
    assert(filep != NULL);
    assert(path  != NULL);
@@ -247,6 +253,8 @@ tinyrad_file_readline(
    size_t         size;
    ssize_t        len;
    char *         line;
+
+   TinyRadDebugTrace();
 
    assert(file != NULL);
    assert(opts == 0);
@@ -344,6 +352,8 @@ tinyrad_file_readline_split(
 {
    size_t         pos;
 
+   TinyRadDebugTrace();
+
    assert(file != NULL);
    assert(line != NULL);
    assert(opts == 0);
@@ -414,6 +424,8 @@ tinyrad_stat(
          struct stat *                sbp,
          mode_t                       type )
 {
+   TinyRadDebugTrace();
+
    assert(path != NULL);
    assert(sbp  != NULL);
 
