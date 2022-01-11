@@ -155,7 +155,7 @@ tinyrad_debug(
       return;
 
    if (!(tinyrad_debug_syslog))
-      printf("%s: ", tinyrad_debug_ident);
+      printf("%s: DEBUG: ", tinyrad_debug_ident);
 
    va_start(args, fmt);
    if ((tinyrad_debug_syslog))
