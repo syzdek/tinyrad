@@ -43,6 +43,10 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <time.h>
 
 
 /////////////////
@@ -193,8 +197,11 @@ tinyrad_initialize(
          const char *                  url,
          uint64_t                      opts )
 {
-   TinyRad   * tr;
-   int         rc;
+   TinyRad *         tr;
+   int               rc;
+   int               fd;
+   uint32_t          u32;
+   struct timespec   ts;
 
    TinyRadDebugTrace();
 
@@ -219,6 +226,33 @@ tinyrad_initialize(
    bzero(tr->net_timeout, sizeof(struct timeval));
    tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
    tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
+
+   // generates initial authenticator
+   if ((fd = open("/dev/urandom", O_RDONLY)) != -1)
+   {
+      read(fd, &u32, sizeof(u32));
+      close(fd);
+   } else {
+      u32 = 0;
+      clock_gettime(CLOCK_REALTIME, &ts);
+      u32 += (ts.tv_sec  % 0xffffffff);
+      u32 += (ts.tv_nsec % 0xffffffff);
+      clock_gettime(CLOCK_UPTIME_RAW, &ts);
+      u32 += (ts.tv_sec  % 0xffffffff);
+      u32 += (ts.tv_nsec % 0xffffffff);
+      u32 = ((u32 & 0xffff0000) >> 16) | ((u32 & 0x0000ffff) << 16);
+      u32 = ((u32 & 0xff00ff00) >>  8) | ((u32 & 0x00ff00ff) <<  8);
+      u32 = ((u32 & 0xf0f0f0f0) >>  4) | ((u32 & 0x0f0f0f0f) <<  4);
+      u32 = ((u32 & 0xcccccccc) >>  2) | ((u32 & 0x33333333) <<  2);
+      u32 = ((u32 & 0xaaaaaaaa) >>  1) | ((u32 & 0x55555555) <<  1);
+      clock_gettime(CLOCK_REALTIME, &ts);
+      u32 += (ts.tv_sec  % 0xffffffff);
+      u32 += (ts.tv_nsec % 0xffffffff);
+      clock_gettime(CLOCK_UPTIME_RAW, &ts);
+      u32 += (ts.tv_sec  % 0xffffffff);
+      u32 += (ts.tv_nsec % 0xffffffff);
+   };
+   tr->authenticator = u32;
 
    // parses URL
    if ((rc = tinyrad_urldesc_parse(url, &tr->trud)) != TRAD_SUCCESS)

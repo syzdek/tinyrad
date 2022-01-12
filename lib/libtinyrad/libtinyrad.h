@@ -89,10 +89,10 @@ struct _tinyrad
    TinyRadDict *         dict;
    TinyRadURLDesc *      trud;
    struct timeval *      net_timeout;
+   uint32_t              authenticator;
    unsigned              opts;
    int                   s;
    int                   timeout;
-   int                   padint;
 };
 
 
