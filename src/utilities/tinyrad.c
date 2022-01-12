@@ -86,7 +86,10 @@ int main(int argc, char * argv[])
    int            opt_index;
    int            rc;
    TinyRadDict *  dict;
+   TinyRad *      tr;
+   const char *   url;
    char **        errs;
+   char *         str;
    uint8_t        dictdump;
    uint8_t        dictloaded;
 
@@ -187,6 +190,15 @@ int main(int argc, char * argv[])
       };
    };
 
+   if (optind >= argc)
+   {
+      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
+      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+      return(1);
+   };
+   url = argv[optind];
+   optind++;
+
    if (!(dictloaded))
    {
       if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
@@ -204,6 +216,13 @@ int main(int argc, char * argv[])
       return(0);
    };
 
+   if ((tinyrad_initialize(&tr, url, 0)) != TRAD_SUCCESS)
+   {
+      tinyrad_dict_destroy(dict);
+      return(1);
+   };
+
+   tinyrad_destroy(tr);
    tinyrad_dict_destroy(dict);
 
    return(0);
@@ -212,7 +231,7 @@ int main(int argc, char * argv[])
 
 void my_usage(void)
 {
-   printf("Usage: %s [OPTIONS]\n", PROGRAM_NAME);
+   printf("Usage: %s [OPTIONS] url\n", PROGRAM_NAME);
    printf("OPTIONS:\n");
    printf("  -D dictionary             include dictionary\n");
    printf("  -d level, --debug=level   print debug messages\n");
