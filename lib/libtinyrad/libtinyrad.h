@@ -88,6 +88,8 @@ struct _tinyrad
 {
    TinyRadDict *         dict;
    TinyRadURLDesc *      trud;
+   struct sockaddr_in *  bind_sa;
+   struct sockaddr_in6 * bind_sa6;
    struct timeval *      net_timeout;
    uint32_t              authenticator;
    unsigned              opts;

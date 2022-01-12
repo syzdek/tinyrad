@@ -159,6 +159,7 @@
 #define TRAD_DFLT_TIMEOUT           10
 #define TRAD_DFLT_NET_TIMEOUT_SEC   10
 #define TRAD_DFLT_NET_TIMEOUT_USEC  0
+#define TRAD_DFLT_SOCKET_BIND_ADDRESSES   "0.0.0.0 ::"
 
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS

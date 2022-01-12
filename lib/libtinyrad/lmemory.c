@@ -47,6 +47,33 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <time.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
+
+///////////////////
+//               //
+//  Definitions  //
+//               //
+///////////////////
+#pragma mark - Definitions
+
+#define TRAD_SOCKET_BIND_ADDRESSES_LEN (INET6_ADDRSTRLEN+INET6_ADDRSTRLEN+2)
+
+
+//////////////////
+//              //
+//  Prototypes  //
+//              //
+//////////////////
+#pragma mark - Prototypes
+
+int
+tinyrad_set_option_socket_bind_addresses(
+         TinyRad *                     tr,
+         const char *                  invalue );
 
 
 /////////////////
@@ -70,6 +97,14 @@ tinyrad_destroy(
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
    tr->trud = NULL;
+
+   if ((tr->bind_sa))
+      free(tr->bind_sa);
+   tr->bind_sa = NULL;
+
+   if ((tr->bind_sa6))
+      free(tr->bind_sa6);
+   tr->bind_sa6 = NULL;
 
    if ((tr->net_timeout))
       free(tr->net_timeout);
@@ -102,6 +137,8 @@ tinyrad_get_option(
          int                           option,
          void *                        outvalue )
 {
+   char        bind_buff[TRAD_SOCKET_BIND_ADDRESSES_LEN];
+
    TinyRadDebugTrace();
 
    assert(outvalue != NULL);
@@ -175,6 +212,13 @@ tinyrad_get_option(
       break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, outvalue )", __FUNCTION__);
+      inet_ntop(AF_INET, &tr->bind_sa->sin_addr, bind_buff, sizeof(struct sockaddr_in));
+      strncat(bind_buff, " ", (sizeof(bind_buff)-strlen(bind_buff)-1));
+      inet_ntop(AF_INET6, &tr->bind_sa6->sin6_addr, &bind_buff[strlen(bind_buff)], sizeof(struct sockaddr_in6));
+      if ((*((char **)outvalue) = strdup(bind_buff)) == NULL)
+         return(TRAD_ENOMEM);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", bind_buff);
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_TIMEOUT:
@@ -222,6 +266,23 @@ tinyrad_initialize(
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
    tr->timeout    = TRAD_DFLT_TIMEOUT;
+
+   // sets bind addresses
+   if ((tr->bind_sa = malloc(sizeof(struct sockaddr_in))) == NULL)
+   {
+      tinyrad_destroy(tr);
+      return(TRAD_ENOMEM);
+   };
+   bzero(tr->bind_sa, sizeof(struct sockaddr_in));
+   tr->bind_sa->sin_family = AF_INET;
+   if ((tr->bind_sa6 = malloc(sizeof(struct sockaddr_in6))) == NULL)
+   {
+      tinyrad_destroy(tr);
+      return(TRAD_ENOMEM);
+   };
+   bzero(tr->bind_sa6, sizeof(struct sockaddr_in6));
+   tr->bind_sa6->sin6_family = AF_INET6;
+   tinyrad_set_option_socket_bind_addresses(tr, NULL);
 
    // sets network timeout
    if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
@@ -388,7 +449,7 @@ tinyrad_set_option(
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, invalue )", __FUNCTION__);
-      return(TRAD_EOPTERR);
+      return(tinyrad_set_option_socket_bind_addresses(tr, invalue));
 
       case TRAD_OPT_TIMEOUT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_TIMEOUT, %i )", __FUNCTION__, *((const int *)invalue));
@@ -403,5 +464,85 @@ tinyrad_set_option(
    return(TRAD_SUCCESS);
 }
 
+
+int
+tinyrad_set_option_socket_bind_addresses(
+         TinyRad *                     tr,
+         const char *                  invalue )
+{
+   char                    buff[TRAD_SOCKET_BIND_ADDRESSES_LEN*2];
+   char *                  str;
+   char *                  ptr;
+   struct sockaddr_in      sa;
+   struct sockaddr_in6     sa6;
+   struct addrinfo         hints;
+   struct addrinfo *       res;
+   struct addrinfo *       next;
+
+   TinyRadDebugTrace();
+
+   assert(tr != NULL);
+
+   invalue = (((invalue)) ? invalue : TRAD_DFLT_SOCKET_BIND_ADDRESSES);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, \"%s\" )", __FUNCTION__);
+   strncpy(buff, invalue, sizeof(buff));
+   if ((strcmp(invalue, buff)))
+      return(TRAD_EOPTERR);
+
+   bzero(&sa,  sizeof(struct sockaddr_in));
+   bzero(&sa6, sizeof(struct sockaddr_in6));
+   sa.sin_family   = AF_INET;
+   sa6.sin6_family = AF_INET6;
+
+   str = buff;
+   while( ((str)) && ((str[0])) )
+   {
+      if ((ptr = index(str, ' ')) != NULL)
+      {
+         ptr[0] = '\0';
+         ptr = &ptr[1];
+      };
+      if (strlen(str) < 2)
+         continue;
+
+      bzero(&hints, sizeof(struct addrinfo));
+      hints.ai_flags    = AI_NUMERICHOST | AI_NUMERICSERV;
+      hints.ai_family   = PF_UNSPEC;
+
+      if (getaddrinfo(str, NULL, &hints, &res) != 0)
+         continue;
+
+      next = res;
+      while((next))
+      {
+         switch(next->ai_family)
+         {
+            case AF_INET:
+            if (sizeof(struct sockaddr_in) != next->ai_addrlen)
+               return(TRAD_EOPTERR);
+            memcpy(&sa, next->ai_addr, next->ai_addrlen);
+            sa.sin_port = 0;
+            break;
+
+            case AF_INET6:
+            if (sizeof(struct sockaddr_in6) != next->ai_addrlen)
+               return(TRAD_EOPTERR);
+            memcpy(&sa6, next->ai_addr, next->ai_addrlen);
+            sa6.sin6_port = 0;
+            break;
+
+            default:
+            return(TRAD_EOPTERR);
+         };
+         next = next->ai_next;
+      };
+      str = ptr;
+   };
+
+   memcpy(tr->bind_sa,  &sa,  sizeof(struct sockaddr_in));
+   memcpy(tr->bind_sa6, &sa6, sizeof(struct sockaddr_in6));
+
+   return(TRAD_SUCCESS);
+}
 
 /* end of source */
