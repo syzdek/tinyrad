@@ -107,6 +107,7 @@
 #define TRAD_EURL                   0x0008 ///< invalid RADIUS URL
 #define TRAD_ERESOLVE               0x0009 ///< unable to resolve host
 #define TRAD_EOPTERR                0x000a ///< option error
+#define TRAD_ECONNECT               0x000b ///< connection error
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFF
