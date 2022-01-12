@@ -131,10 +131,11 @@
 #define TRAD_ON                     1
 
 // library options
+#define TRAD_OPT_IPV4               1
 #define TRAD_OPT_DESC               2
 #define TRAD_OPT_URI                3
 #define TRAD_OPT_DEBUG_LEVEL        4
-#define TRAD_OPT_ADDRESS_FAMILY     5
+#define TRAD_OPT_IPV6               5
 #define TRAD_OPT_DIAGNOSTIC_MESSAGE 6
 #define TRAD_OPT_NETWORK_TIMEOUT    7
 #define TRAD_OPT_SOCKET_BIND_ADDRESSES 8
