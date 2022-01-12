@@ -197,27 +197,27 @@ src_tinyrad_LDFLAGS			= $(AM_LDFLAGS)
 src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= include/tinyrad.h \
-					  src/utilities/common.c \
-					  src/utilities/common.h \
-					  src/utilities/tinyrad.c
+					  src/common.c \
+					  src/common.h \
+					  src/tinyrad.c
 
 
 # macros for src/tinyrad-dict
 src_tinyrad_dict_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_SOURCES		= include/tinyrad.h \
-					  src/utilities/common.c \
-					  src/utilities/common.h \
-					  src/utilities/tinyrad-dict.c
+					  src/common.c \
+					  src/common.h \
+					  src/tinyrad-dict.c
 
 
 # macros for src/tinyrad-url
 src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_SOURCES			= include/tinyrad.h \
-					  src/utilities/common.c \
-					  src/utilities/common.h \
-					  src/utilities/tinyrad-url.c
+					  src/common.c \
+					  src/common.h \
+					  src/tinyrad-url.c
 
 
 # macros for src/tinyradproxy
@@ -229,9 +229,9 @@ src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
 src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
-					  src/utilities/common.c \
-					  src/utilities/common.h \
-					  src/utilities/tinyradproxy.c
+					  src/common.c \
+					  src/common.h \
+					  src/tinyradproxy.c
 
 
 # macros for tests/tinyrad-url-desc2str
