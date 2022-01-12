@@ -305,8 +305,8 @@ tinyrad_set_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_SYSLOG, %i )", __FUNCTION__, *((const int *)invalue));
       switch(*((const int *)invalue))
       {
-         case TRAD_OPT_ON:  tinyrad_debug_syslog = TRAD_OPT_ON;  break;
-         case TRAD_OPT_OFF: tinyrad_debug_syslog = TRAD_OPT_OFF; break;
+         case TRAD_ON:  tinyrad_debug_syslog = TRAD_ON;  break;
+         case TRAD_OFF: tinyrad_debug_syslog = TRAD_OFF; break;
          default: return(TRAD_EOPTERR);
       };
       return(TRAD_SUCCESS);

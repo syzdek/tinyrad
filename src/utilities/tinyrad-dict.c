@@ -111,7 +111,7 @@ int main(int argc, char * argv[])
       { NULL, 0, NULL, 0 }
    };
 
-   opt = TRAD_OPT_OFF;
+   opt = TRAD_OFF;
    tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
    tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, PROGRAM_NAME);
 

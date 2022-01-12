@@ -127,9 +127,10 @@
 #define TRAD_RADSEC                 (TRAD_RADIUS | TRAD_RADIUS_ACCT | TRAD_RADIUS_DYNAUTH | TRAD_TLS)
 #define TRAD_TCP                    0x01000000
 
+#define TRAD_OFF                    0
+#define TRAD_ON                     1
+
 // library options
-#define TRAD_OPT_OFF                0
-#define TRAD_OPT_ON                 1
 #define TRAD_OPT_DESC               2
 #define TRAD_OPT_URI                3
 #define TRAD_OPT_DEBUG_LEVEL        4
@@ -153,7 +154,7 @@
 // library defaults
 #define TRAD_DFLT_DEBUG_IDENT       "libtinyrad"
 #define TRAD_DFLT_DEBUG_LEVEL       TRAD_DEBUG_NONE
-#define TRAD_DFLT_DEBUG_SYSLOG      TRAD_OPT_OFF
+#define TRAD_DFLT_DEBUG_SYSLOG      TRAD_OFF
 #define TRAD_DFLT_TIMEOUT           10
 #define TRAD_DFLT_NET_TIMEOUT_SEC   10
 #define TRAD_DFLT_NET_TIMEOUT_USEC  0
