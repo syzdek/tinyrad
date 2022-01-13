@@ -89,7 +89,6 @@ int main(int argc, char * argv[])
    TinyRad *      tr;
    const char *   url;
    char **        errs;
-   char *         str;
    uint8_t        dictdump;
    uint8_t        dictloaded;
 
