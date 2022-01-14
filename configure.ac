@@ -194,6 +194,7 @@ AC_TINYRAD_TINYRAD
 AC_TINYRAD_TINYRADPROXY
 AC_TINYRAD_TINYRAD_DICT
 AC_TINYRAD_TINYRAD_URL
+AC_TINYRAD_EXAMPLES
 
 
 # Creates outputs
@@ -214,6 +215,7 @@ AC_MSG_NOTICE([      RADIUS over TCP            not supported])
 AC_MSG_NOTICE([      TLS RADIUS (RadSec)        not supported])
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Options:])
+AC_MSG_NOTICE([      Build examples             ${ENABLE_EXAMPLES}])
 AC_MSG_NOTICE([      Install libtinyrad.la      ${ENABLE_LIBTINYRAD}])
 AC_MSG_NOTICE([      Install tinyrad            ${ENABLE_TINYRAD}])
 AC_MSG_NOTICE([      Install tinyrad-dict       ${ENABLE_TINYRAD_DICT}])

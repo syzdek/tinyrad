@@ -122,10 +122,14 @@ CLEANFILES				= \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
 DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings \
-					  --enable-utilities
+					  --enable-utilities \
+					  --enable-examples
 
 
 # conditional build
+if ENABLE_EXAMPLES
+   noinst_PROGRAMS			+= examples/socket-example
+endif
 if ENABLE_LIBTINYRAD
    include_HEADERS			+= include/tinyrad.h
    lib_LTLIBRARIES			+= lib/libtinyrad.la
@@ -283,8 +287,6 @@ include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-version.am
 
 # custom targets
 .PHONY: examples
-
-examples: examples/socket-example
 
 
 # local targets

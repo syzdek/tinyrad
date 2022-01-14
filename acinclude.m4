@@ -32,6 +32,28 @@
 #
 
 
+# AC_TINYRAD_EXAMPLES()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_EXAMPLES],[dnl
+   enableval=""
+   AC_ARG_ENABLE(
+      examples,
+      [AS_HELP_STRING([--enable-examples], [build tinyrad examples])],
+      [ EEXAMPLES=$enableval ],
+      [ EEXAMPLES=$enableval ]
+   )
+
+   if test "x${EEXAMPLES}" == "xyes";then
+      ENABLE_EXAMPLES="yes"
+   else
+      ENABLE_EXAMPLES="no"
+   fi
+
+   AM_CONDITIONAL([ENABLE_EXAMPLES],  [test "$ENABLE_EXAMPLES" = "yes"])
+   AM_CONDITIONAL([DISABLE_EXAMPLES], [test "$ENABLE_EXAMPLES" = "no"])
+])dnl
+
+
 # AC_TINYRAD_IPV4
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_IPV4],[dnl
@@ -242,7 +264,7 @@ AC_DEFUN([AC_TINYRAD_TINYRADPROXY],[dnl
 ])dnl
 
 
-# AC_TINYRAD_UTILS()
+# AC_TINYRAD_UTILITIES()
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_UTILITIES],[dnl
    enableval=""
