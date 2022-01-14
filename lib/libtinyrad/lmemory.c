@@ -434,6 +434,8 @@ tinyrad_set_option(
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, invalue )", __FUNCTION__);
+      if (tr->s != -1)
+         return(TRAD_EOPTERR);
       return(tinyrad_set_option_socket_bind_addresses(tr, invalue));
 
       case TRAD_OPT_TIMEOUT:
