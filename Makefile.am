@@ -79,7 +79,8 @@ bin_SCRIPTS				=
 pkgdata_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
-EXTRA_PROGRAMS				= tests/tinyrad-url-desc2str \
+EXTRA_PROGRAMS				= examples/socket-example \
+					  tests/tinyrad-url-desc2str \
 					  tests/tinyrad-url-parse \
 					  tests/tinyrad-url-resolve
 EXTRA					= lib/libtinyrad.a \
@@ -142,6 +143,10 @@ endif
 if ENABLE_TINYRADPROXY
    sbin_PROGRAMS			+= src/tinyradproxy
 endif
+
+
+# macros for examples/socket-example
+examples_socket_example_SOURCES		= examples/socket-example.c
 
 
 # macros for lib/libtinyrad.a
@@ -267,7 +272,10 @@ include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-version.am
 
 
 # custom targets
-.PHONY:
+.PHONY: examples
+
+examples: examples/socket-example
+
 
 # local targets
 install-exec-local:
