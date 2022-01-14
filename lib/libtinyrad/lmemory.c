@@ -181,7 +181,9 @@ tinyrad_get_option(
 
       case TRAD_OPT_URI:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, outvalue )", __FUNCTION__);
+      if (((*(char **)outvalue) = tinyrad_urldesc2str(tr->trud)) == NULL)
          return(TRAD_ENOMEM);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", *(char **)outvalue);
       break;
 
       case TRAD_OPT_IPV4:
