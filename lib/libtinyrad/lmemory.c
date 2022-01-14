@@ -179,11 +179,11 @@ tinyrad_get_option(
       *((int *)outvalue) = tr->s;
       break;
 
-      case TRAD_OPT_URI:
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, outvalue )", __FUNCTION__);
-      if (((*(char **)outvalue) = tinyrad_urldesc2str(tr->trud)) == NULL)
+      case TRAD_OPT_DIAGNOSTIC_MESSAGE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "unknown");
+      if ((*((char **)outvalue) = strdup("unknown")) == NULL)
          return(TRAD_ENOMEM);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", *(char **)outvalue);
       break;
 
       case TRAD_OPT_IPV4:
@@ -196,13 +196,6 @@ tinyrad_get_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_IPV6, outvalue )", __FUNCTION__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ((tr->opts & TRAD_IPV6)) ? TRAD_ON : TRAD_OFF);
       *((int *)outvalue) = ((tr->opts & TRAD_IPV6)) ? TRAD_ON : TRAD_OFF;
-      break;
-
-      case TRAD_OPT_DIAGNOSTIC_MESSAGE:
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, outvalue )", __FUNCTION__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "unknown");
-      if ((*((char **)outvalue) = strdup("unknown")) == NULL)
-         return(TRAD_ENOMEM);
       break;
 
       case TRAD_OPT_NETWORK_TIMEOUT:
@@ -227,6 +220,13 @@ tinyrad_get_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_TIMEOUT, outvalue )", __FUNCTION__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", tr->timeout);
       *((int *)outvalue) = tr->timeout;
+      break;
+
+      case TRAD_OPT_URI:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, outvalue )", __FUNCTION__);
+      if (((*(char **)outvalue) = tinyrad_urldesc2str(tr->trud)) == NULL)
+         return(TRAD_ENOMEM);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", *(char **)outvalue);
       break;
 
       default:
