@@ -391,6 +391,7 @@ tinyrad_set_option(
    switch(option)
    {
       case TRAD_OPT_DESC:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DESC, invalue )", __FUNCTION__);
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_DIAGNOSTIC_MESSAGE:
