@@ -206,9 +206,8 @@ tinyrad_get_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_NETWORK_TIMEOUT, outvalue )", __FUNCTION__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: tv_sec: %i", tr->net_timeout->tv_sec);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: tv_usec: %i", tr->net_timeout->tv_usec);
-      if ((*((struct timeval **)outvalue) = malloc(sizeof(struct timeval))) == NULL)
-         return(TRAD_ENOMEM);
-      memcpy(*((struct timeval **)outvalue), tr->net_timeout, sizeof(struct timeval));
+      ((struct timeval *)outvalue)->tv_sec   = tr->net_timeout->tv_sec;
+      ((struct timeval *)outvalue)->tv_usec  = tr->net_timeout->tv_usec;
       break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
