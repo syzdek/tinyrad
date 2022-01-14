@@ -96,7 +96,7 @@ EXTRA					= lib/libtinyrad.a \
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
 TESTS					= \
-					  tests/tinyrad-dict-defaults.sh \
+					  tests/test-dict-defaults.sh \
 					  tests/test-url-desc2str \
 					  tests/tinyrad-url-parse \
 					  tests/tinyrad-url-resolve
@@ -106,7 +106,7 @@ EXTRA_DIST				= \
 					  $(doc_DATA) \
 					  include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.sym \
-					  tests/tinyrad-dict-defaults.sh
+					  tests/test-dict-defaults.sh
 CLEANFILES				= \
 					  $(builddir)/a.out   $(srcdir)/a.out \
 					  $(builddir)/*/a.out $(srcdir)/*/a.out \
