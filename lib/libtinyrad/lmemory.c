@@ -445,6 +445,8 @@ tinyrad_set_option(
 
       case TRAD_OPT_URI:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, \"%s\" )", __FUNCTION__, (const char *)invalue);
+      if (tr->s != -1)
+         return(TRAD_EOPTERR);
       if ((rc = tinyrad_urldesc_parse((const char *)invalue, &trud)) != TRAD_SUCCESS)
          return(rc);
       if ((rc = tinyrad_urldesc_resolve(trud, tr->opts)) != TRAD_SUCCESS)
@@ -454,9 +456,6 @@ tinyrad_set_option(
       };
       tinyrad_urldesc_free(tr->trud);
       tr->trud = trud;
-      if (tr->s != -1)
-         close(tr->s);
-      tr->s = -1;
       break;
 
       default:
