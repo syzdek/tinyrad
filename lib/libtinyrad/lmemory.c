@@ -393,21 +393,9 @@ tinyrad_set_option(
       case TRAD_OPT_DESC:
       return(TRAD_EOPTERR);
 
-      case TRAD_OPT_URI:
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, \"%s\" )", __FUNCTION__, (const char *)invalue);
-      if ((rc = tinyrad_urldesc_parse((const char *)invalue, &trud)) != TRAD_SUCCESS)
-         return(rc);
-      if ((rc = tinyrad_urldesc_resolve(trud, tr->opts)) != TRAD_SUCCESS)
-      {
-         tinyrad_urldesc_free(trud);
-         return(rc);
-      };
-      tinyrad_urldesc_free(tr->trud);
-      tr->trud = trud;
-      if (tr->s != -1)
-         close(tr->s);
-      tr->s = -1;
-      break;
+      case TRAD_OPT_DIAGNOSTIC_MESSAGE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, invalue )", __FUNCTION__);
+      return(TRAD_EOPTERR);
 
       case TRAD_OPT_IPV4:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_IPV4, %s )", __FUNCTION__, (((*((const int *)invalue))) ? "TRAD_ON" : "TRAD_OFF"));
@@ -441,10 +429,6 @@ tinyrad_set_option(
          return(rc);
       break;
 
-      case TRAD_OPT_DIAGNOSTIC_MESSAGE:
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, invalue )", __FUNCTION__);
-      return(TRAD_EOPTERR);
-
       case TRAD_OPT_NETWORK_TIMEOUT:
       memcpy(tr->net_timeout, ((const struct timeval *)invalue), sizeof(struct timeval));
       break;
@@ -456,6 +440,22 @@ tinyrad_set_option(
       case TRAD_OPT_TIMEOUT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_TIMEOUT, %i )", __FUNCTION__, *((const int *)invalue));
       tr->timeout = *((const int *)invalue);
+      break;
+
+      case TRAD_OPT_URI:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_URI, \"%s\" )", __FUNCTION__, (const char *)invalue);
+      if ((rc = tinyrad_urldesc_parse((const char *)invalue, &trud)) != TRAD_SUCCESS)
+         return(rc);
+      if ((rc = tinyrad_urldesc_resolve(trud, tr->opts)) != TRAD_SUCCESS)
+      {
+         tinyrad_urldesc_free(trud);
+         return(rc);
+      };
+      tinyrad_urldesc_free(tr->trud);
+      tr->trud = trud;
+      if (tr->s != -1)
+         close(tr->s);
+      tr->s = -1;
       break;
 
       default:
