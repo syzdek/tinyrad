@@ -643,7 +643,7 @@ tinyrad_dict_attr_add(
    if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
       return(TRAD_ENOMEM);
    bzero(attr, sizeof(TinyRadDictAttr));
-   attr->ref_count = 1;
+   atomic_init(&attr->ref_count, 1);
    attr->type      = type;
    attr->data_type = datatype;
    attr->flags     = flags;
@@ -652,7 +652,7 @@ tinyrad_dict_attr_add(
       attr->vendor_id = vendor->id;
       attr->type_octs = vendor->type_octs;
       attr->len_octs  = vendor->len_octs;
-      attr->ref_count++;
+      atomic_fetch_add(&attr->ref_count, 1);
    };
    if ((attr->name = strdup(name)) == NULL)
    {
@@ -1317,7 +1317,7 @@ tinyrad_dict_initialize(
       return(-1);
    bzero(dict, sizeof(TinyRadDict));
    dict->opts      = opts;
-   dict->ref_count = 1;
+   atomic_init(&dict->ref_count, 1);
 
    // initializes paths
    if ((dict->paths = malloc(sizeof(char *))) == NULL)
@@ -1736,7 +1736,7 @@ tinyrad_dict_vendor_add(
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
-   vendor->ref_count = 1;
+   atomic_init(&vendor->ref_count, 1);
 
    // copy vendor name
    if ((vendor->name = strdup(name)) == NULL)
