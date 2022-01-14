@@ -80,7 +80,7 @@ pkgdata_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
 EXTRA_PROGRAMS				= examples/socket-example \
-					  tests/tinyrad-url-desc2str \
+					  tests/test-url-desc2str \
 					  tests/tinyrad-url-parse \
 					  tests/tinyrad-url-resolve
 EXTRA					= lib/libtinyrad.a \
@@ -97,7 +97,7 @@ AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
 TESTS					= \
 					  tests/tinyrad-dict-defaults.sh \
-					  tests/tinyrad-url-desc2str \
+					  tests/test-url-desc2str \
 					  tests/tinyrad-url-parse \
 					  tests/tinyrad-url-resolve
 XFAIL_TESTS				=
@@ -239,12 +239,12 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  src/tinyradproxy.c
 
 
-# macros for tests/tinyrad-url-desc2str
-tests_tinyrad_url_desc2str_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_desc2str_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_desc2str_SOURCES	= include/tinyrad.h \
+# macros for tests/test-url-desc2str
+tests_test_url_desc2str_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_url_desc2str_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_url_desc2str_SOURCES		= include/tinyrad.h \
 					  tests/common.c tests/common.h \
-					  tests/tinyrad-url-desc2str.c
+					  tests/test-url-desc2str.c
 
 
 # macros for tests/tinyrad-url-parse
