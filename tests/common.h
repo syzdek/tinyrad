@@ -72,6 +72,7 @@
 #define TRAD_TEST_DESC2STR    0x0004
 #define TRAD_TEST_PARSE       0x0008
 #define TRAD_TEST_CHECK       0x0010
+#define TRAD_TEST_QUIET       0x0020
 
 
 /////////////////
@@ -81,6 +82,7 @@
 /////////////////
 #pragma mark - Variables
 
+extern const char * prog_name;
 extern const char * test_urldesc_strs_bad[];
 extern const char * test_urldesc_strs_desc2str[];
 extern const char * test_urldesc_strs_good[];
@@ -95,8 +97,23 @@ extern const char * test_urldesc_strs_resolvable[];
 //////////////////
 #pragma mark - Prototypes
 
+//-------------------//
+// URLDesc functions //
+//-------------------//
+#pragma mark URLDesc functions
+
 int our_urldesc_test_bad(const char * url, int opts);
 int our_urldesc_test_good(const char * url, int opts);
+
+
+//---------------//
+// log functions //
+//---------------//
+#pragma mark log functions
+
+int  our_error(int opts, const char * fmt, ...);
+void our_print(int opts, const char * fmt, ...);
+void our_verbose(int opts, const char * fmt, ...);
 
 
 #endif /* end of header */

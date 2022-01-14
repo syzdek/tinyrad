@@ -61,6 +61,10 @@
 /////////////////
 #pragma mark - Variables
 
+#pragma mark prog_name
+const char * prog_name = "tinyrad-test";
+
+
 #pragma mark test_urldesc_strs_bad[]
 const char * test_urldesc_strs_bad[] =
 {
@@ -386,6 +390,10 @@ int our_urldesc_test(const char * url, int opts);
 /////////////////
 #pragma mark - Functions
 
+//-------------------//
+// URLDesc functions //
+//-------------------//
+#pragma mark URLDesc functions
 
 int our_urldesc_test(const char * url, int opts)
 {
@@ -477,6 +485,53 @@ int our_urldesc_test_good(const char * url, int opts)
    if ((our_urldesc_test(url, opts)))
       return(1);
    return(0);
+}
+
+
+//---------------//
+// log functions //
+//---------------//
+#pragma mark log functions
+
+int our_error(int opts, const char * fmt, ...)
+{
+   va_list args;
+   if ( ((opts & TRAD_TEST_QUIET)) && ((opts & TRAD_TEST_VERBOSE)) )
+      return(1);
+   fprintf(stderr, "%s: ", prog_name);
+   va_start(args, fmt);
+   vfprintf(stderr, fmt, args);
+   va_end(args);
+   fprintf(stderr, "\n");
+   return(1);
+}
+
+
+void our_print(int opts, const char * fmt, ...)
+{
+   va_list args;
+   if ((opts & TRAD_TEST_QUIET))
+      return;
+   printf("%s: ", prog_name);
+   va_start(args, fmt);
+   vprintf(fmt, args);
+   va_end(args);
+   printf("\n");
+   return;
+}
+
+
+void our_verbose(int opts, const char * fmt, ...)
+{
+   va_list args;
+   if (!(opts & TRAD_TEST_VERBOSE))
+      return;
+   printf("%s: ", prog_name);
+   va_start(args, fmt);
+   vprintf(fmt, args);
+   va_end(args);
+   printf("\n");
+   return;
 }
 
 /* end of source */

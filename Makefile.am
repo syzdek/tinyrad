@@ -80,6 +80,7 @@ pkgdata_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
 EXTRA_PROGRAMS				= examples/socket-example \
+					  tests/test-options \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
 					  tests/test-url-resolve
@@ -97,6 +98,7 @@ AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
 TESTS					= \
 					  tests/test-dict-defaults.sh \
+					  tests/test-options \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
 					  tests/test-url-resolve
@@ -237,6 +239,14 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  src/common.c \
 					  src/common.h \
 					  src/tinyradproxy.c
+
+
+# macros for tests/tinyrad-options
+tests_test_options_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_options_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_options_SOURCES		= include/tinyrad.h \
+					  tests/common.c tests/common.h \
+					  tests/test-options.c
 
 
 # macros for tests/test-url-desc2str
