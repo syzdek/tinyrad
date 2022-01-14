@@ -81,7 +81,7 @@ sbin_SCRIPTS				=
 sbin_PROGRAMS				=
 EXTRA_PROGRAMS				= examples/socket-example \
 					  tests/test-url-desc2str \
-					  tests/tinyrad-url-parse \
+					  tests/test-url-parse \
 					  tests/tinyrad-url-resolve
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
@@ -98,7 +98,7 @@ BUILT_SOURCES				=
 TESTS					= \
 					  tests/test-dict-defaults.sh \
 					  tests/test-url-desc2str \
-					  tests/tinyrad-url-parse \
+					  tests/test-url-parse \
 					  tests/tinyrad-url-resolve
 XFAIL_TESTS				=
 EXTRA_MANS				=
@@ -248,11 +248,11 @@ tests_test_url_desc2str_SOURCES		= include/tinyrad.h \
 
 
 # macros for tests/tinyrad-url-parse
-tests_tinyrad_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-tests_tinyrad_url_parse_SOURCES		= include/tinyrad.h \
+tests_test_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_url_parse_SOURCES		= include/tinyrad.h \
 					  tests/common.c tests/common.h \
-					  tests/tinyrad-url-parse.c
+					  tests/test-url-parse.c
 
 
 # macros for tests/tinyrad-url-resolve
