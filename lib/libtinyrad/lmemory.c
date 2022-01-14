@@ -415,6 +415,8 @@ tinyrad_set_option(
 
       case TRAD_OPT_IPV6:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_IPV6, %s )", __FUNCTION__, (((*((const int *)invalue))) ? "TRAD_ON" : "TRAD_OFF"));
+      if (tr->s != -1)
+         return(TRAD_EOPTERR);
       opts = tr->opts;
       if ((*((const int *)invalue)))
          tr->opts |= TRAD_IPV6;
@@ -422,9 +424,6 @@ tinyrad_set_option(
          tr->opts &= ~TRAD_IPV6;
       if (opts == tr->opts)
          break;
-      if (tr->s != -1)
-         close(tr->s);
-      tr->s = -1;
       if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
          return(rc);
       break;
