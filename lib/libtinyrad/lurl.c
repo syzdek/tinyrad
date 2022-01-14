@@ -302,7 +302,7 @@ tinyrad_urldesc_parser(
    char *                     trud_host;
    const char *               trud_secret;
    int                        trud_port;
-   int                        trud_opts;
+   unsigned                   trud_opts;
    char                       hex[3];
    struct sockaddr_in6    sa6;
 

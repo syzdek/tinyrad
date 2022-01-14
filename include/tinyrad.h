@@ -110,22 +110,22 @@
 #define TRAD_ECONNECT               0x000b ///< connection error
 
 // library user options
-#define TRAD_OPTS_USER              0x000FFFFF
-#define TRAD_IPV4                   0x00000004
-#define TRAD_IPV6                   0x00000008
+#define TRAD_OPTS_USER              0x000FFFFFU
+#define TRAD_IPV4                   0x00000004U
+#define TRAD_IPV6                   0x00000008U
 #define TRAD_IP_UNSPEC              (TRAD_IPV4 | TRAD_IPV6)
-#define TRAD_CATHOLIC               0x00000010
-#define TRAD_SERVER                 0x00000020
+#define TRAD_CATHOLIC               0x00000010U
+#define TRAD_SERVER                 0x00000020U
 
 // library internal options
 #define TRAD_OPTS_INTERNAL          (~TRAD_OPTS_USER)
-#define TRAD_RADIUS                 0x00100000
-#define TRAD_RADIUS_ACCT            0x00200000
-#define TRAD_RADIUS_DYNAUTH         0x00400000
-#define TRAD_TLS                    0x00800000
-#define TRAD_SCHEME                 0x00F00000
+#define TRAD_RADIUS                 0x00100000U
+#define TRAD_RADIUS_ACCT            0x00200000U
+#define TRAD_RADIUS_DYNAUTH         0x00400000U
+#define TRAD_TLS                    0x00800000U
+#define TRAD_SCHEME                 0x00F00000U
 #define TRAD_RADSEC                 (TRAD_RADIUS | TRAD_RADIUS_ACCT | TRAD_RADIUS_DYNAUTH | TRAD_TLS)
-#define TRAD_TCP                    0x01000000
+#define TRAD_TCP                    0x01000000U
 
 #define TRAD_OFF                    0
 #define TRAD_ON                     1
@@ -245,7 +245,7 @@ struct tinyrad_url_desc
    char *               trud_host;
    char *               trud_secret;
    int                  trud_port;
-   int                  trud_opts;
+   unsigned             trud_opts;
    /* may contain additional fields for internal use */
    TinyRadURLDesc *     trud_next;
    TinyRadSockAddr **   sockaddrs;
