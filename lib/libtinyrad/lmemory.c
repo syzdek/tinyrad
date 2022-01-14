@@ -221,7 +221,7 @@ tinyrad_get_option(
       if ((*((char **)outvalue) = strdup(bind_buff)) == NULL)
          return(TRAD_ENOMEM);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", bind_buff);
-      return(TRAD_EOPTERR);
+      break;
 
       case TRAD_OPT_TIMEOUT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_TIMEOUT, outvalue )", __FUNCTION__);
