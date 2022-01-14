@@ -185,7 +185,7 @@ tinyrad_get_option(
 
       case TRAD_OPT_IPV4:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_IPV4, outvalue )", __FUNCTION__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", ((tr->opts & TRAD_IPV4)) ? TRAD_ON : TRAD_OFF);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ((tr->opts & TRAD_IPV4)) ? TRAD_ON : TRAD_OFF);
       *((int *)outvalue) = ((tr->opts & TRAD_IPV4)) ? TRAD_ON : TRAD_OFF;
       break;
 
