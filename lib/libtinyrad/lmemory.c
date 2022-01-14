@@ -176,6 +176,7 @@ tinyrad_get_option(
    {
       case TRAD_OPT_DESC:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DESC, outvalue )", __FUNCTION__);
+      *((int *)outvalue) = tr->s;
       break;
 
       case TRAD_OPT_URI:
