@@ -79,11 +79,11 @@
 #   define PACKAGE_VERSION "unknown"
 #endif
 
-#define MY_VERBOSE      0x0001
-#define MY_QUIET        0x0002
-#define MY_SERVER       0x0004
-#define MY_TCP          0x0008
-#define MY_UDP          0x0000
+#define MY_VERBOSE      0x0001U
+#define MY_QUIET        0x0002U
+#define MY_SERVER       0x0004U
+#define MY_TCP          0x0008U
+#define MY_UDP          0x0000U
 
 #define MY_TIMEOUT      30 // in seconds
 
@@ -95,7 +95,7 @@
 /////////////////
 #pragma mark - Variables
 
-int should_exit = 0;
+static int should_exit = 0;
 
 
 //////////////////
@@ -107,17 +107,17 @@ int should_exit = 0;
 
 int main( int argc, char * argv[] );
 
-int my_client( int s, int opts, struct sockaddr_storage * sap );
-void my_connlog( int opts, const struct sockaddr_storage * sa, const char * fmt, ...);
+int my_client( int s, unsigned opts, struct sockaddr_storage * sap );
+void my_connlog( unsigned opts, const struct sockaddr_storage * sa, const char * fmt, ...);
 int my_error( const char * fmt, ...);
 char * my_ntop(const struct sockaddr_storage * sa, char * buff, size_t len);
-void my_print( int opts, const char * fmt, ...);
-int my_server( int s, int opts );
-int my_server_tcp( int s, int opts );
-int my_server_udp( int s, int opts );
+void my_print( unsigned opts, const char * fmt, ...);
+int my_server( int s, unsigned opts );
+int my_server_tcp( int s, unsigned opts );
+int my_server_udp( int s, unsigned opts );
 void my_signal( int sig );
 void my_usage( void );
-void my_verbose( int opts, const char * fmt, ...);
+void my_verbose( unsigned opts, const char * fmt, ...);
 
 
 /////////////////
@@ -133,7 +133,7 @@ int main(int argc, char * argv[])
    int                           opt_index;
    int                           rc;
    int                           s;
-   int                           opt;
+   unsigned                      opt;
    unsigned                      opts;
    const char *                  laddr;
    const char *                  port;
@@ -311,7 +311,7 @@ int main(int argc, char * argv[])
 }
 
 
-int my_client( int s, int opts, struct sockaddr_storage * sap )
+int my_client( int s, unsigned opts, struct sockaddr_storage * sap )
 {
    struct pollfd                 fds[2];
    int                           rc;
@@ -417,7 +417,7 @@ int my_client( int s, int opts, struct sockaddr_storage * sap )
 }
 
 
-void my_connlog( int opts, const struct sockaddr_storage * sa, const char * fmt, ...)
+void my_connlog( unsigned opts, const struct sockaddr_storage * sa, const char * fmt, ...)
 {
    va_list     args;
    char        host[INET6_ADDRSTRLEN+32];
@@ -466,7 +466,7 @@ char * my_ntop(const struct sockaddr_storage * sa, char * buff, size_t len)
 }
 
 
-void my_print( int opts, const char * fmt, ...)
+void my_print( unsigned opts, const char * fmt, ...)
 {
    va_list args;
    if ((opts & MY_QUIET))
@@ -480,7 +480,7 @@ void my_print( int opts, const char * fmt, ...)
 }
 
 
-int my_server( int s, int opts )
+int my_server( int s, unsigned opts )
 {
    struct sockaddr_storage    sa;
    socklen_t                  sa_len;
@@ -498,7 +498,7 @@ int my_server( int s, int opts )
 }
 
 
-int my_server_tcp( int s, int opts )
+int my_server_tcp( int s, unsigned opts )
 {
    struct pollfd                 fds[10];
    nfds_t                        nfds;
@@ -610,7 +610,7 @@ int my_server_tcp( int s, int opts )
 }
 
 
-int my_server_udp( int s, int opts )
+int my_server_udp( int s, unsigned opts )
 {
    struct pollfd                 fds[1];
    int                           rc;
@@ -693,7 +693,7 @@ void my_usage(void)
    return;
 }
 
-void my_verbose( int opts, const char * fmt, ...)
+void my_verbose( unsigned opts, const char * fmt, ...)
 {
    va_list args;
    if (!(opts & MY_VERBOSE))
