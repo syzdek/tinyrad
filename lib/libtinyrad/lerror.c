@@ -86,6 +86,7 @@ tinyrad_error_map(
       case TRAD_ERESOLVE:   return("unable to resolve host");
       case TRAD_EOPTERR:    return("option error");
       case TRAD_ECONNECT:   return("connection error");
+      case TRAD_ESCHEME:    return("invalid or mismatched URL scheme");
 
       default:
       break;
