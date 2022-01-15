@@ -57,6 +57,10 @@ AM_MAKEINFOFLAGS                        = --no-split
 DEFS					=
 
 
+# custom directories
+rfcdocdir				= $(docdir)/rfc
+
+
 # automake targets
 check_PROGRAMS				=
 doc_DATA				= \
@@ -77,6 +81,7 @@ noinst_PROGRAMS				=
 bin_PROGRAMS				=
 bin_SCRIPTS				=
 pkgdata_DATA				=
+rfcdoc_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
 EXTRA_PROGRAMS				= examples/socket-example \
@@ -106,6 +111,16 @@ XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
 					  $(doc_DATA) \
+					  doc/rfc/rfc-index.txt \
+					  doc/rfc/rfc2865.txt \
+					  doc/rfc/rfc2866.txt \
+					  doc/rfc/rfc2867.txt \
+					  doc/rfc/rfc2868.txt \
+					  doc/rfc/rfc2869.txt \
+					  doc/rfc/rfc3162.txt \
+					  doc/rfc/rfc3575.txt \
+					  doc/rfc/rfc6929.txt \
+					  doc/rfc/rfc8044.txt \
 					  include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.sym \
 					  tests/test-dict-defaults.sh
@@ -123,10 +138,23 @@ CLEANFILES				= \
 					  @PACKAGE_TARNAME@-*.zip
 DISTCHECK_CONFIGURE_FLAGS		= --enable-strictwarnings \
 					  --enable-utilities \
+					  --enable-documentation \
 					  --enable-examples
 
 
 # conditional build
+if ENABLE_DOCUMENATION
+   rfcdoc_DATA				+= doc/rfc/rfc-index.txt
+   rfcdoc_DATA				+= doc/rfc/rfc2865.txt
+   rfcdoc_DATA				+= doc/rfc/rfc2866.txt
+   rfcdoc_DATA				+= doc/rfc/rfc2867.txt
+   rfcdoc_DATA				+= doc/rfc/rfc2868.txt
+   rfcdoc_DATA				+= doc/rfc/rfc2869.txt
+   rfcdoc_DATA				+= doc/rfc/rfc3162.txt
+   rfcdoc_DATA				+= doc/rfc/rfc3575.txt
+   rfcdoc_DATA				+= doc/rfc/rfc6929.txt
+   rfcdoc_DATA				+= doc/rfc/rfc8044.txt
+endif
 if ENABLE_EXAMPLES
    noinst_PROGRAMS			+= examples/socket-example
 endif

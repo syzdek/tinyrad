@@ -31,6 +31,27 @@
 #   acinclude.m4 - custom m4 macros used by configure.ac
 #
 
+# AC_TINYRAD_DOCUMENTATION()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_DOCUMENTATION],[dnl
+   enableval=""
+   AC_ARG_ENABLE(
+      documentation,
+      [AS_HELP_STRING([--enable-documentation], [install extra documentation])],
+      [ EDOCUMENATION=$enableval ],
+      [ EDOCUMENATION=$enableval ]
+   )
+
+   if test "x${EDOCUMENATION}" == "xyes";then
+      ENABLE_DOCUMENATION="yes"
+   else
+      ENABLE_DOCUMENATION="no"
+   fi
+
+   AM_CONDITIONAL([ENABLE_DOCUMENATION],  [test "$ENABLE_DOCUMENATION" = "yes"])
+   AM_CONDITIONAL([DISABLE_DOCUMENATION], [test "$ENABLE_DOCUMENATION" = "no"])
+])dnl
+
 
 # AC_TINYRAD_EXAMPLES()
 # ______________________________________________________________________________
