@@ -399,4 +399,9 @@ tinyrad_urldesc_resolve(
          TinyRadURLDesc *              trudp,
          uint32_t                      opts );
 
+
+_TINYRAD_F unsigned
+tinyrad_urldesc_scheme(
+         TinyRadURLDesc *             trud );
+
 #endif /* end of header */

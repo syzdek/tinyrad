@@ -57,4 +57,5 @@ tinyrad_urldesc_alloc
 tinyrad_urldesc_free
 tinyrad_urldesc_parse
 tinyrad_urldesc_resolve
+tinyrad_urldesc_scheme
 # end of symbol export file

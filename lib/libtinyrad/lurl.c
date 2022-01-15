@@ -284,6 +284,9 @@ tinyrad_urldesc_parse(
    if (pptr == trudpp)
       return(TRAD_EURL);
 
+   if (!(tinyrad_urldesc_scheme(*trudpp)))
+      return(TRAD_EURL);
+
    return(TRAD_SUCCESS);
 }
 
@@ -649,6 +652,47 @@ tinyrad_urldesc_resolve(
    };
 
    return(TRAD_SUCCESS);
+}
+
+
+unsigned
+tinyrad_urldesc_scheme(
+         TinyRadURLDesc *             trudp )
+{
+   unsigned             scheme;
+   TinyRadURLDesc *     ptr;
+
+   assert(trudp != NULL);
+
+   scheme = 0;
+
+   for(ptr = trudp; ((ptr)); ptr = ptr->trud_next)
+   {
+      if (!(ptr->trud_opts & TRAD_SCHEME))
+         return(0);
+      if ((ptr->trud_opts & TRAD_SCHEME) == TRAD_RADSEC)
+         continue;
+      if (!(scheme))
+         scheme = ptr->trud_opts & TRAD_SCHEME;
+      if ((ptr->trud_opts & TRAD_SCHEME) != scheme)
+         return(0);
+   };
+
+   switch(scheme)
+   {
+      case 0:
+      return(TRAD_RADSEC);
+
+      case TRAD_RADIUS:
+      case TRAD_RADIUS_ACCT:
+      case TRAD_RADIUS_DYNAUTH:
+      return(scheme);
+
+      default:
+      break;
+   };
+
+   return(0);
 }
 
 
