@@ -44,6 +44,8 @@
 #include <strings.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #include "lurl.h"
 
@@ -55,6 +57,11 @@
 //////////////////
 #pragma mark - Prototypes
 
+int
+tinyrad_socket_open_socket(
+         TinyRad *                     tr,
+         struct sockaddr_storage *     sa );
+
 
 /////////////////
 //             //
@@ -64,115 +71,166 @@
 #pragma mark - Functions
 
 int
-tinyrad_resolve(
-         const char *                  hostname,
-         int                           port,
-         struct sockaddr_storage ***   sa_storagepp,
-         size_t *                      sa_storage_lenp,
-         uint32_t                      opts )
+tinyrad_socket_close(
+         TinyRad *                     tr )
 {
-   int                           ai_family;
-   int                           ai_flags;
-   int                           rc;
-   size_t                        size;
-   struct addrinfo               hints;
-   struct addrinfo *             hintsp;
-   struct addrinfo *             res;
-   struct addrinfo *             next;
-   void *                        ptr;
-   size_t                        sas_len;
-   struct sockaddr_storage **    sasp;
+   TinyRadDebugTrace();
 
-   assert(hostname     != NULL);
-   assert(sa_storagepp != NULL);
+   assert(tr != NULL);
 
-   ai_flags = ((opts & TRAD_SERVER)) ? (AI_NUMERICHOST | AI_NUMERICSERV) : 0;
-   switch(opts & TRAD_IP_UNSPEC)
-   {
-      case 0:
-      ai_family  = PF_UNSPEC;
-      ai_flags  |= AI_ADDRCONFIG;
-      break;
+   tr->trud_cur = NULL;
+   tr->trud_pos = 0;
 
-      case TRAD_IPV4:
-      ai_family = PF_INET;
-      break;
-
-      case TRAD_IPV6:
-      ai_family = PF_INET6;
-      break;
-
-      default:
-      ai_family  = PF_INET6;
-      ai_flags  |= AI_V4MAPPED | AI_ALL;
-      break;
-   };
-
-   bzero(&hints, sizeof(struct addrinfo));
-   hints.ai_flags    = ai_flags;
-   hints.ai_family   = ai_family;
-   hints.ai_socktype = ((opts & TRAD_TCP) == 0) ? SOCK_DGRAM  : SOCK_STREAM;
-   hints.ai_protocol = ((opts & TRAD_TCP) == 0) ? IPPROTO_UDP : IPPROTO_TCP;
-   hintsp            = &hints;
-
-   if ((rc = getaddrinfo(hostname, NULL, hintsp, &res)) != 0)
-   {
-      fprintf(stderr, "getaddrinfo(): %s\n", gai_strerror(rc));
-      return(1);
-   };
-
-   // initialize memory
-   sas_len = ((sa_storage_lenp)) ? *sa_storage_lenp : 0;
-   if ((sasp = *sa_storagepp) == NULL)
-   {
-      if ((sasp = malloc(sizeof(struct sockaddr_storage *))) == NULL)
-         return(TRAD_ENOMEM);
-      sasp[0]       = NULL;
-      *sa_storagepp = sasp;
-      sas_len       = 0;
-      if ((sa_storage_lenp))
-         *sa_storage_lenp = 0;
-   };
-
-   next = res;
-   while((next))
-   {
-      size = sizeof(struct sockaddr_storage *) * (sas_len+2);
-      if ((ptr = realloc(sasp, size)) == NULL)
-         return(TRAD_ENOMEM);
-      sasp            = ptr;
-      *sa_storagepp   = ptr;
-      sasp[sas_len+1] = NULL;
-
-      if ((sasp[sas_len] = malloc(sizeof(struct sockaddr_storage))) == NULL)
-         return(TRAD_ENOMEM);
-      bzero(sasp[sas_len],  sizeof(struct sockaddr_storage));
-      memcpy(sasp[sas_len], next->ai_addr, next->ai_addrlen);
-
-      switch(sasp[sas_len]->ss_family)
-      {
-         case AF_INET:
-         ((struct sockaddr_in *)sasp[sas_len])->sin_port = htons((uint16_t)port);
-         break;
-
-         case AF_INET6:
-         ((struct sockaddr_in6 *)sasp[sas_len])->sin6_port = htons((uint16_t)port);
-         break;
-
-         default:
-         break;
-      };
-
-      sas_len++;
-      if ((sa_storage_lenp))
-         *sa_storage_lenp = sas_len;
-
-      next = next->ai_next;
-   };
-
-   freeaddrinfo(res);
+   if (tr->s != -1)
+      close(tr->s);
+   tr->s = -1;
 
    return(TRAD_SUCCESS);
 }
+
+
+int
+tinyrad_socket_open(
+         TinyRad *                     tr )
+{
+   TinyRadURLDesc *     trud;
+
+   TinyRadDebugTrace();
+
+   assert(tr != NULL);
+
+   if (tr->s != -1)
+      return(TRAD_SUCCESS);
+
+   tr->trud_cur = tr->trud;
+
+   while ((tr->trud_cur))
+   {
+      trud = tr->trud_cur;
+
+      for(tr->trud_pos = 0; (tr->trud_pos < trud->sockaddrs_len); tr->trud_pos++)
+         if (trud->sockaddrs[tr->trud_pos]->ss_family != AF_INET6)
+            if (tinyrad_socket_open_socket(tr, trud->sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
+               return(TRAD_SUCCESS);
+
+      for(tr->trud_pos = 0; (tr->trud_pos < trud->sockaddrs_len); tr->trud_pos++)
+         if (trud->sockaddrs[tr->trud_pos]->ss_family == AF_INET)
+            if (tinyrad_socket_open_socket(tr, trud->sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
+               return(TRAD_SUCCESS);
+
+      tr->trud_pos = 0;
+      tr->trud_cur = tr->trud_cur->trud_next;
+   };
+
+   tr->trud_cur = NULL;
+
+   return(TRAD_ECONNECT);
+}
+
+
+int
+tinyrad_socket_open_socket(
+         TinyRad *                     tr,
+         struct sockaddr_storage *     sa )
+{
+   int                  s;
+   int                  opt;
+   int                  domain;
+   int                  type;
+   int                  protocol;
+   socklen_t            sa_len;
+   struct sockaddr *    bind_sa;
+
+   TinyRadDebugTrace();
+
+   assert(tr != NULL);
+   assert(sa != NULL);
+
+   type     = ((tr->opts & TRAD_TCP))        ? SOCK_STREAM : SOCK_DGRAM;
+   protocol = ((tr->opts & TRAD_TCP))        ? IPPROTO_TCP : IPPROTO_UDP;
+   domain   = sa->ss_family;
+   sa_len   = (sa->ss_family == AF_INET)     ? sizeof(struct sockaddr_in)     : sizeof(struct sockaddr_in6);
+   bind_sa  = (sa->ss_family == AF_INET)     ? (struct sockaddr *)tr->bind_sa : (struct sockaddr *)tr->bind_sa6;
+
+   if ((s = socket(domain, type, protocol)) == -1)
+      return(TRAD_ECONNECT);
+
+   opt = 1; setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt, sizeof(int));
+   opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int));
+   opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEPORT, (void *)&opt, sizeof(int));
+   opt = 1;
+   if ((tr->opts & TRAD_TCP))
+      setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (void *)&opt, sizeof(int));
+
+   if (bind(s, bind_sa, sa_len) == -1)
+   {
+      close(s);
+      return(TRAD_ECONNECT);
+   };
+
+   if (connect(s, (struct sockaddr *)sa, sa_len))
+   {
+      close(s);
+      return(TRAD_ECONNECT);
+   };
+
+   tr->s = s;
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_socket_reopen(
+         TinyRad *                     tr,
+         int                           force )
+{
+   TinyRadURLDesc *     trud;
+   int                  loop;
+
+   TinyRadDebugTrace();
+
+   assert(tr != NULL);
+
+   if ( (!(force)) && (tr->s != -1) )
+      return(TRAD_SUCCESS);
+
+   // close existing socket
+   if (tr->s != -1)
+      close(tr->s);
+   tr->s = -1;
+
+   // initialize loop parameters
+   if (!(tr->trud_cur))
+   {
+      tr->trud_cur = tr->trud;
+      tr->trud_pos = 0;
+   };
+   if (tr->trud_pos >= tr->trud_cur->sockaddrs_len)
+   {
+      tr->trud_cur = tr->trud;
+      tr->trud_pos = 0;
+   };
+   if (!(tr->trud_cur))
+   {
+      tr->trud_cur = tr->trud;
+      tr->trud_pos = 0;
+   };
+
+   for(loop = 0; (loop < 2); loop++)
+   {
+      trud = tr->trud_cur;
+
+      for(; (tr->trud_pos < trud->sockaddrs_len); tr->trud_pos++)
+         if (tinyrad_socket_open_socket(tr, trud->sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
+            return(TRAD_SUCCESS);
+
+      tr->trud_pos = 0;
+      tr->trud_cur = ((trud->trud_next)) ? trud->trud_next : tr->trud;
+   };
+
+   return(TRAD_ECONNECT);
+}
+
 
 /* end of source */

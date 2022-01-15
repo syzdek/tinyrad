@@ -61,12 +61,18 @@
 #pragma mark - Prototypes
 
 int
-tinyrad_resolve(
-         const char *                  hostname,
-         int                           port,
-         struct sockaddr_storage ***   sa_storagepp,
-         size_t *                      sa_storage_lenp,
-         uint32_t                      opts );
+tinyrad_socket_close(
+         TinyRad *                     tr );
 
+
+int
+tinyrad_socket_open(
+         TinyRad *                     tr );
+
+
+int
+tinyrad_socket_reopen(
+         TinyRad *                     tr,
+         int                           force );
 
 #endif /* end of header */
