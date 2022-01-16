@@ -314,7 +314,6 @@ int main(int argc, char * argv[])
 int my_client( int s, unsigned opts, struct sockaddr_storage * sap )
 {
    struct pollfd                 fds[2];
-   int                           rc;
    struct sockaddr_storage       sa;
    socklen_t                     sa_len;
    char                          buff[4096];
@@ -350,7 +349,7 @@ int my_client( int s, unsigned opts, struct sockaddr_storage * sap )
    while (!(should_exit))
    {
       // check for network data
-      if ((rc = poll(fds, 2, 1000)) == -1)
+      if (poll(fds, 2, 1000) == -1)
       {
          if (errno == EINTR)
             continue;
@@ -401,7 +400,7 @@ int my_client( int s, unsigned opts, struct sockaddr_storage * sap )
          };
          buff[len] = '\0';
          my_verbose(opts, "STDIN: read %i bytes", len);
-         if ((len = send(s, buff, strlen(buff), 0)) == -1)
+         if (send(s, buff, strlen(buff), 0) == -1)
          {
             my_error("send(): %s", strerror(errno));
             close(s);
@@ -451,15 +450,22 @@ char * my_ntop(const struct sockaddr_storage * sa, char * buff, size_t len)
 {
    char  addrstr[INET6_ADDRSTRLEN];
    int   port;
-   if (sa->ss_family == AF_INET)
+   switch(sa->ss_family)
    {
+      case AF_INET:
       inet_ntop(AF_INET, &((const struct sockaddr_in *)sa)->sin_addr, addrstr, sizeof(addrstr));
       port = ntohs(((const struct sockaddr_in *)sa)->sin_port);
       snprintf(buff, len, "%s:%i", addrstr, port);
-   } else {
+      break;
+
+      case AF_INET6:
       inet_ntop(AF_INET6, &((const struct sockaddr_in6 *)sa)->sin6_addr, addrstr, sizeof(addrstr));
       port = ntohs(((const struct sockaddr_in6 *)sa)->sin6_port);
       snprintf(buff, len, "[%s]:%i", addrstr, port);
+      break;
+
+      default:
+      return(NULL);
    };
    buff[len-1] = '\0';
    return(buff);
