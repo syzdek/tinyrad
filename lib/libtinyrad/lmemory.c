@@ -209,7 +209,7 @@ tinyrad_get_option(
       case TRAD_OPT_SCHEME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SCHEME, outvalue )", __FUNCTION__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", tr->scheme);
-      *((int *)outvalue) = tr->scheme;
+      *((unsigned *)outvalue) = tr->scheme;
       break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:

@@ -114,7 +114,7 @@ Sets/gets timeout for socket/network operations.  \fIinvalue\fR must be a
 .TP
 .B TRAD_OPT_SCHEME
 Retrieves the configured scheme of the client library. \fIoutvalue\fR must be
-a \fBint *\fR. Valid schemes are \fBTRAD_RADIUS\fR, \fBTRAD_RADIUS_ACCT\fR,
+a \unsigned *\fR. Valid schemes are \fBTRAD_RADIUS\fR, \fBTRAD_RADIUS_ACCT\fR,
 \fBTRAD_RADIUS_DYNAUTH\fR, and \fBTRAD_RADSEC\fR. This is a read-only option.
 
 .TP
