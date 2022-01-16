@@ -143,6 +143,7 @@
 #define TRAD_OPT_TIMEOUT            9
 #define TRAD_OPT_DEBUG_IDENT       10
 #define TRAD_OPT_DEBUG_SYSLOG      11
+#define TRAD_OPT_SCHEME            12
 
 // library debug levels
 #define TRAD_DEBUG_NONE             0

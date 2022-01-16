@@ -206,6 +206,12 @@ tinyrad_get_option(
       ((struct timeval *)outvalue)->tv_usec  = tr->net_timeout->tv_usec;
       break;
 
+      case TRAD_OPT_SCHEME:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SCHEME, outvalue )", __FUNCTION__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", tr->scheme);
+      *((int *)outvalue) = tr->scheme;
+      break;
+
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, outvalue )", __FUNCTION__);
       inet_ntop(AF_INET, &tr->bind_sa->sin_addr, bind_buff, sizeof(struct sockaddr_in));
@@ -324,12 +330,7 @@ tinyrad_initialize(
    tr->authenticator = u32;
 
    // parses URL
-   if ((rc = tinyrad_urldesc_parse(url, &tr->trud)) != TRAD_SUCCESS)
-   {
-      tinyrad_destroy(tr);
-      return(rc);
-   };
-   if ((rc = tinyrad_urldesc_resolve(tr->trud, (uint32_t)opts)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
    {
       tinyrad_destroy(tr);
       return(rc);
@@ -432,6 +433,10 @@ tinyrad_set_option(
       memcpy(tr->net_timeout, ((const struct timeval *)invalue), sizeof(struct timeval));
       break;
 
+      case TRAD_OPT_SCHEME:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SCHEME, invalue )", __FUNCTION__);
+      return(TRAD_EOPTERR);
+
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, invalue )", __FUNCTION__);
       if (tr->s != -1)
@@ -455,7 +460,8 @@ tinyrad_set_option(
          return(rc);
       };
       tinyrad_urldesc_free(tr->trud);
-      tr->trud = trud;
+      tr->scheme  = tinyrad_urldesc_scheme(trud);
+      tr->trud    = trud;
       break;
 
       default:

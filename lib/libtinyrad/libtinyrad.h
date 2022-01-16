@@ -94,6 +94,8 @@ struct _tinyrad
    struct sockaddr_in6 * bind_sa6;
    struct timeval *      net_timeout;
    uint32_t              authenticator;
+   uint32_t              pad32;
+   unsigned              scheme;
    unsigned              opts;
    int                   s;
    int                   timeout;
