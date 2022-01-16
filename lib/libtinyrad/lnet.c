@@ -192,6 +192,8 @@ tinyrad_socket_reopen(
 
    assert(tr != NULL);
 
+   if (!(tr->trud))
+      return(TRAD_ECONNECT);
    if ( (!(force)) && (tr->s != -1) )
       return(TRAD_SUCCESS);
 
