@@ -90,13 +90,6 @@ struct _tinyrad_dict_vendor
 };
 
 
-struct _tinyrad_dict_vsa
-{
-   char *                name;
-   uint64_t              number;
-};
-
-
 struct _tinyrad_dict_attr
 {
    atomic_intmax_t       ref_count;

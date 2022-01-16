@@ -102,12 +102,6 @@ struct _tinyrad
 };
 
 
-struct _tinyrad_avp
-{
-   uint64_t              opts;
-};
-
-
 struct _tinyrad_map
 {
    const char *          name;
