@@ -1,0 +1,82 @@
+.\"
+.\" Tiny RADIUS Client Library
+.\" Copyright (C) 2022 David M. Syzdek <david@syzdek.net>.
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are
+.\" met:
+.\"
+.\"    * Redistributions of source code must retain the above copyright
+.\"      notice, this list of conditions and the following disclaimer.
+.\"    * Redistributions in binary form must reproduce the above copyright
+.\"      notice, this list of conditions and the following disclaimer in the
+.\"      documentation and/or other materials provided with the distribution.
+.\"    * Neither the name of David M. Syzdek nor the
+.\"      names of its contributors may be used to endorse or promote products
+.\"      derived from this software without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+.\" IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\" THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+.\" PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DAVID M. SYZDEK BE LIABLE FOR
+.\" ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\" SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\" CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.TH "TINYRAD" "3" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
+.SH NAME
+tinyrad - Tiny RADIUS Client Library
+
+.SH LIBRARY
+TinyRad (libtinyrad, -ltinyrad)
+
+.SH SYNOPSIS
+\fB#include\fR \fB<tinyrad.h>\fR
+
+.SH DESCRIPTION
+Remote Authentication Dial-In User Service (RADIUS) (RFC 2865 and RFC 2866)
+is a networking protocol that provides authentication, authorization, and
+accounting (AAA) for users connected to network devices.  The Tiny RDAIUS
+Client Library (tinyrad) is a small, RFC compliant implementation of the RADIUS
+protocol.
+
+.SH INDEX
+
+.TP 25
+.BR tinyrad_get_option (3)
+retrieves global and instance parameters used by the TinyRad library.
+
+.TP
+.BR tinyrad_memfree (3)
+releases memory allocated by TinyRad routines.
+
+.TP
+.BR tinyrad_set_option (3)
+sets global and instance parameters used by the TinyRad library.
+
+.TP
+.BR tinyrad_strerror (3)
+returns an error message corresponding to an error code
+
+.TP
+.BR tinyrad_strerror_r (3)
+copies into a buffer an error message corresponding to an error code
+
+.SH SEE ALSO
+.BR tinyrad (1),
+.BR tinyrad_error (3),
+.BR tinyrad_options (3)
+
+.SH AUTHOR
+David M. Syzdek <david@syzdek.net>
+
+.SH ACKNOWLEDGEMENTS
+\fB@PACKAGE_NAME@\fR is developed and maintained by David M. Syzdek
+<david@syzdek.net>.
+
+.\" end of man page

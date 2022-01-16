@@ -1,0 +1,122 @@
+.\"
+.\" Tiny RADIUS Client Library
+.\" Copyright (C) 2022 David M. Syzdek <david@syzdek.net>.
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are
+.\" met:
+.\"
+.\"    * Redistributions of source code must retain the above copyright
+.\"      notice, this list of conditions and the following disclaimer.
+.\"    * Redistributions in binary form must reproduce the above copyright
+.\"      notice, this list of conditions and the following disclaimer in the
+.\"      documentation and/or other materials provided with the distribution.
+.\"    * Neither the name of David M. Syzdek nor the
+.\"      names of its contributors may be used to endorse or promote products
+.\"      derived from this software without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+.\" IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\" THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+.\" PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DAVID M. SYZDEK BE LIABLE FOR
+.\" ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\" SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\" CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.TH "TINYRAD_ERROR" "3" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
+.SH NAME
+tinyrad_strerror, tinyrad_strerror_r - Tiny RADIUS error handling routines
+
+.SH LIBRARY
+TinyRad (libtinyrad, -ltinyrad)
+
+.SH SYNOPSIS
+\fB#include\fR \fB<tinyrad.h>\fR
+
+\fBconst char *\fR \fBtinyrad_strerror(\fR \fBint\fR \fIerrnum\fR );
+
+\fBint\fR \fBtinyrad_strerror_r(\fR \fBint\fR \fIerrnum\fR, \fBchar *\fR \fIstrerrbuf\fR, \fBsize_t\fR \fIbuflen\fR );
+
+.SH DESCRIPTION
+The \fBtinyrad_strerror()\fR and \fBfBtinyrad_strerror_r()\fR functions look
+up the error message string corresponding to an error number.
+
+The \fBtinyrad_strerror()\fR function accepts an error number argument
+\fIerrnum\fR and returns a pointer to the corresponding message string.
+
+\The \fBtinyrad_strerror_r()\fR function copies the error message string to
+\fIstrerrbuf\fR for a maximum of \fIbuflen\fR characters and returns
+\fBTRAD_SUCCESS\fR upon success.  If insufficient storage is provided in
+\fIstrerrbuf\fR (as specified in \fIbuflen\fR) to contain the error string, the
+returned error string will be truncated.
+
+.SH API ERROR CODES
+The following is a list of API error codes recognized by the library.
+
+.TP 20
+.B TRAD_SUCCESS
+The request was successful.
+
+.TP
+.B TRAD_EACCES
+Insufficient access to perform the requested operation.
+
+.TP
+.B TRAD_ECONNECT
+unable to connect to remote host.
+
+.TP
+.B TRAD_EEXISTS
+dictionary object already exists
+
+.TP
+.B TRAD_ENOBUFS
+Insufficient buffer space available to perform the requested operation.
+
+.TP
+.B TRAD_ENOENT
+File or directory does not exist.
+
+.TP
+.B TRAD_EOPTERR
+error setting or getting parameter using trad_get_option(3) or
+trad_set_option(3)
+
+.TP
+.B TRAD_ERESOLVE 
+unable to resolve URL host
+
+.TP
+.B TRAD_ESCHEME
+invalid URL scheme; URL schemes don't match; or URL scheme does not match
+options
+
+.TP
+.B TRAD_ESYNTAX
+Invalid or unrecognized syntax.
+
+.TP
+.B TRAD_EURL
+invalid Tiny RADIUS URL
+
+.TP
+.B TRAD_EUNKNOWN
+An unknown or undocumented error code occurred.
+
+.SH SEE ALSO
+.BR tinyrad (3),
+.BR tinyrad_options (3),
+
+.SH AUTHOR
+David M. Syzdek <david@syzdek.net>
+
+.SH ACKNOWLEDGEMENTS
+\fB@PACKAGE_NAME@\fR is developed and maintained by David M. Syzdek
+<david@syzdek.net>.
+
+.\" end of man page

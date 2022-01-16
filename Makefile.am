@@ -111,6 +111,9 @@ XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
 					  $(doc_DATA) \
+					  doc/mans/tinyrad.3.in \
+					  doc/mans/tinyrad_error.3.in \
+					  doc/mans/tinyrad_options.3.in \
 					  doc/rfc/rfc-index.txt \
 					  doc/rfc/rfc2865.txt \
 					  doc/rfc/rfc2866.txt \
@@ -161,6 +164,9 @@ endif
 if ENABLE_LIBTINYRAD
    include_HEADERS			+= include/tinyrad.h
    lib_LTLIBRARIES			+= lib/libtinyrad.la
+   man_MANS				+= doc/mans/tinyrad.3
+   man_MANS				+= doc/mans/tinyrad_error.3
+   man_MANS				+= doc/mans/tinyrad_options.3
 else
    noinst_HEADERS			+= include/tinyrad.h
    noinst_LIBRARIES			+= lib/libtinyrad.a
@@ -316,6 +322,15 @@ include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-version.am
 # custom targets
 .PHONY: examples
 
+doc/mans/tinyrad.3: Makefile $(srcdir)/doc/mans/tinyrad.3.in
+	@$(do_subst_dt)
+
+doc/mans/tinyrad_error.3: Makefile $(srcdir)/doc/mans/tinyrad_error.3.in
+	@$(do_subst_dt)
+
+doc/mans/tinyrad_options.3: Makefile $(srcdir)/doc/mans/tinyrad_options.3.in
+	@$(do_subst_dt)
+
 
 # local targets
 install-exec-local:
@@ -323,8 +338,27 @@ install-exec-local:
 install-data-local:
 
 install-data-hook:
+	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_error.3;then\
+           cd $(DESTDIR)/$(mandir)/man3 && \
+           ln -fs tinyrad_error.3 tinyrad_strerror.3 && \
+           ln -fs tinyrad_error.3 tinyrad_strerror_r.3; \
+	fi;
+	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_options.3;then\
+           cd $(DESTDIR)/$(mandir)/man3 && \
+           ln -fs tinyrad_options.3 tinyrad_get_option.3 && \
+           ln -fs tinyrad_options.3 tinyrad_set_option.3; \
+	fi;
+
 
 uninstall-local:
+
+
+uninstall-hook:
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_get_option.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_set_option.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_strerror.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_strerror_r.3
+
 
 clean-local:
 

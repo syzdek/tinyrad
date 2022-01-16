@@ -1,0 +1,143 @@
+.\"
+.\" Tiny RADIUS Client Library
+.\" Copyright (C) 2022 David M. Syzdek <david@syzdek.net>.
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are
+.\" met:
+.\"
+.\"    * Redistributions of source code must retain the above copyright
+.\"      notice, this list of conditions and the following disclaimer.
+.\"    * Redistributions in binary form must reproduce the above copyright
+.\"      notice, this list of conditions and the following disclaimer in the
+.\"      documentation and/or other materials provided with the distribution.
+.\"    * Neither the name of David M. Syzdek nor the
+.\"      names of its contributors may be used to endorse or promote products
+.\"      derived from this software without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+.\" IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\" THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+.\" PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DAVID M. SYZDEK BE LIABLE FOR
+.\" ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\" SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\" CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.TH "TINYRAD_OPTIONS" "3" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
+.SH NAME
+tinyrad_get_option, tinyrad_set_option - Tiny RADIUS parameter handling routines
+
+.SH LIBRARY
+TinyRad (libtinyrad, -ltinyrad)
+
+.SH SYNOPSIS
+\fB#include\fR \fB<tinyrad.h>\fR
+
+\fBint\fR \fBtinyrad_get_option(\fR \fBTinyRad *\fR\fItr\fR, \fBint\fR \fIoption\fR, \fBvoid *\fR\fIoutvalue\fR);
+
+\fBint\fR \fBtinyrad_set_option(\fR \fBTinyRad *\fR\fItr\fR, \fBint\fR \fIoption\fR, \fBconst void *\fR\fIinvalue\fR);
+
+.SH DESCRIPTION
+These routines provide access to global parameters and instance specific
+parameters within a TinyRad handle.  \fItr\fR specifies the TinyRad handle to
+access unless accessing global parameters.  \fItr\fR should be NULL when
+accessing global parameters.  \fIoption\fR specifies the parameter to access.
+The data type of \fIoutvalue\fR and \fIinvalue\fR is determined based on the
+value of the \fIoption\fR argument and should be cast to \fBvoid *\fR.
+\fBtinyrad_set_option\fR() is not thread safe.  Unless noted for a specific
+\fIoption\fR, \fBtinyrad_get_option\fR() may be safely called within threaded
+applications without locking provided that the referenced TinyRad handle is not
+destroyed and \fBtinyrad_set_option\fR() is not called on the referenced
+TinyRad handle concurrently with \fBtinyrad_get_option\fR().
+
+The following is a list of supported values for \fIoption\fR:
+
+.TP
+.B TRAD_OPT_DEBUG_IDENT
+Sets/gets the identifier used to print debug statements when not using
+\fBsyslog(3)\fR.  \fBinvalue\fR must be \fBconst char *\fR.  \fBoutvalue\fR must
+be \fBchar **\fR, and the caller is responsible of freeing the resulting string
+by calling \fBtinyrad_memfree(3)\fR.  \fBinvalue\fR and \fBoutvalue\fR must not be \fINULL\fR.  This option sets a global parameter which affects all instances
+of TinyRad.
+
+.TP
+.B TRAD_OPT_DEBUG_LEVEL
+Sets/gets the debug level of the client library. \fIinvalue\fR must be a
+\fBconst int *\fR and \fIoutvalue\fR must be a \fBint *\fR. Valid debug levels
+are \fBTRAD_DEBUG_NONE\fR, \fBTRAD_DEBUG_TRACE\fR, \fBTRAD_DEBUG_ARGS\fR,
+\fBTRAD_DEBUG_PACKETS\fR and \fBTRAD_DEBUG_ANY\fR. Custom debug levels may be
+created by using OR to combine debug levels.
+
+.TP
+.B TRAD_OPT_DEBUG_SYSLOG
+Sets/gets status of using \fBsyslog\fR() for debug output.  \fIinvalue\fR must
+be a \fBconst int *\fR and \fIoutvalue\fR must be a \fBint *\fR. If the value
+is \fBTRAD_ON\fR, debug statements are sent to syslog(3) with a priority of
+\fBLOG_DEBUG\fR.  If the value is \fBTRAD_OFF\fR, debug statements are printed
+to \fBstdout\fR.
+
+.TP
+.B TRAD_OPT_DESC
+Returns the file descriptor associated with the specified TinyRad handle.
+\fIoutvalue\fR must be a \fBint *\fR.  This is a read-only option.
+
+.TP
+.B TRAD_OPT_IPV4
+Sets/gets IPv4 address preference.  \fIinvalue\fR must be a \fBconst int *\fR
+and \fIoutvalue\fR must be a \fBint *\fR. If the value is \fBTRAD_ON\fR, then
+IPv4 addresses will be used.  If \fBTRAD_OPT_IPv4\fR and \fBTRAD_OPT_IPV6\fR
+are both set to \fBTRAD_OFF\fR, then IPv6 addresses are attempted before IPv4
+addresses.  If \fBTRAD_OPT_IPv4\fR and \fBTRAD_OPT_IPV6\fR are both set to
+\fBTRAD_ON\fR, then IPv4-mapped IPv6 addresses are used.
+
+.TP
+.B TRAD_OPT_IPV6
+Sets/gets IPv6 address preference.  \fIinvalue\fR must be a \fBconst int *\fR
+and \fIoutvalue\fR must be a \fBint *\fR. If the value is \fBTRAD_ON\fR, then
+IPv6 addresses will be used.  If \fBTRAD_OPT_IPv4\fR and \fBTRAD_OPT_IPV6\fR
+are both set to \fBTRAD_OFF\fR, then IPv6 addresses are attempted before IPv4
+addresses.  If \fBTRAD_OPT_IPv4\fR and \fBTRAD_OPT_IPV6\fR are both set to
+\fBTRAD_ON\fR, then IPv4-mapped IPv6 addresses are used.
+
+.TP
+.B TRAD_OPT_NETWORK_TIMEOUT
+Sets/gets timeout for socket/network operations.  \fIinvalue\fR must be a
+\fBconst struct timeval *\fR and \fIoutvalue\fR must be a
+\fBstruct timeval *\fR.
+
+.TP
+.B TRAD_OPT_SOCKET_BIND_ADDRESSES
+Sets/gets a space-separated list of IP Addresses used to bind the local socket
+when connecting to a remote server.  Only one valid IPv4 address and/or one
+valid IPv6 address are allowed in the list.  \fIinvalue\fR must be a
+\fBconst char *\fR.  \fIoutvalue\fR must be a \fBchar **\fR and the caller is
+responsible for freeing the resulting string by calling trad_memfree(3).
+
+.TP
+.B TRAD_OPT_URI
+Sets/gets a space-separated list of URIs to be contacted by the library when
+trying to send requests to the RADIUS server.  \fIinvalue\fR must be a
+\fBconst char *\fR.  \fIoutvalue\fR must be a \fBchar **\fR and the caller is
+responsible for freeing the resulting string by calling trad_memfree(3). This
+parameter cannot be set once the socket is created.
+
+.SH RETURN VALUES
+On success, the functions return TINYRAD_SUCCESS, otherwise a specific error
+is returned.
+.SH SEE ALSO
+.BR tinyrad (3),
+.BR tinyrad_error (3),
+
+.SH AUTHOR
+David M. Syzdek <david@syzdek.net>
+
+.SH ACKNOWLEDGEMENTS
+\fB@PACKAGE_NAME@\fR is developed and maintained by David M. Syzdek
+<david@syzdek.net>.
+
+.\" end of man page
