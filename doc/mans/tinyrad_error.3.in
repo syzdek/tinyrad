@@ -52,8 +52,8 @@ The \fBtinyrad_strerror()\fR function accepts an error number argument
 \The \fBtinyrad_strerror_r()\fR function copies the error message string to
 \fIstrerrbuf\fR for a maximum of \fIbuflen\fR characters and returns
 \fBTRAD_SUCCESS\fR upon success.  If insufficient storage is provided in
-\fIstrerrbuf\fR (as specified in \fIbuflen\fR) to contain the error string, the
-returned error string will be truncated.
+\fIstrerrbuf\fR (as specified in \fIbuflen\fR) to contain the error string,
+the returned error string will be truncated.
 
 .SH API ERROR CODES
 The following is a list of API error codes recognized by the library.

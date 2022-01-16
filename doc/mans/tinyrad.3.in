@@ -42,8 +42,8 @@ TinyRad (libtinyrad, -ltinyrad)
 Remote Authentication Dial-In User Service (RADIUS) (RFC 2865 and RFC 2866)
 is a networking protocol that provides authentication, authorization, and
 accounting (AAA) for users connected to network devices.  The Tiny RDAIUS
-Client Library (tinyrad) is a small, RFC compliant implementation of the RADIUS
-protocol.
+Client Library (tinyrad) is a small, RFC compliant implementation of the
+RADIUS protocol.
 
 .SH INDEX
 

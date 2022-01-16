@@ -51,8 +51,8 @@ The data type of \fIoutvalue\fR and \fIinvalue\fR is determined based on the
 value of the \fIoption\fR argument and should be cast to \fBvoid *\fR.
 \fBtinyrad_set_option\fR() is not thread safe.  Unless noted for a specific
 \fIoption\fR, \fBtinyrad_get_option\fR() may be safely called within threaded
-applications without locking provided that the referenced TinyRad handle is not
-destroyed and \fBtinyrad_set_option\fR() is not called on the referenced
+applications without locking provided that the referenced TinyRad handle is
+not destroyed and \fBtinyrad_set_option\fR() is not called on the referenced
 TinyRad handle concurrently with \fBtinyrad_get_option\fR().
 
 The following is a list of supported values for \fIoption\fR:
@@ -60,10 +60,11 @@ The following is a list of supported values for \fIoption\fR:
 .TP
 .B TRAD_OPT_DEBUG_IDENT
 Sets/gets the identifier used to print debug statements when not using
-\fBsyslog(3)\fR.  \fBinvalue\fR must be \fBconst char *\fR.  \fBoutvalue\fR must
-be \fBchar **\fR, and the caller is responsible of freeing the resulting string
-by calling \fBtinyrad_memfree(3)\fR.  \fBinvalue\fR and \fBoutvalue\fR must not be \fINULL\fR.  This option sets a global parameter which affects all instances
-of TinyRad.
+\fBsyslog(3)\fR.  \fBinvalue\fR must be \fBconst char *\fR.  \fBoutvalue\fR
+must be \fBchar **\fR, and the caller is responsible of freeing the resulting
+string by calling \fBtinyrad_memfree(3)\fR.  \fBinvalue\fR and \fBoutvalue\fR
+must not be \fINULL\fR.  This option sets a global parameter which affects all
+instances of TinyRad.
 
 .TP
 .B TRAD_OPT_DEBUG_LEVEL
