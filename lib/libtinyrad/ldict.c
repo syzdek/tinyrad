@@ -619,9 +619,9 @@ tinyrad_dict_attr_add(
 
    // resize attribute lists
    size = sizeof(TinyRadDictAttr *) * (dict->attrs_len+2);
-   if ((ptr = realloc(dict->attrs, size)) == NULL)
+   if ((ptr = realloc(dict->attrs_name, size)) == NULL)
       return(TRAD_ENOMEM);
-   dict->attrs = ptr;
+   dict->attrs_name = ptr;
    if ((vendor))
    {
       size = sizeof(TinyRadDictAttr *) * (vendor->attrs_len+2);
@@ -661,10 +661,10 @@ tinyrad_dict_attr_add(
    };
 
    // save attribute
-   dict->attrs[dict->attrs_len + 0] = attr;
-   dict->attrs[dict->attrs_len + 1] = NULL;
+   dict->attrs_name[dict->attrs_len + 0] = attr;
+   dict->attrs_name[dict->attrs_len + 1] = NULL;
    dict->attrs_len++;
-   qsort(dict->attrs, dict->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+   qsort(dict->attrs_name, dict->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
    if ((vendor))
    {
       vendor->attrs[      vendor->attrs_len + 0 ] = attr;
@@ -773,7 +773,7 @@ tinyrad_dict_attr_lookup(
 
    if ((name))
    {
-      list   = (void **)dict->attrs;
+      list   = (void **)dict->attrs_name;
       len    = dict->attrs_len;
       idx    = name;
       compar = tinyrad_dict_attr_lookup_name;
@@ -897,11 +897,11 @@ tinyrad_dict_destroy(
       return;
 
    // free attributes
-   if ((dict->attrs))
+   if ((dict->attrs_name))
    {
       for(pos = 0; (pos < dict->attrs_len); pos++)
-         tinyrad_dict_attr_destroy(dict->attrs[pos]);
-      free(dict->attrs);
+         tinyrad_dict_attr_destroy(dict->attrs_name[pos]);
+      free(dict->attrs_name);
    };
    if ((dict->attrs_type))
       free(dict->attrs_type);
@@ -1342,12 +1342,12 @@ tinyrad_dict_initialize(
    dict->vendors_id[0] = NULL;
 
    // initializes attributes
-   if ((dict->attrs = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   if ((dict->attrs_name = malloc(sizeof(TinyRadDictAttr *))) == NULL)
    {
       tinyrad_dict_destroy(dict);
       return(-1);
    };
-   dict->attrs[0] = NULL;
+   dict->attrs_name[0] = NULL;
    if ((dict->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
    {
       tinyrad_dict_destroy(dict);
