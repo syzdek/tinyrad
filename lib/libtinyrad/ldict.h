@@ -101,7 +101,8 @@ struct _tinyrad_dict_attr
    uint8_t               len_octs;
    uint8_t               pad8;
    uint32_t              flags;
-   size_t                values_len;
+   size_t                values_name_len;
+   size_t                values_numeric_len;
    TinyRadDictValue **   values_name;
    TinyRadDictValue **   values_numeric;
 };

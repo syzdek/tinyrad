@@ -742,7 +742,7 @@ tinyrad_dict_attr_destroy(
       return;
    if ((attr->name))
       free(attr->name);
-   for(pos = 0; (pos < attr->values_len); pos++)
+   for(pos = 0; (pos < attr->values_name_len); pos++)
       tinyrad_dict_value_destroy(attr->values_name[pos]);
    if ((attr->values_name))
       free(attr->values_name);
@@ -1462,9 +1462,9 @@ tinyrad_dict_print_attribute(
    };
    printf("\n");
 
-   for(pos = 0; (pos < attr->values_len); pos++)
+   for(pos = 0; (pos < attr->values_name_len); pos++)
    {
-      value = attr->values_numeric[pos];
+      value = attr->values_name[pos];
       printf("VALUE %s %s %" PRIu64 "\n", attr->name, value->name, value->value );
    };
 
@@ -1510,7 +1510,9 @@ tinyrad_dict_value_add(
          uint64_t                      numeral )
 {
    TinyRadDictValue *   value;
+   TinyRadDictValue *   numeric;
    size_t               size;
+   size_t               pos;
    void *               ptr;
 
    TinyRadDebugTrace();
@@ -1527,17 +1529,20 @@ tinyrad_dict_value_add(
          *valuep = value;
       return(TRAD_SUCCESS);
    };
-   if ((tinyrad_dict_value_lookup(attr, NULL, numeral)))
-      return(TRAD_EEXISTS);
+   numeric = tinyrad_dict_value_lookup(attr, NULL, numeral);
 
    // resize attribute lists
-   size = sizeof(TinyRadDictValue *) * (attr->values_len+2);
+   size = sizeof(TinyRadDictValue *) * (attr->values_name_len+2);
    if ((ptr = realloc(attr->values_name, size)) == NULL)
       return(TRAD_ENOMEM);
    attr->values_name = ptr;
-   if ((ptr = realloc(attr->values_numeric, size)) == NULL)
-      return(TRAD_ENOMEM);
-   attr->values_numeric = ptr;
+   if (!(numeric))
+   {
+      size = sizeof(TinyRadDictValue *) * (attr->values_numeric_len+2);
+      if ((ptr = realloc(attr->values_numeric, size)) == NULL)
+         return(TRAD_ENOMEM);
+      attr->values_numeric = ptr;
+   };
 
    // allocate memory
    if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
@@ -1550,14 +1555,26 @@ tinyrad_dict_value_add(
       return(TRAD_ENOMEM);
    };
 
-   // save attribute
-   attr->values_name[    attr->values_len + 0 ] = value;
-   attr->values_name[    attr->values_len + 1 ] = NULL;
-   attr->values_numeric[ attr->values_len + 0 ] = value;
-   attr->values_numeric[ attr->values_len + 1 ] = NULL;
-   attr->values_len++;
-   qsort(attr->values_name,    attr->values_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_name);
-   qsort(attr->values_numeric, attr->values_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_numeric);
+   // save value by name
+   attr->values_name[ attr->values_name_len + 0 ] = value;
+   attr->values_name[ attr->values_name_len + 1 ] = NULL;
+   attr->values_name_len++;
+   qsort(attr->values_name, attr->values_name_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_name);
+
+   // save value by numeral
+   if (!(numeric))
+   {
+      attr->values_numeric[ attr->values_numeric_len + 0 ] = value;
+      attr->values_numeric[ attr->values_numeric_len + 1 ] = NULL;
+      attr->values_numeric_len++;
+      qsort(attr->values_numeric, attr->values_numeric_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_numeric);
+   } else {
+      for(pos = 0; ( (pos < attr->values_numeric_len) && (attr->values_numeric[pos]->value != numeral) ); pos++);
+      if ((attr->values_numeric[pos]))
+         if (attr->values_numeric[pos]->value == numeral)
+            attr->values_numeric[pos] = value;
+   };
+
    if ((valuep))
       *valuep = value;
 
@@ -1632,6 +1649,7 @@ tinyrad_dict_value_lookup(
 {
    void **         list;
    const void *    idx;
+   size_t          len;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
@@ -1641,15 +1659,17 @@ tinyrad_dict_value_lookup(
    if ((name))
    {
       list   = (void **)attr->values_name;
+      len    = attr->values_name_len;
       idx    = name;
       compar = tinyrad_dict_value_lookup_name;
    } else {
       list   = (void **)attr->values_numeric;
+      len    = attr->values_numeric_len;
       idx    = &num;
       compar = tinyrad_dict_value_lookup_numeric;
    };
 
-   return(tinyrad_dict_lookup(list, attr->values_len, idx, compar));
+   return(tinyrad_dict_lookup(list, len, idx, compar));
 }
 
 
