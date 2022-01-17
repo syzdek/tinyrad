@@ -80,7 +80,7 @@ struct _tinyrad_dict_vendor
 {
    atomic_intmax_t       ref_count;
    char *                name;
-   TinyRadDictAttr **    attrs;
+   TinyRadDictAttr **    attrs_name;
    TinyRadDictAttr **    attrs_type;
    size_t                attrs_len;
    uint32_t              id;

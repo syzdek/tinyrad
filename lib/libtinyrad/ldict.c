@@ -625,9 +625,9 @@ tinyrad_dict_attr_add(
    if ((vendor))
    {
       size = sizeof(TinyRadDictAttr *) * (vendor->attrs_len+2);
-      if ((ptr = realloc(vendor->attrs, size)) == NULL)
+      if ((ptr = realloc(vendor->attrs_name, size)) == NULL)
          return(TRAD_ENOMEM);
-      vendor->attrs = ptr;
+      vendor->attrs_name = ptr;
 
       if ((ptr = realloc(vendor->attrs_type, size)) == NULL)
          return(TRAD_ENOMEM);
@@ -667,12 +667,12 @@ tinyrad_dict_attr_add(
    qsort(dict->attrs_name, dict->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
    if ((vendor))
    {
-      vendor->attrs[      vendor->attrs_len + 0 ] = attr;
-      vendor->attrs[      vendor->attrs_len + 1 ] = NULL;
+      vendor->attrs_name[ vendor->attrs_len + 0 ] = attr;
+      vendor->attrs_name[ vendor->attrs_len + 1 ] = NULL;
       vendor->attrs_type[ vendor->attrs_len + 0 ] = attr;
       vendor->attrs_type[ vendor->attrs_len + 1 ] = NULL;
       vendor->attrs_len++;
-      qsort(vendor->attrs,      vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+      qsort(vendor->attrs_name, vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
       qsort(vendor->attrs_type, vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
    } else {
       dict->attrs_type[dict->attrs_type_len + 0] = attr;
@@ -1746,12 +1746,12 @@ tinyrad_dict_vendor_add(
    };
 
    // initialize vendor attribute lists
-   if ((vendor->attrs = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   if ((vendor->attrs_name = malloc(sizeof(TinyRadDictAttr *))) == NULL)
    {
       tinyrad_dict_vendor_destroy(vendor);
       return(TRAD_ENOMEM);
    };
-   vendor->attrs[0] = NULL;
+   vendor->attrs_name[0] = NULL;
    if ((vendor->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
    {
       tinyrad_dict_vendor_destroy(vendor);
@@ -1841,9 +1841,9 @@ tinyrad_dict_vendor_destroy(
       free(vendor->name);
 
    for(pos = 0; (pos < vendor->attrs_len); pos++)
-      tinyrad_dict_attr_destroy(vendor->attrs[pos]);
-   if ((vendor->attrs))
-      free(vendor->attrs);
+      tinyrad_dict_attr_destroy(vendor->attrs_name[pos]);
+   if ((vendor->attrs_name))
+      free(vendor->attrs_name);
    if ((vendor->attrs_type))
       free(vendor->attrs_type);
 
