@@ -132,18 +132,18 @@
 #define TRAD_ON                     1
 
 // library options
-#define TRAD_OPT_IPV4               1
-#define TRAD_OPT_DESC               2
-#define TRAD_OPT_URI                3
-#define TRAD_OPT_DEBUG_LEVEL        4
-#define TRAD_OPT_IPV6               5
-#define TRAD_OPT_DIAGNOSTIC_MESSAGE 6
-#define TRAD_OPT_NETWORK_TIMEOUT    7
-#define TRAD_OPT_SOCKET_BIND_ADDRESSES 8
-#define TRAD_OPT_TIMEOUT            9
-#define TRAD_OPT_DEBUG_IDENT       10
-#define TRAD_OPT_DEBUG_SYSLOG      11
-#define TRAD_OPT_SCHEME            12
+#define TRAD_OPT_IPV4                   1
+#define TRAD_OPT_DESC                   2
+#define TRAD_OPT_URI                    3
+#define TRAD_OPT_DEBUG_LEVEL            4
+#define TRAD_OPT_IPV6                   5
+#define TRAD_OPT_DIAGNOSTIC_MESSAGE     6
+#define TRAD_OPT_NETWORK_TIMEOUT        7
+#define TRAD_OPT_SOCKET_BIND_ADDRESSES  8
+#define TRAD_OPT_TIMEOUT                9
+#define TRAD_OPT_DEBUG_IDENT           10
+#define TRAD_OPT_DEBUG_SYSLOG          11
+#define TRAD_OPT_SCHEME                12
 
 // library debug levels
 #define TRAD_DEBUG_NONE             0
@@ -155,44 +155,44 @@
 #define TRAD_DEBUG_ANY              (~0x00)
 
 // library defaults
-#define TRAD_DFLT_DEBUG_IDENT       "libtinyrad"
-#define TRAD_DFLT_DEBUG_LEVEL       TRAD_DEBUG_NONE
-#define TRAD_DFLT_DEBUG_SYSLOG      TRAD_OFF
-#define TRAD_DFLT_TIMEOUT           10
-#define TRAD_DFLT_NET_TIMEOUT_SEC   10
-#define TRAD_DFLT_NET_TIMEOUT_USEC  0
+#define TRAD_DFLT_DEBUG_IDENT             "libtinyrad"
+#define TRAD_DFLT_DEBUG_LEVEL             TRAD_DEBUG_NONE
+#define TRAD_DFLT_DEBUG_SYSLOG            TRAD_OFF
+#define TRAD_DFLT_TIMEOUT                 10
+#define TRAD_DFLT_NET_TIMEOUT_SEC         10
+#define TRAD_DFLT_NET_TIMEOUT_USEC        0
 #define TRAD_DFLT_SOCKET_BIND_ADDRESSES   "0.0.0.0 ::"
 
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
 
 // RADIUS Attribute Types
-#define TRAD_STRING                 1      ///< UTF-8 printable text (the RFCs call this "text")
-#define TRAD_OCTETS                 2      ///< opaque binary data (the RFCs call this "string")
-#define TRAD_IPADDR                 3      ///< IPv4 address
-#define TRAD_DATE                   4      ///< Seconds since January 1, 1970 (32-bits)
-#define TRAD_INTEGER                5      ///< 32-bit unsigned integer
-#define TRAD_IPV6ADDR               6      ///< IPv6 Address
-#define TRAD_IPV6PREFIX             7      ///< IPV6 prefix, with mask
-#define TRAD_IFID                   8      ///< Interface Id (hex:hex:hex:hex)
-#define TRAD_INTEGER64              9      ///< 64-bit unsigned integer
-#define TRAD_ETHER                 10      ///< Ethernet MAC address
-#define TRAD_ABINARY               11      ////< Ascend binary filter format
-#define TRAD_BYTE                  12      ////< 8-bit unsigned integer
-#define TRAD_SHORT                 13      ////< 16-bit unsigned integer
-#define TRAD_SIGNED                14      ////< 31-bit signed integer (packed into 32-bit field)
-#define TRAD_TLV                   15      ////< Type-Length-Value (allows nested attributes)
-#define TRAD_IPV4PREFIX            16      ////< IPv4 Prefix as given in RFC 6572.
-#define TRAD_VSA                   17      ////< Vendor specific attribute
+#define TRAD_STRING                 1 ///< UTF-8 printable text (the RFCs call this "text")
+#define TRAD_OCTETS                 2 ///< opaque binary data (the RFCs call this "string")
+#define TRAD_IPADDR                 3 ///< IPv4 address
+#define TRAD_DATE                   4 ///< Seconds since January 1, 1970 (32-bits)
+#define TRAD_INTEGER                5 ///< 32-bit unsigned integer
+#define TRAD_IPV6ADDR               6 ///< IPv6 Address
+#define TRAD_IPV6PREFIX             7 ///< IPV6 prefix, with mask
+#define TRAD_IFID                   8 ///< Interface Id (hex:hex:hex:hex)
+#define TRAD_INTEGER64              9 ///< 64-bit unsigned integer
+#define TRAD_ETHER                 10 ///< Ethernet MAC address
+#define TRAD_ABINARY               11 ///< Ascend binary filter format
+#define TRAD_BYTE                  12 ///< 8-bit unsigned integer
+#define TRAD_SHORT                 13 ///< 16-bit unsigned integer
+#define TRAD_SIGNED                14 ///< 31-bit signed integer (packed into 32-bit field)
+#define TRAD_TLV                   15 ///< Type-Length-Value (allows nested attributes)
+#define TRAD_IPV4PREFIX            16 ///< IPv4 Prefix as given in RFC 6572.
+#define TRAD_VSA                   17 ///< Vendor specific attribute
 
 
 // RADIUS Attribute flags
-#define TRAD_ENCRYPT1               0x0001 ////< encrypted with the method as defined in RFC2865 for the User-Password attribute
-#define TRAD_ENCRYPT2               0x0002 ////< encrypted with the method as defined in RFC2868 for the Tunnel-Password attribute
-#define TRAD_ENCRYPT3               0x0004 ////< encrypted as per Ascend's definitions for the Ascend-Send-Secret attribute
-#define TRAD_ENCRYPT_MASK           0x00FF ////< encrypt method mask
-#define TRAD_HAS_TAG                0x0100 ////< attribute may have tag as defined in RFC 2868
-#define TRAD_DFLT_ATTR              0x0200 ////< default/built-in attribute
+#define TRAD_ENCRYPT1               0x0001 ///< encrypted with the method as defined in RFC2865 for the User-Password attribute
+#define TRAD_ENCRYPT2               0x0002 ///< encrypted with the method as defined in RFC2868 for the Tunnel-Password attribute
+#define TRAD_ENCRYPT3               0x0004 ///< encrypted as per Ascend's definitions for the Ascend-Send-Secret attribute
+#define TRAD_ENCRYPT_MASK           0x00FF ///< encrypt method mask
+#define TRAD_HAS_TAG                0x0100 ///< attribute may have tag as defined in RFC 2868
+#define TRAD_DFLT_ATTR              0x0200 ///< default/built-in attribute
 
 
 // RADIUS codes
