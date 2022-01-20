@@ -318,6 +318,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_BTREE_REPLACE
+   our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
@@ -326,12 +327,14 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_BTREE_INSERT
+   our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_INSERT, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
+   our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_UNORDERED;
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_name", &my_compare_obj_name)))
@@ -343,6 +346,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
+   our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_name", &my_compare_obj_name)))
@@ -354,6 +358,7 @@ int main( int argc, char * argv[] )
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
+   our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_PREPEND;
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_name", &my_compare_obj_name)))
@@ -361,6 +366,42 @@ int main( int argc, char * argv[] )
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+
+
+   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
+   our_verbose(opts, "clearing list ...");
+   bzero(list, sizeof(list));
+   merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_UNORDERED;
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+
+
+   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
+   our_verbose(opts, "clearing list ...");
+   bzero(list, sizeof(list));
+   merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+
+
+  // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
+   our_verbose(opts, "clearing list ...");
+   bzero(list, sizeof(list));
+   merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_PREPEND;
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_value", &my_compare_obj_value)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_value", &my_compare_obj_value)))
       return(1);
 
    return(0);
