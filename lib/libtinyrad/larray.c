@@ -131,7 +131,7 @@ tinyrad_array_insert(
          tinyrad_array_move(obj, dst, width);
          return(idx);
       };
-      if (action != TINYRAD_ARRAY_APPEND)
+      if (action != TINYRAD_ARRAY_MERGE)
          return(-1);
    };
 
