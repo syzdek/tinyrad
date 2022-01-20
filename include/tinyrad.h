@@ -293,7 +293,7 @@ tinyrad_array_get(
 _TINYRAD_F ssize_t
 tinyrad_array_insert(
          void *                        base,
-         size_t                        nel,
+         size_t *                      nelp,
          size_t                        width,
          void *                        obj,
          unsigned                      opts,
