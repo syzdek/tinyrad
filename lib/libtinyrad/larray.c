@@ -121,9 +121,9 @@ tinyrad_array_insert(
    // search for existing object which matches
    if ((idx = tinyrad_array_search(base, nel, width, obj, &wouldbe, compar)) != -1)
    {
-      if (action == TINYRAD_BTREE_INSERT)
+      if (action == TINYRAD_ARRAY_INSERT)
          return(-1);
-      if (action == TINYRAD_BTREE_REPLACE)
+      if (action == TINYRAD_ARRAY_REPLACE)
       {
          dst = ((char *)base) + (width * (size_t)idx);
          if ((freeobj))
@@ -131,7 +131,7 @@ tinyrad_array_insert(
          tinyrad_array_move(obj, dst, width);
          return(idx);
       };
-      if (action != TINYRAD_BTREE_APPEND)
+      if (action != TINYRAD_ARRAY_APPEND)
          return(-1);
    };
 

@@ -219,9 +219,9 @@
 
 
 // BTree insert function actions
-#define TINYRAD_BTREE_INSERT     0x0000
-#define TINYRAD_BTREE_REPLACE    0x0001
-#define TINYRAD_BTREE_APPEND     0x0002
+#define TINYRAD_ARRAY_INSERT     0x0000
+#define TINYRAD_ARRAY_REPLACE    0x0001
+#define TINYRAD_ARRAY_APPEND     0x0002
 
 
 //////////////////

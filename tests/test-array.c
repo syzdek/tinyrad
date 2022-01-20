@@ -318,25 +318,25 @@ int main( int argc, char * argv[] )
 
    // insert data as sorted list using TINYRAD_BTREE_REPLACE
    bzero(list, sizeof(list));
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_BTREE_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_BTREE_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
 
 
    // insert data as sorted list using TINYRAD_BTREE_INSERT
    bzero(list, sizeof(list));
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_BTREE_INSERT, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_INSERT, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
 
 
    // insert data as sorted list using TINYRAD_BTREE_REPLACE
    bzero(list, sizeof(list));
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_BTREE_APPEND, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_APPEND, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, TINYRAD_BTREE_APPEND, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, TINYRAD_ARRAY_APPEND, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, TINYRAD_BTREE_APPEND, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, TINYRAD_ARRAY_APPEND, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
 
    return(0);
@@ -437,9 +437,9 @@ my_test_insert(
 
    switch(action)
    {
-      case TINYRAD_BTREE_INSERT:  action_name = "INSERT "; break;
-      case TINYRAD_BTREE_APPEND:  action_name = "APPEND "; break;
-      case TINYRAD_BTREE_REPLACE: action_name = "REPLACE"; break;
+      case TINYRAD_ARRAY_INSERT:  action_name = "INSERT "; break;
+      case TINYRAD_ARRAY_APPEND:  action_name = "APPEND "; break;
+      case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
       default:
       return(our_error(opts, "unknown insert action"));
    };
