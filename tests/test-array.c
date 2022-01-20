@@ -149,7 +149,7 @@ my_test_insert(
          MyData **                     src,
          size_t                        src_len,
          size_t                        iteration,
-         int                           action,
+         unsigned                      action,
          const char *                  compar_name,
          int (*compar)(const void *, const void *) );
 
@@ -184,6 +184,7 @@ int main( int argc, char * argv[] )
    int                  opt_index;
    int                  opts;
    unsigned             seed;
+   unsigned             merge;
    size_t               pos;
    size_t               len;
    struct timespec      ts;
@@ -330,13 +331,36 @@ int main( int argc, char * argv[] )
       return(1);
 
 
-   // insert data as sorted list using TINYRAD_BTREE_REPLACE
+   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
    bzero(list, sizeof(list));
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_MERGE, "my_compare_obj_name", &my_compare_obj_name)))
+   merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_UNORDERED;
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, TINYRAD_ARRAY_MERGE, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
-   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, TINYRAD_ARRAY_MERGE, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+
+
+   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
+   bzero(list, sizeof(list));
+   merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+
+
+  // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
+   bzero(list, sizeof(list));
+   merge = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_PREPEND;
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 1, merge, "my_compare_obj_name", &my_compare_obj_name)))
+      return(1);
+   if ((my_test_insert(opts, list, test, MY_LIST_LEN, 2, merge, "my_compare_obj_name", &my_compare_obj_name)))
       return(1);
 
    return(0);
@@ -419,14 +443,16 @@ my_test_insert(
          MyData **                     src,
          size_t                        src_len,
          size_t                        iteration,
-         int                           action,
+         unsigned                      action,
          const char *                  compar_name,
          int (*compar)(const void *, const void *) )
 {
    size_t         x;
    size_t         pos;
    size_t         len;
+   unsigned       mergeopt;
    const char *   action_name;
+   const char *   merge_type;
 
    assert(list        != NULL);
    assert(src         != NULL);
@@ -435,16 +461,25 @@ my_test_insert(
    assert(compar_name != NULL);
    assert(compar      != NULL);
 
-   switch(action)
+   mergeopt = (action & TINYRAD_ARRAY_MASK_MERGE);
+   switch(action & TINYRAD_ARRAY_MASK_INSERT)
    {
-      case TINYRAD_ARRAY_INSERT:  action_name = "INSERT "; break;
-      case TINYRAD_ARRAY_MERGE:   action_name = "MERGE  "; break;
+      case TINYRAD_ARRAY_INSERT:  action_name = "INSERT"; break;
+      case TINYRAD_ARRAY_MERGE:   action_name = "MERGE"; break;
       case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
       default:
       return(our_error(opts, "unknown insert action"));
    };
+   switch(action & TINYRAD_ARRAY_MASK_MERGE)
+   {
+      case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
+      case TINYRAD_ARRAY_APPEND:    merge_type = "APPEND"; break;
+      case TINYRAD_ARRAY_UNORDERED: merge_type = "UNORDERED"; break;
+      default:
+      return(our_error(opts, "unknown insert action"));
+   };
 
-   our_verbose(opts, "testing   tinyrad_btree_insert( %s, %s ) [%s] ...", action_name, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   our_verbose(opts, "testing   tinyrad_btree_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < src_len); x++)
    {
       len = (iteration*src_len) + x;
@@ -452,17 +487,31 @@ my_test_insert(
          return(our_error(opts, "tinyrad_btree_insert(%s): returned error", action_name));
    };
 
+   our_verbose(opts, "verifying tinyrad_btree_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    iteration++;
-
-   our_verbose(opts, "verifying tinyrad_btree_insert( %s, %s ) [%s] ...", action_name, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < (src_len*iteration)); x++)
    {
       pos = x/iteration;
       if ((strcasecmp(src[pos]->name, list[x]->name)))
          return(our_error(opts, "tinyrad_btree_insert(%s): misordered the list", action_name));
-      if ( (x > 0) && (!(x % iteration)) )
-         if (!(strcasecmp(list[x]->name, list[x-1]->name)))
-            return(our_error(opts, "tinyrad_btree_insert(%s): first match not returned", action_name));
+      switch(mergeopt)
+      {
+         case TINYRAD_ARRAY_APPEND:
+         if ( (x < ((src_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
+            if (!(strcasecmp(list[x]->name, list[x+1]->name)))
+               return(our_error(opts, "tinyrad_btree_insert(%s): first match not returned", action_name));
+         break;
+
+         case TINYRAD_ARRAY_PREPEND:
+         if ( (x > 0) && (!(x % iteration)) )
+            if (!(strcasecmp(list[x]->name, list[x-1]->name)))
+               return(our_error(opts, "tinyrad_btree_insert(%s): first match not returned", action_name));
+         break;
+
+         case TINYRAD_ARRAY_UNORDERED:
+         default:
+         break;
+      };
    };
 
    return(0);
@@ -493,7 +542,7 @@ int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char 
             default:
             return(our_error(opts, "unknown key"));
          };
-         if ((idx = tinyrad_array_search(list, x, sizeof(MyData *), ptr, NULL, compar)) == -1)
+         if ((idx = tinyrad_array_search(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRST, NULL, compar)) == -1)
             return(our_error(opts, "tinyrad_btree_search(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((size_t)idx != y)
             return(our_error(opts, "tinyrad_btree_search(); size: %zu; func: %s; idx: %zu; index mismatch", x, compar_name, y));
@@ -513,7 +562,7 @@ int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char 
             default:
             return(our_error(opts, "unknown key"));
          };
-         if ((res = tinyrad_array_get(list, x, sizeof(MyData *), ptr, compar)) == NULL)
+         if ((res = tinyrad_array_get(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRST, compar)) == NULL)
             return(our_error(opts, "tinyrad_btree_get(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((strcasecmp((*res)->name, list[y]->name)))
             return(our_error(opts, "tinyrad_btree_get(); size: %zu; func: %s; idx: %zu; result name does not match", x, compar_name, y));

@@ -77,6 +77,7 @@ tinyrad_array_get(
          size_t                        nel,
          size_t                        width,
          const void *                  key,
+         unsigned                      opts,
          int (*compar)(const void *, const void *) )
 {
    ssize_t     idx;
@@ -84,7 +85,7 @@ tinyrad_array_get(
    assert(base  != NULL);
    assert(key   != NULL);
    assert(width  > 0);
-   if ((idx = tinyrad_array_search(base, nel, width, key, NULL, compar)) == -1)
+   if ((idx = tinyrad_array_search(base, nel, width, key, opts, NULL, compar)) == -1)
       return(NULL);
    return(((char *)base) + (width * (size_t)idx));
 }
@@ -96,7 +97,7 @@ tinyrad_array_insert(
          size_t                        nel,
          size_t                        width,
          void *                        obj,
-         int                           action,
+         unsigned                      opts,
          int  (*compar)(const void *, const void *),
          void (*freeobj)(void *) )
 {
@@ -119,11 +120,11 @@ tinyrad_array_insert(
    };
 
    // search for existing object which matches
-   if ((idx = tinyrad_array_search(base, nel, width, obj, &wouldbe, compar)) != -1)
+   if ((idx = tinyrad_array_search(base, nel, width, obj, opts, &wouldbe, compar)) != -1)
    {
-      if (action == TINYRAD_ARRAY_INSERT)
+      if ((opts & TINYRAD_ARRAY_MASK_INSERT) == TINYRAD_ARRAY_INSERT)
          return(-1);
-      if (action == TINYRAD_ARRAY_REPLACE)
+      if ((opts & TINYRAD_ARRAY_MASK_INSERT) == TINYRAD_ARRAY_REPLACE)
       {
          dst = ((char *)base) + (width * (size_t)idx);
          if ((freeobj))
@@ -131,7 +132,7 @@ tinyrad_array_insert(
          tinyrad_array_move(obj, dst, width);
          return(idx);
       };
-      if (action != TINYRAD_ARRAY_MERGE)
+      if ((opts & TINYRAD_ARRAY_MASK_INSERT) != TINYRAD_ARRAY_MERGE)
          return(-1);
    };
 
@@ -175,6 +176,7 @@ tinyrad_array_remove(
          size_t                        nel,
          size_t                        width,
          const void *                  key,
+         unsigned                      opts,
          int (*compar)(const void *, const void *),
          void (*freeobj)(void *) )
 {
@@ -190,7 +192,7 @@ tinyrad_array_remove(
    assert(width  > 0);
 
    // search for matching object
-   if ((idx = tinyrad_array_search(base, nel, width, key, NULL, compar)) == -1)
+   if ((idx = tinyrad_array_search(base, nel, width, key, opts, NULL, compar)) == -1)
       return(-1);
 
    // free object
@@ -218,6 +220,7 @@ tinyrad_array_search(
          size_t                        nel,
          size_t                        width,
          const void *                  key,
+         unsigned                      opts,
          size_t *                      wouldbep,
          int (*compar)(const void *, const void *) )
 {
@@ -233,6 +236,7 @@ tinyrad_array_search(
    assert(base  != NULL);
    assert(key   != NULL);
    assert(width  > 0);
+   assert(opts  != ((unsigned)(~0)));
 
    if (nel == 0)
    {
@@ -252,7 +256,24 @@ tinyrad_array_search(
    {
       ptr = ((const char *)base) + (width * (size_t)mid);
       if ((rc = (*compar)(ptr, key)) == 0)
-         high = mid;
+      {
+         switch(opts & TINYRAD_ARRAY_MASK_SEARCH)
+         {
+            case TINYRAD_ARRAY_LAST:
+            if (low == mid)
+               return(*((ssize_t *)wouldbep) = mid);
+            low = mid;
+            break;
+
+            case TINYRAD_ARRAY_FIRST:
+            high = mid;
+            break;
+
+            case TINYRAD_ARRAY_UNORDERED:
+            default:
+            return(*((ssize_t *)wouldbep) = mid);
+         };
+      }
       else if (rc > 0)
          high = mid - 1;
       else

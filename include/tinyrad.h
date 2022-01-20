@@ -218,10 +218,19 @@
 #define TRAD_SHA512                 3
 
 
-// BTree insert function actions
-#define TINYRAD_ARRAY_INSERT     0x0000
-#define TINYRAD_ARRAY_REPLACE    0x0001
-#define TINYRAD_ARRAY_MERGE      0x0002
+// array function options
+#define TINYRAD_ARRAY_INSERT        0x0000               ///< insert type: default array insert action
+#define TINYRAD_ARRAY_REPLACE       0x0001               ///< insert type: replace existing object on insert
+#define TINYRAD_ARRAY_MERGE         0x0002               ///< insert type: merge object into array on insert
+#define TINYRAD_ARRAY_LAST          0x0010               ///< search: return/remove last duplicate object in series of matching objects
+#define TINYRAD_ARRAY_FIRST         0x0020               ///< search: return/remove first duplicate object in series of matching objects
+#define TINYRAD_ARRAY_UNORDERED     0x0000               ///< merge type: insert unordered duplicate object to series of matching objects
+#define TINYRAD_ARRAY_APPEND        TINYRAD_ARRAY_LAST   ///< merge type: append duplicate object to series of matching objects
+#define TINYRAD_ARRAY_PREPEND       TINYRAD_ARRAY_FIRST  ///< merge type: prepend duplicate object to series of matching objects
+#define TINYRAD_ARRAY_DEFAULT       (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_UNORDERED)   ///< default array options
+#define TINYRAD_ARRAY_MASK_INSERT   (TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
+#define TINYRAD_ARRAY_MASK_SEARCH   (TINYRAD_ARRAY_APPEND | TINYRAD_ARRAY_PREPEND)     ///< search options
+#define TINYRAD_ARRAY_MASK_MERGE    TINYRAD_ARRAY_MASK_SEARCH                          ///< insert/wouldbe merge options
 
 
 //////////////////
@@ -277,6 +286,7 @@ tinyrad_array_get(
          size_t                        nel,
          size_t                        width,
          const void *                  key,
+         unsigned                      opts,
          int (*compar)(const void *, const void *) );
 
 
@@ -286,7 +296,7 @@ tinyrad_array_insert(
          size_t                        nel,
          size_t                        width,
          void *                        obj,
-         int                           action,
+         unsigned                      opts,
          int (*compar)(const void *, const void *),
          void (*freeobj)(void *) );
 
@@ -297,6 +307,7 @@ tinyrad_array_remove(
          size_t                        nel,
          size_t                        width,
          const void *                  key,
+         unsigned                      opts,
          int (*compar)(const void *, const void *),
          void (*freeobj)(void *) );
 
@@ -307,6 +318,7 @@ tinyrad_array_search(
          size_t                        nel,
          size_t                        width,
          const void *                  key,
+         unsigned                      opts,
          size_t *                      wouldbep,
          int (*compar)(const void *, const void *) );
 
