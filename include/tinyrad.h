@@ -218,6 +218,12 @@
 #define TRAD_SHA512                 3
 
 
+// BTree insert function actions
+#define TINYRAD_BTREE_INSERT     0x0000
+#define TINYRAD_BTREE_REPLACE    0x0001
+#define TINYRAD_BTREE_APPEND     0x0002
+
+
 //////////////////
 //              //
 //  Data Types  //
@@ -259,6 +265,51 @@ struct tinyrad_url_desc
 //              //
 //////////////////
 #pragma mark - Prototypes
+
+//-----------------//
+// array functions //
+//-----------------//
+#pragma mark array functions
+
+_TINYRAD_F void *
+tinyrad_array_get(
+         void *                        base,
+         size_t                        nel,
+         size_t                        width,
+         const void *                  key,
+         int (*compar)(const void *, const void *) );
+
+
+_TINYRAD_F ssize_t
+tinyrad_array_insert(
+         void *                        base,
+         size_t                        nel,
+         size_t                        width,
+         void *                        obj,
+         int                           action,
+         int (*compar)(const void *, const void *),
+         void (*freeobj)(void *) );
+
+
+_TINYRAD_F ssize_t
+tinyrad_array_remove(
+         void *                        base,
+         size_t                        nel,
+         size_t                        width,
+         const void *                  key,
+         int (*compar)(const void *, const void *),
+         void (*freeobj)(void *) );
+
+
+_TINYRAD_F ssize_t
+tinyrad_array_search(
+         const void *                  base,
+         size_t                        nel,
+         size_t                        width,
+         const void *                  key,
+         size_t *                      wouldbep,
+         int (*compar)(const void *, const void *) );
+
 
 //----------------------//
 // dictionary functions //
