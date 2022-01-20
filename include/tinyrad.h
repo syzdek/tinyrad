@@ -304,7 +304,7 @@ tinyrad_array_insert(
 _TINYRAD_F ssize_t
 tinyrad_array_remove(
          void *                        base,
-         size_t                        nel,
+         size_t *                      nelp,
          size_t                        width,
          const void *                  key,
          unsigned                      opts,

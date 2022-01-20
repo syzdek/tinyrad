@@ -177,7 +177,7 @@ tinyrad_array_move(
 ssize_t
 tinyrad_array_remove(
          void *                        base,
-         size_t                        nel,
+         size_t *                      nelp,
          size_t                        width,
          const void *                  key,
          unsigned                      opts,
@@ -192,11 +192,12 @@ tinyrad_array_remove(
    TinyRadDebugTrace();
 
    assert(base  != NULL);
+   assert(nelp  != NULL);
    assert(key   != NULL);
    assert(width  > 0);
 
    // search for matching object
-   if ((idx = tinyrad_array_search(base, nel, width, key, opts, NULL, compar)) == -1)
+   if ((idx = tinyrad_array_search(base, *nelp, width, key, opts, NULL, compar)) == -1)
       return(-1);
 
    // free object
@@ -207,12 +208,15 @@ tinyrad_array_remove(
    };
 
    // shift list
-   for(pos = ((size_t)idx); (pos < (nel-1)); pos ++)
+   for(pos = ((size_t)idx); (pos < ((*nelp)-1)); pos ++)
    {
       src = ((char *)base) + (width * (size_t)(pos+1));
       dst = ((char *)base) + (width * (size_t)(pos+0));
       tinyrad_array_move(src, dst, width);
    };
+
+   // decrement nelp
+   (*nelp)--;
 
    return(0);
 }
