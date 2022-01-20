@@ -85,6 +85,7 @@ rfcdoc_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
 EXTRA_PROGRAMS				= examples/socket-example \
+					  tests/test-array \
 					  tests/test-options \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
@@ -102,6 +103,7 @@ EXTRA					= lib/libtinyrad.a \
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
 TESTS					= \
+					  tests/test-array \
 					  tests/test-dict-defaults.sh \
 					  tests/test-options \
 					  tests/test-url-desc2str \
@@ -279,6 +281,14 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  src/common.c \
 					  src/common.h \
 					  src/tinyradproxy.c
+
+
+# macros for tests/tinyrad-array
+tests_test_array_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_array_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_array_SOURCES		= include/tinyrad.h \
+					  tests/common.c tests/common.h \
+					  tests/test-array.c
 
 
 # macros for tests/tinyrad-options
