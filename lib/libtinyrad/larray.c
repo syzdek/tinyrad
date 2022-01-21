@@ -292,6 +292,43 @@ tinyrad_array_pop(
 
 
 ssize_t
+tinyrad_array_push(
+         void **                       basep,
+         size_t *                      nelp,
+         size_t                        width,
+         void *                        obj,
+         void * (*reallocbase)(void *, size_t) )
+{
+   size_t      size;
+   void *      ptr;
+
+   TinyRadDebugTrace();
+
+   assert(basep != NULL);
+   assert(nelp  != NULL);
+   assert(width  > 0);
+   assert(obj   != NULL);
+
+   // increases size of base
+   if ((reallocbase))
+   {
+      size = width * (*nelp + 1);
+      if ((ptr = (*reallocbase)(*basep, size)) == NULL)
+         return(-2);
+      *basep = ptr;
+   };
+
+   // save object
+   tinyrad_array_move(obj, ((char *)*basep), (width*(*nelp)));
+
+   // increment nel
+   (*nelp)++;
+
+   return((*nelp) - 1);
+}
+
+
+ssize_t
 tinyrad_array_remove(
          void *                        base,
          size_t *                      nelp,

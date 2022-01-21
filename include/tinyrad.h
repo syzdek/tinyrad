@@ -333,6 +333,15 @@ tinyrad_array_pop(
 
 
 _TINYRAD_F ssize_t
+tinyrad_array_push(
+         void **                       basep,
+         size_t *                      nelp,
+         size_t                        width,
+         void *                        obj,
+         void * (*reallocbase)(void *, size_t) );
+
+
+_TINYRAD_F ssize_t
 tinyrad_array_remove(
          void *                        base,
          size_t *                      nelp,
