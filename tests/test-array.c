@@ -333,6 +333,7 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_INSERT
@@ -343,11 +344,11 @@ int main( int argc, char * argv[] )
    merge    = TINYRAD_ARRAY_INSERT;
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
    our_verbose(opts, "resetting list ...");
-   free(list);
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -358,11 +359,11 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
    our_verbose(opts, "resetting list ...");
-   free(list);
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -373,11 +374,11 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
    our_verbose(opts, "resetting list ...");
-   free(list);
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -388,11 +389,11 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
    our_verbose(opts, "resetting list ...");
-   free(list);
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
@@ -403,11 +404,11 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
    our_verbose(opts, "resetting list ...");
-   free(list);
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
@@ -418,11 +419,11 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
    our_verbose(opts, "resetting list ...");
-   free(list);
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
@@ -433,6 +434,7 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
+   free(list);
 
    return(0);
 }
