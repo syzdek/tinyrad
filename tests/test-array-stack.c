@@ -132,7 +132,6 @@ int main( int argc, char * argv[] )
    size_t               pos;
    size_t               len;
    size_t               list_len;
-   ssize_t              idx;
    size_t               x;
    size_t               y;
    MyData               data[MY_LIST_LEN];
@@ -250,7 +249,7 @@ int main( int argc, char * argv[] )
       };
 
       // adds objects to stack
-      if ((idx = tinyrad_array_push((void **)&list, &list_len, sizeof(MyData *), &src[x], &realloc)) == -1)
+      if (tinyrad_array_push((void **)&list, &list_len, sizeof(MyData *), &src[x], &realloc) == -1)
          return(our_error(opts, "failed to push object to stack"));
    };
 
@@ -272,7 +271,7 @@ int main( int argc, char * argv[] )
    // pop data from stack
    our_verbose(opts, "popping from stack ...");
    while (list_len > 0)
-      if ((objp = tinyrad_array_pop(list, &list_len, sizeof(MyData *))) == NULL)
+      if (tinyrad_array_pop(list, &list_len, sizeof(MyData *)) == NULL)
          return(our_error(opts, "unable to pop from stack"));
 
    return(0);

@@ -132,7 +132,6 @@ int main( int argc, char * argv[] )
    size_t               pos;
    size_t               len;
    size_t               list_len;
-   ssize_t              idx;
    size_t               x;
    size_t               delta;
    MyData               data[MY_LIST_LEN];
@@ -250,7 +249,7 @@ int main( int argc, char * argv[] )
       };
 
       // adds objects to queue
-      if ((idx = tinyrad_array_enqueue((void **)&list, &list_len, sizeof(MyData *), &src[x], &realloc)) == -1)
+      if (tinyrad_array_enqueue((void **)&list, &list_len, sizeof(MyData *), &src[x], &realloc) == -1)
          return(our_error(opts, "failed to enqueue object to queue"));
    };
 
@@ -270,7 +269,7 @@ int main( int argc, char * argv[] )
    // dequeue data from queue
    our_verbose(opts, "dequeueing from queue ...");
    while (list_len > 0)
-      if ((objp = tinyrad_array_dequeue(list, &list_len, sizeof(MyData *))) == NULL)
+      if (tinyrad_array_dequeue(list, &list_len, sizeof(MyData *)) == NULL)
          return(our_error(opts, "unable to dequeue from queue"));
 
    return(0);
