@@ -278,13 +278,12 @@ int main( int argc, char * argv[] )
    {
       data[pos].value = (int)(~pos);
       data[pos].opts  = (int)pos;
-      if (pos < len)
+      data[pos].name  = (pos < len) ? strdup(test_strs[pos]) : my_random_str(8, 8);
+      if (!(data[pos].name))
       {
-         if ((data[pos].name = strdup(test_strs[pos])) == NULL)
-            return(our_error(opts, "out of virtual memory"));
-      } else {
-         if ((data[pos].name = my_random_str(8, 8)) == NULL)
-            return(our_error(opts, "out of virtual memory"));
+         for(; (pos > 0); pos--)
+            free(data[pos-1].name);
+         return(our_error(opts, "out of virtual memory"));
       };
    };
 
