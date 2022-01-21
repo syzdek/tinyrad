@@ -304,6 +304,7 @@ int main( int argc, char * argv[] )
    // test searching by value
    our_verbose(opts, "sorting test data by value ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_value);
+   opts = opts & ~MY_MASK;
    if ((my_test_search(opts|MY_OBJ_VALUE, test, MY_LIST_LEN)))
       return(1);
    if ((my_test_search(opts|MY_KEY_VALUE, test, MY_LIST_LEN)))
@@ -313,6 +314,7 @@ int main( int argc, char * argv[] )
    // test searching by name
    our_verbose(opts, "sorting test data by name ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_name);
+   opts = opts & ~MY_MASK;
    if ((my_test_search(opts|MY_OBJ_NAME, test, MY_LIST_LEN)))
       return(1);
    if ((my_test_search(opts|MY_KEY_NAME, test, MY_LIST_LEN)))
@@ -386,6 +388,11 @@ int main( int argc, char * argv[] )
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, merge)))
       return(1);
    free(list);
+
+
+   // test searching by value
+   our_verbose(opts, "sorting test data by value ...");
+   qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_value);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
