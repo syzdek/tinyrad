@@ -524,7 +524,7 @@ my_test_insert(
    for(x = 0; (x < src_len); x++)
    {
       len = (iteration*src_len) + x;
-      if (tinyrad_array_insert(list, &len, sizeof(MyData *), &src[x], action, &my_compare_obj_name, NULL) == -1)
+      if (tinyrad_array_insert((void **)&list, &len, sizeof(MyData *), &src[x], action, &my_compare_obj_name, NULL, NULL) == -1)
          return(our_error(opts, "tinyrad_btree_insert(%s): returned error", action_name));
    };
 

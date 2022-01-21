@@ -93,41 +93,52 @@ tinyrad_array_get(
 
 ssize_t
 tinyrad_array_insert(
-         void *                        base,
+         void **                       basep,
          size_t *                      nelp,
          size_t                        width,
          void *                        obj,
          unsigned                      opts,
          int  (*compar)(const void *, const void *),
-         void (*freeobj)(void *) )
+         void (*freeobj)(void *),
+         void * (*reallocbase)(void *, size_t) )
 {
    ssize_t     idx;
    size_t      wouldbe;
+   size_t      size;
    ssize_t     pos;
    char *      src;
    char *      dst;
+   void *      ptr;
 
    TinyRadDebugTrace();
 
-   assert(base  != NULL);
+   assert(basep != NULL);
    assert(nelp  != NULL);
    assert(obj   != NULL);
    assert(width  > 0);
 
    if (!(*nelp))
    {
-      tinyrad_array_move(obj, base, width);
+      if ((reallocbase))
+      {
+         size = width * (*nelp + 1);
+         if ((ptr = (*reallocbase)(*basep, size)) == NULL)
+            return(-2);
+         *basep = ptr;
+      };
+      (*nelp)++;
+      tinyrad_array_move(obj, *basep, width);
       return(0);
    };
 
    // search for existing object which matches
-   if ((idx = tinyrad_array_search(base, *nelp, width, obj, opts, &wouldbe, compar)) != -1)
+   if ((idx = tinyrad_array_search(*basep, *nelp, width, obj, opts, &wouldbe, compar)) != -1)
    {
       if ((opts & TINYRAD_ARRAY_MASK_INSERT) == TINYRAD_ARRAY_INSERT)
          return(-1);
       if ((opts & TINYRAD_ARRAY_MASK_INSERT) == TINYRAD_ARRAY_REPLACE)
       {
-         dst = ((char *)base) + (width * (size_t)idx);
+         dst = ((char *)*basep) + (width * (size_t)idx);
          if ((freeobj))
             (*freeobj)(dst);
          tinyrad_array_move(obj, dst, width);
@@ -137,16 +148,25 @@ tinyrad_array_insert(
          return(-1);
    };
 
+   // increases size of base
+   if ((reallocbase))
+   {
+      size = width * (*nelp + 1);
+      if ((ptr = (*reallocbase)(*basep, size)) == NULL)
+         return(-2);
+      *basep = ptr;
+   };
+
    // shift list
    for(pos = (ssize_t)((*nelp)-1); (pos >= (ssize_t)wouldbe); pos--)
    {
-      src = ((char *)base) + (width * (size_t)(pos+0));
-      dst = ((char *)base) + (width * (size_t)(pos+1));
+      src = ((char *)*basep) + (width * (size_t)(pos+0));
+      dst = ((char *)*basep) + (width * (size_t)(pos+1));
       tinyrad_array_move(src, dst, width);
    };
 
    // save object
-   dst = ((char *)base) + (width * wouldbe);
+   dst = ((char *)*basep) + (width * wouldbe);
    tinyrad_array_move(obj, dst, width);
 
    // increment nelp
