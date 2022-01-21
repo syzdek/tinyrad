@@ -271,8 +271,11 @@ int main( int argc, char * argv[] )
          return(1);
    };
 
+
+   // seed random()
    clock_gettime(CLOCK_UPTIME_RAW, &ts);
    srandom((unsigned)(ts.tv_sec + ts.tv_sec));
+
 
    // initialize test data
    our_verbose(opts, "initializing test data ...");
@@ -292,29 +295,24 @@ int main( int argc, char * argv[] )
       };
    };
 
+
    // populate test array
    for(pos = 0; (pos < MY_LIST_LEN); pos++)
       test[pos] = &data[pos];
 
 
-   // sort test data by value
+   // test searching by value
    our_verbose(opts, "sorting test data by value ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_value);
-
-
-   // test searching by value
    if ((my_test_search(opts|MY_OBJ_VALUE, test, MY_LIST_LEN)))
       return(1);
    if ((my_test_search(opts|MY_KEY_VALUE, test, MY_LIST_LEN)))
       return(1);
 
 
-   // sort test data by name
+   // test searching by name
    our_verbose(opts, "sorting test data by name ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_name);
-
-
-   // test searching by name
    if ((my_test_search(opts|MY_OBJ_NAME, test, MY_LIST_LEN)))
       return(1);
    if ((my_test_search(opts|MY_KEY_NAME, test, MY_LIST_LEN)))
