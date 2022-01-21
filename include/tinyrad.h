@@ -302,6 +302,13 @@ tinyrad_array_insert(
          void * (*reallocbase)(void *, size_t) );
 
 
+_TINYRAD_F void *
+tinyrad_array_peek(
+         void *                        base,
+         size_t                        nel,
+         size_t                        width );
+
+
 _TINYRAD_F ssize_t
 tinyrad_array_remove(
          void *                        base,

@@ -194,6 +194,21 @@ tinyrad_array_move(
 }
 
 
+void *
+tinyrad_array_peek(
+         void *                        base,
+         size_t                        nel,
+         size_t                        width )
+{
+   TinyRadDebugTrace();
+   assert(base   != NULL);
+   assert(width   > 0);
+   if (!(nel))
+      return(NULL);
+   return(((char *)base) + (width * (nel - 1)));
+}
+
+
 ssize_t
 tinyrad_array_remove(
          void *                        base,
