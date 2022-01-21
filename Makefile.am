@@ -121,6 +121,7 @@ EXTRA_DIST				= \
 					  doc/mans/tinyrad_array.3.in \
 					  doc/mans/tinyrad_error.3.in \
 					  doc/mans/tinyrad_options.3.in \
+					  doc/mans/tinyrad_stack.3.in \
 					  doc/rfc/rfc-index.txt \
 					  doc/rfc/rfc2865.txt \
 					  doc/rfc/rfc2866.txt \
@@ -175,6 +176,7 @@ if ENABLE_LIBTINYRAD
    man_MANS				+= doc/mans/tinyrad_array.3
    man_MANS				+= doc/mans/tinyrad_error.3
    man_MANS				+= doc/mans/tinyrad_options.3
+   man_MANS				+= doc/mans/tinyrad_stack.3
 else
    noinst_HEADERS			+= include/tinyrad.h
    noinst_LIBRARIES			+= lib/libtinyrad.a
@@ -368,6 +370,8 @@ doc/mans/tinyrad_error.3: Makefile $(srcdir)/doc/mans/tinyrad_error.3.in
 doc/mans/tinyrad_options.3: Makefile $(srcdir)/doc/mans/tinyrad_options.3.in
 	@$(do_subst_dt)
 
+doc/mans/tinyrad_stack.3: Makefile $(srcdir)/doc/mans/tinyrad_stack.3.in
+	@$(do_subst_dt)
 
 # local targets
 install-exec-local:
@@ -392,6 +396,12 @@ install-data-hook:
            ln -fs tinyrad_options.3 tinyrad_get_option.3 && \
            ln -fs tinyrad_options.3 tinyrad_set_option.3; \
 	fi;
+	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_stack.3;then\
+           cd $(DESTDIR)/$(mandir)/man3 && \
+           ln -fs tinyrad_stack.3 tinyrad_array_peek.3 && \
+           ln -fs tinyrad_stack.3 tinyrad_array_pop.3 && \
+           ln -fs tinyrad_stack.3 tinyrad_array_push.3; \
+	fi;
 
 
 uninstall-local:
@@ -400,6 +410,9 @@ uninstall-local:
 uninstall-hook:
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_get.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_insert.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_peek.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_pop.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_push.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_remove.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_search.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_get_option.3

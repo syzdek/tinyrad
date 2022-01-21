@@ -1,0 +1,67 @@
+.\"
+.\" Tiny RADIUS Client Library
+.\" Copyright (C) 2022 David M. Syzdek <david@syzdek.net>.
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions are
+.\" met:
+.\"
+.\"    * Redistributions of source code must retain the above copyright
+.\"      notice, this list of conditions and the following disclaimer.
+.\"    * Redistributions in binary form must reproduce the above copyright
+.\"      notice, this list of conditions and the following disclaimer in the
+.\"      documentation and/or other materials provided with the distribution.
+.\"    * Neither the name of David M. Syzdek nor the
+.\"      names of its contributors may be used to endorse or promote products
+.\"      derived from this software without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+.\" IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+.\" THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+.\" PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL DAVID M. SYZDEK BE LIABLE FOR
+.\" ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+.\" SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+.\" CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.TH "TINYRAD_ARRAY" "3" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
+.SH NAME
+tinyrad_array_peek, tinyrad_array_pop, tinyrad_array_push - Tiny RADIUS stack routines
+
+.SH LIBRARY
+TinyRad (libtinyrad, -ltinyrad)
+
+.SH SYNOPSIS
+.nf
+\fB#include\fR \fB<tinyrad.h>\fR
+.sp
+.BI "void * tinyrad_array_peek( void *" base ", size_t" nel ", size_t " width " );"
+.sp
+.BI "void * tinyrad_array_pop( void *" base ", size_t *" nelp ", size_t " width " );"
+.sp
+.BI "ssize_t tinyrad_array_push( void **" basep ", size_t *" nelp ", size_t " width ","
+.BI "           void *" obj ", void * (*" reallocbase ")(void *, size_t) );"
+
+.SH DESCRIPTION
+ To be written.
+
+.SH RETURN VALUES
+On success, the functions return TINYRAD_SUCCESS, otherwise a specific error
+is returned.
+.SH SEE ALSO
+.BR tinyrad (3),
+.BR tinyrad_array (3),
+.BR tinyrad_queue (3),
+
+.SH AUTHOR
+David M. Syzdek <david@syzdek.net>
+
+.SH ACKNOWLEDGEMENTS
+\fB@PACKAGE_NAME@\fR is developed and maintained by David M. Syzdek
+<david@syzdek.net>.
+
+.\" end of man page
