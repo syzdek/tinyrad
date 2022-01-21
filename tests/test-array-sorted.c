@@ -28,7 +28,7 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _TESTS_TINYRAD_ARRAY_C 1
+#define _TESTS_TINYRAD_ARRAY_SORTED_C 1
 
 
 ///////////////
@@ -66,7 +66,7 @@
 #pragma mark - Definitions
 
 #undef PROGRAM_NAME
-#define PROGRAM_NAME "tinyrad-array"
+#define PROGRAM_NAME "tinyrad-array-sorted"
 
 #define MY_LIST_LEN  512
 
