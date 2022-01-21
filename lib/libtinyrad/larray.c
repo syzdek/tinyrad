@@ -227,16 +227,16 @@ tinyrad_array_remove(
       (*freeobj)(dst);
    };
 
+   // decrement nelp
+   (*nelp)--;
+
    // shift list
-   for(pos = ((size_t)idx); (pos < ((*nelp)-1)); pos ++)
+   for(pos = ((size_t)idx); (pos < (*nelp)); pos ++)
    {
       src = ((char *)base) + (width * (size_t)(pos+1));
       dst = ((char *)base) + (width * (size_t)(pos+0));
       tinyrad_array_move(src, dst, width);
    };
-
-   // decrement nelp
-   (*nelp)--;
 
    return(0);
 }
