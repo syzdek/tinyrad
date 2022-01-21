@@ -520,11 +520,14 @@ my_test_insert(
    };
 
    our_verbose(opts, "testing   tinyrad_btree_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   len = (iteration*src_len);
    for(x = 0; (x < src_len); x++)
    {
       len = (iteration*src_len) + x;
       if (tinyrad_array_insert((void **)&list, &len, sizeof(MyData *), &src[x], action, &my_compare_obj_name, NULL, NULL) == -1)
          return(our_error(opts, "tinyrad_btree_insert(%s): returned error", action_name));
+      if (len != ((iteration*src_len) + x + 1))
+         return(our_error(opts, "tinyrad_btree_insert(%s): did not increment length", action_name));
    };
 
    our_verbose(opts, "verifying tinyrad_btree_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
