@@ -72,6 +72,23 @@ tinyrad_array_swap(
 #pragma mark - Functions
 
 void *
+tinyrad_array_dequeue(
+         void *                        base,
+         size_t *                      nelp,
+         size_t                        width )
+{
+   TinyRadDebugTrace();
+   assert(base  != NULL);
+   assert(nelp  != NULL);
+   assert(width  > 0);
+   if (!(*nelp))
+      return(NULL);
+   (*nelp)--;
+   return(((char *)base) + (width * (*nelp)));
+}
+
+
+void *
 tinyrad_array_get(
          void *                        base,
          size_t                        nel,

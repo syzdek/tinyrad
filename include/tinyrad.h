@@ -281,6 +281,13 @@ struct tinyrad_url_desc
 #pragma mark array functions
 
 _TINYRAD_F void *
+tinyrad_array_dequeue(
+         void *                        base,
+         size_t *                      nelp,
+         size_t                        width );
+
+
+_TINYRAD_F void *
 tinyrad_array_get(
          void *                        base,
          size_t                        nel,
