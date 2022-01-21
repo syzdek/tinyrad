@@ -575,8 +575,11 @@ my_compar_opts(
       break;
 
       default:
+      *compar_namep = NULL;
+      *comparp      = NULL;
       break;
    };
+   assert(*compar_namep != NULL);
    return;
 }
 
@@ -739,7 +742,7 @@ my_test_remove(
       iteration = 0;
 
    our_verbose(opts, "verifying tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
-   for(x = 0; (x < (*list_lenp)); x++)
+   for(x = 0; ((x < (*list_lenp)) && ((iteration))); x++)
    {
       pos = x/iteration;
       if ((strcasecmp(test[pos]->name, list[x]->name)))
