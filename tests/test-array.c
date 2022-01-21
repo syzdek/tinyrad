@@ -166,6 +166,17 @@ my_test_insert(
 
 
 int
+my_test_remove(
+         int                           opts,
+         MyData **                     list,
+         size_t *                      list_lenp,
+         MyData **                     src,
+         MyData **                     test,
+         size_t                        dat_len,
+         unsigned                      arrayopt );
+
+
+int
 my_test_search(
          int                           opts,
          MyData **                     list,
@@ -333,6 +344,10 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -344,6 +359,10 @@ int main( int argc, char * argv[] )
    merge    = TINYRAD_ARRAY_INSERT;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -359,6 +378,14 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -374,6 +401,14 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -389,6 +424,14 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -409,6 +452,14 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -424,6 +475,14 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
 
@@ -439,6 +498,14 @@ int main( int argc, char * argv[] )
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
+      return(1);
+   if ((list_len))
+      return(our_error(opts, "list still has elements"));
    free(list);
 
    return(0);
@@ -633,6 +700,97 @@ my_test_insert(
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
                return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
+         break;
+
+         case TINYRAD_ARRAY_UNORDERED:
+         default:
+         break;
+      };
+   };
+
+   return(0);
+}
+
+
+int
+my_test_remove(
+         int                           opts,
+         MyData **                     list,
+         size_t *                      list_lenp,
+         MyData **                     src,
+         MyData **                     test,
+         size_t                        dat_len,
+         unsigned                      arrayopt )
+{
+   size_t         x;
+   size_t         pos;
+   size_t         len;
+   size_t         iteration;
+   unsigned       mergeopt;
+   const char *   compar_name;
+   const char *   action_name;
+   const char *   merge_type;
+   int (*compar)(const void *, const void *);
+
+   assert(list        != NULL);
+   assert(list_lenp   != NULL);
+   assert(test        != NULL);
+   assert(dat_len      > 0);
+
+   my_compar_opts(opts, &compar_name, &compar);
+
+   mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_MERGE);
+   iteration = (*list_lenp / dat_len) - 1;
+   switch(arrayopt & TINYRAD_ARRAY_MASK_INSERT)
+   {
+      case TINYRAD_ARRAY_INSERT:  action_name = "INSERT"; break;
+      case TINYRAD_ARRAY_MERGE:   action_name = "MERGE"; break;
+      case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
+      default:
+      return(our_error(opts, "unknown insert action"));
+   };
+   switch(mergeopt)
+   {
+      case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
+      case TINYRAD_ARRAY_APPEND:    merge_type = "APPEND"; break;
+      case TINYRAD_ARRAY_UNORDERED: merge_type = "UNORDERED"; break;
+      default:
+      return(our_error(opts, "unknown insert action"));
+   };
+
+   our_verbose(opts, "testing   tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   for(x = 0; (x < dat_len); x++)
+   {
+      if (tinyrad_array_remove(list, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL) == -1)
+         return(our_error(opts, "tinyrad_array_remove(%s): returned error", action_name));
+      len = ((iteration+1)*dat_len) - x - 1;
+      if ( ((iteration)) && (!(arrayopt & TINYRAD_ARRAY_MERGE)) )
+         len = dat_len;
+      if (*list_lenp != len)
+         return(our_error(opts, "tinyrad_array_remove(%s): did not decrement length", action_name));
+   };
+
+   if (!(arrayopt & TINYRAD_ARRAY_MERGE))
+      iteration = 0;
+
+   our_verbose(opts, "verifying tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   for(x = 0; (x < (*list_lenp)); x++)
+   {
+      pos = x/iteration;
+      if ((strcasecmp(test[pos]->name, list[x]->name)))
+         return(our_error(opts, "tinyrad_array_remove(%s): misordered the list", action_name));
+      switch(mergeopt)
+      {
+         case TINYRAD_ARRAY_APPEND:
+         if ( (x < ((dat_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
+            if (!(strcasecmp(list[x]->name, list[x+1]->name)))
+               return(our_error(opts, "tinyrad_array_remove(%s): first match not returned", action_name));
+         break;
+
+         case TINYRAD_ARRAY_PREPEND:
+         if ( (x > 0) && (!(x % iteration)) )
+            if (!(strcasecmp(list[x]->name, list[x-1]->name)))
+               return(our_error(opts, "tinyrad_array_remove(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_UNORDERED:
