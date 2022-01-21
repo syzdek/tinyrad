@@ -39,9 +39,11 @@
 #pragma mark - Headers
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include <strings.h>
+#include <assert.h>
 
 #include "common.h"
 
@@ -532,6 +534,40 @@ void our_verbose(int opts, const char * fmt, ...)
    va_end(args);
    printf("\n");
    return;
+}
+
+
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
+char * our_random_str(size_t min, size_t max)
+{
+   char *      str;
+   size_t      len;
+   size_t      pos;
+   static int  count = 0;
+
+   assert(min <= max);
+
+   len = ((max - min)) ? ((unsigned)random() % (max - min)) : 0;
+   len += min;
+   if (len < sizeof(int))
+      len = sizeof(int);
+
+   if ((str = malloc(len+1)) == NULL)
+      return(NULL);
+   str[len] = '\0';
+
+   for(pos = 0; (pos < (len-sizeof(int))); pos++)
+      str[pos] = (random() % 26) + 'a';
+
+   snprintf(&str[pos], (len-pos+1), "%04xu", (~count)&0xffff);
+
+   count++;
+
+   return(str);
 }
 
 /* end of source */

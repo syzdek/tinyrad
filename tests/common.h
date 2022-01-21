@@ -116,4 +116,14 @@ void our_print(int opts, const char * fmt, ...);
 void our_verbose(int opts, const char * fmt, ...);
 
 
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
+char *
+our_random_str(
+         size_t                        min,
+         size_t                        max );
+
 #endif /* end of header */
