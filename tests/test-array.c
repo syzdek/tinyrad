@@ -316,7 +316,7 @@ int main( int argc, char * argv[] )
       return(1);
 
 
-   // insert data as sorted list using TINYRAD_BTREE_REPLACE
+   // insert data as sorted list using TINYRAD_ARRAY_REPLACE
    our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
@@ -325,7 +325,7 @@ int main( int argc, char * argv[] )
       return(1);
 
 
-   // insert data as sorted list using TINYRAD_BTREE_INSERT
+   // insert data as sorted list using TINYRAD_ARRAY_INSERT
    our_verbose(opts, "clearing list ...");
    bzero(list, sizeof(list));
    if ((my_test_insert(opts, list, test, MY_LIST_LEN, 0, TINYRAD_ARRAY_INSERT, "my_compare_obj_name", &my_compare_obj_name)))
@@ -519,36 +519,36 @@ my_test_insert(
       return(our_error(opts, "unknown insert action"));
    };
 
-   our_verbose(opts, "testing   tinyrad_btree_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   our_verbose(opts, "testing   tinyrad_array_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    len = (iteration*src_len);
    for(x = 0; (x < src_len); x++)
    {
       len = (iteration*src_len) + x;
       if (tinyrad_array_insert((void **)&list, &len, sizeof(MyData *), &src[x], action, &my_compare_obj_name, NULL, NULL) == -1)
-         return(our_error(opts, "tinyrad_btree_insert(%s): returned error", action_name));
+         return(our_error(opts, "tinyrad_array_insert(%s): returned error", action_name));
       if (len != ((iteration*src_len) + x + 1))
-         return(our_error(opts, "tinyrad_btree_insert(%s): did not increment length", action_name));
+         return(our_error(opts, "tinyrad_array_insert(%s): did not increment length", action_name));
    };
 
-   our_verbose(opts, "verifying tinyrad_btree_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   our_verbose(opts, "verifying tinyrad_array_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    iteration++;
    for(x = 0; (x < (src_len*iteration)); x++)
    {
       pos = x/iteration;
       if ((strcasecmp(src[pos]->name, list[x]->name)))
-         return(our_error(opts, "tinyrad_btree_insert(%s): misordered the list", action_name));
+         return(our_error(opts, "tinyrad_array_insert(%s): misordered the list", action_name));
       switch(mergeopt)
       {
          case TINYRAD_ARRAY_APPEND:
          if ( (x < ((src_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
             if (!(strcasecmp(list[x]->name, list[x+1]->name)))
-               return(our_error(opts, "tinyrad_btree_insert(%s): first match not returned", action_name));
+               return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_PREPEND:
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
-               return(our_error(opts, "tinyrad_btree_insert(%s): first match not returned", action_name));
+               return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_UNORDERED:
@@ -572,7 +572,7 @@ int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char 
    assert(list != NULL);
    assert(compar != NULL);
 
-   our_verbose(opts, "testing   tinyrad_btree_search( %s ) ...", compar_name);
+   our_verbose(opts, "testing   tinyrad_array_search( %s ) ...", compar_name);
    for(x = 1; (x < (len+1)); x++)
    {
       for(y = 0; (y < x); y++)
@@ -586,13 +586,13 @@ int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char 
             return(our_error(opts, "unknown key"));
          };
          if ((idx = tinyrad_array_search(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRST, NULL, compar)) == -1)
-            return(our_error(opts, "tinyrad_btree_search(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
+            return(our_error(opts, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((size_t)idx != y)
-            return(our_error(opts, "tinyrad_btree_search(); size: %zu; func: %s; idx: %zu; index mismatch", x, compar_name, y));
+            return(our_error(opts, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; index mismatch", x, compar_name, y));
       };
    };
 
-   our_verbose(opts, "testing   tinyrad_btree_get(    %s ) ...", compar_name);
+   our_verbose(opts, "testing   tinyrad_array_get(    %s ) ...", compar_name);
    for(x = 1; (x < (len+1)); x++)
    {
       for(y = 0; (y < x); y++)
@@ -606,11 +606,11 @@ int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char 
             return(our_error(opts, "unknown key"));
          };
          if ((res = tinyrad_array_get(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRST, compar)) == NULL)
-            return(our_error(opts, "tinyrad_btree_get(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
+            return(our_error(opts, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((strcasecmp((*res)->name, list[y]->name)))
-            return(our_error(opts, "tinyrad_btree_get(); size: %zu; func: %s; idx: %zu; result name does not match", x, compar_name, y));
+            return(our_error(opts, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result name does not match", x, compar_name, y));
          if ((*res)->value != list[y]->value)
-            return(our_error(opts, "tinyrad_btree_get(); size: %zu; func: %s; idx: %zu; result value does not match", x, compar_name, y));
+            return(our_error(opts, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result value does not match", x, compar_name, y));
       };
    };
 
