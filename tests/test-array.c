@@ -68,7 +68,7 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad-array"
 
-#define MY_LIST_LEN  256
+#define MY_LIST_LEN  512
 
 #define MY_KEY_NONE  0
 #define MY_KEY_NAME  1
@@ -317,7 +317,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_REPLACE
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, TINYRAD_ARRAY_REPLACE, "my_compare_obj_name", &my_compare_obj_name)))
@@ -327,7 +327,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_INSERT
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    if ((my_test_insert(opts, &list, &list_len, test, MY_LIST_LEN, TINYRAD_ARRAY_INSERT, "my_compare_obj_name", &my_compare_obj_name)))
@@ -335,7 +335,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    free(list);
    list     = NULL;
    list_len = 0;
@@ -349,7 +349,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    free(list);
    list     = NULL;
    list_len = 0;
@@ -363,7 +363,7 @@ int main( int argc, char * argv[] )
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    free(list);
    list     = NULL;
    list_len = 0;
@@ -377,7 +377,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    free(list);
    list     = NULL;
    list_len = 0;
@@ -391,7 +391,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    free(list);
    list     = NULL;
    list_len = 0;
@@ -405,7 +405,7 @@ int main( int argc, char * argv[] )
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
-   our_verbose(opts, "clearing list ...");
+   our_verbose(opts, "resetting list ...");
    free(list);
    list     = NULL;
    list_len = 0;
