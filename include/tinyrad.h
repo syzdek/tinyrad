@@ -287,6 +287,15 @@ tinyrad_array_dequeue(
          size_t                        width );
 
 
+_TINYRAD_F ssize_t
+tinyrad_array_enqueue(
+         void **                       basep,
+         size_t *                      nelp,
+         size_t                        width,
+         void *                        obj,
+         void * (*reallocbase)(void *, size_t) );
+
+
 _TINYRAD_F void *
 tinyrad_array_get(
          void *                        base,

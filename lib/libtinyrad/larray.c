@@ -88,6 +88,54 @@ tinyrad_array_dequeue(
 }
 
 
+ssize_t
+tinyrad_array_enqueue(
+         void **                       basep,
+         size_t *                      nelp,
+         size_t                        width,
+         void *                        obj,
+         void * (*reallocbase)(void *, size_t) )
+{
+   size_t      size;
+   size_t      pos;
+   void *      ptr;
+   char *      src;
+   char *      dst;
+
+   TinyRadDebugTrace();
+
+   assert(basep != NULL);
+   assert(nelp  != NULL);
+   assert(width  > 0);
+   assert(obj   != NULL);
+
+   // increases size of base
+   if ((reallocbase))
+   {
+      size = width * (*nelp + 1);
+      if ((ptr = (*reallocbase)(*basep, size)) == NULL)
+         return(-2);
+      *basep = ptr;
+   };
+
+   // shift list
+   for(pos = (*nelp); (pos > 0); pos--)
+   {
+      src = ((char *)*basep) + (width * (size_t)(pos-1));
+      dst = ((char *)*basep) + (width * (size_t)(pos-0));
+      tinyrad_array_move(src, dst, width);
+   };
+
+   // save object
+   tinyrad_array_move(obj, ((char *)*basep), width);
+
+   // increment nel
+   (*nelp)++;
+
+   return(0);
+}
+
+
 void *
 tinyrad_array_get(
          void *                        base,

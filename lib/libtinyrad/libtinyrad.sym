@@ -32,6 +32,7 @@
 #
 # array functions
 tinyrad_array_dequeue
+tinyrad_array_enqueue
 tinyrad_array_get
 tinyrad_array_insert
 tinyrad_array_peek
