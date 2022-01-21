@@ -190,7 +190,6 @@ int main( int argc, char * argv[] )
    int                  c;
    int                  opt_index;
    int                  opts;
-   unsigned             seed;
    unsigned             merge;
    size_t               pos;
    size_t               len;
@@ -273,8 +272,7 @@ int main( int argc, char * argv[] )
    };
 
    clock_gettime(CLOCK_UPTIME_RAW, &ts);
-   seed = (unsigned)(ts.tv_sec + ts.tv_sec);
-   srandom(seed);
+   srandom((unsigned)(ts.tv_sec + ts.tv_sec));
 
    // initialize test data
    our_verbose(opts, "initializing test data ...");
