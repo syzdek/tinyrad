@@ -115,17 +115,20 @@ static const char * test_strs[] =
 //////////////////
 #pragma mark - Prototypes
 
-int main(
+int
+main(
          int                           argc,
          char *                        argv[] );
 
 
-int my_compare_key_name(
+int
+my_compare_key_name(
          const void *                  a,
          const void *                  b );
 
 
-int my_compare_key_value(
+int
+my_compare_key_value(
          const void *                  a,
          const void *                  b );
 
