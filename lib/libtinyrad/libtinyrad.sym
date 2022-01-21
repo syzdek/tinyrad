@@ -36,6 +36,7 @@ tinyrad_array_enqueue
 tinyrad_array_get
 tinyrad_array_insert
 tinyrad_array_peek
+tinyrad_array_pop
 tinyrad_array_remove
 tinyrad_array_search
 #
