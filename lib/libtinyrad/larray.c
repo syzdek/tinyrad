@@ -319,12 +319,13 @@ tinyrad_array_push(
    };
 
    // save object
-   tinyrad_array_move(obj, ((char *)*basep), (width*(*nelp)));
+   ptr = ((char *)*basep) + (width * (*nelp));
+   tinyrad_array_move(obj, ptr, width);
 
    // increment nel
    (*nelp)++;
 
-   return((*nelp) - 1);
+   return((ssize_t)((*nelp) - 1));
 }
 
 
