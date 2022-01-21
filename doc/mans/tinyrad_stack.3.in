@@ -50,8 +50,10 @@ TinyRad (libtinyrad, -ltinyrad)
  To be written.
 
 .SH RETURN VALUES
-On success, the functions return TINYRAD_SUCCESS, otherwise a specific error
-is returned.
+\fBtinyrad_array_pop\fR() and \fBtinyrad_array_peek\fR return \fINULL\fR
+if an error occurs, otherwise a pointer to the object is returned.
+Upon success, \fBtinyrad_array_push\fR() returns 0, otherwise -2 if a
+memory error occured and -1 for all other errors.
 .SH SEE ALSO
 .BR tinyrad (3),
 .BR tinyrad_array (3),

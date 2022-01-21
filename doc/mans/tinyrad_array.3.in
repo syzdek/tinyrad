@@ -62,8 +62,15 @@ TinyRad (libtinyrad, -ltinyrad)
  To be written.
 
 .SH RETURN VALUES
-On success, the functions return TINYRAD_SUCCESS, otherwise a specific error
-is returned.
+\fBtinyrad_array_get\fR() returns \fINULL\fR if an error occurs, otherwise a
+pointer to the object is returned. \fBtinyrad_array_search\fR() returns -1 if
+an error occurs, otherwise the index position of the requested object is
+returned.
+.sp
+Upon success, \fBtinyrad_array_insert\fR() and \fBtinyrad_array_remove\fR
+return the index position of the object added to or removed from the
+array, otherwise -2 is returned if a memory error occured and -1 for all
+other errors.
 .SH SEE ALSO
 .BR tinyrad (3),
 .BR tinyrad_stack (3),
