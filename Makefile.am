@@ -118,6 +118,7 @@ EXTRA_MANS				=
 EXTRA_DIST				= \
 					  $(doc_DATA) \
 					  doc/mans/tinyrad.3.in \
+					  doc/mans/tinyrad_array.3.in \
 					  doc/mans/tinyrad_error.3.in \
 					  doc/mans/tinyrad_options.3.in \
 					  doc/rfc/rfc-index.txt \
@@ -171,6 +172,7 @@ if ENABLE_LIBTINYRAD
    include_HEADERS			+= include/tinyrad.h
    lib_LTLIBRARIES			+= lib/libtinyrad.la
    man_MANS				+= doc/mans/tinyrad.3
+   man_MANS				+= doc/mans/tinyrad_array.3
    man_MANS				+= doc/mans/tinyrad_error.3
    man_MANS				+= doc/mans/tinyrad_options.3
 else
@@ -357,6 +359,9 @@ include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-version.am
 doc/mans/tinyrad.3: Makefile $(srcdir)/doc/mans/tinyrad.3.in
 	@$(do_subst_dt)
 
+doc/mans/tinyrad_array.3: Makefile $(srcdir)/doc/mans/tinyrad_array.3.in
+	@$(do_subst_dt)
+
 doc/mans/tinyrad_error.3: Makefile $(srcdir)/doc/mans/tinyrad_error.3.in
 	@$(do_subst_dt)
 
@@ -370,6 +375,13 @@ install-exec-local:
 install-data-local:
 
 install-data-hook:
+	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_array.3;then\
+           cd $(DESTDIR)/$(mandir)/man3 && \
+           ln -fs tinyrad_array.3 tinyrad_array_get.3 && \
+           ln -fs tinyrad_array.3 tinyrad_array_insert.3 && \
+           ln -fs tinyrad_array.3 tinyrad_array_remove.3 && \
+           ln -fs tinyrad_array.3 tinyrad_array_search.3; \
+	fi;
 	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_error.3;then\
            cd $(DESTDIR)/$(mandir)/man3 && \
            ln -fs tinyrad_error.3 tinyrad_strerror.3 && \
@@ -386,6 +398,10 @@ uninstall-local:
 
 
 uninstall-hook:
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_get.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_insert.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_remove.3
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_search.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_get_option.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_set_option.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_strerror.3
