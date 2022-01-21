@@ -116,10 +116,15 @@ void our_print(int opts, const char * fmt, ...);
 void our_verbose(int opts, const char * fmt, ...);
 
 
-//------------------//
-// string functions //
-//------------------//
-#pragma mark string functions
+//----------------//
+// misc functions //
+//----------------//
+#pragma mark misc functions
+
+void
+our_initialize(
+         const char *                  program_name );
+
 
 char *
 our_random_str(

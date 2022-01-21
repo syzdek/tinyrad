@@ -47,7 +47,6 @@
 #include <getopt.h>
 #include <assert.h>
 #include <inttypes.h>
-#include <time.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -200,7 +199,6 @@ int main( int argc, char * argv[] )
    size_t               pos;
    size_t               len;
    size_t               list_len;
-   struct timespec      ts;
    MyData               data[MY_LIST_LEN];
    MyData *             src[MY_LIST_LEN];
    MyData *             test[MY_LIST_LEN];
@@ -219,9 +217,7 @@ int main( int argc, char * argv[] )
       { NULL, 0, NULL, 0 }
    };
 
-   opt = TRAD_OFF;
-   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
-   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, PROGRAM_NAME);
+   our_initialize(PROGRAM_NAME);
 
    opts = 0;
 
@@ -277,11 +273,6 @@ int main( int argc, char * argv[] )
          fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
          return(1);
    };
-
-
-   // seed random()
-   clock_gettime(CLOCK_UPTIME_RAW, &ts);
-   srandom((unsigned)(ts.tv_sec + ts.tv_sec));
 
 
    // initialize test data

@@ -43,6 +43,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 #include <assert.h>
 
 #include "common.h"
@@ -537,10 +538,33 @@ void our_verbose(int opts, const char * fmt, ...)
 }
 
 
-//------------------//
-// string functions //
-//------------------//
-#pragma mark string functions
+//----------------//
+// misc functions //
+//----------------//
+#pragma mark misc functions
+
+void our_initialize(const char * program_name)
+{
+   int                  opt;
+   struct timespec      ts;
+
+   assert(program_name != NULL);
+
+   // initialize program_name
+   prog_name = program_name;
+
+   // initialize library debug
+   opt = TRAD_OFF;
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, program_name);
+
+   // seed random()
+   clock_gettime(CLOCK_UPTIME_RAW, &ts);
+   srandom((unsigned)(ts.tv_sec + ts.tv_sec));
+
+   return;
+}
+
 
 char * our_random_str(size_t min, size_t max)
 {
