@@ -70,9 +70,11 @@
 
 #define MY_LIST_LEN  512
 
-#define MY_KEY_NONE  0
-#define MY_KEY_NAME  1
-#define MY_KEY_VALUE 2
+#define MY_OBJ_NAME     0x01000000
+#define MY_OBJ_VALUE    0x02000000
+#define MY_KEY_NAME     0x04000000
+#define MY_KEY_VALUE    0x08000000
+#define MY_MASK         0x0f000000
 
 
 //////////////////
@@ -145,6 +147,13 @@ my_compare_obj_value(
          const void *                  b );
 
 
+void
+my_compar_opts(
+         unsigned                      opts,
+         const char **                 compar_namep,
+         int (**comparp)(const void *, const void *) );
+
+
 int
 my_test_insert(
          int                           opts,
@@ -161,10 +170,7 @@ int
 my_test_search(
          int                           opts,
          MyData **                     list,
-         size_t                        list_len,
-         int                           keyfld,
-         const char *                  compar_name,
-         int (*compar)(const void *, const void *) );
+         size_t                        len );
 
 
 char *
@@ -301,9 +307,9 @@ int main( int argc, char * argv[] )
 
 
    // test searching by value
-   if ((my_test_search(opts, test, MY_LIST_LEN, MY_KEY_NONE, "my_compare_obj_value", &my_compare_obj_value)))
+   if ((my_test_search(opts|MY_OBJ_VALUE, test, MY_LIST_LEN)))
       return(1);
-   if ((my_test_search(opts, test, MY_LIST_LEN, MY_KEY_VALUE, "my_compare_key_value", &my_compare_key_value)))
+   if ((my_test_search(opts|MY_KEY_VALUE, test, MY_LIST_LEN)))
       return(1);
 
 
@@ -313,9 +319,9 @@ int main( int argc, char * argv[] )
 
 
    // test searching by name
-   if ((my_test_search(opts, test, MY_LIST_LEN, MY_KEY_NONE, "my_compare_obj_name", &my_compare_obj_name)))
+   if ((my_test_search(opts|MY_OBJ_NAME, test, MY_LIST_LEN)))
       return(1);
-   if ((my_test_search(opts, test, MY_LIST_LEN, MY_KEY_NAME, "my_compare_key_name", &my_compare_key_name)))
+   if ((my_test_search(opts|MY_KEY_NAME, test, MY_LIST_LEN)))
       return(1);
 
 
@@ -464,6 +470,41 @@ int my_compare_obj_value(const void * a, const void *b)
 }
 
 
+void
+my_compar_opts(
+         unsigned                      opts,
+         const char **                 compar_namep,
+          int (**comparp)(const void *, const void *) )
+{
+   switch(opts & MY_MASK)
+   {
+      case MY_KEY_NAME:
+      *compar_namep = "my_compare_key_name";
+      *comparp      = &my_compare_key_name;
+      break;
+
+      case MY_KEY_VALUE:
+      *compar_namep = "my_compare_key_value";
+      *comparp      = &my_compare_key_value;
+      break;
+
+      case MY_OBJ_NAME:
+      *compar_namep = "my_compare_obj_name";
+      *comparp      = &my_compare_obj_name;
+      break;
+
+      case MY_OBJ_VALUE:
+      *compar_namep = "my_compare_obj_value";
+      *comparp      = &my_compare_obj_value;
+      break;
+
+      default:
+      break;
+   };
+   return;
+}
+
+
 char * my_random_str(size_t min, size_t max)
 {
    char *      str;
@@ -587,25 +628,33 @@ my_test_insert(
 }
 
 
-int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char * compar_name, int (*compar)(const void *, const void *))
+int
+my_test_search(
+         int                           opts,
+         MyData **                     list,
+         size_t                        len )
 {
-   size_t      x;
-   size_t      y;
-   ssize_t     idx;
-   void *      ptr;
-   MyData **   res;
+   size_t         x;
+   size_t         y;
+   ssize_t        idx;
+   void *         ptr;
+   MyData **      res;
+   const char *   compar_name;
+   int (*compar)(const void *, const void *);
 
    assert(list != NULL);
-   assert(compar != NULL);
+
+   my_compar_opts(opts, &compar_name, &compar);
 
    our_verbose(opts, "testing   tinyrad_array_search( %s ) ...", compar_name);
    for(x = 1; (x < (len+1)); x++)
    {
       for(y = 0; (y < x); y++)
       {
-         switch(keyfld)
+         switch(opts & MY_MASK)
          {
-            case MY_KEY_NONE:  ptr = &list[y];        break;
+            case MY_OBJ_NAME:  ptr = &list[y];        break;
+            case MY_OBJ_VALUE: ptr = &list[y];        break;
             case MY_KEY_NAME:  ptr = list[y]->name;   break;
             case MY_KEY_VALUE: ptr = &list[y]->value; break;
             default:
@@ -623,9 +672,10 @@ int my_test_search(int opts, MyData ** list, size_t len, int keyfld, const char 
    {
       for(y = 0; (y < x); y++)
       {
-         switch(keyfld)
+         switch(opts & MY_MASK)
          {
-            case MY_KEY_NONE:  ptr = &list[y];        break;
+            case MY_OBJ_NAME:  ptr = &list[y];        break;
+            case MY_OBJ_VALUE: ptr = &list[y];        break;
             case MY_KEY_NAME:  ptr = list[y]->name;   break;
             case MY_KEY_VALUE: ptr = &list[y]->value; break;
             default:
