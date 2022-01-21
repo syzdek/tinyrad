@@ -149,7 +149,7 @@ my_compare_obj_value(
 
 void
 my_compar_opts(
-         unsigned                      opts,
+         int                           opts,
          const char **                 compar_namep,
          int (**comparp)(const void *, const void *) );
 
@@ -548,7 +548,7 @@ int my_compare_obj_value(const void * a, const void *b)
 
 void
 my_compar_opts(
-         unsigned                      opts,
+         int                           opts,
          const char **                 compar_namep,
           int (**comparp)(const void *, const void *) )
 {
