@@ -312,7 +312,7 @@ tinyrad_initialize(
       clock_gettime(CLOCK_REALTIME, &ts);
       u32 += (ts.tv_sec  % 0xffffffff);
       u32 += (ts.tv_nsec % 0xffffffff);
-      clock_gettime(CLOCK_UPTIME_RAW, &ts);
+      clock_gettime(CLOCK_MONOTONIC, &ts);
       u32 += (ts.tv_sec  % 0xffffffff);
       u32 += (ts.tv_nsec % 0xffffffff);
       u32 = ((u32 & 0xffff0000) >> 16) | ((u32 & 0x0000ffff) << 16);
@@ -323,7 +323,7 @@ tinyrad_initialize(
       clock_gettime(CLOCK_REALTIME, &ts);
       u32 += (ts.tv_sec  % 0xffffffff);
       u32 += (ts.tv_nsec % 0xffffffff);
-      clock_gettime(CLOCK_UPTIME_RAW, &ts);
+      clock_gettime(CLOCK_MONOTONIC, &ts);
       u32 += (ts.tv_sec  % 0xffffffff);
       u32 += (ts.tv_nsec % 0xffffffff);
    };
