@@ -63,7 +63,7 @@ AM_INIT_AUTOMAKE(gnu std-options subdir-objects foreign)
 # Compilers
 AC_PROG_CC
 #AC_PROG_OBJC
-AC_PROG_CXX
+#AC_PROG_CXX
 AM_PROG_CC_C_O
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
