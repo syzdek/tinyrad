@@ -153,6 +153,7 @@ AC_CHECK_HEADERS([netdb.h],       [], [AC_MSG_ERROR([missing required headers])]
 AC_CHECK_HEADERS([netinet/in.h],  [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdarg.h],      [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdatomic.h],   [], [AC_MSG_ERROR([missing required headers])])
+AC_CHECK_HEADERS([stddef.h],      [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdint.h],      [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdio.h],       [], [AC_MSG_ERROR([missing required headers])])
 AC_CHECK_HEADERS([stdlib.h],      [], [AC_MSG_ERROR([missing required headers])])
