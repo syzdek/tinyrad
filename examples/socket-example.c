@@ -108,7 +108,7 @@ static int should_exit = 0;
 
 int main( int argc, char * argv[] );
 
-int my_client( int s, unsigned opts, struct sockaddr_storage * sap );
+int my_client( int s, unsigned opts, struct sockaddr_storage * sap, socklen_t sa_len );
 void my_connlog( unsigned opts, const struct sockaddr_storage * sa, const char * fmt, ...);
 int my_error( const char * fmt, ...);
 char * my_ntop(const struct sockaddr_storage * sa, char * buff, size_t len);
@@ -143,6 +143,8 @@ int main(int argc, char * argv[])
    struct addrinfo *             res;
    struct sockaddr_storage       lsa;
    struct sockaddr_storage       sa;
+   socklen_t                     lsa_len;
+   socklen_t                     sa_len;
    char                          host[INET6_ADDRSTRLEN+INET_ADDRSTRLEN];
 
    // getopt options
@@ -249,6 +251,8 @@ int main(int argc, char * argv[])
    signal(SIGUSR2,   SIG_IGN);
 
    // resolve remote host
+   bzero(&sa, sizeof(sa));
+   sa_len = 0;
    if ((optind + 1) == argc)
    {
       my_verbose(opts, "resolving remote host \"%s\" port \"%s\" ...", argv[optind], port);
@@ -263,6 +267,7 @@ int main(int argc, char * argv[])
       rinfo.ai_family = res->ai_family;
       bzero(&sa, sizeof(sa));
       memcpy(&sa, res->ai_addr, res->ai_addrlen);
+      sa_len = res->ai_addrlen;
       freeaddrinfo(res);
       if (!(laddr))
          laddr = (sa.ss_family == AF_INET) ? "0.0.0.0" : "::";
@@ -280,6 +285,7 @@ int main(int argc, char * argv[])
    };
    bzero(&lsa, sizeof(lsa));
    memcpy(&lsa, res->ai_addr, res->ai_addrlen);
+   lsa_len = res->ai_addrlen;
    freeaddrinfo(res);
 
    // create socket
@@ -303,22 +309,21 @@ int main(int argc, char * argv[])
 
    // bind to local address
    my_verbose(opts, "binding to \"%s\" ...", my_ntop(&lsa, host, sizeof(host)));
-   if (bind(s, (struct sockaddr *)&lsa, lsa.ss_len) == -1)
+   if (bind(s, (struct sockaddr *)&lsa, lsa_len) == -1)
    {
       my_error("bind(): %s\n", strerror(errno));
       close(s);
       return(1);
    };
 
-   return(((opts & MY_SERVER)) ? my_server(s, opts) : my_client(s, opts, &sa));
+   return(((opts & MY_SERVER)) ? my_server(s, opts) : my_client(s, opts, &sa, sa_len));
 }
 
 
-int my_client( int s, unsigned opts, struct sockaddr_storage * sap )
+int my_client( int s, unsigned opts, struct sockaddr_storage * sap, socklen_t sa_len )
 {
    struct pollfd                 fds[2];
    struct sockaddr_storage       sa;
-   socklen_t                     sa_len;
    char                          buff[4096];
    ssize_t                       len;
 
@@ -331,7 +336,7 @@ int my_client( int s, unsigned opts, struct sockaddr_storage * sap )
 
    // connects to remote host
    my_verbose(opts, "connecting to \"%s\" ...", my_ntop(sap, buff, sizeof(buff)));
-   if (connect(s, (struct sockaddr *)sap, sap->ss_len) == -1)
+   if (connect(s, (struct sockaddr *)sap, sa_len) == -1)
    {
       my_error("connect(): %s\n", strerror(errno));
       close(s);
