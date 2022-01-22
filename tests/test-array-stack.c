@@ -67,7 +67,7 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad-array-stack"
 
-#define MY_LIST_LEN  1024
+#define MY_LIST_LEN  256
 
 
 //////////////////

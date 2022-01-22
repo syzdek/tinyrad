@@ -67,7 +67,7 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad-array-queue"
 
-#define MY_LIST_LEN  1024 // must be a multiple of 4
+#define MY_LIST_LEN  256 // must be a multiple of 4
 
 
 //////////////////

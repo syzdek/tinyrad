@@ -67,7 +67,7 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad-array-sorted"
 
-#define MY_LIST_LEN  512
+#define MY_LIST_LEN  256
 
 #define MY_OBJ_NAME     0x01000000
 #define MY_OBJ_VALUE    0x02000000
