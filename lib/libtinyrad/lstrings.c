@@ -96,11 +96,6 @@ tinyrad_strings_enqueue_uint(
          uintmax_t                     uint );
 
 
-extern inline void
-tinyrad_strings_free(
-         char **                       strs );
-
-
 extern inline char *
 tinyrad_strings_pop(
          char **                       strs,
@@ -141,5 +136,25 @@ tinyrad_strings_push_uint(
 //             //
 /////////////////
 #pragma mark - Functions
+
+/// frees NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+inline void
+tinyrad_strings_free(
+         char **                       strs )
+{
+   int i;
+   TinyRadDebugTrace();
+   if (!(strs))
+      return;
+   for(i = 0; ((strs[i])); i++)
+   {
+      free(strs[i]);
+      strs[i] = NULL;
+   };
+   free(strs);
+   return;
+}
 
 /* end of source */

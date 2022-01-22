@@ -460,7 +460,7 @@ tinyrad_set_option(
          const void *                  invalue );
 
 
-_TINYRAD_I void
+_TINYRAD_F void
 tinyrad_strings_free(
          char **                       strs );
 

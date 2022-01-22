@@ -299,27 +299,6 @@ tinyrad_strings_enqueue_uint(
 }
 
 
-/// frees NULL terminated array of strings
-///
-/// @param[in]  strs          pointer to string array
-inline void
-tinyrad_strings_free(
-         char **                       strs )
-{
-   int i;
-   TinyRadDebugTrace();
-   if (!(strs))
-      return;
-   for(i = 0; ((strs[i])); i++)
-   {
-      free(strs[i]);
-      strs[i] = NULL;
-   };
-   free(strs);
-   return;
-}
-
-
 /// Appends string to NULL terminated array of strings
 ///
 /// @param[in]  strs          string array
