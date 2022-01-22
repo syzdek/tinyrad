@@ -129,45 +129,11 @@ extern int            tinyrad_debug_syslog;
 //////////////////
 #pragma mark - Prototypes
 
-inline void
+void
 tinyrad_debug(
          int                           level,
          const char *                  fmt,
          ... );
 
-
-////////////////////////
-//                    //
-//  Inline Functions  //
-//                    //
-////////////////////////
-#pragma mark - Inline Functions
-
-inline void
-tinyrad_debug(
-         int                           level,
-         const char *                  fmt,
-         ... )
-{
-   va_list  args;
-
-   if ( ((level & tinyrad_debug_level) == 0) || (!(fmt)) )
-      return;
-
-   if (!(tinyrad_debug_syslog))
-      printf("%s: DEBUG: ", tinyrad_debug_ident);
-
-   va_start(args, fmt);
-   if ((tinyrad_debug_syslog))
-      vsyslog(LOG_DEBUG, fmt, args);
-   else
-      vprintf(fmt, args);
-   va_end(args);
-
-   if (!(tinyrad_debug_syslog))
-      printf("\n");
-
-   return;
-}
 
 #endif /* end of header */

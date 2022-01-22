@@ -46,20 +46,6 @@
 #include <syslog.h>
 
 
-////////////////////////
-//                    //
-//  Inline Functions  //
-//                    //
-////////////////////////
-#pragma mark - Inline Functions
-
-extern inline void
-tinyrad_debug(
-         int                           level,
-         const char *                  fmt,
-         ... );
-
-
 /////////////////
 //             //
 //  Variables  //
@@ -80,5 +66,33 @@ int            tinyrad_debug_syslog    = TRAD_DFLT_DEBUG_SYSLOG;
 //             //
 /////////////////
 #pragma mark - Functions
+
+void
+tinyrad_debug(
+         int                           level,
+         const char *                  fmt,
+         ... )
+{
+   va_list  args;
+
+   if ( ((level & tinyrad_debug_level) == 0) || (!(fmt)) )
+      return;
+
+   if (!(tinyrad_debug_syslog))
+      printf("%s: DEBUG: ", tinyrad_debug_ident);
+
+   va_start(args, fmt);
+   if ((tinyrad_debug_syslog))
+      vsyslog(LOG_DEBUG, fmt, args);
+   else
+      vprintf(fmt, args);
+   va_end(args);
+
+   if (!(tinyrad_debug_syslog))
+      printf("\n");
+
+   return;
+}
+
 
 /* end of source */
