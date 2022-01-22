@@ -272,7 +272,7 @@ int main(int argc, char * argv[])
    my_verbose(opts, "resolving local address \"%s\" port \"%s\"...", (((laddr)) ? laddr : "any"), (((port)) ? port : "any"));
    memcpy(&hints, &rinfo, sizeof(struct addrinfo));
    res = NULL;
-   hints.ai_flags |= AI_NUMERICHOST | AI_PASSIVE | AI_V4MAPPED_CFG;
+   hints.ai_flags |= AI_NUMERICHOST | AI_PASSIVE | AI_V4MAPPED | AI_ADDRCONFIG;
    if ((rc = getaddrinfo(laddr, port, &hints, &res)) != 0)
    {
       my_error("getaddrinfo(\"%s\", \"%s\", ...): %s\n", (((laddr)) ? laddr : "NULL"), (((port)) ? port : "NULL"), gai_strerror(rc));
