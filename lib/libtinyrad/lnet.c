@@ -155,7 +155,9 @@ tinyrad_socket_open_socket(
    if ((s = socket(domain, type, protocol)) == -1)
       return(TRAD_ECONNECT);
 
+#ifdef SO_NOSIGPIPE
    opt = 1; setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt, sizeof(int));
+#endif
    opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int));
    opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEPORT, (void *)&opt, sizeof(int));
    opt = 1;
