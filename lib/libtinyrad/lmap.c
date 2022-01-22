@@ -40,41 +40,92 @@
 #pragma mark - Headers
 
 
-////////////////////////
-//                    //
-//  Inline Functions  //
-//                    //
-////////////////////////
-#pragma mark - Inline Functions
-
-extern inline int
-tinyrad_map_lookup(
-         const TinyRadMap *            map,
-         const char *                  name,
-         uint64_t                      value,
-         const TinyRadMap **           mapp );
-
-
-extern inline uint64_t
-tinyrad_map_lookup_name(
-         const TinyRadMap *            map,
-         const char *                  name,
-         const TinyRadMap **          mapp );
-
-
-extern inline const char *
-tinyrad_map_lookup_value(
-         const TinyRadMap *            map,
-         uint64_t                      value,
-         const TinyRadMap **           mapp );
-
-
 /////////////////
 //             //
 //  Functions  //
 //             //
 /////////////////
 #pragma mark - Functions
+
+int
+tinyrad_map_lookup(
+         const TinyRadMap *            map,
+         const char *                  name,
+         uint64_t                      value,
+         const TinyRadMap **           mapp )
+{
+   TinyRadDebugTrace();
+
+   assert(map  != NULL);
+   assert(mapp != NULL);
+
+   if (!(name))
+      tinyrad_map_lookup_name(map, name, mapp);
+   else
+      tinyrad_map_lookup_value(map, value, mapp);
+
+   return( ((*mapp)) ? TRAD_SUCCESS : TRAD_EUNKNOWN );
+}
+
+
+uint64_t
+tinyrad_map_lookup_name(
+         const TinyRadMap *            map,
+         const char *                  name,
+         const TinyRadMap **           mapp )
+{
+   size_t  pos;
+
+   TinyRadDebugTrace();
+
+   assert(map  != NULL);
+   assert(name != NULL);
+
+   for(pos = 0; ((map[pos].name)); pos++)
+   {
+      if (!(strcasecmp(map[pos].name, name)))
+      {
+         if ((mapp))
+            *mapp = &map[pos];
+         return(map[pos].value);
+      };
+   };
+
+   if ((mapp))
+      *mapp = NULL;
+
+   return(0);
+}
+
+
+const char *
+tinyrad_map_lookup_value(
+         const TinyRadMap *            map,
+         uint64_t                      value,
+         const TinyRadMap **           mapp )
+{
+   size_t  pos;
+
+   TinyRadDebugTrace();
+
+   assert(map  != NULL);
+
+   for(pos = 0; ((map[pos].name)); pos++)
+   {
+      if (map[pos].value == value)
+      {
+         if ((mapp))
+            *mapp = &map[pos];
+         return(map[pos].name);
+      };
+   };
+
+   if ((mapp))
+      *mapp = NULL;
+
+   return(NULL);
+}
+
 
 
 /* end of source */
