@@ -43,6 +43,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <signal.h>
 #include <unistd.h>
 #include <getopt.h>
 #include <arpa/inet.h>
