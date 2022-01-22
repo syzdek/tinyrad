@@ -226,40 +226,40 @@ int main( int argc, char * argv[] )
       return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_DESC, &opt): %s", tinyrad_strerror(rc)));
 
    // TRAD_OPT_IPV4
-   opt = TRAD_ON;
-   if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV4, TRAD_ON): %s", tinyrad_strerror(rc)));
-   opt = (int)~0x00;
-   if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt): %s", tinyrad_strerror(rc)));
-   if (opt != TRAD_ON)
-      return(our_error(opts, "value for TRAD_OPT_IPV4 does not match"));
-   opt = TRAD_OFF;
-   if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV4, TRAD_ON): %s", tinyrad_strerror(rc)));
-   opt = ~TRAD_OFF;
-   if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt): %s", tinyrad_strerror(rc)));
-   if (opt != TRAD_OFF)
-      return(our_error(opts, "value for TRAD_OPT_IPV4 does not match"));
+   //opt = TRAD_ON;
+   //if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV4, TRAD_ON): %s", tinyrad_strerror(rc)));
+   //opt = (int)~0x00;
+   //if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt): %s", tinyrad_strerror(rc)));
+   //if (opt != TRAD_ON)
+   //   return(our_error(opts, "value for TRAD_OPT_IPV4 does not match"));
+   //opt = TRAD_OFF;
+   //if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV4, TRAD_ON): %s", tinyrad_strerror(rc)));
+   //opt = ~TRAD_OFF;
+   //if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV4, &opt): %s", tinyrad_strerror(rc)));
+   //if (opt != TRAD_OFF)
+   //   return(our_error(opts, "value for TRAD_OPT_IPV4 does not match"));
 
    // TRAD_OPT_IPV6
-   opt = TRAD_ON;
-   if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV6, TRAD_ON): %s", tinyrad_strerror(rc)));
-   opt = (int)~0x00;
-   if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt): %s", tinyrad_strerror(rc)));
-   if (opt != TRAD_ON)
-      return(our_error(opts, "value for TRAD_OPT_IPV6 does not match"));
-   opt = TRAD_OFF;
-   if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV6, TRAD_ON): %s", tinyrad_strerror(rc)));
-   opt = ~TRAD_OFF;
-   if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
-      return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt): %s", tinyrad_strerror(rc)));
-   if (opt != TRAD_OFF)
-      return(our_error(opts, "value for TRAD_OPT_IPV6 does not match"));
+   //opt = TRAD_ON;
+   //if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV6, TRAD_ON): %s", tinyrad_strerror(rc)));
+   //opt = (int)~0x00;
+   //if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt): %s", tinyrad_strerror(rc)));
+   //if (opt != TRAD_ON)
+   //   return(our_error(opts, "value for TRAD_OPT_IPV6 does not match"));
+   //opt = TRAD_OFF;
+   //if ((rc = tinyrad_set_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_set_option(tr, TRAD_OPT_IPV6, TRAD_ON): %s", tinyrad_strerror(rc)));
+   //opt = ~TRAD_OFF;
+   //if ((rc = tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt)) != TRAD_SUCCESS)
+   //   return(our_error(opts, "tinyrad_get_option(tr, TRAD_OPT_IPV6, &opt): %s", tinyrad_strerror(rc)));
+   //if (opt != TRAD_OFF)
+   //   return(our_error(opts, "value for TRAD_OPT_IPV6 does not match"));
 
    // TRAD_OPT_NETWORK_TIMEOUT
    tv.tv_sec  = 200;
