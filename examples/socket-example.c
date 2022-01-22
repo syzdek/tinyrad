@@ -291,7 +291,9 @@ int main(int argc, char * argv[])
 
    // configures socket
    my_verbose(opts, "configuring socket ...");
+#ifdef SO_NOSIGPIPE
    opt = 1; setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt, sizeof(int));
+#endif
    opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int));
    opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEPORT, (void *)&opt, sizeof(int));
    opt = 1;
