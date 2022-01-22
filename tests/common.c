@@ -559,7 +559,7 @@ void our_initialize(const char * program_name)
    tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, program_name);
 
    // seed random()
-   clock_gettime(CLOCK_UPTIME_RAW, &ts);
+   clock_gettime(CLOCK_MONOTONIC, &ts);
    srandom((unsigned)(ts.tv_sec + ts.tv_sec));
 
    return;
