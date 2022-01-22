@@ -62,7 +62,7 @@
 #undef Debug
 #ifdef USE_DEBUG
 #   define TinyRadDebug( level, fmt, ... ) tinyrad_debug( level, fmt, __VA_ARGS__ )
-#   define TinyRadDebugTrace() tinyrad_debug( TRAD_DEBUG_TRACE, "%s()", __FUNCTION__ )
+#   define TinyRadDebugTrace() tinyrad_debug( TRAD_DEBUG_TRACE, "%s()", __func__ )
 #else
 #   define TinyRadDebug( level, fmt, ... ) ((void)0)
 #   define TinyRadDebugTrace() ((void)0)
