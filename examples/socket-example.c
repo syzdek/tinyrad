@@ -160,7 +160,7 @@ int main(int argc, char * argv[])
       { NULL, 0, NULL, 0 }
    };
 
-   bzero(&hints, sizeof(struct addrinfo));
+   memset(&hints, 0, sizeof(struct addrinfo));
    rinfo.ai_family      = PF_UNSPEC;
    rinfo.ai_protocol    = IPPROTO_UDP;
    rinfo.ai_socktype    = SOCK_DGRAM;
@@ -251,7 +251,7 @@ int main(int argc, char * argv[])
    signal(SIGUSR2,   SIG_IGN);
 
    // resolve remote host
-   bzero(&sa, sizeof(sa));
+   memset(&sa, 0, sizeof(sa));
    sa_len = 0;
    if ((optind + 1) == argc)
    {
@@ -265,7 +265,7 @@ int main(int argc, char * argv[])
       };
       port            = NULL;
       rinfo.ai_family = res->ai_family;
-      bzero(&sa, sizeof(sa));
+      memset(&sa, 0, sizeof(sa));
       memcpy(&sa, res->ai_addr, res->ai_addrlen);
       sa_len = res->ai_addrlen;
       freeaddrinfo(res);
@@ -283,7 +283,7 @@ int main(int argc, char * argv[])
       my_error("getaddrinfo(\"%s\", \"%s\", ...): %s\n", (((laddr)) ? laddr : "NULL"), (((port)) ? port : "NULL"), gai_strerror(rc));
       return(1);
    };
-   bzero(&lsa, sizeof(lsa));
+   memset(&lsa, 0, sizeof(lsa));
    memcpy(&lsa, res->ai_addr, res->ai_addrlen);
    lsa_len = res->ai_addrlen;
    freeaddrinfo(res);
@@ -527,7 +527,7 @@ int my_server_tcp( int s, unsigned opts )
    char                          buff[4096];
    ssize_t                       len;
 
-   bzero(sa_list, sizeof(sa_list));
+   memset(sa_list, 0, sizeof(sa_list));
    fds[0].fd      = s;
    fds[0].events  = POLLIN | POLLPRI | POLLRDBAND;
    fds[0].revents = 0;
