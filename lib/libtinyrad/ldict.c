@@ -642,7 +642,7 @@ tinyrad_dict_attr_add(
    // allocate memory
    if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(attr, sizeof(TinyRadDictAttr));
+   memset(attr, 0, sizeof(TinyRadDictAttr));
    atomic_init(&attr->ref_count, 1);
    attr->type      = type;
    attr->data_type = datatype;
@@ -748,7 +748,7 @@ tinyrad_dict_attr_destroy(
       free(attr->values_name);
    if ((attr->values_numeric))
       free(attr->values_numeric);
-   bzero(attr, sizeof(TinyRadDictAttr));
+   memset(attr, 0, sizeof(TinyRadDictAttr));
    free(attr);
    return;
 }
@@ -924,7 +924,7 @@ tinyrad_dict_destroy(
    if ((dict->vendors_id))
       free(dict->vendors_id);
 
-   bzero(dict, sizeof(TinyRadDict));
+   memset(dict, 0, sizeof(TinyRadDict));
    free(dict);
 
    return;
@@ -1315,7 +1315,7 @@ tinyrad_dict_initialize(
 
    if (!(dict = malloc(sizeof(TinyRadDict))))
       return(-1);
-   bzero(dict, sizeof(TinyRadDict));
+   memset(dict, 0, sizeof(TinyRadDict));
    dict->opts      = opts;
    atomic_init(&dict->ref_count, 1);
 
@@ -1547,7 +1547,7 @@ tinyrad_dict_value_add(
    // allocate memory
    if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(value, sizeof(TinyRadDictValue));
+   memset(value, 0, sizeof(TinyRadDictValue));
    value->value = numeral;
    if ((value->name = strdup(name)) == NULL)
    {
@@ -1634,7 +1634,7 @@ tinyrad_dict_value_destroy(
    if ((value->name))
       free(value->name);
 
-   bzero(value, sizeof(TinyRadDictValue));
+   memset(value, 0, sizeof(TinyRadDictValue));
    free(value);
 
    return;
@@ -1752,7 +1752,7 @@ tinyrad_dict_vendor_add(
    // initialize vendor
    if ((vendor = malloc(sizeof(TinyRadDictVendor))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(vendor, sizeof(TinyRadDictVendor));
+   memset(vendor, 0, sizeof(TinyRadDictVendor));
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
@@ -1867,7 +1867,7 @@ tinyrad_dict_vendor_destroy(
    if ((vendor->attrs_type))
       free(vendor->attrs_type);
 
-   bzero(vendor, sizeof(TinyRadDictVendor));
+   memset(vendor, 0, sizeof(TinyRadDictVendor));
    free(vendor);
 
    return;

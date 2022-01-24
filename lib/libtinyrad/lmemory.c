@@ -114,7 +114,7 @@ tinyrad_destroy(
       close(tr->s);
    tr->s = -1;
 
-   bzero(tr, sizeof(TinyRad));
+   memset(tr, 0, sizeof(TinyRad));
    free(tr);
 
    return;
@@ -270,7 +270,7 @@ tinyrad_initialize(
 
    if ((tr = malloc(sizeof(TinyRad))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(tr, sizeof(TinyRad));
+   memset(tr, 0, sizeof(TinyRad));
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
    tr->timeout    = TRAD_DFLT_TIMEOUT;
@@ -281,14 +281,14 @@ tinyrad_initialize(
       tinyrad_destroy(tr);
       return(TRAD_ENOMEM);
    };
-   bzero(tr->bind_sa, sizeof(struct sockaddr_in));
+   memset(tr->bind_sa, 0, sizeof(struct sockaddr_in));
    tr->bind_sa->sin_family = AF_INET;
    if ((tr->bind_sa6 = malloc(sizeof(struct sockaddr_in6))) == NULL)
    {
       tinyrad_destroy(tr);
       return(TRAD_ENOMEM);
    };
-   bzero(tr->bind_sa6, sizeof(struct sockaddr_in6));
+   memset(tr->bind_sa6, 0, sizeof(struct sockaddr_in6));
    tr->bind_sa6->sin6_family = AF_INET6;
    tinyrad_set_option_socket_bind_addresses(tr, NULL);
 
@@ -298,7 +298,7 @@ tinyrad_initialize(
       tinyrad_destroy(tr);
       return(TRAD_ENOMEM);
    };
-   bzero(tr->net_timeout, sizeof(struct timeval));
+   memset(tr->net_timeout, 0, sizeof(struct timeval));
    tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
    tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
 
@@ -497,8 +497,8 @@ tinyrad_set_option_socket_bind_addresses(
    if ((strcmp(invalue, buff)))
       return(TRAD_EOPTERR);
 
-   bzero(&sa,  sizeof(struct sockaddr_in));
-   bzero(&sa6, sizeof(struct sockaddr_in6));
+   memset(&sa,  0, sizeof(struct sockaddr_in));
+   memset(&sa6, 0, sizeof(struct sockaddr_in6));
    sa.sin_family   = AF_INET;
    sa6.sin6_family = AF_INET6;
 
@@ -513,7 +513,7 @@ tinyrad_set_option_socket_bind_addresses(
       if (strlen(str) < 2)
          continue;
 
-      bzero(&hints, sizeof(struct addrinfo));
+      memset(&hints, 0, sizeof(struct addrinfo));
       hints.ai_flags    = AI_NUMERICHOST | AI_NUMERICSERV;
       hints.ai_family   = PF_UNSPEC;
 

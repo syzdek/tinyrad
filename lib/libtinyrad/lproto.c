@@ -75,7 +75,7 @@ tinyrad_packet_destroy(
 {
    if (!(pckt))
       return;
-   bzero(pckt, sizeof(TinyRadPacket));
+   memset(pckt, 0, sizeof(TinyRadPacket));
    free(pckt);
    return;
 }

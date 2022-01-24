@@ -99,7 +99,7 @@ tinyrad_file_destroy(
          free(file->path);
       if (file->fd != -1)
          close(file->fd);
-      bzero(file, sizeof(TinyRadFile));
+      memset(file, 0, sizeof(TinyRadFile));
       free(file);
 
       // pivot to parent handle
@@ -193,7 +193,7 @@ int tinyrad_file_init(
    // initialize buffer
    if ((file = malloc(sizeof(TinyRadFile))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(file, sizeof(TinyRadFile));
+   memset(file, 0, sizeof(TinyRadFile));
 
    // store dictionary file name
    if ((file->path = strdup(path)) == NULL)

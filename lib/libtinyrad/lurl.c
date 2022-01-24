@@ -92,7 +92,7 @@ tinyrad_urldesc_alloc(
    assert(trudpp != NULL);
    if ((trudp = malloc(sizeof(TinyRadURLDesc))) == NULL)
       return(TRAD_ENOMEM);
-   bzero(trudp, sizeof(TinyRadURLDesc));
+   memset(trudp, 0, sizeof(TinyRadURLDesc));
    *trudpp = trudp;
    return(TRAD_SUCCESS);
 }
@@ -120,7 +120,7 @@ tinyrad_urldesc2str(
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", trudp->trud_secret);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_opts:   0x%04x", trudp->trud_opts);
 
-   bzero(buff, sizeof(buff));
+   memset(buff, 0, sizeof(buff));
 
    while ((trudp))
    {
@@ -226,7 +226,7 @@ tinyrad_urldesc_free(
       if ((trudp->trud_secret))
          free(trudp->trud_secret);
 
-      bzero(trudp, sizeof(TinyRadURLDesc));
+      memset(trudp, 0, sizeof(TinyRadURLDesc));
 
       free(trudp);
 
@@ -589,7 +589,7 @@ tinyrad_urldesc_resolve(
 
    while ((trudp))
    {
-      bzero(&hints, sizeof(struct addrinfo));
+      memset(&hints, 0, sizeof(struct addrinfo));
       hints.ai_flags    = ai_flags;
       hints.ai_family   = ai_family;
       hints.ai_socktype = ((opts & TRAD_TCP) == 0) ? SOCK_DGRAM  : SOCK_STREAM;
@@ -623,7 +623,7 @@ tinyrad_urldesc_resolve(
 
          if ((sasp[sas_len] = malloc(sizeof(struct sockaddr_storage))) == NULL)
             return(TRAD_ENOMEM);
-         bzero(sasp[sas_len],  sizeof(struct sockaddr_storage));
+         memset(sasp[sas_len], 0, sizeof(struct sockaddr_storage));
          memcpy(sasp[sas_len], next->ai_addr, next->ai_addrlen);
 
          switch(sasp[sas_len]->ss_family)
