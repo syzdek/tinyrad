@@ -1092,7 +1092,7 @@ tinyrad_dict_import_attribute(
       ptr = file->argv[4];
       while ((str = ptr) != NULL)
       {
-         if ((ptr = index(str, ',')) != NULL)
+         if ((ptr = strchr(str, ',')) != NULL)
             ptr[0] = '\0';
          if ((flag = (uint32_t)tinyrad_map_lookup_name(tinyrad_dict_attr_flags, str, NULL)) == 0)
             return(TRAD_ESYNTAX);
@@ -1266,7 +1266,7 @@ tinyrad_dict_import_vendor(
       // initial string checks
       if (!(strcmp("format=", file->argv[3])))
          return(TRAD_ESYNTAX);
-      str = index(file->argv[3], '=');
+      str = strchr(file->argv[3], '=');
       str++;
 
       // parse type length

@@ -260,7 +260,7 @@ tinyrad_urldesc_parse(
    pptr = trudpp;
    str  = buff;
 
-   while((ptr = index(str, ' ')) != NULL)
+   while((ptr = strchr(str, ' ')) != NULL)
    {
       ptr[0] = '\0';
       if (!(str[0]))

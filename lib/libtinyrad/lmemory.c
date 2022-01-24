@@ -505,7 +505,7 @@ tinyrad_set_option_socket_bind_addresses(
    str = buff;
    while( ((str)) && ((str[0])) )
    {
-      if ((ptr = index(str, ' ')) != NULL)
+      if ((ptr = strchr(str, ' ')) != NULL)
       {
          ptr[0] = '\0';
          ptr = &ptr[1];
