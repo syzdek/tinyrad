@@ -277,8 +277,8 @@ int main( int argc, char * argv[] )
 
    // initialize test data
    our_verbose(opts, "initializing test data ...");
-   bzero(data, sizeof(data));
-   bzero(test, sizeof(test));
+   memset(data, 0, sizeof(data));
+   memset(test, 0, sizeof(test));
    for(len = 0; ((test_strs[len])); len++);
    for(pos = 0; (pos < MY_LIST_LEN); pos++)
    {
