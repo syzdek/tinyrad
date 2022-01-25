@@ -38,6 +38,8 @@
 ///////////////
 #pragma mark - Headers
 
+#include "common.h"
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -46,8 +48,6 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <arpa/inet.h>
-
-#include "common.h"
 
 
 ///////////////////
