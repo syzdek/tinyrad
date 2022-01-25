@@ -78,6 +78,17 @@
 //////////////////
 #pragma mark - Prototypes
 
+//---------------------------//
+// dictionary misc functions //
+//---------------------------//
+#pragma mark dictionary misc functions
+
+
+//--------------------------------//
+// dictionary attribute functions //
+//--------------------------------//
+#pragma mark dictionary attribute functions
+
 int
 tinyrad_dict_attr_add(
          TinyRadDict *                 dict,
@@ -117,6 +128,11 @@ tinyrad_dict_attr_lookup_type(
          const void *                 data,
          const void *                 idx );
 
+
+//-----------------------------//
+// dictionary import functions //
+//-----------------------------//
+#pragma mark dictionary import functions
 
 int
 tinyrad_dict_import_attribute(
@@ -168,6 +184,11 @@ tinyrad_dict_lookup(
          int (*compar)(const void *, const void *) );
 
 
+//----------------------------//
+// dictionary print functions //
+//----------------------------//
+#pragma mark dictionary print functions
+
 void
 tinyrad_dict_print_attribute(
          TinyRadDict *                 dict,
@@ -179,6 +200,11 @@ tinyrad_dict_print_vendor(
          TinyRadDict *                 dict,
          TinyRadDictVendor *           vendor );
 
+
+//----------------------------//
+// dictionary value functions //
+//----------------------------//
+#pragma mark dictionary value functions
 
 int
 tinyrad_dict_value_add(
@@ -216,6 +242,11 @@ tinyrad_dict_value_lookup_numeric(
          const void *                 data,
          const void *                 idx );
 
+
+//-----------------------------//
+// dictionary vendor functions //
+//-----------------------------//
+#pragma mark dictionary vendor functions
 
 int
 tinyrad_dict_vendor_add(
@@ -535,6 +566,11 @@ static const struct
 /////////////////
 #pragma mark - Functions
 
+//---------------------------//
+// dictionary misc functions //
+//---------------------------//
+#pragma mark dictionary misc functions
+
 /// Add directory to search path for dictionary files
 ///
 /// @param[in]  dict          dictionary reference
@@ -570,6 +606,12 @@ tinyrad_dict_add_path(
 
    return(TRAD_SUCCESS);
 }
+
+
+//--------------------------------//
+// dictionary attribute functions //
+//--------------------------------//
+#pragma mark dictionary attribute functions
 
 
 /// Destroys and frees resources of a RADIUS dictionary attribute
@@ -930,6 +972,11 @@ tinyrad_dict_destroy(
    return;
 }
 
+
+//-----------------------------//
+// dictionary import functions //
+//-----------------------------//
+#pragma mark dictionary import functions
 
 /// Imports file into dictionary
 ///
@@ -1406,6 +1453,11 @@ tinyrad_dict_lookup(
 }
 
 
+//----------------------------//
+// dictionary print functions //
+//----------------------------//
+#pragma mark dictionary print functions
+
 void
 tinyrad_dict_print(
          TinyRadDict *                 dict,
@@ -1501,6 +1553,11 @@ tinyrad_dict_print_vendor(
    return;
 }
 
+
+//----------------------------//
+// dictionary value functions //
+//----------------------------//
+#pragma mark dictionary value functions
 
 int
 tinyrad_dict_value_add(
@@ -1702,6 +1759,11 @@ tinyrad_dict_value_lookup_numeric(
    return( (value->value < val) ? -1 : 1 );
 }
 
+
+//-----------------------------//
+// dictionary vendor functions //
+//-----------------------------//
+#pragma mark dictionary vendor functions
 
 /// wrapper around stat() for dictionary processing
 ///
