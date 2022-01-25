@@ -39,9 +39,9 @@
 ///////////////////
 #pragma mark - Definitions
 
-// defined in the Single UNIX Specification, Version 4, 2.2.4 Strictly Conforming XSI Application
+// defined in the Single UNIX Specification
 #ifndef _XOPEN_SOURCE
-#   define _XOPEN_SOURCE 700
+#   define _XOPEN_SOURCE 600
 #endif
 
 
