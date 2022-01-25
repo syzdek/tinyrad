@@ -39,9 +39,9 @@
 ///////////////
 #pragma mark - Headers
 
-#include <sys/stat.h>
-
 #include "libtinyrad.h"
+
+#include <sys/stat.h>
 
 
 ///////////////////

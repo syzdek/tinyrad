@@ -39,9 +39,9 @@
 ///////////////
 #pragma mark - Headers
 
-#include <stdlib.h>
-
 #include "libtinyrad.h"
+
+#include <stdlib.h>
 
 
 #endif /* end of header */
