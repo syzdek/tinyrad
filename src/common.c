@@ -29,6 +29,7 @@
  *  SUCH DAMAGE.
  */
 #define _SRC_UTILITIES_TINYRAD_URL_C 1
+#include "common.h"
 
 
 ///////////////
@@ -44,8 +45,6 @@
 #include <string.h>
 #include <strings.h>
 #include <assert.h>
-
-#include "common.h"
 
 
 ///////////////////
