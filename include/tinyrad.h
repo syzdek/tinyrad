@@ -219,21 +219,6 @@
 #define TRAD_SHA512                 3
 
 
-// array function options
-#define TINYRAD_ARRAY_INSERT        0x0000               ///< insert type: default array insert action
-#define TINYRAD_ARRAY_REPLACE       0x0001               ///< insert type: replace existing object on insert
-#define TINYRAD_ARRAY_MERGE         0x0002               ///< insert type: merge object into array on insert
-#define TINYRAD_ARRAY_LAST          0x0010               ///< search: return/remove last duplicate object in series of matching objects
-#define TINYRAD_ARRAY_FIRST         0x0020               ///< search: return/remove first duplicate object in series of matching objects
-#define TINYRAD_ARRAY_UNORDERED     0x0000               ///< merge type: insert unordered duplicate object to series of matching objects
-#define TINYRAD_ARRAY_APPEND        TINYRAD_ARRAY_LAST   ///< merge type: append duplicate object to series of matching objects
-#define TINYRAD_ARRAY_PREPEND       TINYRAD_ARRAY_FIRST  ///< merge type: prepend duplicate object to series of matching objects
-#define TINYRAD_ARRAY_DEFAULT       (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_UNORDERED)   ///< default array options
-#define TINYRAD_ARRAY_MASK_INSERT   (TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
-#define TINYRAD_ARRAY_MASK_SEARCH   (TINYRAD_ARRAY_APPEND | TINYRAD_ARRAY_PREPEND)     ///< search options
-#define TINYRAD_ARRAY_MASK_MERGE    TINYRAD_ARRAY_MASK_SEARCH                          ///< insert/wouldbe merge options
-
-
 //////////////////
 //              //
 //  Data Types  //
@@ -275,94 +260,6 @@ struct tinyrad_url_desc
 //              //
 //////////////////
 #pragma mark - Prototypes
-
-//-----------------//
-// array functions //
-//-----------------//
-#pragma mark array functions
-
-_TINYRAD_F void *
-tinyrad_array_dequeue(
-         void *                        base,
-         size_t *                      nelp,
-         size_t                        width );
-
-
-_TINYRAD_F ssize_t
-tinyrad_array_enqueue(
-         void **                       basep,
-         size_t *                      nelp,
-         size_t                        width,
-         void *                        obj,
-         void * (*reallocbase)(void *, size_t) );
-
-
-_TINYRAD_F void *
-tinyrad_array_get(
-         void *                        base,
-         size_t                        nel,
-         size_t                        width,
-         const void *                  key,
-         unsigned                      opts,
-         int (*compar)(const void *, const void *) );
-
-
-_TINYRAD_F ssize_t
-tinyrad_array_insert(
-         void **                       basep,
-         size_t *                      nelp,
-         size_t                        width,
-         void *                        obj,
-         unsigned                      opts,
-         int (*compar)(const void *, const void *),
-         void (*freeobj)(void *),
-         void * (*reallocbase)(void *, size_t) );
-
-
-_TINYRAD_F void *
-tinyrad_array_peek(
-         void *                        base,
-         size_t                        nel,
-         size_t                        width );
-
-
-_TINYRAD_F void *
-tinyrad_array_pop(
-         void *                        base,
-         size_t *                      nelp,
-         size_t                        width );
-
-
-_TINYRAD_F ssize_t
-tinyrad_array_push(
-         void **                       basep,
-         size_t *                      nelp,
-         size_t                        width,
-         void *                        obj,
-         void * (*reallocbase)(void *, size_t) );
-
-
-_TINYRAD_F ssize_t
-tinyrad_array_remove(
-         void *                        base,
-         size_t *                      nelp,
-         size_t                        width,
-         const void *                  key,
-         unsigned                      opts,
-         int (*compar)(const void *, const void *),
-         void (*freeobj)(void *) );
-
-
-_TINYRAD_F ssize_t
-tinyrad_array_search(
-         const void *                  base,
-         size_t                        nel,
-         size_t                        width,
-         const void *                  key,
-         unsigned                      opts,
-         size_t *                      wouldbep,
-         int (*compar)(const void *, const void *) );
-
 
 //----------------------//
 // dictionary functions //
