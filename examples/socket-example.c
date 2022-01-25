@@ -302,7 +302,9 @@ int main(int argc, char * argv[])
    opt = 1; setsockopt(s, SOL_SOCKET, SO_NOSIGPIPE, (void *)&opt, sizeof(int));
 #endif
    opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (void *)&opt, sizeof(int));
+#ifdef SO_REUSEPORT
    opt = 1; setsockopt(s, SOL_SOCKET, SO_REUSEPORT, (void *)&opt, sizeof(int));
+#endif
    opt = 1;
    if (hints.ai_protocol == IPPROTO_TCP)
       setsockopt(s, SOL_SOCKET, SO_KEEPALIVE, (void *)&opt, sizeof(int));
