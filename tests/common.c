@@ -29,6 +29,7 @@
  *  SUCH DAMAGE.
  */
 #define _TESTS_COMMON_C 1
+#include "common.h"
 
 
 ///////////////
@@ -45,8 +46,6 @@
 #include <strings.h>
 #include <time.h>
 #include <assert.h>
-
-#include "common.h"
 
 
 ///////////////////

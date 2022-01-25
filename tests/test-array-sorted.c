@@ -38,6 +38,8 @@
 ///////////////
 #pragma mark - Headers
 
+#include "common.h"
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -53,8 +55,6 @@
 #endif
 
 #include <tinyrad.h>
-
-#include "common.h"
 
 
 ///////////////////

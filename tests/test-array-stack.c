@@ -38,6 +38,8 @@
 ///////////////
 #pragma mark - Headers
 
+#include "common.h"
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -48,13 +50,7 @@
 #include <assert.h>
 #include <inttypes.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <tinyrad.h>
-
-#include "common.h"
 
 
 ///////////////////
