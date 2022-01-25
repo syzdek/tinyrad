@@ -83,6 +83,13 @@
 //---------------------------//
 #pragma mark dictionary misc functions
 
+void *
+tinyrad_dict_lookup(
+         void **                      list,
+         size_t                       len,
+         const void *                 idx,
+         int (*compar)(const void *, const void *) );
+
 
 //--------------------------------//
 // dictionary attribute functions //
@@ -174,14 +181,6 @@ tinyrad_dict_import_vendor(
          TinyRadDict *                dict,
          TinyRadFile *                file,
          uint32_t                     opts );
-
-
-void *
-tinyrad_dict_lookup(
-         void **                      list,
-         size_t                       len,
-         const void *                 idx,
-         int (*compar)(const void *, const void *) );
 
 
 //----------------------------//
@@ -608,6 +607,223 @@ tinyrad_dict_add_path(
 }
 
 
+int
+tinyrad_dict_defaults(
+         TinyRadDict *                 dict,
+         char ***                      msgsp,
+         uint32_t                      opts )
+{
+   int                rc;
+   size_t             pos;
+   uint32_t           type;
+   uint8_t            datatype;
+   uint32_t           flags;
+   uint64_t           data;
+   const char *       attr_name;
+   const char *       value_name;
+   TinyRadDictAttr *  attr;
+
+   TinyRadDebugTrace();
+
+   assert(dict != NULL);
+   assert(opts == 0);
+
+   if ((msgsp))
+      *msgsp = NULL;
+
+   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
+   {
+      attr_name = tinyrad_dict_default_attrs[pos].name;
+      type      = (uint32_t)tinyrad_dict_default_attrs[pos].type;
+      datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
+      flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
+      flags    |= TRAD_DFLT_ATTR;
+      if ((rc = tinyrad_dict_attr_add(dict, NULL, NULL, attr_name, type, datatype, flags)) != TRAD_SUCCESS)
+         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
+   };
+
+   attr = NULL;
+   for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
+   {
+      attr_name  = tinyrad_dict_default_values[pos].attr_name;
+      value_name = tinyrad_dict_default_values[pos].value_name;
+      data       = tinyrad_dict_default_values[pos].data;
+      if ((attr))
+         if ((strcasecmp(attr_name, attr->name)))
+            attr = NULL;
+      if (!(attr))
+         attr = tinyrad_dict_attr_lookup(dict, 0, attr_name, 0);
+      if (!(attr))
+         return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
+      if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
+         return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
+/// Initialize dicitionary file buffer
+///
+/// @param[in]  dict          dictionary reference
+void
+tinyrad_dict_destroy(
+         TinyRadDict *                dict )
+{
+   size_t        pos;
+
+   TinyRadDebugTrace();
+
+   if (!(dict))
+      return;
+
+   if (atomic_fetch_sub(&dict->ref_count, 1) > 1)
+      return;
+
+   // free attributes
+   if ((dict->attrs_name))
+   {
+      for(pos = 0; (pos < dict->attrs_len); pos++)
+         tinyrad_dict_attr_destroy(dict->attrs_name[pos]);
+      free(dict->attrs_name);
+   };
+   if ((dict->attrs_type))
+      free(dict->attrs_type);
+
+   // free paths
+   if ((dict->paths))
+   {
+      for(pos = 0; (pos < dict->paths_len); pos++)
+         free(dict->paths[pos]);
+      free(dict->paths);
+   };
+
+   // free vendors
+   if ((dict->vendors_name))
+   {
+      for(pos = 0; (pos < dict->vendors_len); pos++)
+         tinyrad_dict_vendor_destroy(dict->vendors_name[pos]);
+      free(dict->vendors_name);
+   };
+   if ((dict->vendors_id))
+      free(dict->vendors_id);
+
+   memset(dict, 0, sizeof(TinyRadDict));
+   free(dict);
+
+   return;
+}
+
+
+/// Initializes dictionary
+///
+/// @param[out] dictp         pointer to dictionary reference
+/// @param[in]  opts          dictionary options
+/// @return returns error code
+int
+tinyrad_dict_initialize(
+         TinyRadDict **               dictp,
+         uint32_t                     opts )
+{
+   TinyRadDict *    dict;
+
+   TinyRadDebugTrace();
+
+   assert(dictp != NULL);
+
+   if (!(dict = malloc(sizeof(TinyRadDict))))
+      return(-1);
+   memset(dict, 0, sizeof(TinyRadDict));
+   dict->opts      = opts;
+   atomic_init(&dict->ref_count, 1);
+
+   // initializes paths
+   if ((dict->paths = malloc(sizeof(char *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->paths[0] = NULL;
+
+   // intializes vendors
+   if ((dict->vendors_name = malloc(sizeof(TinyRadDictVendor *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->vendors_name[0] = NULL;
+   if ((dict->vendors_id = malloc(sizeof(TinyRadDictVendor *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->vendors_id[0] = NULL;
+
+   // initializes attributes
+   if ((dict->attrs_name = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->attrs_name[0] = NULL;
+   if ((dict->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   {
+      tinyrad_dict_destroy(dict);
+      return(-1);
+   };
+   dict->attrs_type[0] = NULL;
+
+   *dictp = dict;
+
+   return(TRAD_SUCCESS);
+}
+
+
+void *
+tinyrad_dict_lookup(
+         void **                      list,
+         size_t                       len,
+         const void *                 idx,
+         int (*compar)(const void *, const void *) )
+{
+   int         rc;
+   ssize_t     low;
+   ssize_t     mid;
+   ssize_t     high;
+
+   TinyRadDebugTrace();
+
+   assert(idx  != NULL);
+
+   if (!(list))
+      return(NULL);
+   if (!(len))
+      return(NULL);
+
+   low  = 0;
+   high = (ssize_t)(len - 1);
+   mid  = (ssize_t)((len - 1) / 2);
+
+   while(mid > low)
+   {
+      if ((rc = (*compar)(list[mid], idx)) == 0)
+         return(list[mid]);
+      else if (rc < 0)
+         high = mid - 1;
+      else
+         low = mid;
+      mid = (high + low) / 2;
+   };
+
+   if ((*compar)(list[mid], idx) == 0)
+      return(list[mid]);
+   if ((*compar)(list[high], idx) == 0)
+      return(list[high]);
+
+   return(NULL);
+}
+
+
 //--------------------------------//
 // dictionary attribute functions //
 //--------------------------------//
@@ -862,114 +1078,6 @@ tinyrad_dict_attr_lookup_type(
    if (attr->type < type)
       return(-1);
    return(1);
-}
-
-
-_TINYRAD_F int
-tinyrad_dict_defaults(
-         TinyRadDict *                 dict,
-         char ***                      msgsp,
-         uint32_t                      opts )
-{
-   int                rc;
-   size_t             pos;
-   uint32_t           type;
-   uint8_t            datatype;
-   uint32_t           flags;
-   uint64_t           data;
-   const char *       attr_name;
-   const char *       value_name;
-   TinyRadDictAttr *  attr;
-
-   TinyRadDebugTrace();
-
-   assert(dict != NULL);
-   assert(opts == 0);
-
-   if ((msgsp))
-      *msgsp = NULL;
-
-   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
-   {
-      attr_name = tinyrad_dict_default_attrs[pos].name;
-      type      = (uint32_t)tinyrad_dict_default_attrs[pos].type;
-      datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
-      flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
-      flags    |= TRAD_DFLT_ATTR;
-      if ((rc = tinyrad_dict_attr_add(dict, NULL, NULL, attr_name, type, datatype, flags)) != TRAD_SUCCESS)
-         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
-   };
-
-   attr = NULL;
-   for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
-   {
-      attr_name  = tinyrad_dict_default_values[pos].attr_name;
-      value_name = tinyrad_dict_default_values[pos].value_name;
-      data       = tinyrad_dict_default_values[pos].data;
-      if ((attr))
-         if ((strcasecmp(attr_name, attr->name)))
-            attr = NULL;
-      if (!(attr))
-         attr = tinyrad_dict_attr_lookup(dict, 0, attr_name, 0);
-      if (!(attr))
-         return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-      if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
-         return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-   };
-
-   return(TRAD_SUCCESS);
-}
-
-
-/// Initialize dicitionary file buffer
-/// 
-/// @param[in]  dict          dictionary reference
-void
-tinyrad_dict_destroy(
-         TinyRadDict *                dict )
-{
-   size_t        pos;
-
-   TinyRadDebugTrace();
-
-   if (!(dict))
-      return;
-
-   if (atomic_fetch_sub(&dict->ref_count, 1) > 1)
-      return;
-
-   // free attributes
-   if ((dict->attrs_name))
-   {
-      for(pos = 0; (pos < dict->attrs_len); pos++)
-         tinyrad_dict_attr_destroy(dict->attrs_name[pos]);
-      free(dict->attrs_name);
-   };
-   if ((dict->attrs_type))
-      free(dict->attrs_type);
-
-   // free paths
-   if ((dict->paths))
-   {
-      for(pos = 0; (pos < dict->paths_len); pos++)
-         free(dict->paths[pos]);
-      free(dict->paths);
-   };
-
-   // free vendors
-   if ((dict->vendors_name))
-   {
-      for(pos = 0; (pos < dict->vendors_len); pos++)
-         tinyrad_dict_vendor_destroy(dict->vendors_name[pos]);
-      free(dict->vendors_name);
-   };
-   if ((dict->vendors_id))
-      free(dict->vendors_id);
-
-   memset(dict, 0, sizeof(TinyRadDict));
-   free(dict);
-
-   return;
 }
 
 
@@ -1341,115 +1449,6 @@ tinyrad_dict_import_vendor(
       return(rc);
 
    return(TRAD_SUCCESS);
-}
-
-
-/// Initializes dictionary
-///
-/// @param[out] dictp         pointer to dictionary reference
-/// @param[in]  opts          dictionary options
-/// @return returns error code
-int
-tinyrad_dict_initialize(
-         TinyRadDict **               dictp,
-         uint32_t                     opts )
-{
-   TinyRadDict *    dict;
-
-   TinyRadDebugTrace();
-
-   assert(dictp != NULL);
-
-   if (!(dict = malloc(sizeof(TinyRadDict))))
-      return(-1);
-   memset(dict, 0, sizeof(TinyRadDict));
-   dict->opts      = opts;
-   atomic_init(&dict->ref_count, 1);
-
-   // initializes paths
-   if ((dict->paths = malloc(sizeof(char *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->paths[0] = NULL;
-
-   // intializes vendors
-   if ((dict->vendors_name = malloc(sizeof(TinyRadDictVendor *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->vendors_name[0] = NULL;
-   if ((dict->vendors_id = malloc(sizeof(TinyRadDictVendor *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->vendors_id[0] = NULL;
-
-   // initializes attributes
-   if ((dict->attrs_name = malloc(sizeof(TinyRadDictAttr *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->attrs_name[0] = NULL;
-   if ((dict->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->attrs_type[0] = NULL;
-
-   *dictp = dict;
-
-   return(TRAD_SUCCESS);
-}
-
-
-void *
-tinyrad_dict_lookup(
-         void **                      list,
-         size_t                       len,
-         const void *                 idx,
-         int (*compar)(const void *, const void *) )
-{
-   int         rc;
-   ssize_t     low;
-   ssize_t     mid;
-   ssize_t     high;
-
-   TinyRadDebugTrace();
-
-   assert(idx  != NULL);
-
-   if (!(list))
-      return(NULL);
-   if (!(len))
-      return(NULL);
-
-   low  = 0;
-   high = (ssize_t)(len - 1);
-   mid  = (ssize_t)((len - 1) / 2);
-
-   while(mid > low)
-   {
-      if ((rc = (*compar)(list[mid], idx)) == 0)
-         return(list[mid]);
-      else if (rc < 0)
-         high = mid - 1;
-      else
-         low = mid;
-      mid = (high + low) / 2;
-   };
-
-   if ((*compar)(list[mid], idx) == 0)
-      return(list[mid]);
-   if ((*compar)(list[high], idx) == 0)
-      return(list[high]);
-
-   return(NULL);
 }
 
 
