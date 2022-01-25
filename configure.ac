@@ -63,7 +63,7 @@ AM_INIT_AUTOMAKE(gnu std-options subdir-objects foreign)
 # Compilers
 AC_PROG_CC
 #AC_PROG_OBJC
-#AC_PROG_CXX
+AC_PROG_CXX
 AM_PROG_CC_C_O
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
@@ -124,13 +124,12 @@ AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 
 # check for required functions
-AC_CHECK_FUNCS([alarm],          [], [AC_MSG_ERROR([missing required functions])])
-AC_CHECK_FUNCS([bzero],          [], [AC_MSG_ERROR([missing required functions])])
+AC_CHECK_FUNCS([bzero])
 AC_CHECK_FUNCS([clock_gettime],  [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([memset],         [], [AC_MSG_ERROR([missing required functions])])
-AC_CHECK_FUNCS([rmdir],          [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([socket],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strcasecmp],     [], [AC_MSG_ERROR([missing required functions])])
+AC_CHECK_FUNCS([strchr],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strdup],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strerror],       [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strncasecmp],    [], [AC_MSG_ERROR([missing required functions])])
