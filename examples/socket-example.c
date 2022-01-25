@@ -38,6 +38,12 @@
 ///////////////
 #pragma mark - Headers
 
+#include <tinyrad_compat.h>
+
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -52,10 +58,6 @@
 #include <fcntl.h>
 #include <stdarg.h>
 #include <poll.h>
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 
 ///////////////////
