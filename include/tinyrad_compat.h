@@ -28,24 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _SRC_UTILITIES_COMMON_H
-#define _SRC_UTILITIES_COMMON_H 1
-
-
-///////////////
-//           //
-//  Headers  //
-//           //
-///////////////
-#pragma mark - Headers
-
-#include <tinyrad_compat.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <tinyrad.h>
+#ifndef __TINYRAD_COMPAT_H
+#define __TINYRAD_COMPAT_H 1
 
 
 ///////////////////
@@ -55,54 +39,10 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "unknown"
+// defined in the Single UNIX Specification, Version 4, 2.2.4 Strictly Conforming XSI Application
+#ifndef _XOPEN_SOURCE
+#   define _XOPEN_SOURCE 700
 #endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT "unknown"
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME "Tiny RADIUS Client Library"
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION "unknown"
-#endif
-
-
-//////////////////
-//              //
-//  Prototypes  //
-//              //
-//////////////////
-#pragma mark - Prototypes
-
-void
-our_error(
-         const char *                  prog_name,
-         char **                       errs,
-         const char *                  fmt,
-         ... );
-
-
-int
-our_exit_code(
-         int                           rc );
-
-
-int
-our_strings_append(
-         char ***                      strsp,
-         const char *                  str );
-
-
-void
-our_strings_free(
-         char **                       strs );
-
-
-void
-our_version(
-         const char *                  prog_name );
 
 
 #endif /* end of header */
