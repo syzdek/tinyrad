@@ -65,7 +65,7 @@ struct _tinyrad_dict
    uint32_t              opts;
    uint32_t              pad32;
    size_t                vendors_len;
-   size_t                attrs_len;
+   size_t                attrs_name_len;
    size_t                attrs_type_len;
    size_t                paths_len;
    TinyRadDictVendor **  vendors_name;

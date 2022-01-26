@@ -683,7 +683,7 @@ tinyrad_dict_destroy(
    // free attributes
    if ((dict->attrs_name))
    {
-      for(pos = 0; (pos < dict->attrs_len); pos++)
+      for(pos = 0; (pos < dict->attrs_name_len); pos++)
          tinyrad_dict_attr_destroy(dict->attrs_name[pos]);
       free(dict->attrs_name);
    };
@@ -848,7 +848,7 @@ tinyrad_dict_attr_add(
       return(TRAD_EEXISTS);
 
    // resize attribute lists
-   size = sizeof(TinyRadDictAttr *) * (dict->attrs_len+2);
+   size = sizeof(TinyRadDictAttr *) * (dict->attrs_name_len+2);
    if ((ptr = realloc(dict->attrs_name, size)) == NULL)
       return(TRAD_ENOMEM);
    dict->attrs_name = ptr;
@@ -892,10 +892,10 @@ tinyrad_dict_attr_add(
    };
 
    // save attribute
-   dict->attrs_name[dict->attrs_len + 0] = attr;
-   dict->attrs_name[dict->attrs_len + 1] = NULL;
-   dict->attrs_len++;
-   qsort(dict->attrs_name, dict->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+   dict->attrs_name[dict->attrs_name_len + 0] = attr;
+   dict->attrs_name[dict->attrs_name_len + 1] = NULL;
+   dict->attrs_name_len++;
+   qsort(dict->attrs_name, dict->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
    if ((vendor))
    {
       vendor->attrs_name[ vendor->attrs_name_len + 0 ] = attr;
@@ -1006,12 +1006,12 @@ tinyrad_dict_attr_lookup(
    if ((name))
    {
       list   = (void **)dict->attrs_name;
-      len    = dict->attrs_len;
+      len    = dict->attrs_name_len;
       idx    = name;
       compar = tinyrad_dict_attr_lookup_name;
    } else {
       list   = (void **)dict->attrs_type;
-      len    = dict->attrs_len;
+      len    = dict->attrs_type_len;
       if ((vendor_id))
       {
          if ((vendor = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id)) == NULL)
