@@ -64,7 +64,8 @@ struct _tinyrad_dict
    atomic_intmax_t       ref_count;
    uint32_t              opts;
    uint32_t              pad32;
-   size_t                vendors_len;
+   size_t                vendors_id_len;
+   size_t                vendors_name_len;
    size_t                attrs_name_len;
    size_t                attrs_type_len;
    size_t                paths_len;

@@ -701,7 +701,7 @@ tinyrad_dict_destroy(
    // free vendors
    if ((dict->vendors_name))
    {
-      for(pos = 0; (pos < dict->vendors_len); pos++)
+      for(pos = 0; (pos < dict->vendors_name_len); pos++)
          tinyrad_dict_vendor_destroy(dict->vendors_name[pos]);
       free(dict->vendors_name);
    };
@@ -1449,7 +1449,7 @@ tinyrad_dict_print(
       if (!(dict->attrs_type[pos]->vendor_id))
          tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
 
-   for(pos = 0; (pos < dict->vendors_len); pos++)
+   for(pos = 0; (pos < dict->vendors_name_len); pos++)
       tinyrad_dict_print_vendor(dict, dict->vendors_name[pos]);
 
    printf("# end of processed dictionary\n");
@@ -1776,10 +1776,11 @@ tinyrad_dict_vendor_add(
       return(TRAD_EEXISTS);
 
    // resize vendor lists
-   size = sizeof(TinyRadDictVendor *) * (dict->vendors_len + 2);
+   size = sizeof(TinyRadDictVendor *) * (dict->vendors_name_len + 2);
    if ((ptr = realloc(dict->vendors_name, size)) == NULL)
       return(TRAD_ENOMEM);
    dict->vendors_name = ptr;
+   size = sizeof(TinyRadDictVendor *) * (dict->vendors_id_len + 2);
    if ((ptr = realloc(dict->vendors_id, size)) == NULL)
       return(TRAD_ENOMEM);
    dict->vendors_id = ptr;
@@ -1815,17 +1816,18 @@ tinyrad_dict_vendor_add(
    vendor->attrs_type[0] = NULL;
 
    // save vendor
-   dict->vendors_name[ dict->vendors_len ] = vendor;
-   dict->vendors_id[   dict->vendors_len ] = vendor;
-   dict->vendors_len++;
-   dict->vendors_name[ dict->vendors_len ] = NULL;
-   dict->vendors_id[   dict->vendors_len ] = NULL;
+   dict->vendors_name[ dict->vendors_name_len ] = vendor;
+   dict->vendors_id[   dict->vendors_id_len ] = vendor;
+   dict->vendors_name_len++;
+   dict->vendors_id_len++;
+   dict->vendors_name[ dict->vendors_name_len ] = NULL;
+   dict->vendors_id[   dict->vendors_id_len ] = NULL;
    if ((vendorp))
       *vendorp = vendor;
 
    // sort vendors
-   qsort(dict->vendors_name, dict->vendors_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_name);
-   qsort(dict->vendors_id,   dict->vendors_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_id);
+   qsort(dict->vendors_name, dict->vendors_name_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_name);
+   qsort(dict->vendors_id,   dict->vendors_id_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_id);
 
    return(0);
 }
@@ -1919,6 +1921,7 @@ tinyrad_dict_vendor_lookup(
 {
    void **         list;
    const void *    idx;
+   size_t          len;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
@@ -1928,15 +1931,17 @@ tinyrad_dict_vendor_lookup(
    if ((name))
    {
       list   = (void **)dict->vendors_name;
+      len    = dict->vendors_name_len;
       idx    = name;
       compar = tinyrad_dict_vendor_lookup_name;
    } else {
       list   = (void **)dict->vendors_id;
+      len    = dict->vendors_id_len;
       idx    = &id;
       compar = tinyrad_dict_vendor_lookup_id;
    };
 
-   return(tinyrad_dict_lookup(list, dict->vendors_len, idx, compar));
+   return(tinyrad_dict_lookup(list, len, idx, compar));
 }
 
 
