@@ -996,7 +996,7 @@ tinyrad_dict_attr_lookup(
       list   = (void **)dict->attrs_name;
       len    = dict->attrs_name_len;
       idx    = name;
-      compar = tinyrad_dict_attr_lookup_name;
+      compar = &tinyrad_dict_attr_lookup_name;
    } else {
       list   = (void **)dict->attrs_type;
       len    = dict->attrs_type_len;
@@ -1008,7 +1008,7 @@ tinyrad_dict_attr_lookup(
          len  = vendor->attrs_type_len;
       };
       idx    = &type;
-      compar = tinyrad_dict_attr_lookup_type;
+      compar = &tinyrad_dict_attr_lookup_type;
    };
 
    return(tinyrad_dict_lookup(list, len, idx, compar));
