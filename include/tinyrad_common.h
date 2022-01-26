@@ -86,6 +86,18 @@
 //-----------------//
 #pragma mark array functions
 
+_TINYRAD_F ssize_t
+tinyrad_array_add(
+         void **                       basep,
+         size_t *                      nelp,
+         size_t                        width,
+         void *                        obj,
+         unsigned                      opts,
+         int (*compar)(const void *, const void *),
+         void (*freeobj)(void *),
+         void * (*reallocbase)(void *, size_t) );
+
+
 _TINYRAD_F void *
 tinyrad_array_dequeue(
          void *                        base,
@@ -110,18 +122,6 @@ tinyrad_array_get(
          const void *                  key,
          unsigned                      opts,
          int (*compar)(const void *, const void *) );
-
-
-_TINYRAD_F ssize_t
-tinyrad_array_insert(
-         void **                       basep,
-         size_t *                      nelp,
-         size_t                        width,
-         void *                        obj,
-         unsigned                      opts,
-         int (*compar)(const void *, const void *),
-         void (*freeobj)(void *),
-         void * (*reallocbase)(void *, size_t) );
 
 
 _TINYRAD_F void *

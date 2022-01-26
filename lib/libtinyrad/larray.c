@@ -71,93 +71,8 @@ tinyrad_array_swap(
 /////////////////
 #pragma mark - Functions
 
-void *
-tinyrad_array_dequeue(
-         void *                        base,
-         size_t *                      nelp,
-         size_t                        width )
-{
-   TinyRadDebugTrace();
-   assert(nelp  != NULL);
-   assert((base != NULL) || (!(*nelp)) );
-   assert(width  > 0);
-   if (!(*nelp))
-      return(NULL);
-   (*nelp)--;
-   return(((char *)base) + (width * (*nelp)));
-}
-
-
 ssize_t
-tinyrad_array_enqueue(
-         void **                       basep,
-         size_t *                      nelp,
-         size_t                        width,
-         void *                        obj,
-         void * (*reallocbase)(void *, size_t) )
-{
-   size_t      size;
-   size_t      pos;
-   void *      ptr;
-   char *      src;
-   char *      dst;
-
-   TinyRadDebugTrace();
-
-   assert(basep != NULL);
-   assert(nelp  != NULL);
-   assert(width  > 0);
-   assert(obj   != NULL);
-
-   // increases size of base
-   if ((reallocbase))
-   {
-      size = width * (*nelp + 1);
-      if ((ptr = (*reallocbase)(*basep, size)) == NULL)
-         return(-2);
-      *basep = ptr;
-   };
-
-   // shift list
-   for(pos = (*nelp); (pos > 0); pos--)
-   {
-      src = ((char *)*basep) + (width * (size_t)(pos-1));
-      dst = ((char *)*basep) + (width * (size_t)(pos-0));
-      tinyrad_array_move(src, dst, width);
-   };
-
-   // save object
-   tinyrad_array_move(obj, ((char *)*basep), width);
-
-   // increment nel
-   (*nelp)++;
-
-   return(0);
-}
-
-
-void *
-tinyrad_array_get(
-         void *                        base,
-         size_t                        nel,
-         size_t                        width,
-         const void *                  key,
-         unsigned                      opts,
-         int (*compar)(const void *, const void *) )
-{
-   ssize_t     idx;
-   TinyRadDebugTrace();
-   assert((base != NULL) || (!(nel)) );
-   assert(key   != NULL);
-   assert(width  > 0);
-   if ((idx = tinyrad_array_search(base, nel, width, key, opts, NULL, compar)) == -1)
-      return(NULL);
-   return(((char *)base) + (width * (size_t)idx));
-}
-
-
-ssize_t
-tinyrad_array_insert(
+tinyrad_array_add(
          void **                       basep,
          size_t *                      nelp,
          size_t                        width,
@@ -242,6 +157,91 @@ tinyrad_array_insert(
    (*nelp)++;
 
    return((ssize_t)wouldbe);
+}
+
+
+void *
+tinyrad_array_dequeue(
+         void *                        base,
+         size_t *                      nelp,
+         size_t                        width )
+{
+   TinyRadDebugTrace();
+   assert(nelp  != NULL);
+   assert((base != NULL) || (!(*nelp)) );
+   assert(width  > 0);
+   if (!(*nelp))
+      return(NULL);
+   (*nelp)--;
+   return(((char *)base) + (width * (*nelp)));
+}
+
+
+ssize_t
+tinyrad_array_enqueue(
+         void **                       basep,
+         size_t *                      nelp,
+         size_t                        width,
+         void *                        obj,
+         void * (*reallocbase)(void *, size_t) )
+{
+   size_t      size;
+   size_t      pos;
+   void *      ptr;
+   char *      src;
+   char *      dst;
+
+   TinyRadDebugTrace();
+
+   assert(basep != NULL);
+   assert(nelp  != NULL);
+   assert(width  > 0);
+   assert(obj   != NULL);
+
+   // increases size of base
+   if ((reallocbase))
+   {
+      size = width * (*nelp + 1);
+      if ((ptr = (*reallocbase)(*basep, size)) == NULL)
+         return(-2);
+      *basep = ptr;
+   };
+
+   // shift list
+   for(pos = (*nelp); (pos > 0); pos--)
+   {
+      src = ((char *)*basep) + (width * (size_t)(pos-1));
+      dst = ((char *)*basep) + (width * (size_t)(pos-0));
+      tinyrad_array_move(src, dst, width);
+   };
+
+   // save object
+   tinyrad_array_move(obj, ((char *)*basep), width);
+
+   // increment nel
+   (*nelp)++;
+
+   return(0);
+}
+
+
+void *
+tinyrad_array_get(
+         void *                        base,
+         size_t                        nel,
+         size_t                        width,
+         const void *                  key,
+         unsigned                      opts,
+         int (*compar)(const void *, const void *) )
+{
+   ssize_t     idx;
+   TinyRadDebugTrace();
+   assert((base != NULL) || (!(nel)) );
+   assert(key   != NULL);
+   assert(width  > 0);
+   if ((idx = tinyrad_array_search(base, nel, width, key, opts, NULL, compar)) == -1)
+      return(NULL);
+   return(((char *)base) + (width * (size_t)idx));
 }
 
 

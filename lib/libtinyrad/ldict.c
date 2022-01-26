@@ -860,12 +860,12 @@ tinyrad_dict_attr_add(
    opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
 
    // save attribute to dictionary
-   if ((rc = tinyrad_array_insert((void **)&dict->attrs_name, &dict->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&dict->attrs_name, &dict->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
    {
       tinyrad_dict_attr_destroy(attr);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    };
-   if ((rc = tinyrad_array_insert((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
    if (!(vendor))
@@ -882,12 +882,12 @@ tinyrad_dict_attr_add(
    atomic_fetch_add(&attr->ref_count, 1);
 
    // save attribute to vendor
-   if ((rc = tinyrad_array_insert((void **)&vendor->attrs_name, &vendor->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&vendor->attrs_name, &vendor->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
    {
       tinyrad_dict_attr_destroy(attr);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    };
-   if ((rc = tinyrad_array_insert((void **)&vendor->attrs_type, &vendor->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&vendor->attrs_type, &vendor->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
    if ((attrp))
@@ -1552,7 +1552,7 @@ tinyrad_dict_value_add(
    opts     = TINYRAD_ARRAY_INSERT;
    width    = sizeof(TinyRadDictValue *);
    compar   = &tinyrad_dict_value_cmp_obj_name;
-   if ((rc = tinyrad_array_insert((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
    {
       tinyrad_dict_value_destroy(value);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
@@ -1562,7 +1562,7 @@ tinyrad_dict_value_add(
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    width    = sizeof(TinyRadDictValue *);
    compar   = &tinyrad_dict_value_cmp_obj_value;
-   if ((rc = tinyrad_array_insert((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
    if ((valuep))
@@ -1752,7 +1752,7 @@ tinyrad_dict_vendor_add(
    opts     = TINYRAD_ARRAY_INSERT;
    width    = sizeof(TinyRadDictVendor *);
    compar   = &tinyrad_dict_vendor_cmp_obj_name;
-   if ((rc = tinyrad_array_insert((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
    {
       tinyrad_dict_vendor_destroy(vendor);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
@@ -1762,7 +1762,7 @@ tinyrad_dict_vendor_add(
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    width    = sizeof(TinyRadDictVendor *);
    compar   = &tinyrad_dict_vendor_cmp_obj_id;
-   if ((rc = tinyrad_array_insert((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
+   if ((rc = tinyrad_array_add((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
    if ((vendorp))

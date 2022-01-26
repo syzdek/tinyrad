@@ -30,7 +30,7 @@
 .\"
 .TH "TINYRAD_ARRAY" "3" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
 .SH NAME
-tinyrad_array_get, tinyrad_array_insert, tinyrad_array_remove, tinyrad_array_search - Tiny RADIUS sorted array routines
+tinyrad_array_add, tinyrad_array_get, tinyrad_array_remove, tinyrad_array_search - Tiny RADIUS sorted array routines
 
 .SH LIBRARY
 TinyRad (libtinyrad, -ltinyrad)
@@ -39,15 +39,15 @@ TinyRad (libtinyrad, -ltinyrad)
 .nf
 \fB#include\fR \fB<tinyrad.h>\fR
 .sp
-.BI "void * tinyrad_array_get( void *" base ", size_t " nel ", size_t " width ",
-.BI "           const void *" key ", unsigned " opts ","
-.BI "           int (*" compar ")(const void *, const void *) );"
-.sp
-.BI "ssize_t tinyrad_array_insert( void **" basep ", size_t *" nelp ", size_t " width ","
+.BI "ssize_t tinyrad_array_add( void **" basep ", size_t *" nelp ", size_t " width ","
 .BI "           void *" obj ", unsigned " opts ","
 .BI "           int (*" compar ")(const void *, const void *),"
 .BI "           void (*" freeobj ")(void *),"
 .BI "           void * (*" reallocbase ")(void *, size_t) );"
+.sp
+.BI "void * tinyrad_array_get( void *" base ", size_t " nel ", size_t " width ",
+.BI "           const void *" key ", unsigned " opts ","
+.BI "           int (*" compar ")(const void *, const void *) );"
 .sp
 .BI "ssize_t tinyrad_array_remove( void *" base ", size_t *" nelp ", size_t " width ","
 .BI "           const void *" key ", unsigned " opts ","
@@ -67,7 +67,7 @@ pointer to the object is returned. \fBtinyrad_array_search\fR() returns -1 if
 an error occurs, otherwise the index position of the requested object is
 returned.
 .sp
-Upon success, \fBtinyrad_array_insert\fR() and \fBtinyrad_array_remove\fR
+Upon success, \fBtinyrad_array_add\fR() and \fBtinyrad_array_remove\fR
 return the index position of the object added to or removed from the
 array, otherwise -2 is returned if a memory error occured and -1 for all
 other errors.

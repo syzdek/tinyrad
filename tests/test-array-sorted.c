@@ -625,16 +625,16 @@ my_test_insert(
       return(our_error(opts, "unknown dup action"));
    };
 
-   our_verbose(opts, "testing   tinyrad_array_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   our_verbose(opts, "testing   tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < dat_len); x++)
    {
-      if (tinyrad_array_insert((void **)listp, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL, &realloc) == -1)
-         return(our_error(opts, "tinyrad_array_insert(%s): returned error", action_name));
+      if (tinyrad_array_add((void **)listp, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL, &realloc) == -1)
+         return(our_error(opts, "tinyrad_array_add(%s): returned error", action_name));
       len = (iteration*dat_len) + x + 1;
       if ( ((iteration)) && (!(arrayopt & TINYRAD_ARRAY_MERGE)) )
          len = dat_len;
       if (*list_lenp != len)
-         return(our_error(opts, "tinyrad_array_insert(%s): did not increment length", action_name));
+         return(our_error(opts, "tinyrad_array_add(%s): did not increment length", action_name));
    };
 
    list = *listp;
@@ -642,25 +642,25 @@ my_test_insert(
    if (!(arrayopt & TINYRAD_ARRAY_MERGE))
       iteration = 0;
 
-   our_verbose(opts, "verifying tinyrad_array_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   our_verbose(opts, "verifying tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    iteration++;
    for(x = 0; (x < (dat_len*iteration)); x++)
    {
       pos = x/iteration;
       if ((strcasecmp(test[pos]->name, list[x]->name)))
-         return(our_error(opts, "tinyrad_array_insert(%s): misordered the list", action_name));
+         return(our_error(opts, "tinyrad_array_add(%s): misordered the list", action_name));
       switch(mergeopt)
       {
          case TINYRAD_ARRAY_LASTDUP:
          if ( (x < ((dat_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
             if (!(strcasecmp(list[x]->name, list[x+1]->name)))
-               return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
+               return(our_error(opts, "tinyrad_array_add(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_FIRSTDUP:
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
-               return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
+               return(our_error(opts, "tinyrad_array_add(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_ANYDUP:

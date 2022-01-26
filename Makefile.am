@@ -413,7 +413,7 @@ install-data-hook:
 	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_array.3;then\
            cd $(DESTDIR)/$(mandir)/man3 && \
            ln -fs tinyrad_array.3 tinyrad_array_get.3 && \
-           ln -fs tinyrad_array.3 tinyrad_array_insert.3 && \
+           ln -fs tinyrad_array.3 tinyrad_array_add.3 && \
            ln -fs tinyrad_array.3 tinyrad_array_remove.3 && \
            ln -fs tinyrad_array.3 tinyrad_array_search.3; \
 	fi;
@@ -445,10 +445,10 @@ uninstall-local:
 
 
 uninstall-hook:
+	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_add.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_dequeue.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_enqueue.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_get.3
-	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_insert.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_peek.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_pop.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_push.3
