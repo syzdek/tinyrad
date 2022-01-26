@@ -652,7 +652,7 @@ tinyrad_dict_defaults(
          if ((strcasecmp(attr_name, attr->name)))
             attr = NULL;
       if (!(attr))
-         attr = tinyrad_dict_attr_lookup(dict, 0, attr_name, 0);
+         attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0);
       if (!(attr))
          return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
       if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
@@ -830,7 +830,7 @@ tinyrad_dict_attr_add(
    vendor_id = ((vendor)) ? vendor->id : 0;
 
    // verify attribute doesn't exist
-   if ((attr = tinyrad_dict_attr_lookup(dict, vendor_id, name, 0)) != NULL)
+   if ((attr = tinyrad_dict_attr_lookup(dict, name, 0, vendor_id)) != NULL)
    {
       if ( (attr->flags|TRAD_DFLT_ATTR) != (flags|TRAD_DFLT_ATTR) )
          return(TRAD_EEXISTS);
@@ -844,7 +844,7 @@ tinyrad_dict_attr_add(
          *attrp = attr;
       return(TRAD_SUCCESS);
    };
-   if ((tinyrad_dict_attr_lookup(dict, vendor_id, NULL, type)))
+   if ((tinyrad_dict_attr_lookup(dict, NULL, type, vendor_id)))
       return(TRAD_EEXISTS);
 
    // resize attribute lists
@@ -989,9 +989,9 @@ tinyrad_dict_attr_destroy(
 TinyRadDictAttr *
 tinyrad_dict_attr_lookup(
          TinyRadDict *                dict,
-         uint32_t                     vendor_id,
          const char *                 name,
-         uint8_t                      type )
+         uint8_t                      type,
+         uint32_t                     vendor_id )
 {
    TinyRadDictVendor *  vendor;
    size_t               len;
@@ -1332,7 +1332,7 @@ tinyrad_dict_import_value(
 
    if (file->argc == 3)
       return(TRAD_ESYNTAX);
-   if ((attr = tinyrad_dict_attr_lookup(dict, 0, file->argv[1], 0)) == NULL)
+   if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], 0, 0)) == NULL)
       return(TRAD_ESYNTAX);
    number = (uint64_t)strtoull(file->argv[3], &ptr, 0);
    if ((ptr[0] != '\0') || (file->argv[3] == ptr))

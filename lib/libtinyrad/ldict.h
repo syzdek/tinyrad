@@ -127,9 +127,9 @@ struct _tinyrad_dict_value
 TinyRadDictAttr *
 tinyrad_dict_attr_lookup(
          TinyRadDict *                dict,
-         uint32_t                     vendor_id,
          const char *                 name,
-         uint8_t                      type );
+         uint8_t                      type,
+         uint32_t                     vendor_id );
 
 
 TinyRadDictValue *
