@@ -238,9 +238,9 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 int
-tinyrad_dict_value_cmp_numeric(
-         const void *                 ptr1,
-         const void *                 ptr2 );
+tinyrad_dict_value_cmp_obj_value(
+         const void *                  a,
+         const void *                  b );
 
 
 void
@@ -1612,7 +1612,7 @@ tinyrad_dict_value_add(
       attr->values_numeric[ attr->values_numeric_len + 0 ] = value;
       attr->values_numeric[ attr->values_numeric_len + 1 ] = NULL;
       attr->values_numeric_len++;
-      qsort(attr->values_numeric, attr->values_numeric_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_numeric);
+      qsort(attr->values_numeric, attr->values_numeric_len, sizeof(TinyRadDictValue *), &tinyrad_dict_value_cmp_obj_value);
    } else {
       for(pos = 0; ( (pos < attr->values_numeric_len) && (attr->values_numeric[pos]->value != numeral) ); pos++);
       if ((attr->values_numeric[pos]))
@@ -1639,22 +1639,15 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 int
-tinyrad_dict_value_cmp_numeric(
-         const void *                 ptr1,
-         const void *                 ptr2 )
+tinyrad_dict_value_cmp_obj_value(
+         const void *                 a,
+         const void *                 b )
 {
-   const TinyRadDictValue * value1;
-   const TinyRadDictValue * value2;
-
-   TinyRadDebugTrace();
-
-   assert(ptr1 != NULL);
-   assert(ptr2 != NULL);
-
-   value1 = *((const TinyRadDictValue * const *)ptr1);
-   value2 = *((const TinyRadDictValue * const *)ptr2);
-
-   return( (int)(((int64_t)value1->value) - ((int64_t)value2->value)) );
+   const TinyRadDictValue * const * x = a;
+   const TinyRadDictValue * const * y = b;
+   if ((*x)->value == (*y)->value)
+      return(0);
+   return( ((*x)->value < (*y)->value) ? -1 : 1 );
 }
 
 
