@@ -1661,9 +1661,9 @@ tinyrad_dict_value_lookup(
          const char *                 name,
          uint64_t                     num )
 {
-   void **         list;
-   const void *    idx;
-   size_t          len;
+   void **              list;
+   const void *         idx;
+   size_t               len;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
