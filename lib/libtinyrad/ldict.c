@@ -100,13 +100,6 @@ struct _tinyrad_dict_attr_key
 //---------------------------//
 #pragma mark dictionary misc functions
 
-void *
-tinyrad_dict_lookup(
-         void **                      list,
-         size_t                       len,
-         const void *                 idx,
-         int (*compar)(const void *, const void *) );
-
 
 //--------------------------------//
 // dictionary attribute functions //
@@ -543,6 +536,7 @@ static const struct
    { "Termination-Action",        "Default",                   0 },  // RFC2865 Section 5.29 Termination-Action
    { "Termination-Action",        "RADIUS-Request",            1 },  // RFC2865 Section 5.29 Termination-Action
 
+   { "Tunnel-Medium-Type",        "IP",                        1 },  // custom alias
    { "Tunnel-Medium-Type",        "IPv4",                      1 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
    { "Tunnel-Medium-Type",        "IPv6",                      2 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
    { "Tunnel-Medium-Type",        "NSAP",                      3 },  // RFC2868 Section 3.2  Tunnel-Medium-Type
@@ -766,51 +760,6 @@ tinyrad_dict_initialize(
    *dictp = dict;
 
    return(TRAD_SUCCESS);
-}
-
-
-void *
-tinyrad_dict_lookup(
-         void **                      list,
-         size_t                       len,
-         const void *                 idx,
-         int (*compar)(const void *, const void *) )
-{
-   int         rc;
-   ssize_t     low;
-   ssize_t     mid;
-   ssize_t     high;
-
-   TinyRadDebugTrace();
-
-   assert(idx  != NULL);
-
-   if (!(list))
-      return(NULL);
-   if (!(len))
-      return(NULL);
-
-   low  = 0;
-   high = (ssize_t)(len - 1);
-   mid  = (ssize_t)((len - 1) / 2);
-
-   while(mid > low)
-   {
-      if ((rc = (*compar)(list[mid], idx)) == 0)
-         return(list[mid]);
-      else if (rc < 0)
-         high = mid - 1;
-      else
-         low = mid;
-      mid = (high + low) / 2;
-   };
-
-   if ((*compar)(list[mid], idx) == 0)
-      return(list[mid]);
-   if ((*compar)(list[high], idx) == 0)
-      return(list[high]);
-
-   return(NULL);
 }
 
 
