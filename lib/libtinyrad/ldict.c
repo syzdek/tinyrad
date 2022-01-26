@@ -244,6 +244,12 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 int
+tinyrad_dict_value_cmp_key_value(
+         const void *                 ptr,
+         const void *                 key );
+
+
+int
 tinyrad_dict_value_cmp_obj_value(
          const void *                  a,
          const void *                  b );
@@ -252,12 +258,6 @@ tinyrad_dict_value_cmp_obj_value(
 void
 tinyrad_dict_value_destroy(
          TinyRadDictValue *           value );
-
-
-int
-tinyrad_dict_value_lookup_numeric(
-         const void *                 data,
-         const void *                 idx );
 
 
 //-----------------------------//
@@ -1624,6 +1624,19 @@ tinyrad_dict_value_cmp_key_name(
 
 
 int
+tinyrad_dict_value_cmp_key_value(
+         const void *                 ptr,
+         const void *                 key )
+{
+   const TinyRadDictValue * const * obj = ptr;
+   const uint64_t *                 dat = key;
+   if ((*obj)->value == *dat)
+      return(0);
+   return( ((*obj)->value < *dat) ? -1 : 0 );
+}
+
+
+int
 tinyrad_dict_value_cmp_obj_name(
          const void *                 a,
          const void *                 b )
@@ -1672,12 +1685,8 @@ tinyrad_dict_value_lookup(
          const char *                 name,
          uint64_t                     num )
 {
-   void **              list;
-   const void *         idx;
-   size_t               len;
    size_t               width;
    TinyRadDictValue **  res;
-   int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
@@ -1691,28 +1700,8 @@ tinyrad_dict_value_lookup(
       return( ((res)) ? *res : NULL);
    };
 
-   list   = (void **)attr->values_numeric;
-   len    = attr->values_numeric_len;
-   idx    = &num;
-   compar = tinyrad_dict_value_lookup_numeric;
-
-   return(tinyrad_dict_lookup(list, len, idx, compar));
-}
-
-
-int
-tinyrad_dict_value_lookup_numeric(
-         const void *                 data,
-         const void *                 idx )
-{
-   const TinyRadDictValue *  value;
-   uint64_t                  val;
-   TinyRadDebugTrace();
-   value = data;
-   val   = *((const uint64_t *)idx);
-   if (value->value == val)
-      return(0);
-   return( (value->value < val) ? -1 : 1 );
+   res = tinyrad_array_get(attr->values_numeric, attr->values_numeric_len, width, &num, TINYRAD_ARRAY_LAST, &tinyrad_dict_value_cmp_key_value);
+   return( ((res)) ? *res : NULL);
 }
 
 
