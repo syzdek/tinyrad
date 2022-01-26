@@ -232,6 +232,12 @@ tinyrad_dict_value_add(
 
 
 int
+tinyrad_dict_value_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key );
+
+
+int
 tinyrad_dict_value_cmp_obj_name(
          const void *                  a,
          const void *                  b );
@@ -246,12 +252,6 @@ tinyrad_dict_value_cmp_obj_value(
 void
 tinyrad_dict_value_destroy(
          TinyRadDictValue *           value );
-
-
-int
-tinyrad_dict_value_lookup_name(
-         const void *                 data,
-         const void *                 idx );
 
 
 int
@@ -1613,6 +1613,17 @@ tinyrad_dict_value_add(
 
 
 int
+tinyrad_dict_value_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key )
+{
+   const TinyRadDictValue * const * obj = ptr;
+   const char *                     dat = key;
+   return(strcasecmp( (*obj)->name, dat));
+}
+
+
+int
 tinyrad_dict_value_cmp_obj_name(
          const void *                 a,
          const void *                 b )
@@ -1664,40 +1675,28 @@ tinyrad_dict_value_lookup(
    void **              list;
    const void *         idx;
    size_t               len;
+   size_t               width;
+   TinyRadDictValue **  res;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(attr   != NULL);
 
+   width    = sizeof(TinyRadDictValue *);
+
    if ((name))
    {
-      list   = (void **)attr->values_name;
-      len    = attr->values_name_len;
-      idx    = name;
-      compar = tinyrad_dict_value_lookup_name;
-   } else {
-      list   = (void **)attr->values_numeric;
-      len    = attr->values_numeric_len;
-      idx    = &num;
-      compar = tinyrad_dict_value_lookup_numeric;
+      res = tinyrad_array_get(attr->values_name, attr->values_name_len, width, name, TINYRAD_ARRAY_LAST, &tinyrad_dict_value_cmp_key_name);
+      return( ((res)) ? *res : NULL);
    };
 
+   list   = (void **)attr->values_numeric;
+   len    = attr->values_numeric_len;
+   idx    = &num;
+   compar = tinyrad_dict_value_lookup_numeric;
+
    return(tinyrad_dict_lookup(list, len, idx, compar));
-}
-
-
-int
-tinyrad_dict_value_lookup_name(
-         const void *                 data,
-         const void *                 idx )
-{
-   const TinyRadDictValue *  value;
-   const char *              name;
-   TinyRadDebugTrace();
-   value = data;
-   name  = idx;
-   return(strcasecmp(name, value->name));
 }
 
 
