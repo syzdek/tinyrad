@@ -1686,21 +1686,34 @@ tinyrad_dict_value_lookup(
          uint64_t                     num )
 {
    size_t               width;
+   size_t               len;
+   unsigned             opts;
+   const void *         key;
+   TinyRadDictValue **  list;
    TinyRadDictValue **  res;
+   int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(attr   != NULL);
 
    width    = sizeof(TinyRadDictValue *);
+   opts     = TINYRAD_ARRAY_LAST;
 
    if ((name))
    {
-      res = tinyrad_array_get(attr->values_name, attr->values_name_len, width, name, TINYRAD_ARRAY_LAST, &tinyrad_dict_value_cmp_key_name);
-      return( ((res)) ? *res : NULL);
+      key      = name;
+      len      = attr->values_name_len;
+      list     = attr->values_name;
+      compar   = &tinyrad_dict_value_cmp_key_name;
+   } else {
+      key      = &num;
+      len      = attr->values_numeric_len;
+      list     = attr->values_numeric;
+      compar   = &tinyrad_dict_value_cmp_key_value;
    };
 
-   res = tinyrad_array_get(attr->values_numeric, attr->values_numeric_len, width, &num, TINYRAD_ARRAY_LAST, &tinyrad_dict_value_cmp_key_value);
+   res = tinyrad_array_get(list, len, width, key, opts, compar);
    return( ((res)) ? *res : NULL);
 }
 
