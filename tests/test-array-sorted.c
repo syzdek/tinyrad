@@ -619,8 +619,9 @@ my_test_insert(
       case TINYRAD_ARRAY_FIRSTDUP:  merge_type = "FIRST"; break;
       case TINYRAD_ARRAY_LASTDUP:   merge_type = "LAST"; break;
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
+      case 0:                       merge_type = "DEFAULT"; break;
       default:
-      return(our_error(opts, "unknown insert action"));
+      return(our_error(opts, "unknown dup action"));
    };
 
    our_verbose(opts, "testing   tinyrad_array_insert( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
@@ -713,8 +714,9 @@ my_test_remove(
       case TINYRAD_ARRAY_FIRSTDUP:  merge_type = "FIRST"; break;
       case TINYRAD_ARRAY_LASTDUP:   merge_type = "LAST"; break;
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
+      case 0:                       merge_type = "DEFAULT"; break;
       default:
-      return(our_error(opts, "unknown insert action"));
+      return(our_error(opts, "unknown dup action"));
    };
 
    our_verbose(opts, "testing   tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));

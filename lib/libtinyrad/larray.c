@@ -401,6 +401,10 @@ tinyrad_array_search(
    assert(width  > 0);
    assert(opts  != ((unsigned)(~0)));
 
+   // set default dup behavior
+   if ((opts & TINYRAD_ARRAY_MASK_DUPS) == 0)
+      opts |= TINYRAD_ARRAY_DEFAULT & TINYRAD_ARRAY_MASK_DUPS;
+
    if (nel == 0)
    {
       if ((wouldbep))
