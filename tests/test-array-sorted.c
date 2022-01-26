@@ -402,7 +402,7 @@ int main( int argc, char * argv[] )
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
-   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_PREPEND;
+   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_FIRSTDUP;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
@@ -476,7 +476,7 @@ int main( int argc, char * argv[] )
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
-   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_PREPEND;
+   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_FIRSTDUP;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
@@ -616,7 +616,7 @@ my_test_insert(
    };
    switch(mergeopt)
    {
-      case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
+      case TINYRAD_ARRAY_FIRSTDUP:  merge_type = "FIRST"; break;
       case TINYRAD_ARRAY_LASTDUP:   merge_type = "LAST"; break;
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       default:
@@ -655,7 +655,7 @@ my_test_insert(
                return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
          break;
 
-         case TINYRAD_ARRAY_PREPEND:
+         case TINYRAD_ARRAY_FIRSTDUP:
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
                return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
@@ -710,7 +710,7 @@ my_test_remove(
    };
    switch(mergeopt)
    {
-      case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
+      case TINYRAD_ARRAY_FIRSTDUP:  merge_type = "FIRST"; break;
       case TINYRAD_ARRAY_LASTDUP:   merge_type = "LAST"; break;
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       default:
@@ -746,7 +746,7 @@ my_test_remove(
                return(our_error(opts, "tinyrad_array_remove(%s): first match not returned", action_name));
          break;
 
-         case TINYRAD_ARRAY_PREPEND:
+         case TINYRAD_ARRAY_FIRSTDUP:
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
                return(our_error(opts, "tinyrad_array_remove(%s): first match not returned", action_name));
