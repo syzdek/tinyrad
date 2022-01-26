@@ -114,9 +114,9 @@ tinyrad_dict_attr_cmp_obj_name(
 
 
 int
-tinyrad_dict_attr_cmp_type(
-         const void *                 ptr1,
-         const void *                 ptr2 );
+tinyrad_dict_attr_cmp_obj_type(
+         const void *                 a,
+         const void *                 b );
 
 
 void
@@ -905,12 +905,12 @@ tinyrad_dict_attr_add(
       vendor->attrs_name_len++;
       vendor->attrs_type_len++;
       qsort(vendor->attrs_name, vendor->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_obj_name);
-      qsort(vendor->attrs_type, vendor->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
+      qsort(vendor->attrs_type, vendor->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_obj_type);
    } else {
       dict->attrs_type[dict->attrs_type_len + 0] = attr;
       dict->attrs_type[dict->attrs_type_len + 1] = NULL;
       dict->attrs_type_len++;
-      qsort(dict->attrs_type, dict->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
+      qsort(dict->attrs_type, dict->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_obj_type);
    }
    if ((attrp))
       *attrp = attr;
@@ -931,22 +931,19 @@ tinyrad_dict_attr_cmp_obj_name(
 
 
 int
-tinyrad_dict_attr_cmp_type(
-         const void *                 ptr1,
-         const void *                 ptr2 )
+tinyrad_dict_attr_cmp_obj_type(
+         const void *                 a,
+         const void *                 b )
 {
-   const TinyRadDictAttr *  attr1;
-   const TinyRadDictAttr *  attr2;
-
-   TinyRadDebugTrace();
-
-   assert(ptr1 != NULL);
-   assert(ptr2 != NULL);
-
-   attr1 = *((const TinyRadDictAttr * const *)ptr1);
-   attr2 = *((const TinyRadDictAttr * const *)ptr2);
-
-   return( (int)(((int64_t)attr1->type) - ((int64_t)attr2->type)) );
+   const TinyRadDictAttr * const * x = a;
+   const TinyRadDictAttr * const * y = b;
+   if ((*x)->type != (*y)->type)
+      return( ((*x)->type < (*y)->type) ? -1 : 1 );
+   if ((*x)->vendor_id != (*y)->vendor_id)
+      return( ((*x)->vendor_id < (*y)->vendor_id) ? -1 : 1 );
+   //if ((*x)->vendor_type != (*y)->vendor_type)
+   //   return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
+   return(0);
 }
 
 
