@@ -282,6 +282,12 @@ tinyrad_dict_vendor_cmp_key_id(
 
 
 int
+tinyrad_dict_vendor_cmp_key_name(
+         const void *                 a,
+         const void *                 b );
+
+
+int
 tinyrad_dict_vendor_cmp_obj_id(
          const void *                 a,
          const void *                 b );
@@ -296,12 +302,6 @@ tinyrad_dict_vendor_cmp_obj_name(
 void
 tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *           vendor );
-
-
-int
-tinyrad_dict_vendor_lookup_name(
-         const void *                 data,
-         const void *                 idx );
 
 
 /////////////////
@@ -1837,6 +1837,17 @@ tinyrad_dict_vendor_cmp_key_id(
 
 
 int
+tinyrad_dict_vendor_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key )
+{
+   const TinyRadDictVendor * const *   obj = ptr;
+   const char *                        dat = key;
+   return(strcasecmp( (*obj)->name, dat));
+}
+
+
+int
 tinyrad_dict_vendor_cmp_obj_id(
          const void *                 a,
          const void *                 b )
@@ -1902,9 +1913,9 @@ tinyrad_dict_vendor_lookup(
          const char *                 name,
          uint32_t                     id )
 {
-   void **         list;
-   const void *    idx;
-   size_t          len;
+   void **                 list;
+   const void *            key;
+   size_t                  len;
    size_t                  width;
    unsigned                opts;
    TinyRadDictVendor **    res;
@@ -1921,34 +1932,17 @@ tinyrad_dict_vendor_lookup(
    {
       list   = (void **)dict->vendors_name;
       len    = dict->vendors_name_len;
-      idx    = name;
-      compar = tinyrad_dict_vendor_lookup_name;
+      key    = name;
+      compar = &tinyrad_dict_vendor_cmp_key_name;
    } else {
       list   = (void **)dict->vendors_id;
       len    = dict->vendors_id_len;
-      idx    = &id;
+      key    = &id;
       compar = &tinyrad_dict_vendor_cmp_key_id;
-      res = tinyrad_array_get(list, len, width, idx, opts, compar);
-      return( ((res)) ? *res : NULL);
    };
 
-   return(tinyrad_dict_lookup(list, len, idx, compar));
-}
-
-
-/// wrapper around stat() for dictionary processing
-///
-int
-tinyrad_dict_vendor_lookup_name(
-         const void *                 data,
-         const void *                 idx )
-{
-   const TinyRadDictVendor *  vendor;
-   const char *               name;
-   TinyRadDebugTrace();
-   vendor = data;
-   name   = idx;
-   return(strcasecmp(name, vendor->name));
+   res = tinyrad_array_get(list, len, width, key, opts, compar);
+   return( ((res)) ? *res : NULL);
 }
 
 /* end of source */
