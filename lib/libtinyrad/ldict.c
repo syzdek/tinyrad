@@ -116,10 +116,10 @@ tinyrad_dict_lookup(
 int
 tinyrad_dict_attr_add(
          TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor,
          TinyRadDictAttr **            attrp,
          const char *                  name,
          uint8_t                       type,
+         TinyRadDictVendor *           vendor,
          uint8_t                       datatype,
          uint32_t                      flags );
 
@@ -655,7 +655,7 @@ tinyrad_dict_defaults(
       datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
       flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
       flags    |= TRAD_DFLT_ATTR;
-      if ((rc = tinyrad_dict_attr_add(dict, NULL, NULL, attr_name, type, datatype, flags)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, NULL, datatype, flags)) != TRAD_SUCCESS)
          return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
    };
 
@@ -825,10 +825,10 @@ tinyrad_dict_lookup(
 int
 tinyrad_dict_attr_add(
          TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor,
          TinyRadDictAttr **            attrp,
          const char *                  name,
          uint8_t                       type,
+         TinyRadDictVendor *           vendor,
          uint8_t                       datatype,
          uint32_t                      flags )
 {
@@ -1240,7 +1240,7 @@ tinyrad_dict_import_attribute(
       };
    };
 
-   if ((rc = tinyrad_dict_attr_add(dict, vendor, NULL, file->argv[1], type, datatype, flags)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_attr_add(dict, NULL, file->argv[1], type, vendor, datatype, flags)) != TRAD_SUCCESS)
       return(rc);
 
    return(TRAD_SUCCESS);
