@@ -281,7 +281,7 @@ tinyrad_array_pop(
          size_t                        width )
 {
    TinyRadDebugTrace();
-   assert(base  != NULL);
+   assert((base  != NULL) || (!(*nelp)) );
    assert(nelp  != NULL);
    assert(width  > 0);
    if (!(*nelp))
