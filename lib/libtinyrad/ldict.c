@@ -854,11 +854,12 @@ tinyrad_dict_attr_add(
    dict->attrs_name = ptr;
    if ((vendor))
    {
-      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_len+2);
+      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_name_len+2);
       if ((ptr = realloc(vendor->attrs_name, size)) == NULL)
          return(TRAD_ENOMEM);
       vendor->attrs_name = ptr;
 
+      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_type_len+2);
       if ((ptr = realloc(vendor->attrs_type, size)) == NULL)
          return(TRAD_ENOMEM);
       vendor->attrs_type = ptr;
@@ -897,13 +898,14 @@ tinyrad_dict_attr_add(
    qsort(dict->attrs_name, dict->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
    if ((vendor))
    {
-      vendor->attrs_name[ vendor->attrs_len + 0 ] = attr;
-      vendor->attrs_name[ vendor->attrs_len + 1 ] = NULL;
-      vendor->attrs_type[ vendor->attrs_len + 0 ] = attr;
-      vendor->attrs_type[ vendor->attrs_len + 1 ] = NULL;
-      vendor->attrs_len++;
-      qsort(vendor->attrs_name, vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
-      qsort(vendor->attrs_type, vendor->attrs_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
+      vendor->attrs_name[ vendor->attrs_name_len + 0 ] = attr;
+      vendor->attrs_name[ vendor->attrs_name_len + 1 ] = NULL;
+      vendor->attrs_type[ vendor->attrs_type_len + 0 ] = attr;
+      vendor->attrs_type[ vendor->attrs_type_len + 1 ] = NULL;
+      vendor->attrs_name_len++;
+      vendor->attrs_type_len++;
+      qsort(vendor->attrs_name, vendor->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+      qsort(vendor->attrs_type, vendor->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
    } else {
       dict->attrs_type[dict->attrs_type_len + 0] = attr;
       dict->attrs_type[dict->attrs_type_len + 1] = NULL;
@@ -1015,7 +1017,7 @@ tinyrad_dict_attr_lookup(
          if ((vendor = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id)) == NULL)
             return(NULL);
          list = (void **)vendor->attrs_type;
-         len  = vendor->attrs_len;
+         len  = vendor->attrs_type_len;
       };
       idx    = &type;
       compar = tinyrad_dict_attr_lookup_type;
@@ -1513,11 +1515,11 @@ tinyrad_dict_print_vendor(
       printf(" format=%" PRIu8 ",%" PRIu8, vendor->type_octs, vendor->len_octs);
    printf("\n");
 
-   if (!(vendor->attrs_len))
+   if (!(vendor->attrs_type_len))
       return;
 
    printf("BEGIN-VENDOR %s\n", vendor->name);
-   for(pos = 0; (pos < vendor->attrs_len); pos++)
+   for(pos = 0; (pos < vendor->attrs_type_len); pos++)
       tinyrad_dict_print_attribute(dict, vendor->attrs_type[pos]);
    printf("END-VENDOR %s\n", vendor->name);
 
@@ -1893,7 +1895,7 @@ tinyrad_dict_vendor_destroy(
    if ((vendor->name))
       free(vendor->name);
 
-   for(pos = 0; (pos < vendor->attrs_len); pos++)
+   for(pos = 0; (pos < vendor->attrs_name_len); pos++)
       tinyrad_dict_attr_destroy(vendor->attrs_name[pos]);
    if ((vendor->attrs_name))
       free(vendor->attrs_name);

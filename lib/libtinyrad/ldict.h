@@ -82,7 +82,8 @@ struct _tinyrad_dict_vendor
    char *                name;
    TinyRadDictAttr **    attrs_name;
    TinyRadDictAttr **    attrs_type;
-   size_t                attrs_len;
+   size_t                attrs_name_len;
+   size_t                attrs_type_len;
    uint32_t              id;
    uint8_t               type_octs;
    uint8_t               len_octs;
