@@ -276,6 +276,12 @@ tinyrad_dict_vendor_add(
 
 
 int
+tinyrad_dict_vendor_cmp_key_id(
+         const void *                 a,
+         const void *                 b );
+
+
+int
 tinyrad_dict_vendor_cmp_obj_id(
          const void *                 a,
          const void *                 b );
@@ -290,12 +296,6 @@ tinyrad_dict_vendor_cmp_obj_name(
 void
 tinyrad_dict_vendor_destroy(
          TinyRadDictVendor *           vendor );
-
-
-int
-tinyrad_dict_vendor_lookup_id(
-         const void *                 data,
-         const void *                 idx );
 
 
 int
@@ -1824,6 +1824,19 @@ tinyrad_dict_vendor_add(
 
 
 int
+tinyrad_dict_vendor_cmp_key_id(
+         const void *                 ptr,
+         const void *                 key )
+{
+   const TinyRadDictVendor * const *   obj = ptr;
+   const uint64_t *                    dat = key;
+   if ((*obj)->id == *dat)
+      return(0);
+   return( ((*obj)->id < *dat) ? -1 : 0 );
+}
+
+
+int
 tinyrad_dict_vendor_cmp_obj_id(
          const void *                 a,
          const void *                 b )
@@ -1892,11 +1905,17 @@ tinyrad_dict_vendor_lookup(
    void **         list;
    const void *    idx;
    size_t          len;
+   size_t                  width;
+   unsigned                opts;
+   TinyRadDictVendor **    res;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(dict   != NULL);
+
+   width = sizeof(TinyRadDictVendor *);
+   opts = TINYRAD_ARRAY_LAST;
 
    if ((name))
    {
@@ -1908,28 +1927,12 @@ tinyrad_dict_vendor_lookup(
       list   = (void **)dict->vendors_id;
       len    = dict->vendors_id_len;
       idx    = &id;
-      compar = tinyrad_dict_vendor_lookup_id;
+      compar = &tinyrad_dict_vendor_cmp_key_id;
+      res = tinyrad_array_get(list, len, width, idx, opts, compar);
+      return( ((res)) ? *res : NULL);
    };
 
    return(tinyrad_dict_lookup(list, len, idx, compar));
-}
-
-
-/// wrapper around stat() for dictionary processing
-///
-int
-tinyrad_dict_vendor_lookup_id(
-         const void *                 data,
-         const void *                 idx )
-{
-   const TinyRadDictVendor *  vendor;
-   uint32_t                   id;
-   TinyRadDebugTrace();
-   vendor = data;
-   id     = *((const uint32_t *)idx);
-   if (vendor->id == id)
-      return(0);
-   return( (vendor->id < id) ? -1 : 1 );
 }
 
 
