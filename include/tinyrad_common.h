@@ -62,16 +62,16 @@
 #pragma mark - Definitions
 
 // array function options
-#define TINYRAD_ARRAY_INSERT        0x0001               ///< insert type: default array insert action
-#define TINYRAD_ARRAY_REPLACE       0x0002               ///< insert type: replace existing object on insert
-#define TINYRAD_ARRAY_MERGE         0x0004               ///< insert type: merge object into array on insert
-#define TINYRAD_ARRAY_LASTDUP       0x0010               ///< search: return/remove last duplicate object in series of matching objects
-#define TINYRAD_ARRAY_FIRSTDUP      0x0020               ///< search: return/remove first duplicate object in series of matching objects
-#define TINYRAD_ARRAY_ANYDUP        0x0040               ///< merge type: insert unordered duplicate object to series of matching objects
-#define TINYRAD_ARRAY_DEFAULT       (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_ANYDUP)                             ///< default array options
-#define TINYRAD_ARRAY_MASK_ADD      (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
-#define TINYRAD_ARRAY_MASK_DUPS     (TINYRAD_ARRAY_ANYDUP | TINYRAD_ARRAY_LASTDUP | TINYRAD_ARRAY_FIRSTDUP)    ///< duplicate options
-#define TINYRAD_ARRAY_MASK          (TINYRAD_ARRAY_MASK_ACTION | TINYRAD_ARRAY_MASK_DUPS )                     ///< mask of all array options
+#define TINYRAD_ARRAY_INSERT        0x0001      ///< add type: insert unique object to sorted array
+#define TINYRAD_ARRAY_REPLACE       0x0002      ///< add type: replace deplucate object in sorted array, or insert if unique
+#define TINYRAD_ARRAY_MERGE         0x0004      ///< add type: add object to sorted array regardless if unique or duplicate
+#define TINYRAD_ARRAY_LASTDUP       0x0010      ///< dup handling: add/return/remove last duplicate object in series of matching objects
+#define TINYRAD_ARRAY_FIRSTDUP      0x0020      ///< dup handling: add/return/remove first duplicate object in series of matching objects
+#define TINYRAD_ARRAY_ANYDUP        0x0040      ///< dup handling: add/return/remove any one duplicate object in series of matching objects
+#define TINYRAD_ARRAY_DEFAULT       ( TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_ANYDUP )                            ///< default sorted array options
+#define TINYRAD_ARRAY_MASK_ADD      ( TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_MERGE   | TINYRAD_ARRAY_REPLACE )   ///< mask for add type
+#define TINYRAD_ARRAY_MASK_DUPS     ( TINYRAD_ARRAY_ANYDUP | TINYRAD_ARRAY_LASTDUP | TINYRAD_ARRAY_FIRSTDUP )  ///< mask for duplicate handling in sorted array
+#define TINYRAD_ARRAY_MASK          ( TINYRAD_ARRAY_MASK_ACTION | TINYRAD_ARRAY_MASK_DUPS )                    ///< mask of all sorted array options
 
 
 //////////////////
