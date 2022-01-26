@@ -745,34 +745,6 @@ tinyrad_dict_initialize(
    };
    dict->paths[0] = NULL;
 
-   // intializes vendors
-   if ((dict->vendors_name = malloc(sizeof(TinyRadDictVendor *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->vendors_name[0] = NULL;
-   if ((dict->vendors_id = malloc(sizeof(TinyRadDictVendor *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->vendors_id[0] = NULL;
-
-   // initializes attributes
-   if ((dict->attrs_name = malloc(sizeof(TinyRadDictAttr *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->attrs_name[0] = NULL;
-   if ((dict->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
-   {
-      tinyrad_dict_destroy(dict);
-      return(-1);
-   };
-   dict->attrs_type[0] = NULL;
-
    *dictp = dict;
 
    return(TRAD_SUCCESS);
