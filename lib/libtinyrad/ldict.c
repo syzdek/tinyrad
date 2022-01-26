@@ -232,9 +232,9 @@ tinyrad_dict_value_add(
 
 
 int
-tinyrad_dict_value_cmp_name(
-         const void *                 ptr1,
-         const void *                 ptr2 );
+tinyrad_dict_value_cmp_obj_name(
+         const void *                  a,
+         const void *                  b );
 
 
 int
@@ -1604,7 +1604,7 @@ tinyrad_dict_value_add(
    attr->values_name[ attr->values_name_len + 0 ] = value;
    attr->values_name[ attr->values_name_len + 1 ] = NULL;
    attr->values_name_len++;
-   qsort(attr->values_name, attr->values_name_len, sizeof(TinyRadDictValue *), tinyrad_dict_value_cmp_name);
+   qsort(attr->values_name, attr->values_name_len, sizeof(TinyRadDictValue *), &tinyrad_dict_value_cmp_obj_name);
 
    // save value by numeral
    if (!(numeric))
@@ -1628,22 +1628,13 @@ tinyrad_dict_value_add(
 
 
 int
-tinyrad_dict_value_cmp_name(
-         const void *                 ptr1,
-         const void *                 ptr2 )
+tinyrad_dict_value_cmp_obj_name(
+         const void *                 a,
+         const void *                 b )
 {
-   const TinyRadDictValue * value1;
-   const TinyRadDictValue * value2;
-
-   TinyRadDebugTrace();
-
-   assert(ptr1 != NULL);
-   assert(ptr2 != NULL);
-
-   value1 = *((const TinyRadDictValue * const *)ptr1);
-   value2 = *((const TinyRadDictValue * const *)ptr2);
-
-   return(strcasecmp(value1->name, value2->name));
+   const TinyRadDictValue * const * x = a;
+   const TinyRadDictValue * const * y = b;
+   return(strcasecmp( (*x)->name, (*y)->name));
 }
 
 
