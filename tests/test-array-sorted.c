@@ -604,7 +604,7 @@ my_test_insert(
 
    my_compar_opts(opts, &compar_name, &compar);
 
-   mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_SEARCH);
+   mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_DUPS);
    iteration = *list_lenp / dat_len;
    switch(arrayopt & TINYRAD_ARRAY_MASK_ACTION)
    {
@@ -698,7 +698,7 @@ my_test_remove(
 
    my_compar_opts(opts, &compar_name, &compar);
 
-   mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_SEARCH);
+   mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_DUPS);
    iteration = (*list_lenp / dat_len) - 1;
    switch(arrayopt & TINYRAD_ARRAY_MASK_ACTION)
    {

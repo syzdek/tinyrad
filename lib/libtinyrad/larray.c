@@ -420,7 +420,7 @@ tinyrad_array_search(
       ptr = ((const char *)base) + (width * (size_t)mid);
       if ((rc = (*compar)(ptr, key)) == 0)
       {
-         switch(opts & TINYRAD_ARRAY_MASK_SEARCH)
+         switch(opts & TINYRAD_ARRAY_MASK_DUPS)
          {
             case TINYRAD_ARRAY_LAST:
             if (low == mid)
