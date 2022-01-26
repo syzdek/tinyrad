@@ -102,7 +102,7 @@ tinyrad_dict_attr_add(
          TinyRadDictVendor *           vendor,
          TinyRadDictAttr **            attrp,
          const char *                  name,
-         uint32_t                      type,
+         uint8_t                       type,
          uint8_t                       datatype,
          uint32_t                      flags );
 
@@ -615,7 +615,7 @@ tinyrad_dict_defaults(
 {
    int                rc;
    size_t             pos;
-   uint32_t           type;
+   uint8_t            type;
    uint8_t            datatype;
    uint32_t           flags;
    uint64_t           data;
@@ -634,7 +634,7 @@ tinyrad_dict_defaults(
    for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
    {
       attr_name = tinyrad_dict_default_attrs[pos].name;
-      type      = (uint32_t)tinyrad_dict_default_attrs[pos].type;
+      type      = (uint8_t)tinyrad_dict_default_attrs[pos].type;
       datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
       flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
       flags    |= TRAD_DFLT_ATTR;
@@ -811,7 +811,7 @@ tinyrad_dict_attr_add(
          TinyRadDictVendor *           vendor,
          TinyRadDictAttr **            attrp,
          const char *                  name,
-         uint32_t                      type,
+         uint8_t                       type,
          uint8_t                       datatype,
          uint32_t                      flags )
 {
@@ -991,7 +991,7 @@ tinyrad_dict_attr_lookup(
          TinyRadDict *                dict,
          uint32_t                     vendor_id,
          const char *                 name,
-         uint32_t                     type )
+         uint8_t                      type )
 {
    TinyRadDictVendor *  vendor;
    size_t               len;
@@ -1193,7 +1193,7 @@ tinyrad_dict_import_attribute(
          uint32_t                     opts )
 {
    uint8_t      datatype;
-   uint32_t    type;
+   uint8_t     type;
    uint32_t    flags;
    uint32_t    flag;
    int         rc;
@@ -1210,7 +1210,7 @@ tinyrad_dict_import_attribute(
       return(TRAD_ESYNTAX);
    if ((datatype = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
       return(TRAD_ESYNTAX);
-   if ((type = (uint32_t)strtoull(file->argv[2], &ptr, 10)) == 0)
+   if ((type = (uint8_t)strtoul(file->argv[2], &ptr, 10)) == 0)
       return(TRAD_ESYNTAX);
    if ((ptr[0] != '\0') || (file->argv[2] == ptr))
       return(TRAD_ESYNTAX);
