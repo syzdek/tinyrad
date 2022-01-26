@@ -147,7 +147,7 @@ tinyrad_array_get(
 {
    ssize_t     idx;
    TinyRadDebugTrace();
-   assert(base  != NULL);
+   assert((base != NULL) || (!(nel)) );
    assert(key   != NULL);
    assert(width  > 0);
    if ((idx = tinyrad_array_search(base, nel, width, key, opts, NULL, compar)) == -1)
