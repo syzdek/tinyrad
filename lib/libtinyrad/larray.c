@@ -396,7 +396,7 @@ tinyrad_array_search(
 
    TinyRadDebugTrace();
 
-   assert(base  != NULL);
+   assert((base != NULL) || (!(nel)) );
    assert(key   != NULL);
    assert(width  > 0);
    assert(opts  != ((unsigned)(~0)));
