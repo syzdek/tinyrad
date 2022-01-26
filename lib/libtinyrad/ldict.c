@@ -108,6 +108,12 @@ tinyrad_dict_attr_add(
 
 
 int
+tinyrad_dict_attr_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key );
+
+
+int
 tinyrad_dict_attr_cmp_obj_name(
          const void *                 a,
          const void *                 b );
@@ -122,12 +128,6 @@ tinyrad_dict_attr_cmp_obj_type(
 void
 tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr );
-
-
-int
-tinyrad_dict_attr_lookup_name(
-         const void *                 data,
-         const void *                 idx );
 
 
 int
@@ -930,6 +930,17 @@ tinyrad_dict_attr_add(
 
 
 int
+tinyrad_dict_attr_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key )
+{
+   const TinyRadDictAttr * const *  obj = ptr;
+   const char *                     dat = key;
+   return(strcasecmp( (*obj)->name, dat));
+}
+
+
+int
 tinyrad_dict_attr_cmp_obj_name(
          const void *                 a,
          const void *                 b )
@@ -993,47 +1004,39 @@ tinyrad_dict_attr_lookup(
 {
    TinyRadDictVendor *  vendor;
    size_t               len;
+   size_t               width;
    void **              list;
    const void *         idx;
+   TinyRadDictAttr **   res;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(dict   != NULL);
 
+   width = sizeof(TinyRadDictAttr *);
+
+   // search by name
    if ((name))
    {
-      list   = (void **)dict->attrs_name;
-      len    = dict->attrs_name_len;
-      idx    = name;
-      compar = &tinyrad_dict_attr_lookup_name;
-   } else {
-      list   = (void **)dict->attrs_type;
-      len    = dict->attrs_type_len;
-      if ((vendor_id))
-      {
-         if ((vendor = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id)) == NULL)
-            return(NULL);
-         list = (void **)vendor->attrs_type;
-         len  = vendor->attrs_type_len;
-      };
-      idx    = &type;
-      compar = &tinyrad_dict_attr_lookup_type;
+      res = tinyrad_array_get(dict->attrs_name, dict->attrs_name_len, width, name, TINYRAD_ARRAY_FIRST, &tinyrad_dict_attr_cmp_key_name);
+      return( ((res)) ? *res : NULL);
    };
 
+   // search by type
+   list   = (void **)dict->attrs_type;
+   len    = dict->attrs_type_len;
+   if ((vendor_id))
+   {
+      if ((vendor = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id)) == NULL)
+         return(NULL);
+      list = (void **)vendor->attrs_type;
+      len  = vendor->attrs_type_len;
+   };
+   idx    = &type;
+   compar = &tinyrad_dict_attr_lookup_type;
+
    return(tinyrad_dict_lookup(list, len, idx, compar));
-}
-
-
-int
-tinyrad_dict_attr_lookup_name(
-         const void *                 data,
-         const void *                 idx )
-{
-   const TinyRadDictVendor *  vendor = data;
-   const char *               name   = idx;
-   TinyRadDebugTrace();
-   return(strcasecmp(name, vendor->name));
 }
 
 
