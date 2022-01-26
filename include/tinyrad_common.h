@@ -69,7 +69,7 @@
 #define TINYRAD_ARRAY_FIRSTDUP      0x0020               ///< search: return/remove first duplicate object in series of matching objects
 #define TINYRAD_ARRAY_ANYDUP        0x0040               ///< merge type: insert unordered duplicate object to series of matching objects
 #define TINYRAD_ARRAY_DEFAULT       (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_ANYDUP)                             ///< default array options
-#define TINYRAD_ARRAY_MASK_ACTION   (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
+#define TINYRAD_ARRAY_MASK_ADD      (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
 #define TINYRAD_ARRAY_MASK_DUPS     (TINYRAD_ARRAY_ANYDUP | TINYRAD_ARRAY_LASTDUP | TINYRAD_ARRAY_FIRSTDUP)    ///< duplicate options
 #define TINYRAD_ARRAY_MASK          (TINYRAD_ARRAY_MASK_ACTION | TINYRAD_ARRAY_MASK_DUPS )                     ///< mask of all array options
 
