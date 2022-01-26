@@ -199,9 +199,9 @@ tinyrad_array_insert(
    // search for existing object which matches
    if ((idx = tinyrad_array_search(*basep, *nelp, width, obj, opts, &wouldbe, compar)) != -1)
    {
-      if ((opts & TINYRAD_ARRAY_MASK_INSERT) == TINYRAD_ARRAY_INSERT)
+      if ((opts & TINYRAD_ARRAY_MASK_ACTION) == TINYRAD_ARRAY_INSERT)
          return(-1);
-      if ((opts & TINYRAD_ARRAY_MASK_INSERT) == TINYRAD_ARRAY_REPLACE)
+      if ((opts & TINYRAD_ARRAY_MASK_ACTION) == TINYRAD_ARRAY_REPLACE)
       {
          dst = ((char *)*basep) + (width * (size_t)idx);
          if ((freeobj))
@@ -209,7 +209,7 @@ tinyrad_array_insert(
          tinyrad_array_move(obj, dst, width);
          return(idx);
       };
-      if ((opts & TINYRAD_ARRAY_MASK_INSERT) != TINYRAD_ARRAY_MERGE)
+      if ((opts & TINYRAD_ARRAY_MASK_ACTION) != TINYRAD_ARRAY_MERGE)
          return(-1);
    };
 

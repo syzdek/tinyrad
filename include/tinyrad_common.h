@@ -71,7 +71,7 @@
 #define TINYRAD_ARRAY_APPEND        TINYRAD_ARRAY_LAST   ///< merge type: append duplicate object to series of matching objects
 #define TINYRAD_ARRAY_PREPEND       TINYRAD_ARRAY_FIRST  ///< merge type: prepend duplicate object to series of matching objects
 #define TINYRAD_ARRAY_DEFAULT       (TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_UNORDERED)   ///< default array options
-#define TINYRAD_ARRAY_MASK_INSERT   (TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
+#define TINYRAD_ARRAY_MASK_ACTION   (TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_REPLACE)      ///< mask for insert type
 #define TINYRAD_ARRAY_MASK_SEARCH   (TINYRAD_ARRAY_APPEND | TINYRAD_ARRAY_PREPEND)     ///< search options
 #define TINYRAD_ARRAY_MASK_MERGE    TINYRAD_ARRAY_MASK_SEARCH                          ///< insert/wouldbe merge options
 

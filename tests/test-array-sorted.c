@@ -606,7 +606,7 @@ my_test_insert(
 
    mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_MERGE);
    iteration = *list_lenp / dat_len;
-   switch(arrayopt & TINYRAD_ARRAY_MASK_INSERT)
+   switch(arrayopt & TINYRAD_ARRAY_MASK_ACTION)
    {
       case TINYRAD_ARRAY_INSERT:  action_name = "INSERT"; break;
       case TINYRAD_ARRAY_MERGE:   action_name = "MERGE"; break;
@@ -700,7 +700,7 @@ my_test_remove(
 
    mergeopt = (arrayopt & TINYRAD_ARRAY_MASK_MERGE);
    iteration = (*list_lenp / dat_len) - 1;
-   switch(arrayopt & TINYRAD_ARRAY_MASK_INSERT)
+   switch(arrayopt & TINYRAD_ARRAY_MASK_ACTION)
    {
       case TINYRAD_ARRAY_INSERT:  action_name = "INSERT"; break;
       case TINYRAD_ARRAY_MERGE:   action_name = "MERGE"; break;
