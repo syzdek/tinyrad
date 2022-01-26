@@ -62,9 +62,9 @@
 #pragma mark - Definitions
 
 // array function options
-#define TINYRAD_ARRAY_INSERT        0x0000               ///< insert type: default array insert action
-#define TINYRAD_ARRAY_REPLACE       0x0001               ///< insert type: replace existing object on insert
-#define TINYRAD_ARRAY_MERGE         0x0002               ///< insert type: merge object into array on insert
+#define TINYRAD_ARRAY_INSERT        0x0001               ///< insert type: default array insert action
+#define TINYRAD_ARRAY_REPLACE       0x0002               ///< insert type: replace existing object on insert
+#define TINYRAD_ARRAY_MERGE         0x0004               ///< insert type: merge object into array on insert
 #define TINYRAD_ARRAY_LASTDUP       0x0010               ///< search: return/remove last duplicate object in series of matching objects
 #define TINYRAD_ARRAY_FIRSTDUP      0x0020               ///< search: return/remove first duplicate object in series of matching objects
 #define TINYRAD_ARRAY_ANYDUP        0x0040               ///< merge type: insert unordered duplicate object to series of matching objects

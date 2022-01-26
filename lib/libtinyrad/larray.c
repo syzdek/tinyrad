@@ -182,6 +182,10 @@ tinyrad_array_insert(
    assert(obj   != NULL);
    assert(width  > 0);
 
+   // set default add option
+   if ((opts & TINYRAD_ARRAY_MASK_ACTION) == 0)
+      opts |= TINYRAD_ARRAY_MASK_ACTION & TINYRAD_ARRAY_DEFAULT;
+
    if (!(*nelp))
    {
       if ((reallocbase))

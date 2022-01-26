@@ -611,6 +611,7 @@ my_test_insert(
       case TINYRAD_ARRAY_INSERT:  action_name = "INSERT"; break;
       case TINYRAD_ARRAY_MERGE:   action_name = "MERGE"; break;
       case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
+      case 0:                     action_name = "DEFAULT"; break;
       default:
       return(our_error(opts, "unknown insert action"));
    };
@@ -706,6 +707,7 @@ my_test_remove(
       case TINYRAD_ARRAY_INSERT:  action_name = "INSERT"; break;
       case TINYRAD_ARRAY_MERGE:   action_name = "MERGE"; break;
       case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
+      case 0:                     action_name = "DEFAULT"; break;
       default:
       return(our_error(opts, "unknown insert action"));
    };
