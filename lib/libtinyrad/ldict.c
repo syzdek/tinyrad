@@ -1555,41 +1555,29 @@ tinyrad_dict_value_add(
          uint64_t                      numeral )
 {
    TinyRadDictValue *   value;
-   TinyRadDictValue *   numeric;
    size_t               size;
-   size_t               pos;
+   size_t               width;
+   ssize_t              rc;
    void *               ptr;
+   unsigned             opts;
+   int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(attr      != NULL);
    assert(name      != NULL);
 
-   // verify value doesn't exist
-   if ((value = tinyrad_dict_value_lookup(attr, name, 0)) != NULL)
-   {
-      if (numeral != value->value)
-         return(TRAD_EEXISTS);
-      if ((valuep))
-         *valuep = value;
-      return(TRAD_SUCCESS);
-   };
-   numeric = tinyrad_dict_value_lookup(attr, NULL, numeral);
-
-   // resize attribute lists
-   size = sizeof(TinyRadDictValue *) * (attr->values_name_len+2);
+    // increase size of lists
+   size = sizeof(TinyRadDictValue *) * (attr->values_name_len+1);
    if ((ptr = realloc(attr->values_name, size)) == NULL)
       return(TRAD_ENOMEM);
    attr->values_name = ptr;
-   if (!(numeric))
-   {
-      size = sizeof(TinyRadDictValue *) * (attr->values_numeric_len+2);
-      if ((ptr = realloc(attr->values_numeric, size)) == NULL)
-         return(TRAD_ENOMEM);
-      attr->values_numeric = ptr;
-   };
+   size = sizeof(TinyRadDictValue *) * (attr->values_numeric_len+1);
+   if ((ptr = realloc(attr->values_numeric, size)) == NULL)
+      return(TRAD_ENOMEM);
+   attr->values_numeric = ptr;
 
-   // allocate memory
+   // allocate new value
    if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
       return(TRAD_ENOMEM);
    memset(value, 0, sizeof(TinyRadDictValue));
@@ -1601,24 +1589,21 @@ tinyrad_dict_value_add(
    };
 
    // save value by name
-   attr->values_name[ attr->values_name_len + 0 ] = value;
-   attr->values_name[ attr->values_name_len + 1 ] = NULL;
-   attr->values_name_len++;
-   qsort(attr->values_name, attr->values_name_len, sizeof(TinyRadDictValue *), &tinyrad_dict_value_cmp_obj_name);
-
-   // save value by numeral
-   if (!(numeric))
+   opts     = TINYRAD_ARRAY_INSERT;
+   width    = sizeof(TinyRadDictValue *);
+   compar   = &tinyrad_dict_value_cmp_obj_name;
+   if ((rc = tinyrad_array_insert((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
    {
-      attr->values_numeric[ attr->values_numeric_len + 0 ] = value;
-      attr->values_numeric[ attr->values_numeric_len + 1 ] = NULL;
-      attr->values_numeric_len++;
-      qsort(attr->values_numeric, attr->values_numeric_len, sizeof(TinyRadDictValue *), &tinyrad_dict_value_cmp_obj_value);
-   } else {
-      for(pos = 0; ( (pos < attr->values_numeric_len) && (attr->values_numeric[pos]->value != numeral) ); pos++);
-      if ((attr->values_numeric[pos]))
-         if (attr->values_numeric[pos]->value == numeral)
-            attr->values_numeric[pos] = value;
+      tinyrad_dict_value_destroy(value);
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    };
+
+   // save value by value
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   width    = sizeof(TinyRadDictValue *);
+   compar   = &tinyrad_dict_value_cmp_obj_value;
+   if ((rc = tinyrad_array_insert((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
    if ((valuep))
       *valuep = value;
