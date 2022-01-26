@@ -356,7 +356,7 @@ int main( int argc, char * argv[] )
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
-   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_UNORDERED;
+   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_ANYDUP;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
@@ -430,7 +430,7 @@ int main( int argc, char * argv[] )
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
-   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_UNORDERED;
+   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_ANYDUP;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
@@ -618,7 +618,7 @@ my_test_insert(
    {
       case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
       case TINYRAD_ARRAY_APPEND:    merge_type = "APPEND"; break;
-      case TINYRAD_ARRAY_UNORDERED: merge_type = "UNORDERED"; break;
+      case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       default:
       return(our_error(opts, "unknown insert action"));
    };
@@ -661,7 +661,7 @@ my_test_insert(
                return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
          break;
 
-         case TINYRAD_ARRAY_UNORDERED:
+         case TINYRAD_ARRAY_ANYDUP:
          default:
          break;
       };
@@ -712,7 +712,7 @@ my_test_remove(
    {
       case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
       case TINYRAD_ARRAY_APPEND:    merge_type = "APPEND"; break;
-      case TINYRAD_ARRAY_UNORDERED: merge_type = "UNORDERED"; break;
+      case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       default:
       return(our_error(opts, "unknown insert action"));
    };
@@ -752,7 +752,7 @@ my_test_remove(
                return(our_error(opts, "tinyrad_array_remove(%s): first match not returned", action_name));
          break;
 
-         case TINYRAD_ARRAY_UNORDERED:
+         case TINYRAD_ARRAY_ANYDUP:
          default:
          break;
       };

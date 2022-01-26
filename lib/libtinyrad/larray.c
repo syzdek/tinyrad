@@ -432,7 +432,7 @@ tinyrad_array_search(
             high = mid;
             break;
 
-            case TINYRAD_ARRAY_UNORDERED:
+            case TINYRAD_ARRAY_ANYDUP:
             default:
             return(*((ssize_t *)wouldbep) = mid);
          };
