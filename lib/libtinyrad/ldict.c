@@ -1040,28 +1040,39 @@ tinyrad_dict_attr_lookup(
          uint32_t                     vendor_type )
 {
    size_t               width;
+   size_t               len;
+   unsigned             opts;
+   const void *         key;
+   TinyRadDictAttr **   list;
    TinyRadDictAttr **   res;
    TinyRadDictAttrType  attr_type;
+   int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(dict   != NULL);
 
    width = sizeof(TinyRadDictAttr *);
+   opts     = TINYRAD_ARRAY_LAST;
 
-   // search by name
    if ((name))
    {
-      res = tinyrad_array_get(dict->attrs_name, dict->attrs_name_len, width, name, TINYRAD_ARRAY_FIRST, &tinyrad_dict_attr_cmp_key_name);
-      return( ((res)) ? *res : NULL);
+      key      = name;
+      len      = dict->attrs_name_len;
+      list     = dict->attrs_name;
+      compar   = &tinyrad_dict_attr_cmp_key_name;
+   } else {
+      memset(&attr_type, 0, sizeof(attr_type));
+      attr_type.type          = type;
+      attr_type.vendor_id     = vendor_id;
+      attr_type.vendor_type   = vendor_type;
+      key      = &attr_type;
+      len      = dict->attrs_type_len;
+      list     = dict->attrs_type;
+      compar   = &tinyrad_dict_attr_cmp_key_type;
    };
 
-   // search by type
-   memset(&attr_type, 0, sizeof(attr_type));
-   attr_type.type          = type;
-   attr_type.vendor_id     = vendor_id;
-   attr_type.vendor_type   = vendor_type;
-   res = tinyrad_array_get(dict->attrs_type, dict->attrs_type_len, width, &attr_type, TINYRAD_ARRAY_FIRST, &tinyrad_dict_attr_cmp_key_type);
+   res = tinyrad_array_get(list, len, width, key, opts, compar);
    return( ((res)) ? *res : NULL);
 }
 
