@@ -346,8 +346,8 @@ tinyrad_array_remove(
 
    TinyRadDebugTrace();
 
-   assert(base  != NULL);
    assert(nelp  != NULL);
+   assert((base != NULL) || (!(*nelp)) );
    assert(key   != NULL);
    assert(width  > 0);
 
