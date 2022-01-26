@@ -1747,8 +1747,12 @@ tinyrad_dict_vendor_add(
          uint8_t                      len_octs )
 {
    size_t               size;
+   size_t               width;
+   ssize_t              rc;
+   unsigned             opts;
    void *               ptr;
    TinyRadDictVendor *  vendor;
+   int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
@@ -1789,41 +1793,31 @@ tinyrad_dict_vendor_add(
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
    atomic_init(&vendor->ref_count, 1);
-
-   // copy vendor name
    if ((vendor->name = strdup(name)) == NULL)
    {
       tinyrad_dict_vendor_destroy(vendor);
       return(TRAD_ENOMEM);
    };
 
-   // initialize vendor attribute lists
-   if ((vendor->attrs_name = malloc(sizeof(TinyRadDictAttr *))) == NULL)
+   // save value by name
+   opts     = TINYRAD_ARRAY_INSERT;
+   width    = sizeof(TinyRadDictVendor *);
+   compar   = &tinyrad_dict_vendor_cmp_obj_name;
+   if ((rc = tinyrad_array_insert((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
    {
       tinyrad_dict_vendor_destroy(vendor);
-      return(TRAD_ENOMEM);
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    };
-   vendor->attrs_name[0] = NULL;
-   if ((vendor->attrs_type = malloc(sizeof(TinyRadDictAttr *))) == NULL)
-   {
-      tinyrad_dict_vendor_destroy(vendor);
-      return(TRAD_ENOMEM);
-   };
-   vendor->attrs_type[0] = NULL;
 
-   // save vendor
-   dict->vendors_name[ dict->vendors_name_len ] = vendor;
-   dict->vendors_id[   dict->vendors_id_len ] = vendor;
-   dict->vendors_name_len++;
-   dict->vendors_id_len++;
-   dict->vendors_name[ dict->vendors_name_len ] = NULL;
-   dict->vendors_id[   dict->vendors_id_len ] = NULL;
+   // save value by id
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   width    = sizeof(TinyRadDictVendor *);
+   compar   = &tinyrad_dict_vendor_cmp_obj_id;
+   if ((rc = tinyrad_array_insert((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+
    if ((vendorp))
       *vendorp = vendor;
-
-   // sort vendors
-   qsort(dict->vendors_name, dict->vendors_name_len, sizeof(TinyRadDictVendor *), &tinyrad_dict_vendor_cmp_obj_name);
-   qsort(dict->vendors_id,   dict->vendors_id_len, sizeof(TinyRadDictVendor *), &tinyrad_dict_vendor_cmp_obj_id);
 
    return(0);
 }
