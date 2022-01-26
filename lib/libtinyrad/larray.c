@@ -428,7 +428,7 @@ tinyrad_array_search(
             low = mid;
             break;
 
-            case TINYRAD_ARRAY_FIRST:
+            case TINYRAD_ARRAY_FIRSTDUP:
             high = mid;
             break;
 

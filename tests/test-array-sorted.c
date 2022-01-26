@@ -794,7 +794,7 @@ my_test_search(
             default:
             return(our_error(opts, "unknown key"));
          };
-         if ((idx = tinyrad_array_search(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRST, NULL, compar)) == -1)
+         if ((idx = tinyrad_array_search(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRSTDUP, NULL, compar)) == -1)
             return(our_error(opts, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((size_t)idx != y)
             return(our_error(opts, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; index mismatch", x, compar_name, y));
@@ -815,7 +815,7 @@ my_test_search(
             default:
             return(our_error(opts, "unknown key"));
          };
-         if ((res = tinyrad_array_get(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRST, compar)) == NULL)
+         if ((res = tinyrad_array_get(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRSTDUP, compar)) == NULL)
             return(our_error(opts, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((strcasecmp((*res)->name, list[y]->name)))
             return(our_error(opts, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result name does not match", x, compar_name, y));
