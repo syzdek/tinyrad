@@ -1002,7 +1002,7 @@ tinyrad_dict_attr_lookup(
    assert(dict   != NULL);
 
    width = sizeof(TinyRadDictAttr *);
-   opts     = TINYRAD_ARRAY_LAST;
+   opts     = TINYRAD_ARRAY_LASTDUP;
 
    if ((name))
    {
@@ -1658,7 +1658,7 @@ tinyrad_dict_value_lookup(
    assert(attr   != NULL);
 
    width    = sizeof(TinyRadDictValue *);
-   opts     = TINYRAD_ARRAY_LAST;
+   opts     = TINYRAD_ARRAY_LASTDUP;
 
    if ((name))
    {
@@ -1875,7 +1875,7 @@ tinyrad_dict_vendor_lookup(
    assert(dict   != NULL);
 
    width = sizeof(TinyRadDictVendor *);
-   opts = TINYRAD_ARRAY_LAST;
+   opts = TINYRAD_ARRAY_LASTDUP;
 
    if ((name))
    {

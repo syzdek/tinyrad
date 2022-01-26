@@ -422,7 +422,7 @@ tinyrad_array_search(
       {
          switch(opts & TINYRAD_ARRAY_MASK_DUPS)
          {
-            case TINYRAD_ARRAY_LAST:
+            case TINYRAD_ARRAY_LASTDUP:
             if (low == mid)
                return(*((ssize_t *)wouldbep) = mid);
             low = mid;
