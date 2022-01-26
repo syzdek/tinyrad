@@ -96,12 +96,12 @@ struct _tinyrad_dict_attr
 {
    atomic_intmax_t       ref_count;
    char *                name;
-   uint32_t              vendor_id;
-   uint32_t              pad32;
    uint8_t               data_type;
    uint8_t               type_octs;
    uint8_t               len_octs;
    uint8_t               type;
+   uint32_t              vendor_id;
+   uint32_t              vendor_type;
    uint32_t              flags;
    size_t                values_name_len;
    size_t                values_numeric_len;
@@ -129,7 +129,8 @@ tinyrad_dict_attr_lookup(
          TinyRadDict *                dict,
          const char *                 name,
          uint8_t                      type,
-         uint32_t                     vendor_id );
+         uint32_t                     vendor_id,
+         uint32_t                     vendor_type );
 
 
 TinyRadDictValue *

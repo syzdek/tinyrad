@@ -120,6 +120,7 @@ tinyrad_dict_attr_add(
          const char *                  name,
          uint8_t                       type,
          TinyRadDictVendor *           vendor,
+         uint32_t                      vendor_type,
          uint8_t                       datatype,
          uint32_t                      flags );
 
@@ -655,7 +656,7 @@ tinyrad_dict_defaults(
       datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
       flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
       flags    |= TRAD_DFLT_ATTR;
-      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, NULL, datatype, flags)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, NULL, 0, datatype, flags)) != TRAD_SUCCESS)
          return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
    };
 
@@ -669,7 +670,7 @@ tinyrad_dict_defaults(
          if ((strcasecmp(attr_name, attr->name)))
             attr = NULL;
       if (!(attr))
-         attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0);
+         attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
       if (!(attr))
          return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
       if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
@@ -829,6 +830,7 @@ tinyrad_dict_attr_add(
          const char *                  name,
          uint8_t                       type,
          TinyRadDictVendor *           vendor,
+         uint32_t                      vendor_type,
          uint8_t                       datatype,
          uint32_t                      flags )
 {
@@ -850,7 +852,7 @@ tinyrad_dict_attr_add(
    vendor_id = ((vendor)) ? vendor->id : 0;
 
    // verify attribute doesn't exist
-   if ((attr = tinyrad_dict_attr_lookup(dict, name, 0, vendor_id)) != NULL)
+   if ((attr = tinyrad_dict_attr_lookup(dict, name, 0, 0, 0)) != NULL)
    {
       if ( (attr->flags|TRAD_DFLT_ATTR) != (flags|TRAD_DFLT_ATTR) )
          return(TRAD_EEXISTS);
@@ -864,7 +866,7 @@ tinyrad_dict_attr_add(
          *attrp = attr;
       return(TRAD_SUCCESS);
    };
-   if ((tinyrad_dict_attr_lookup(dict, NULL, type, vendor_id)))
+   if ((tinyrad_dict_attr_lookup(dict, NULL, type, vendor_id, vendor_type)))
       return(TRAD_EEXISTS);
 
    // resize attribute lists in dictionary
@@ -979,8 +981,8 @@ tinyrad_dict_attr_cmp_key_type(
       return( ((*obj)->type < dat->type) ? -1 : 1 );
    if ((*obj)->vendor_id != dat->vendor_id)
       return( ((*obj)->vendor_id < dat->vendor_id) ? -1 : 1 );
-   //if ((*obj)->vendor_type != dat->vendor_type)
-   //   return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
+   if ((*obj)->vendor_type != dat->vendor_type)
+      return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
    return(0);
 }
 
@@ -996,8 +998,8 @@ tinyrad_dict_attr_cmp_obj_type(
       return( ((*x)->type < (*y)->type) ? -1 : 1 );
    if ((*x)->vendor_id != (*y)->vendor_id)
       return( ((*x)->vendor_id < (*y)->vendor_id) ? -1 : 1 );
-   //if ((*x)->vendor_type != (*y)->vendor_type)
-   //   return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
+   if ((*x)->vendor_type != (*y)->vendor_type)
+      return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
    return(0);
 }
 
@@ -1034,7 +1036,8 @@ tinyrad_dict_attr_lookup(
          TinyRadDict *                dict,
          const char *                 name,
          uint8_t                      type,
-         uint32_t                     vendor_id )
+         uint32_t                     vendor_id,
+         uint32_t                     vendor_type )
 {
    size_t               width;
    TinyRadDictAttr **   res;
@@ -1057,7 +1060,7 @@ tinyrad_dict_attr_lookup(
    memset(&attr_type, 0, sizeof(attr_type));
    attr_type.type          = type;
    attr_type.vendor_id     = vendor_id;
-   //attr_type.vendor_type   = vendor_type;
+   attr_type.vendor_type   = vendor_type;
    res = tinyrad_array_get(dict->attrs_type, dict->attrs_type_len, width, &attr_type, TINYRAD_ARRAY_FIRST, &tinyrad_dict_attr_cmp_key_type);
    return( ((res)) ? *res : NULL);
 }
@@ -1204,6 +1207,7 @@ tinyrad_dict_import_attribute(
    uint8_t     type;
    uint32_t    flags;
    uint32_t    flag;
+   uint32_t    vendor_type;
    int         rc;
    char *      ptr;
    char *      str;
@@ -1218,7 +1222,7 @@ tinyrad_dict_import_attribute(
       return(TRAD_ESYNTAX);
    if ((datatype = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
       return(TRAD_ESYNTAX);
-   if ((type = (uint8_t)strtoul(file->argv[2], &ptr, 10)) == 0)
+   if ((vendor_type = (uint32_t)strtoul(file->argv[2], &ptr, 10)) == 0)
       return(TRAD_ESYNTAX);
    if ((ptr[0] != '\0') || (file->argv[2] == ptr))
       return(TRAD_ESYNTAX);
@@ -1240,7 +1244,10 @@ tinyrad_dict_import_attribute(
       };
    };
 
-   if ((rc = tinyrad_dict_attr_add(dict, NULL, file->argv[1], type, vendor, datatype, flags)) != TRAD_SUCCESS)
+   type        = ((vendor)) ? 26          : (uint8_t)vendor_type;
+   vendor_type = ((vendor)) ? vendor_type : 0;
+
+   if ((rc = tinyrad_dict_attr_add(dict, NULL, file->argv[1], type, vendor, vendor_type, datatype, flags)) != TRAD_SUCCESS)
       return(rc);
 
    return(TRAD_SUCCESS);
@@ -1340,7 +1347,7 @@ tinyrad_dict_import_value(
 
    if (file->argc == 3)
       return(TRAD_ESYNTAX);
-   if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], 0, 0)) == NULL)
+   if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], 0, 0, 0)) == NULL)
       return(TRAD_ESYNTAX);
    number = (uint64_t)strtoull(file->argv[3], &ptr, 0);
    if ((ptr[0] != '\0') || (file->argv[3] == ptr))
