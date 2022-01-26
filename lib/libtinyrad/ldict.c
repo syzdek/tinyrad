@@ -108,9 +108,9 @@ tinyrad_dict_attr_add(
 
 
 int
-tinyrad_dict_attr_cmp_name(
-         const void *                 ptr1,
-         const void *                 ptr2 );
+tinyrad_dict_attr_cmp_obj_name(
+         const void *                 a,
+         const void *                 b );
 
 
 int
@@ -895,7 +895,7 @@ tinyrad_dict_attr_add(
    dict->attrs_name[dict->attrs_name_len + 0] = attr;
    dict->attrs_name[dict->attrs_name_len + 1] = NULL;
    dict->attrs_name_len++;
-   qsort(dict->attrs_name, dict->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+   qsort(dict->attrs_name, dict->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_obj_name);
    if ((vendor))
    {
       vendor->attrs_name[ vendor->attrs_name_len + 0 ] = attr;
@@ -904,7 +904,7 @@ tinyrad_dict_attr_add(
       vendor->attrs_type[ vendor->attrs_type_len + 1 ] = NULL;
       vendor->attrs_name_len++;
       vendor->attrs_type_len++;
-      qsort(vendor->attrs_name, vendor->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_name);
+      qsort(vendor->attrs_name, vendor->attrs_name_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_obj_name);
       qsort(vendor->attrs_type, vendor->attrs_type_len, sizeof(TinyRadDictAttr *), tinyrad_dict_attr_cmp_type);
    } else {
       dict->attrs_type[dict->attrs_type_len + 0] = attr;
@@ -920,22 +920,13 @@ tinyrad_dict_attr_add(
 
 
 int
-tinyrad_dict_attr_cmp_name(
-         const void *                 ptr1,
-         const void *                 ptr2 )
+tinyrad_dict_attr_cmp_obj_name(
+         const void *                 a,
+         const void *                 b )
 {
-   const TinyRadDictAttr * attr1;
-   const TinyRadDictAttr * attr2;
-
-   TinyRadDebugTrace();
-
-   assert(ptr1 != NULL);
-   assert(ptr2 != NULL);
-
-   attr1 = *((const TinyRadDictAttr * const *)ptr1);
-   attr2 = *((const TinyRadDictAttr * const *)ptr2);
-
-   return(strcasecmp(attr1->name, attr2->name));
+   const TinyRadDictAttr * const * x = a;
+   const TinyRadDictAttr * const * y = b;
+   return(strcasecmp( (*x)->name, (*y)->name));
 }
 
 
