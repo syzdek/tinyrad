@@ -266,7 +266,7 @@ tinyrad_array_peek(
          size_t                        width )
 {
    TinyRadDebugTrace();
-   assert(base   != NULL);
+   assert((base  != NULL) || (!(nel)) );
    assert(width   > 0);
    if (!(nel))
       return(NULL);
