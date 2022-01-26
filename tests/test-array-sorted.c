@@ -379,7 +379,7 @@ int main( int argc, char * argv[] )
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
-   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
@@ -453,7 +453,7 @@ int main( int argc, char * argv[] )
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
-   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   merge    = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((my_test_insert(opts, &list, &list_len, src, test, MY_LIST_LEN, merge)))
@@ -617,7 +617,7 @@ my_test_insert(
    switch(mergeopt)
    {
       case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
-      case TINYRAD_ARRAY_APPEND:    merge_type = "APPEND"; break;
+      case TINYRAD_ARRAY_LASTDUP:   merge_type = "LAST"; break;
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       default:
       return(our_error(opts, "unknown insert action"));
@@ -649,7 +649,7 @@ my_test_insert(
          return(our_error(opts, "tinyrad_array_insert(%s): misordered the list", action_name));
       switch(mergeopt)
       {
-         case TINYRAD_ARRAY_APPEND:
+         case TINYRAD_ARRAY_LASTDUP:
          if ( (x < ((dat_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
             if (!(strcasecmp(list[x]->name, list[x+1]->name)))
                return(our_error(opts, "tinyrad_array_insert(%s): first match not returned", action_name));
@@ -711,7 +711,7 @@ my_test_remove(
    switch(mergeopt)
    {
       case TINYRAD_ARRAY_PREPEND:   merge_type = "PREPEND"; break;
-      case TINYRAD_ARRAY_APPEND:    merge_type = "APPEND"; break;
+      case TINYRAD_ARRAY_LASTDUP:   merge_type = "LAST"; break;
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       default:
       return(our_error(opts, "unknown insert action"));
@@ -740,7 +740,7 @@ my_test_remove(
          return(our_error(opts, "tinyrad_array_remove(%s): misordered the list", action_name));
       switch(mergeopt)
       {
-         case TINYRAD_ARRAY_APPEND:
+         case TINYRAD_ARRAY_LASTDUP:
          if ( (x < ((dat_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
             if (!(strcasecmp(list[x]->name, list[x+1]->name)))
                return(our_error(opts, "tinyrad_array_remove(%s): first match not returned", action_name));

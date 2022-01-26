@@ -857,7 +857,7 @@ tinyrad_dict_attr_add(
    };
 
    width = sizeof(TinyRadDictAttr *);
-   opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_APPEND;
+   opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
 
    // save attribute to dictionary
    if ((rc = tinyrad_array_insert((void **)&dict->attrs_name, &dict->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
@@ -1559,7 +1559,7 @@ tinyrad_dict_value_add(
    };
 
    // save value by value
-   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    width    = sizeof(TinyRadDictValue *);
    compar   = &tinyrad_dict_value_cmp_obj_value;
    if ((rc = tinyrad_array_insert((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
@@ -1759,7 +1759,7 @@ tinyrad_dict_vendor_add(
    };
 
    // save value by id
-   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_APPEND;
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    width    = sizeof(TinyRadDictVendor *);
    compar   = &tinyrad_dict_vendor_cmp_obj_id;
    if ((rc = tinyrad_array_insert((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
