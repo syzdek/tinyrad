@@ -282,9 +282,9 @@ tinyrad_dict_vendor_cmp_obj_id(
 
 
 int
-tinyrad_dict_vendor_cmp_name(
-         const void *                 ptr1,
-         const void *                 ptr2 );
+tinyrad_dict_vendor_cmp_obj_name(
+         const void *                  a,
+         const void *                  b );
 
 
 void
@@ -1822,7 +1822,7 @@ tinyrad_dict_vendor_add(
       *vendorp = vendor;
 
    // sort vendors
-   qsort(dict->vendors_name, dict->vendors_name_len, sizeof(TinyRadDictVendor *), tinyrad_dict_vendor_cmp_name);
+   qsort(dict->vendors_name, dict->vendors_name_len, sizeof(TinyRadDictVendor *), &tinyrad_dict_vendor_cmp_obj_name);
    qsort(dict->vendors_id,   dict->vendors_id_len, sizeof(TinyRadDictVendor *), &tinyrad_dict_vendor_cmp_obj_id);
 
    return(0);
@@ -1842,25 +1842,14 @@ tinyrad_dict_vendor_cmp_obj_id(
 }
 
 
-/// wrapper around stat() for dictionary processing
-///
 int
-tinyrad_dict_vendor_cmp_name(
-         const void *                 ptr1,
-         const void *                 ptr2 )
+tinyrad_dict_vendor_cmp_obj_name(
+         const void *                 a,
+         const void *                 b )
 {
-   const TinyRadDictVendor * vendor1;
-   const TinyRadDictVendor * vendor2;
-
-   TinyRadDebugTrace();
-
-   assert(ptr1 != NULL);
-   assert(ptr2 != NULL);
-
-   vendor1 = *((const TinyRadDictVendor * const *)ptr1);
-   vendor2 = *((const TinyRadDictVendor * const *)ptr2);
-
-   return(strcasecmp(vendor1->name, vendor2->name));
+   const TinyRadDictVendor * const * x = a;
+   const TinyRadDictVendor * const * y = b;
+   return(strcasecmp( (*x)->name, (*y)->name));
 }
 
 
