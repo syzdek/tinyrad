@@ -188,7 +188,7 @@ tinyrad_dict_parse_value(
 
 
 int
-tinyrad_dict_import_vendor(
+tinyrad_dict_parse_vendor(
          TinyRadDict *                dict,
          TinyRadFile *                file,
          uint32_t                     opts );
@@ -941,7 +941,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_VENDOR:
-         if ((rc = tinyrad_dict_import_vendor(dict, file, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_vendor(dict, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1133,7 +1133,7 @@ tinyrad_dict_parse_value(
 /// @param[in]  opts          import options
 /// @return returns error code
 int
-tinyrad_dict_import_vendor(
+tinyrad_dict_parse_vendor(
          TinyRadDict *                dict,
          TinyRadFile *                file,
          uint32_t                     opts )
