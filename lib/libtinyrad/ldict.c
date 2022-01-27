@@ -304,6 +304,7 @@ tinyrad_dict_vendor_destroy(
 /////////////////
 #pragma mark - Variables
 
+#pragma mark tinyrad_dict_data_type[]
 static const TinyRadMap tinyrad_dict_data_type[] =
 {
    { "ABINARY",      TRAD_ABINARY},
@@ -327,6 +328,7 @@ static const TinyRadMap tinyrad_dict_data_type[] =
 };
 
 
+#pragma mark tinyrad_dict_attr_flags[]
 static const TinyRadMap tinyrad_dict_attr_flags[] =
 {
    { "encrypt=1",    TRAD_ENCRYPT1},
@@ -337,6 +339,7 @@ static const TinyRadMap tinyrad_dict_attr_flags[] =
 };
 
 
+#pragma mark tinyrad_dict_options[]
 static const TinyRadMap tinyrad_dict_options[] =
 {
    { "$INCLUDE",        TRAD_DICT_INCLUDE},
@@ -349,6 +352,7 @@ static const TinyRadMap tinyrad_dict_options[] =
 };
 
 
+#pragma mark tinyrad_dict_default_vendors[]
 static const struct
 {
    const char *          name;
@@ -357,11 +361,12 @@ static const struct
    uint64_t              vendor_len_octs;
 } tinyrad_dict_default_vendors[] =
 {
-   { "Syzdek",    27893,   1, 1 },
+   { "Syzdek",    27893,   1, 1 },  // TinyRad's developer's private enterprise number (https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers)
    { NULL, 0, 0, 0 }
 };
 
 
+#pragma mark tinyrad_dict_default_attrs[]
 static const struct
 {
    const char *          name;
@@ -442,6 +447,7 @@ static const struct
 };
 
 
+#pragma mark tinyrad_dict_default_values[]
 static const struct
 {
    const char *          attr_name;
