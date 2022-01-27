@@ -288,16 +288,16 @@ tinyrad_dict_destroy(
 
 
 _TINYRAD_F int
-tinyrad_dict_parse(
-         TinyRadDict *                 dict,
-         const char *                  file,
-         char ***                      msgsp,
+tinyrad_dict_initialize(
+         TinyRadDict **                dictp,
          uint32_t                      opts );
 
 
 _TINYRAD_F int
-tinyrad_dict_initialize(
-         TinyRadDict **                dictp,
+tinyrad_dict_parse(
+         TinyRadDict *                 dict,
+         const char *                  file,
+         char ***                      msgsp,
          uint32_t                      opts );
 
 
