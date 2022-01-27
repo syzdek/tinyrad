@@ -1622,7 +1622,7 @@ tinyrad_dict_value_cmp_key_value(
    const uint64_t *                 dat = key;
    if ((*obj)->value == *dat)
       return(0);
-   return( ((*obj)->value < *dat) ? -1 : 0 );
+   return( ((*obj)->value < *dat) ? -1 : 1 );
 }
 
 
