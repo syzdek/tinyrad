@@ -352,6 +352,19 @@ static const TinyRadMap tinyrad_dict_options[] =
 static const struct
 {
    const char *          name;
+   uint64_t              vendor_id;
+   uint64_t              vendor_type_octs;
+   uint64_t              vendor_len_octs;
+} tinyrad_dict_default_vendors[] =
+{
+   { "Syzdek",    27893,   1, 1 },
+   { NULL, 0, 0, 0 }
+};
+
+
+static const struct
+{
+   const char *          name;
    uint64_t              type;
    uint64_t              data_type;
    uint64_t              flags;
@@ -631,8 +644,12 @@ tinyrad_dict_defaults(
    uint8_t            datatype;
    uint32_t           flags;
    uint64_t           data;
+   uint32_t           vendor_id;
+   uint8_t            type_octs;
+   uint8_t            len_octs;
    const char *       attr_name;
    const char *       value_name;
+   const char *       vendor_name;
    TinyRadDictAttr *  attr;
 
    TinyRadDebugTrace();
@@ -642,6 +659,16 @@ tinyrad_dict_defaults(
 
    if ((msgsp))
       *msgsp = NULL;
+
+   for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
+   {
+      vendor_name = tinyrad_dict_default_vendors[pos].name;
+      vendor_id   = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_id;
+      type_octs   = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_type_octs;
+      len_octs    = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_len_octs;
+      if ((rc = tinyrad_dict_vendor_add(dict, NULL, vendor_name, vendor_id, type_octs, len_octs)) != TRAD_SUCCESS)
+         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
+   };
 
    for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
    {
