@@ -161,7 +161,7 @@ tinyrad_dict_parse_attribute(
 
 
 int
-tinyrad_dict_import_begin_vendor(
+tinyrad_dict_parse_begin_vendor(
          TinyRadDict *                dict,
          TinyRadDictVendor **         vendorp,
          TinyRadFile *                file );
@@ -905,7 +905,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_BEGIN_VENDOR:
-         if ((rc = tinyrad_dict_import_begin_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_begin_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1021,7 +1021,7 @@ tinyrad_dict_parse_attribute(
 
 
 int
-tinyrad_dict_import_begin_vendor(
+tinyrad_dict_parse_begin_vendor(
          TinyRadDict *                dict,
          TinyRadDictVendor **         vendorp,
          TinyRadFile *                file )
