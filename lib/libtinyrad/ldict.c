@@ -482,12 +482,7 @@ static const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
 
 
 #pragma mark tinyrad_dict_default_values[]
-static const struct
-{
-   const char *          attr_name;
-   const char *          value_name;
-   uint64_t              data;
-} tinyrad_dict_default_values[] =
+static const TinyRadDictValueDef tinyrad_dict_default_values[] =
 {
    { "Acct-Authentic",            "RADIUS",                    1 },  // RFC2866 Section 5.6 Acct-Authentic
    { "Acct-Authentic",            "Local",                     2 },  // RFC2866 Section 5.6 Acct-Authentic
