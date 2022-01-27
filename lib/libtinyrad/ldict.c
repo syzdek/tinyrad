@@ -673,8 +673,8 @@ tinyrad_dict_defaults(
    {
       vendor_name = tinyrad_dict_default_vendors[pos].name;
       vendor_id   = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_id;
-      type_octs   = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_type_octs;
-      len_octs    = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_len_octs;
+      type_octs   = (uint8_t)tinyrad_dict_default_vendors[pos].vendor_type_octs;
+      len_octs    = (uint8_t)tinyrad_dict_default_vendors[pos].vendor_len_octs;
       if ((rc = tinyrad_dict_vendor_add(dict, NULL, vendor_name, vendor_id, type_octs, len_octs)) != TRAD_SUCCESS)
          return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
    };
