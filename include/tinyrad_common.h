@@ -221,4 +221,19 @@ tinyrad_array_search(
          int (*compar)(const void *, const void *) );
 
 
+//----------------------//
+// dictionary functions //
+//----------------------//
+#pragma mark dictionary functions
+
+_TINYRAD_F int
+tinyrad_dict_import(
+         TinyRadDict *                 dict,
+         const TinyRadDictVendorDef *  vendor_defs,
+         const TinyRadDictAttrDef *    attr_defs,
+         const TinyRadDictValueDef *   value_defs,
+         char ***                      msgsp,
+         uint32_t                      opts );
+
+
 #endif /* end of header */
