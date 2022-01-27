@@ -195,7 +195,8 @@
 #define TRAD_ENCRYPT3               0x0004 ///< encrypted as per Ascend's definitions for the Ascend-Send-Secret attribute
 #define TRAD_ENCRYPT_MASK           0x00FF ///< encrypt method mask
 #define TRAD_HAS_TAG                0x0100 ///< attribute may have tag as defined in RFC 2868
-#define TRAD_DFLT_ATTR              0x0200 ///< default/built-in attribute
+#define TRAD_CONCAT                 0x0200 ///< concatenate values
+#define TRAD_DFLT_ATTR              0x1000 ///< default/built-in attribute
 
 
 // RADIUS codes

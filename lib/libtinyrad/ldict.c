@@ -337,6 +337,7 @@ static const TinyRadMap tinyrad_dict_attr_flags[] =
    { "encrypt=2",    TRAD_ENCRYPT2},
    { "encrypt=3",    TRAD_ENCRYPT3},
    { "has_tag",      TRAD_HAS_TAG},
+   { "concat",       TRAD_CONCAT},
    { NULL, 0 }
 };
 
