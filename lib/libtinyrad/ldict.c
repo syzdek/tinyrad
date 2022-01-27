@@ -365,15 +365,7 @@ static const TinyRadVendorDef tinyrad_dict_default_vendors[] =
 
 #pragma mark tinyrad_dict_default_attrs[]
 // RADIUS attributes: https://www.iana.org/assignments/radius-types/radius-types.xhtml
-static const struct
-{
-   const char *          name;
-   uint32_t              type;
-   uint32_t              vendor_id;
-   uint32_t              vendor_type;
-   uint32_t              data_type;
-   uint64_t              flags;
-} tinyrad_dict_default_attrs[] =
+static const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
 {
    // Name                      Type  Vendor ID  Vendor Type      Data Type            Flags
    { "User-Name",                  1,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.1  User-Name
