@@ -370,6 +370,7 @@ static const struct
 
 
 #pragma mark tinyrad_dict_default_attrs[]
+// RADIUS attributes: https://www.iana.org/assignments/radius-types/radius-types.xhtml
 static const struct
 {
    const char *          name;
@@ -480,12 +481,16 @@ static const struct
    { "Login-IPv6-Host",           98,         0,           0,   TRAD_IPV6ADDR,             0 },  // RFC3162 Section 2.4   Login-IPv6-Host
    { "Framed-IPv6-Route",         99,         0,           0,   TRAD_STRING,               0 },  // RFC3162 Section 2.5   Framed-IPv6-Route
    { "Framed-IPv6-Pool",         100,         0,           0,   TRAD_STRING,               0 },  // RFC3162 Section 2.6   Framed-IPv6-Pool
+   // unassigned                 191
+   // Experimental Use           192-223                                                            RFC3575
+   // Implementation Specific    224-240                                                            RFC3575
    { "Extended-Attribute-1",     241,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.1   Extended-Type-1
    { "Extended-Attribute-2",     242,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.2   Extended-Type-2
    { "Extended-Attribute-3",     243,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.3   Extended-Type-3
    { "Extended-Attribute-4",     244,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.4   Extended-Type-4
    { "Extended-Attribute-5",     245,         0,           0,   TRAD_LONGEXTENDED,         0 },  // RFC6929 Section 3.5   Long-Extended-Type-1
    { "Extended-Attribute-6",     246,         0,           0,   TRAD_LONGEXTENDED,         0 },  // RFC6929 Section 3.6   Long-Extended-Type-2
+   // Reserved                   247-255
    { NULL, 0, 0, 0, 0, 0 }
 };
 
