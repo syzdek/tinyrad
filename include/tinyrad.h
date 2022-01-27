@@ -182,9 +182,11 @@
 #define TRAD_BYTE                  12 ///< 8-bit unsigned integer
 #define TRAD_SHORT                 13 ///< 16-bit unsigned integer
 #define TRAD_SIGNED                14 ///< 31-bit signed integer (packed into 32-bit field)
-#define TRAD_TLV                   15 ///< Type-Length-Value (allows nested attributes)
+#define TRAD_TLV                   15 ///< Type-Length-Value, allows nested attributes (RFC 6929: Section 2.3 TLV Data Type)
 #define TRAD_IPV4PREFIX            16 ///< IPv4 Prefix as given in RFC 6572.
 #define TRAD_VSA                   17 ///< Vendor specific attribute
+#define TRAD_EXTENDED              18 ///< Extended Type (RFC 6929: Section 2.1 Extended Type)
+#define TRAD_LONGEXTENDED          19 ///< Long Extended Type (RFC 6929: Section 2.2 Long Extended Type)
 
 
 // RADIUS Attribute flags
