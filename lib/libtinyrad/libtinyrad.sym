@@ -41,6 +41,11 @@ tinyrad_array_push
 tinyrad_array_remove
 tinyrad_array_search
 #
+# data variables
+tinyrad_dict_default_vendors
+tinyrad_dict_default_attrs
+tinyrad_dict_default_values
+#
 # dictionary functions
 tinyrad_dict_add_path
 tinyrad_dict_defaults

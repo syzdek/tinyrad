@@ -209,4 +209,16 @@ tinyrad_array_search(
          int (*compar)(const void *, const void *) );
 
 
+/////////////////
+//             //
+//  Variables  //
+//             //
+/////////////////
+#pragma mark - Variables
+
+extern const TinyRadDictVendorDef      tinyrad_dict_default_vendors[];
+extern const TinyRadDictAttrDef        tinyrad_dict_default_attrs[];
+extern const TinyRadDictValueDef       tinyrad_dict_default_values[];
+
+
 #endif /* end of header */
