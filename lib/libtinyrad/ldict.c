@@ -647,19 +647,19 @@ tinyrad_dict_defaults(
          char ***                      msgsp,
          uint32_t                      opts )
 {
-   int                rc;
-   size_t             pos;
-   uint8_t            type;
-   uint8_t            datatype;
-   uint32_t           flags;
-   uint64_t           data;
-   uint32_t           vendor_id;
-   uint8_t            type_octs;
-   uint8_t            len_octs;
-   const char *       attr_name;
-   const char *       value_name;
-   const char *       vendor_name;
-   TinyRadDictAttr *  attr;
+   int                     rc;
+   size_t                  pos;
+   uint8_t                 type;
+   uint8_t                 datatype;
+   uint32_t                flags;
+   uint64_t                data;
+   uint32_t                vendor_id;
+   uint8_t                 type_octs;
+   uint8_t                 len_octs;
+   const char *            attr_name;
+   const char *            value_name;
+   const char *            vendor_name;
+   TinyRadDictAttr *       attr;
 
    TinyRadDebugTrace();
 
@@ -681,11 +681,11 @@ tinyrad_dict_defaults(
 
    for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
    {
-      attr_name = tinyrad_dict_default_attrs[pos].name;
-      type      = (uint8_t)tinyrad_dict_default_attrs[pos].type;
-      datatype  = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
-      flags     = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
-      flags    |= TRAD_DFLT_ATTR;
+      attr_name      = tinyrad_dict_default_attrs[pos].name;
+      type           = (uint8_t)tinyrad_dict_default_attrs[pos].type;
+      datatype       = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
+      flags          = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
+      flags         |= TRAD_DFLT_ATTR;
       if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, NULL, 0, datatype, flags)) != TRAD_SUCCESS)
          return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
    };
@@ -834,7 +834,7 @@ tinyrad_dict_attr_add(
    assert(type      != 0);
    assert(datatype  != 0);
 
-   vendor_id = ((vendor)) ? vendor->id : 0;
+   vendor_id   = ((vendor)) ? vendor->id  : 0;
 
    // verify attribute doesn't exist
    if ((attr = tinyrad_dict_attr_lookup(dict, name, 0, 0, 0)) != NULL)
