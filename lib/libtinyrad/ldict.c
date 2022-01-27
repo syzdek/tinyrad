@@ -1462,9 +1462,9 @@ tinyrad_dict_print_attribute(
    };
    printf("\n");
 
-   for(pos = 0; (pos < attr->values_name_len); pos++)
+   for(pos = 0; (pos < attr->values_numeric_len); pos++)
    {
-      value = attr->values_name[pos];
+      value = attr->values_numeric[pos];
       printf("VALUE %s %s %" PRIu64 "\n", attr->name, value->name, value->value );
    };
 
