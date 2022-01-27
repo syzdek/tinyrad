@@ -939,17 +939,6 @@ tinyrad_dict_attr_cmp_key_name(
 
 
 int
-tinyrad_dict_attr_cmp_obj_name(
-         const void *                 a,
-         const void *                 b )
-{
-   const TinyRadDictAttr * const * x = a;
-   const TinyRadDictAttr * const * y = b;
-   return(strcasecmp( (*x)->name, (*y)->name));
-}
-
-
-int
 tinyrad_dict_attr_cmp_key_type(
          const void *                 ptr,
          const void *                 key )
@@ -963,6 +952,17 @@ tinyrad_dict_attr_cmp_key_type(
    if ((*obj)->vendor_type != dat->vendor_type)
       return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
    return(0);
+}
+
+
+int
+tinyrad_dict_attr_cmp_obj_name(
+         const void *                 a,
+         const void *                 b )
+{
+   const TinyRadDictAttr * const * x = a;
+   const TinyRadDictAttr * const * y = b;
+   return(strcasecmp( (*x)->name, (*y)->name));
 }
 
 
