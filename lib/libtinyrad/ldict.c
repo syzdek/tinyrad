@@ -1814,7 +1814,7 @@ tinyrad_dict_vendor_cmp_key_id(
          const void *                 key )
 {
    const TinyRadDictVendor * const *   obj = ptr;
-   const uint64_t *                    dat = key;
+   const uint32_t *                    dat = key;
    if ((*obj)->id == *dat)
       return(0);
    return( ((*obj)->id < *dat) ? -1 : 1 );
