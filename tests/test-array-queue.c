@@ -219,7 +219,7 @@ int main( int argc, char * argv[] )
       {
          for(; (pos > 0); pos--)
             free(data[pos-1].name);
-         return(our_error(opts, "out of virtual memory"));
+         return(our_error(opts, NULL, "out of virtual memory"));
       };
    };
 
@@ -239,26 +239,26 @@ int main( int argc, char * argv[] )
       if ((x % 4) == 3)
       {
          if ((objp = tinyrad_array_dequeue(list, &list_len, sizeof(MyData *))) == NULL)
-            return(our_error(opts, "unable to dequeue from queue"));
+            return(our_error(opts, NULL, "unable to dequeue from queue"));
          if ((strcasecmp(src[x/4]->name, (*objp)->name)))
-            return(our_error(opts, "str of dequeued object is incorrect"));
+            return(our_error(opts, NULL, "str of dequeued object is incorrect"));
       };
 
       // adds objects to queue
       if (tinyrad_array_enqueue((void **)&list, &list_len, sizeof(MyData *), &src[x], &realloc) == -1)
-         return(our_error(opts, "failed to enqueue object to queue"));
+         return(our_error(opts, NULL, "failed to enqueue object to queue"));
    };
 
 
    // loop through queue and verify data
    our_verbose(opts, "verifing queue ...");
    if (list_len != ((MY_LIST_LEN / 4) * 3))
-      return(our_error(opts, "queue length is incorrect"));
+      return(our_error(opts, NULL, "queue length is incorrect"));
    delta = MY_LIST_LEN - list_len;
    for(x = delta; (x < MY_LIST_LEN); x++)
    {
       if ((strcmp(src[x]->name, list[list_len-x+delta-1]->name)))
-         return(our_error(opts, "queue data does not match test data"));
+         return(our_error(opts, NULL, "queue data does not match test data"));
    };
 
 
@@ -266,7 +266,7 @@ int main( int argc, char * argv[] )
    our_verbose(opts, "dequeueing from queue ...");
    while (list_len > 0)
       if (tinyrad_array_dequeue(list, &list_len, sizeof(MyData *)) == NULL)
-         return(our_error(opts, "unable to dequeue from queue"));
+         return(our_error(opts, NULL, "unable to dequeue from queue"));
 
    return(0);
 }

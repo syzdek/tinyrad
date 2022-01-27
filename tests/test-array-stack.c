@@ -219,7 +219,7 @@ int main( int argc, char * argv[] )
       {
          for(; (pos > 0); pos--)
             free(data[pos-1].name);
-         return(our_error(opts, "out of virtual memory"));
+         return(our_error(opts, NULL, "out of virtual memory"));
       };
    };
 
@@ -239,27 +239,27 @@ int main( int argc, char * argv[] )
       if ((x % 4) == 3)
       {
          if ((objp = tinyrad_array_pop(list, &list_len, sizeof(MyData *))) == NULL)
-            return(our_error(opts, "unable to pop from stack"));
+            return(our_error(opts, NULL, "unable to pop from stack"));
          if ((strcasecmp(src[x-1]->name, (*objp)->name)))
-            return(our_error(opts, "str of pop object is incorrect"));
+            return(our_error(opts, NULL, "str of pop object is incorrect"));
       };
 
       // adds objects to stack
       if (tinyrad_array_push((void **)&list, &list_len, sizeof(MyData *), &src[x], &realloc) == -1)
-         return(our_error(opts, "failed to push object to stack"));
+         return(our_error(opts, NULL, "failed to push object to stack"));
    };
 
 
    // loop through stack and verify data
    our_verbose(opts, "verifing stack ...");
    if (list_len != ((MY_LIST_LEN / 4) * 3))
-      return(our_error(opts, "stack length is incorrect"));
+      return(our_error(opts, NULL, "stack length is incorrect"));
    for(x = 0, y = 0; (x < MY_LIST_LEN); x++)
    {
       if ((x % 4) == 2)
          continue;
       if ((strcmp(src[x]->name, list[y]->name)))
-         return(our_error(opts, "stack data does not match test data"));
+         return(our_error(opts, NULL, "stack data does not match test data"));
       y++;
    };
 
@@ -268,7 +268,7 @@ int main( int argc, char * argv[] )
    our_verbose(opts, "popping from stack ...");
    while (list_len > 0)
       if (tinyrad_array_pop(list, &list_len, sizeof(MyData *)) == NULL)
-         return(our_error(opts, "unable to pop from stack"));
+         return(our_error(opts, NULL, "unable to pop from stack"));
 
    return(0);
 }

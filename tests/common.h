@@ -114,7 +114,7 @@ int our_urldesc_test_good(const char * url, int opts);
 //---------------//
 #pragma mark log functions
 
-int  our_error(int opts, const char * fmt, ...);
+int  our_error(int opts, char ** errs, const char * fmt, ...);
 void our_print(int opts, const char * fmt, ...);
 void our_verbose(int opts, const char * fmt, ...);
 
