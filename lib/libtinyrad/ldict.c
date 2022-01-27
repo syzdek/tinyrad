@@ -654,11 +654,13 @@ tinyrad_dict_defaults(
    uint32_t                flags;
    uint64_t                data;
    uint32_t                vendor_id;
+   uint32_t                vendor_type;
    uint8_t                 type_octs;
    uint8_t                 len_octs;
    const char *            attr_name;
    const char *            value_name;
    const char *            vendor_name;
+   TinyRadDictVendor *     vendor;
    TinyRadDictAttr *       attr;
 
    TinyRadDebugTrace();
@@ -683,10 +685,14 @@ tinyrad_dict_defaults(
    {
       attr_name      = tinyrad_dict_default_attrs[pos].name;
       type           = (uint8_t)tinyrad_dict_default_attrs[pos].type;
+      vendor_id      = tinyrad_dict_default_attrs[pos].vendor_id;
+      vendor_type    = tinyrad_dict_default_attrs[pos].vendor_type;
       datatype       = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
       flags          = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
       flags         |= TRAD_DFLT_ATTR;
-      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, NULL, 0, datatype, flags)) != TRAD_SUCCESS)
+      vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
+      assert( ((vendor)) || (!(vendor_id)) );
+      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, vendor, vendor_type, datatype, flags)) != TRAD_SUCCESS)
          return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
    };
 
@@ -835,6 +841,7 @@ tinyrad_dict_attr_add(
    assert(datatype  != 0);
 
    vendor_id   = ((vendor)) ? vendor->id  : 0;
+   vendor_type = ((vendor)) ? vendor_type : 0;
 
    // verify attribute doesn't exist
    if ((attr = tinyrad_dict_attr_lookup(dict, name, 0, 0, 0)) != NULL)
