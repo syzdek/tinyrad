@@ -288,7 +288,7 @@ tinyrad_dict_destroy(
 
 
 _TINYRAD_F int
-tinyrad_dict_import(
+tinyrad_dict_parse(
          TinyRadDict *                 dict,
          const char *                  file,
          char ***                      msgsp,

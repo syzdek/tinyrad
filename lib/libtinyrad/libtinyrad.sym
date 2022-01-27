@@ -50,7 +50,7 @@ tinyrad_dict_default_values
 tinyrad_dict_add_path
 tinyrad_dict_defaults
 tinyrad_dict_destroy
-tinyrad_dict_import
+tinyrad_dict_parse
 tinyrad_dict_initialize
 tinyrad_dict_print
 #

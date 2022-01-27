@@ -143,7 +143,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'D':
-         if (tinyrad_dict_import(dict, optarg, &errs, 0) != TRAD_SUCCESS)
+         if (tinyrad_dict_parse(dict, optarg, &errs, 0) != TRAD_SUCCESS)
          {
             tinyrad_dict_destroy(dict);
             our_error(PROGRAM_NAME, errs, NULL);

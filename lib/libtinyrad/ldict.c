@@ -147,10 +147,10 @@ tinyrad_dict_attr_destroy(
          TinyRadDictAttr *             attr );
 
 
-//-----------------------------//
-// dictionary import functions //
-//-----------------------------//
-#pragma mark dictionary import functions
+//----------------------------//
+// dictionary parse functions //
+//----------------------------//
+#pragma mark dictionary parse functions
 
 int
 tinyrad_dict_import_attribute(
@@ -832,10 +832,10 @@ tinyrad_dict_attr_lookup(
 }
 
 
-//-----------------------------//
-// dictionary import functions //
-//-----------------------------//
-#pragma mark dictionary import functions
+//----------------------------//
+// dictionary parse functions //
+//----------------------------//
+#pragma mark dictionary parse functions
 
 /// Imports file into dictionary
 ///
@@ -845,7 +845,7 @@ tinyrad_dict_attr_lookup(
 /// @param[in]  opts          import options
 /// @return returns error code
 int
-tinyrad_dict_import(
+tinyrad_dict_parse(
          TinyRadDict *                dict,
          const char *                 path,
          char ***                     msgsp,

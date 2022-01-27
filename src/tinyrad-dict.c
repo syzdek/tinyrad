@@ -221,7 +221,7 @@ int main(int argc, char * argv[])
    // add dictionary files
    for(pos = 0; ( ((files)) && ((files[pos])) ); pos++)
    {
-      if ((rc = tinyrad_dict_import(dict, files[pos], &errs, 0)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_parse(dict, files[pos], &errs, 0)) != TRAD_SUCCESS)
       {
          our_error(PROGRAM_NAME, errs, NULL);
          tinyrad_strings_free(errs);
