@@ -432,7 +432,19 @@ tinyrad_array_search(
          {
             case TINYRAD_ARRAY_LASTDUP:
             if (low == mid)
-               return(*((ssize_t *)wouldbep) = mid);
+            {
+               *wouldbep = (mid+1);
+               if (mid < high)
+               {
+                  ptr = ((const char *)base) + (width * (size_t)(mid+1));
+                  if ((*compar)(ptr, key) == 0)
+                  {
+                     *wouldbep = (mid+2);
+                     return(mid+1);
+                  };
+               };
+               return(mid);
+            };
             low = mid;
             break;
 
@@ -454,8 +466,12 @@ tinyrad_array_search(
 
    ptr = ((const char *)base) + (width * (size_t)mid);
    if ((rc = (*compar)(ptr, key)) == 0)
-      return(*((ssize_t *)wouldbep) = mid);
-
+   {
+      *wouldbep = mid;
+      if ((opts & TINYRAD_ARRAY_MASK_DUPS) == TINYRAD_ARRAY_LASTDUP)
+         *wouldbep = (mid+1);
+      return(mid);
+   };
    *wouldbep = (size_t)((rc > 0) ? mid : mid+1);
 
    return(-1);
