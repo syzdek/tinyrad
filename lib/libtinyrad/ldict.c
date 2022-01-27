@@ -181,7 +181,7 @@ tinyrad_dict_parse_include(
 
 
 int
-tinyrad_dict_import_value(
+tinyrad_dict_parse_value(
          TinyRadDict *                dict,
          TinyRadFile *                file,
          uint32_t                     opts );
@@ -932,7 +932,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_VALUE:
-         if ((rc = tinyrad_dict_import_value(dict, file, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_value(dict, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1095,7 +1095,7 @@ tinyrad_dict_parse_include(
 
 
 int
-tinyrad_dict_import_value(
+tinyrad_dict_parse_value(
          TinyRadDict *                dict,
          TinyRadFile *                file,
          uint32_t                     opts )
