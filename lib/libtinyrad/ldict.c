@@ -148,6 +148,12 @@ tinyrad_dict_attr_destroy(
 
 
 //----------------------------//
+// dictionary import functions //
+//----------------------------//
+#pragma mark dictionary import functions
+
+
+//----------------------------//
 // dictionary parse functions //
 //----------------------------//
 #pragma mark dictionary parse functions
@@ -399,82 +405,6 @@ tinyrad_dict_add_path(
       return(TRAD_ENOMEM);
    dict->paths_len++;
    dict->paths[dict->paths_len] = NULL;
-
-   return(TRAD_SUCCESS);
-}
-
-
-int
-tinyrad_dict_defaults(
-         TinyRadDict *                 dict,
-         char ***                      msgsp,
-         uint32_t                      opts )
-{
-   int                     rc;
-   size_t                  pos;
-   uint8_t                 type;
-   uint8_t                 datatype;
-   uint32_t                flags;
-   uint64_t                data;
-   uint32_t                vendor_id;
-   uint32_t                vendor_type;
-   uint8_t                 type_octs;
-   uint8_t                 len_octs;
-   const char *            attr_name;
-   const char *            value_name;
-   const char *            vendor_name;
-   TinyRadDictVendor *     vendor;
-   TinyRadDictAttr *       attr;
-
-   TinyRadDebugTrace();
-
-   assert(dict != NULL);
-   assert(opts == 0);
-
-   if ((msgsp))
-      *msgsp = NULL;
-
-   for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
-   {
-      vendor_name = tinyrad_dict_default_vendors[pos].name;
-      vendor_id   = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_id;
-      type_octs   = (uint8_t)tinyrad_dict_default_vendors[pos].vendor_type_octs;
-      len_octs    = (uint8_t)tinyrad_dict_default_vendors[pos].vendor_len_octs;
-      if ((rc = tinyrad_dict_vendor_add(dict, NULL, vendor_name, vendor_id, type_octs, len_octs)) != TRAD_SUCCESS)
-         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
-   };
-
-   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
-   {
-      attr_name      = tinyrad_dict_default_attrs[pos].name;
-      type           = (uint8_t)tinyrad_dict_default_attrs[pos].type;
-      vendor_id      = tinyrad_dict_default_attrs[pos].vendor_id;
-      vendor_type    = tinyrad_dict_default_attrs[pos].vendor_type;
-      datatype       = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
-      flags          = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
-      flags         |= TRAD_DFLT_ATTR;
-      vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
-      assert( ((vendor)) || (!(vendor_id)) );
-      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, vendor, vendor_type, datatype, flags)) != TRAD_SUCCESS)
-         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
-   };
-
-   attr = NULL;
-   for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
-   {
-      attr_name  = tinyrad_dict_default_values[pos].attr_name;
-      value_name = tinyrad_dict_default_values[pos].value_name;
-      data       = tinyrad_dict_default_values[pos].data;
-      if ((attr))
-         if ((strcasecmp(attr_name, attr->name)))
-            attr = NULL;
-      if (!(attr))
-         attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
-      if (!(attr))
-         return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-      if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
-         return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-   };
 
    return(TRAD_SUCCESS);
 }
@@ -829,6 +759,87 @@ tinyrad_dict_attr_lookup(
 
    res = tinyrad_array_get(list, len, width, key, opts, compar);
    return( ((res)) ? *res : NULL);
+}
+
+
+//-----------------------------//
+// dictionary import functions //
+//-----------------------------//
+#pragma mark dictionary import functions
+
+int
+tinyrad_dict_defaults(
+         TinyRadDict *                 dict,
+         char ***                      msgsp,
+         uint32_t                      opts )
+{
+   int                     rc;
+   size_t                  pos;
+   uint8_t                 type;
+   uint8_t                 datatype;
+   uint32_t                flags;
+   uint64_t                data;
+   uint32_t                vendor_id;
+   uint32_t                vendor_type;
+   uint8_t                 type_octs;
+   uint8_t                 len_octs;
+   const char *            attr_name;
+   const char *            value_name;
+   const char *            vendor_name;
+   TinyRadDictVendor *     vendor;
+   TinyRadDictAttr *       attr;
+
+   TinyRadDebugTrace();
+
+   assert(dict != NULL);
+   assert(opts == 0);
+
+   if ((msgsp))
+      *msgsp = NULL;
+
+   for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
+   {
+      vendor_name = tinyrad_dict_default_vendors[pos].name;
+      vendor_id   = (uint32_t)tinyrad_dict_default_vendors[pos].vendor_id;
+      type_octs   = (uint8_t)tinyrad_dict_default_vendors[pos].vendor_type_octs;
+      len_octs    = (uint8_t)tinyrad_dict_default_vendors[pos].vendor_len_octs;
+      if ((rc = tinyrad_dict_vendor_add(dict, NULL, vendor_name, vendor_id, type_octs, len_octs)) != TRAD_SUCCESS)
+         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
+   };
+
+   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
+   {
+      attr_name      = tinyrad_dict_default_attrs[pos].name;
+      type           = (uint8_t)tinyrad_dict_default_attrs[pos].type;
+      vendor_id      = tinyrad_dict_default_attrs[pos].vendor_id;
+      vendor_type    = tinyrad_dict_default_attrs[pos].vendor_type;
+      datatype       = (uint8_t)tinyrad_dict_default_attrs[pos].data_type;
+      flags          = (uint32_t)tinyrad_dict_default_attrs[pos].flags;
+      flags         |= TRAD_DFLT_ATTR;
+      vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
+      assert( ((vendor)) || (!(vendor_id)) );
+      if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, vendor, vendor_type, datatype, flags)) != TRAD_SUCCESS)
+         return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
+   };
+
+   attr = NULL;
+   for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
+   {
+      attr_name  = tinyrad_dict_default_values[pos].attr_name;
+      value_name = tinyrad_dict_default_values[pos].value_name;
+      data       = tinyrad_dict_default_values[pos].data;
+      if ((attr))
+         if ((strcasecmp(attr_name, attr->name)))
+            attr = NULL;
+      if (!(attr))
+         attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
+      if (!(attr))
+         return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
+      if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
+         return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
+   };
+
+   return(TRAD_SUCCESS);
 }
 
 
