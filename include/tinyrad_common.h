@@ -82,7 +82,7 @@
 #pragma mark - Data Types
 
 typedef struct _tinyrad_dict_attr_def     TinyRadDictAttrDef;
-typedef struct _tinyrad_dict_vendor_def   TinyRadVendorDef;
+typedef struct _tinyrad_dict_vendor_def   TinyRadDictVendorDef;
 
 
 struct _tinyrad_dict_attr_def

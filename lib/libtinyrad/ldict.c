@@ -356,7 +356,7 @@ static const TinyRadMap tinyrad_dict_options[] =
 
 
 #pragma mark tinyrad_dict_default_vendors[]
-static const TinyRadVendorDef tinyrad_dict_default_vendors[] =
+static const TinyRadDictVendorDef tinyrad_dict_default_vendors[] =
 {
    { "Syzdek",    27893,   1, 1 },  // TinyRad's developer's private enterprise number (https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers)
    { NULL, 0, 0, 0 }
