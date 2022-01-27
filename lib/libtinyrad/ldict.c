@@ -365,77 +365,80 @@ static const struct
 static const struct
 {
    const char *          name;
-   uint64_t              type;
-   uint64_t              data_type;
+   uint32_t              type;
+   uint32_t              vendor_id;
+   uint32_t              vendor_type;
+   uint32_t              data_type;
    uint64_t              flags;
 } tinyrad_dict_default_attrs[] =
 {
-   { "User-Name",                  1,   TRAD_STRING,   0 },              // RFC2865 Section 5.1  User-Name
-   { "User-Password",              2,   TRAD_STRING,   TRAD_ENCRYPT1 },  // RFC2865 Section 5.2  User-Password
-   { "CHAP-Password",              3,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.3   CHAP-Password
-   { "NAS-IP-Address",             4,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.4   NAS-IP-Address
-   { "NAS-Port",                   5,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.5   NAS-Port
-   { "Service-Type",               6,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.6   Service-Type
-   { "Framed-Protocol",            7,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.7   Framed-Protocol
-   { "Framed-IP-Address",          8,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.8   Framed-IP-Address
-   { "Framed-IP-Netmask",          9,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.9   Framed-IP-Netmask
-   { "Framed-Routing",            10,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.10  Framed-Routing
-   { "Filter-Id",                 11,   TRAD_STRING,   0 },              // RFC2865 Section 5.11  Filter-Id
-   { "Framed-MTU",                12,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.12  Framed-MTU
-   { "Framed-Compression",        13,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.13  Framed-Compression
-   { "Login-IP-Host",             14,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.14  Login-IP-Host
-   { "Login-Service",             15,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.15  Login-Service
-   { "Login-TCP-Port",            16,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.16  Login-TCP-Port
-   { "Reply-Message",             18,   TRAD_STRING,   0 },              // RFC2865 Section 5.18  Reply-Message
-   { "Callback-Number",           19,   TRAD_STRING,   0 },              // RFC2865 Section 5.19  Callback-Number
-   { "Callback-Id",               20,   TRAD_STRING,   0 },              // RFC2865 Section 5.20  Callback-Id
-   { "Framed-Route",              22,   TRAD_STRING,   0 },              // RFC2865 Section 5.22  Framed-Route
-   { "Framed-IPX-Network",        23,   TRAD_IPADDR,   0 },              // RFC2865 Section 5.23  Framed-IPX-Network
-   { "State",                     24,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.24  State
-   { "Class",                     25,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.25  Class
-   { "Vendor-Specific",           26,   TRAD_VSA,      0 },              // RFC2865 Section 5.26  Vendor-Specific
-   { "Session-Timeout",           27,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.27  Session-Timeout
-   { "Idle-Timeout",              28,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.28  Idle-Timeout
-   { "Termination-Action",        29,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.29  Termination-Action
-   { "Called-Station-Id",         30,   TRAD_STRING,   0 },              // RFC2865 Section 5.30  Called-Station-Id
-   { "Calling-Station-Id",        31,   TRAD_STRING,   0 },              // RFC2865 Section 5.31  Calling-Station-Id
-   { "NAS-Identifier",            32,   TRAD_STRING,   0 },              // RFC2865 Section 5.32  NAS-Identifier
-   { "Proxy-State",               33,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.33  Proxy-State
-   { "Login-LAT-Service",         34,   TRAD_STRING,   0 },              // RFC2865 Section 5.34  Login-LAT-Service
-   { "Login-LAT-Node",            35,   TRAD_STRING,   0 },              // RFC2865 Section 5.35  Login-LAT-Node
-   { "Login-LAT-Group",           36,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.36  Login-LAT-Group
-   { "Framed-AppleTalk-Link",     37,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.37  Framed-AppleTalk-Link
-   { "Framed-AppleTalk-Network",  38,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.38  Framed-AppleTalk-Network
-   { "Framed-AppleTalk-Zone",     39,   TRAD_STRING,   0 },              // RFC2865 Section 5.39  Framed-AppleTalk-Zone
-   { "Acct-Status-Type",          40,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.1   Acct-Status-Type
-   { "Acct-Delay-Time",           41,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.2   Acct-Delay-Time
-   { "Acct-Input-Octets",         42,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.3   Acct-Input-Octets
-   { "Acct-Output-Octets",        43,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.4   Acct-Output-Octets
-   { "Acct-Session-Id",           44,   TRAD_STRING,   0 },              // RFC2866 Section 5.5   Acct-Session-Id
-   { "Acct-Authentic",            45,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.6   Acct-Authentic
-   { "Acct-Session-Time",         46,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.7   Acct-Session-Time
-   { "Acct-Input-Packets",        47,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.8   Acct-Input-Packets
-   { "Acct-Output-Packets",       48,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.9   Acct-Output-Packets
-   { "Acct-Terminate-Cause",      49,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.10  Acct-Terminate-Cause
-   { "Acct-Multi-Session-Id",     50,   TRAD_STRING,   0 },              // RFC2866 Section 5.11  Acct-Multi-Session-Id
-   { "Acct-Link-Count",           51,   TRAD_INTEGER,  0 },              // RFC2866 Section 5.12  Acct-Link-Count
-   { "CHAP-Challenge",            60,   TRAD_OCTETS,   0 },              // RFC2865 Section 5.40  CHAP-Challenge
-   { "NAS-Port-Type",             61,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.41  NAS-Port-Type
-   { "Port-Limit",                62,   TRAD_INTEGER,  0 },              // RFC2865 Section 5.42  Port-Limit
-   { "Login-LAT-Port",            63,   TRAD_STRING,   0 },              // RFC2865 Section 5.43  Login-LAT-Port
-   { "Tunnel-Type",               64,   TRAD_INTEGER,  TRAD_HAS_TAG },   // RFC2868 Section 3.1   Tunnel-Type
-   { "Tunnel-Medium-Type",        65,   TRAD_INTEGER,  TRAD_HAS_TAG },   // RFC2868 Section 3.2   Tunnel-Medium-Type
-   { "Tunnel-Client-Endpoint",    66,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.3   Tunnel-Client-Endpoint
-   { "Tunnel-Server-Endpoint",    67,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.4   Tunnel-Server-Endpoint
-   { "Acct-Tunnel-Connection",    68,   TRAD_STRING,   0 },              // RFC2867 Section 4.1   Acct-Tunnel-Connection
-   { "Tunnel-Password",           69,   TRAD_STRING,   TRAD_HAS_TAG|TRAD_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
-   { "Tunnel-Private-Group-Id",   81,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.6   Tunnel-Private-Group-Id
-   { "Tunnel-Assignment-Id",      82,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.7   Tunnel-Assignment-Id
-   { "Tunnel-Preference",         83,   TRAD_INTEGER,  TRAD_HAS_TAG },   // RFC2868 Section 3.8   Tunnel-Preference
-   { "Acct-Tunnel-Packets-Lost",  86,   TRAD_INTEGER,  0 },              // RFC2867 Section 4.2   Acct-Tunnel-Packets-Lost
-   { "Tunnel-Client-Auth-Id",     90,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.9   Tunnel-Client-Auth-Id
-   { "Tunnel-Server-Auth-Id",     91,   TRAD_STRING,   TRAD_HAS_TAG },   // RFC2868 Section 3.10  Tunnel-Server-Auth-Id
-   { NULL, 0, 0, 0 }
+   // Name                      Type  Vendor ID  Vendor Type      Data Type            Flags
+   { "User-Name",                  1,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.1  User-Name
+   { "User-Password",              2,         0,           0,   TRAD_STRING,   TRAD_ENCRYPT1 },  // RFC2865 Section 5.2  User-Password
+   { "CHAP-Password",              3,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.3   CHAP-Password
+   { "NAS-IP-Address",             4,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.4   NAS-IP-Address
+   { "NAS-Port",                   5,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.5   NAS-Port
+   { "Service-Type",               6,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.6   Service-Type
+   { "Framed-Protocol",            7,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.7   Framed-Protocol
+   { "Framed-IP-Address",          8,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.8   Framed-IP-Address
+   { "Framed-IP-Netmask",          9,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.9   Framed-IP-Netmask
+   { "Framed-Routing",            10,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.10  Framed-Routing
+   { "Filter-Id",                 11,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.11  Filter-Id
+   { "Framed-MTU",                12,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.12  Framed-MTU
+   { "Framed-Compression",        13,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.13  Framed-Compression
+   { "Login-IP-Host",             14,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.14  Login-IP-Host
+   { "Login-Service",             15,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.15  Login-Service
+   { "Login-TCP-Port",            16,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.16  Login-TCP-Port
+   { "Reply-Message",             18,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.18  Reply-Message
+   { "Callback-Number",           19,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.19  Callback-Number
+   { "Callback-Id",               20,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.20  Callback-Id
+   { "Framed-Route",              22,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.22  Framed-Route
+   { "Framed-IPX-Network",        23,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.23  Framed-IPX-Network
+   { "State",                     24,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.24  State
+   { "Class",                     25,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.25  Class
+   { "Vendor-Specific",           26,         0,           0,   TRAD_VSA,                  0 },  // RFC2865 Section 5.26  Vendor-Specific
+   { "Session-Timeout",           27,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.27  Session-Timeout
+   { "Idle-Timeout",              28,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.28  Idle-Timeout
+   { "Termination-Action",        29,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.29  Termination-Action
+   { "Called-Station-Id",         30,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.30  Called-Station-Id
+   { "Calling-Station-Id",        31,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.31  Calling-Station-Id
+   { "NAS-Identifier",            32,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.32  NAS-Identifier
+   { "Proxy-State",               33,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.33  Proxy-State
+   { "Login-LAT-Service",         34,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.34  Login-LAT-Service
+   { "Login-LAT-Node",            35,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.35  Login-LAT-Node
+   { "Login-LAT-Group",           36,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.36  Login-LAT-Group
+   { "Framed-AppleTalk-Link",     37,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.37  Framed-AppleTalk-Link
+   { "Framed-AppleTalk-Network",  38,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.38  Framed-AppleTalk-Network
+   { "Framed-AppleTalk-Zone",     39,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.39  Framed-AppleTalk-Zone
+   { "Acct-Status-Type",          40,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.1   Acct-Status-Type
+   { "Acct-Delay-Time",           41,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.2   Acct-Delay-Time
+   { "Acct-Input-Octets",         42,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.3   Acct-Input-Octets
+   { "Acct-Output-Octets",        43,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.4   Acct-Output-Octets
+   { "Acct-Session-Id",           44,         0,           0,   TRAD_STRING,               0 },  // RFC2866 Section 5.5   Acct-Session-Id
+   { "Acct-Authentic",            45,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.6   Acct-Authentic
+   { "Acct-Session-Time",         46,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.7   Acct-Session-Time
+   { "Acct-Input-Packets",        47,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.8   Acct-Input-Packets
+   { "Acct-Output-Packets",       48,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.9   Acct-Output-Packets
+   { "Acct-Terminate-Cause",      49,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.10  Acct-Terminate-Cause
+   { "Acct-Multi-Session-Id",     50,         0,           0,   TRAD_STRING,               0 },  // RFC2866 Section 5.11  Acct-Multi-Session-Id
+   { "Acct-Link-Count",           51,         0,           0,   TRAD_INTEGER,              0 },  // RFC2866 Section 5.12  Acct-Link-Count
+   { "CHAP-Challenge",            60,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.40  CHAP-Challenge
+   { "NAS-Port-Type",             61,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.41  NAS-Port-Type
+   { "Port-Limit",                62,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.42  Port-Limit
+   { "Login-LAT-Port",            63,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.43  Login-LAT-Port
+   { "Tunnel-Type",               64,         0,           0,   TRAD_INTEGER,   TRAD_HAS_TAG },  // RFC2868 Section 3.1   Tunnel-Type
+   { "Tunnel-Medium-Type",        65,         0,           0,   TRAD_INTEGER,   TRAD_HAS_TAG },  // RFC2868 Section 3.2   Tunnel-Medium-Type
+   { "Tunnel-Client-Endpoint",    66,         0,           0,   TRAD_STRING,    TRAD_HAS_TAG },  // RFC2868 Section 3.3   Tunnel-Client-Endpoint
+   { "Tunnel-Server-Endpoint",    67,         0,           0,   TRAD_STRING,    TRAD_HAS_TAG },  // RFC2868 Section 3.4   Tunnel-Server-Endpoint
+   { "Acct-Tunnel-Connection",    68,         0,           0,   TRAD_STRING,               0 },  // RFC2867 Section 4.1   Acct-Tunnel-Connection
+   { "Tunnel-Password",           69,         0,           0,   TRAD_STRING,   TRAD_HAS_TAG|TRAD_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
+   { "Tunnel-Private-Group-Id",   81,         0,           0,   TRAD_STRING,    TRAD_HAS_TAG },  // RFC2868 Section 3.6   Tunnel-Private-Group-Id
+   { "Tunnel-Assignment-Id",      82,         0,           0,   TRAD_STRING,    TRAD_HAS_TAG },  // RFC2868 Section 3.7   Tunnel-Assignment-Id
+   { "Tunnel-Preference",         83,         0,           0,   TRAD_INTEGER,   TRAD_HAS_TAG },  // RFC2868 Section 3.8   Tunnel-Preference
+   { "Acct-Tunnel-Packets-Lost",  86,         0,           0,   TRAD_INTEGER,              0 },  // RFC2867 Section 4.2   Acct-Tunnel-Packets-Lost
+   { "Tunnel-Client-Auth-Id",     90,         0,           0,   TRAD_STRING,    TRAD_HAS_TAG },  // RFC2868 Section 3.9   Tunnel-Client-Auth-Id
+   { "Tunnel-Server-Auth-Id",     91,         0,           0,   TRAD_STRING,    TRAD_HAS_TAG },  // RFC2868 Section 3.10  Tunnel-Server-Auth-Id
+   { NULL, 0, 0, 0, 0, 0 }
 };
 
 
