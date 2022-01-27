@@ -402,6 +402,7 @@ static const struct
    { "State",                     24,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.24  State
    { "Class",                     25,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.25  Class
    { "Vendor-Specific",           26,         0,           0,   TRAD_VSA,                  0 },  // RFC2865 Section 5.26  Vendor-Specific
+   { "Syzdek-Faith",              26,     27893,           0,   TRAD_INTEGER,              0 },  // custom attribute for testing
    { "Session-Timeout",           27,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.27  Session-Timeout
    { "Idle-Timeout",              28,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.28  Idle-Timeout
    { "Termination-Action",        29,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.29  Termination-Action
@@ -554,6 +555,15 @@ static const struct
    { "Service-Type",              "Callback-NAS-Prompt",       9 },  // RFC2865 Section 5.6 Service-Type
    { "Service-Type",              "Call-Check",               10 },  // RFC2865 Section 5.6 Service-Type
    { "Service-Type",              "Callback-Administrative",  11 },  // RFC2865 Section 5.6 Service-Type
+
+   { "Syzdek-Faith",              "Unknown",                   1 },  // custom value for testing
+   { "Syzdek-Faith",              "Other",                     2 },  // custom value for testing
+   { "Syzdek-Faith",              "Catholic",                  3 },  // custom value for testing
+   { "Syzdek-Faith",              "Roman-Rite",                3 },  // custom value for testing
+   { "Syzdek-Faith",              "Ritus-Romanus",             3 },  // custom value for testing
+   { "Syzdek-Faith",              "Roman-Catholic",            3 },  // custom value for testing
+   { "Syzdek-Faith",              "Christian",                 4 },  // custom value for testing
+   { "Syzdek-Faith",              "Judaism",                   5 },  // custom value for testing
 
    { "Termination-Action",        "Default",                   0 },  // RFC2865 Section 5.29 Termination-Action
    { "Termination-Action",        "RADIUS-Request",            1 },  // RFC2865 Section 5.29 Termination-Action
