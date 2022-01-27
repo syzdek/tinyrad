@@ -1549,7 +1549,11 @@ tinyrad_dict_print_attribute(
          TinyRadDictAttr *             attr )
 {
    size_t              pos;
-   uint32_t            flags;
+   size_t              flags;
+   size_t              values;
+   char                flagstr[128];
+   char                datatype[32];
+   const char *        str;
    TinyRadDictValue *  value;
 
    TinyRadDebugTrace();
@@ -1557,26 +1561,36 @@ tinyrad_dict_print_attribute(
    assert(dict != NULL);
    assert(attr != NULL);
 
-   printf("ATTRIBUTE %s ", attr->name);
-   printf("%" PRIu32 " ", attr->type);
-   printf("%s", tinyrad_map_lookup_value(tinyrad_dict_data_type, attr->data_type, NULL));
-
-   flags = 0;
+   flags      = 0;
+   flagstr[0] = '\0';
    for(pos = 0; ((tinyrad_dict_attr_flags[pos].name)); pos++)
    {
       if ((attr->flags & tinyrad_dict_attr_flags[pos].value) != 0)
       {
-         printf("%c%s", ((!(flags)) ? ' ' : ','), tinyrad_dict_attr_flags[pos].name);
+         strncat(flagstr, (((flags)) ? "," : " "), (sizeof(flagstr)-strlen(flagstr)-1));
+         strncat(flagstr, tinyrad_dict_attr_flags[pos].name, (sizeof(flagstr)-strlen(flagstr)-1));
          flags++;
       };
    };
-   printf("\n");
 
+   str = tinyrad_map_lookup_value(tinyrad_dict_data_type, attr->data_type, NULL);
+   str = ((str)) ? str : "unknown";
+   for(pos = 0; ((str[pos])); pos++)
+      datatype[pos] = ((str[pos] >= 'A')&&(str[pos] <= 'Z')) ? (str[pos] - 'A' + 'a') : str[pos];
+   datatype[pos] = '\0';
+
+   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, attr->type, datatype, flagstr);
+   values = 0;
    for(pos = 0; (pos < attr->values_numeric_len); pos++)
    {
+      if (!(values))
+         printf("\n# %s Values\n", attr->name);
       value = attr->values_numeric[pos];
-      printf("VALUE %s %s %" PRIu64 "\n", attr->name, value->name, value->value );
+      printf("VALUE         %-31s %-21s %" PRIu64 "\n", attr->name, value->name, value->value );
+      values++;
    };
+   if ((values))
+      printf("\n");
 
    return;
 }
@@ -1588,25 +1602,29 @@ tinyrad_dict_print_vendor(
          TinyRadDictVendor *           vendor )
 {
    size_t pos;
+   char   flagstr[128];
 
    TinyRadDebugTrace();
 
    assert(dict   != NULL);
    assert(vendor != NULL);
 
-   printf("VENDOR %s ", vendor->name);
-   printf("%" PRIu32, vendor->id);
+   flagstr[0] = '\0';
    if ( (vendor->len_octs != 1) || (vendor->type_octs != 1) )
-      printf(" format=%" PRIu8 ",%" PRIu8, vendor->type_octs, vendor->len_octs);
-   printf("\n");
+      snprintf(flagstr, sizeof(flagstr), "format=%" PRIu8 ",%" PRIu8, vendor->type_octs, vendor->len_octs);
+
+   if ((flagstr[0]))
+      printf("\nVENDOR        %-31s %-21" PRIu32 " %s\n\n", vendor->name, vendor->id, flagstr);
+   else
+      printf("\nVENDOR        %-31s %" PRIu32 "\n\n", vendor->name, vendor->id);
 
    if (!(vendor->attrs_type_len))
       return;
 
-   printf("BEGIN-VENDOR %s\n", vendor->name);
+   printf("BEGIN-VENDOR  %s\n\n", vendor->name);
    for(pos = 0; (pos < vendor->attrs_type_len); pos++)
       tinyrad_dict_print_attribute(dict, vendor->attrs_type[pos]);
-   printf("END-VENDOR %s\n", vendor->name);
+   printf("\nEND-VENDOR    %s\n\n", vendor->name);
 
    return;
 }
