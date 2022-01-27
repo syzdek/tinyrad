@@ -153,7 +153,7 @@ tinyrad_dict_attr_destroy(
 #pragma mark dictionary parse functions
 
 int
-tinyrad_dict_import_attribute(
+tinyrad_dict_parse_attribute(
          TinyRadDict *                dict,
          TinyRadDictVendor *          vendor,
          TinyRadFile *                file,
@@ -896,7 +896,7 @@ tinyrad_dict_parse(
       switch(tinyrad_map_lookup_name(tinyrad_dict_options, file->argv[0], NULL))
       {
          case TRAD_DICT_ATTRIBUTE:
-         if ((rc = tinyrad_dict_import_attribute(dict, vendor, file, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_attribute(dict, vendor, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -963,7 +963,7 @@ tinyrad_dict_parse(
 
 
 int
-tinyrad_dict_import_attribute(
+tinyrad_dict_parse_attribute(
          TinyRadDict *                dict,
          TinyRadDictVendor *          vendor,
          TinyRadFile *                file,
