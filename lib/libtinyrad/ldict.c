@@ -747,9 +747,8 @@ tinyrad_dict_attr_info(
 
    TinyRadDebugTrace();
 
-   assert(attr      != NULL);
-   assert(param     != 0);
-   assert(outvalue  != NULL);
+   if ( (!(attr)) || (!(outvalue)) )
+      return(TRAD_EINVAL);
 
    // get attribute options
    switch(param)
@@ -811,7 +810,7 @@ tinyrad_dict_attr_info(
       break;
 
       default:
-      return(TRAD_EOPTERR);
+      return(TRAD_EINVAL);
    };
 
    return(TRAD_SUCCESS);
