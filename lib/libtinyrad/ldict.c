@@ -63,12 +63,12 @@
 ///////////////////
 #pragma mark - Definitions
 
-#define TRAD_DICT_INCLUDE           1
-#define TRAD_DICT_ATTRIBUTE         2
-#define TRAD_DICT_VALUE             3
-#define TRAD_DICT_VENDOR            4
-#define TRAD_DICT_BEGIN_VENDOR      5
-#define TRAD_DICT_END_VENDOR        6
+#define TRAD_DICT_KEYWORD_INCLUDE           1
+#define TRAD_DICT_KEYWORD_ATTRIBUTE         2
+#define TRAD_DICT_KEYWORD_VALUE             3
+#define TRAD_DICT_KEYWORD_VENDOR            4
+#define TRAD_DICT_KEYWORD_BEGIN_VENDOR      5
+#define TRAD_DICT_KEYWORD_END_VENDOR        6
 
 
 //////////////////
@@ -351,12 +351,12 @@ static const TinyRadMap tinyrad_dict_attr_flags[] =
 #pragma mark tinyrad_dict_options[]
 static const TinyRadMap tinyrad_dict_options[] =
 {
-   { "$INCLUDE",        TRAD_DICT_INCLUDE},
-   { "ATTRIBUTE",       TRAD_DICT_ATTRIBUTE},
-   { "BEGIN-VENDOR",    TRAD_DICT_BEGIN_VENDOR},
-   { "END-VENDOR",      TRAD_DICT_END_VENDOR},
-   { "VALUE",           TRAD_DICT_VALUE},
-   { "VENDOR",          TRAD_DICT_VENDOR},
+   { "$INCLUDE",        TRAD_DICT_KEYWORD_INCLUDE},
+   { "ATTRIBUTE",       TRAD_DICT_KEYWORD_ATTRIBUTE},
+   { "BEGIN-VENDOR",    TRAD_DICT_KEYWORD_BEGIN_VENDOR},
+   { "END-VENDOR",      TRAD_DICT_KEYWORD_END_VENDOR},
+   { "VALUE",           TRAD_DICT_KEYWORD_VALUE},
+   { "VENDOR",          TRAD_DICT_KEYWORD_VENDOR},
    { NULL, 0 }
 };
 
@@ -942,7 +942,7 @@ tinyrad_dict_parse(
       // perform requested action
       switch(tinyrad_map_lookup_name(tinyrad_dict_options, file->argv[0], NULL))
       {
-         case TRAD_DICT_ATTRIBUTE:
+         case TRAD_DICT_KEYWORD_ATTRIBUTE:
          if ((rc = tinyrad_dict_parse_attribute(dict, vendor, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
@@ -951,7 +951,7 @@ tinyrad_dict_parse(
          };
          break;
 
-         case TRAD_DICT_BEGIN_VENDOR:
+         case TRAD_DICT_KEYWORD_BEGIN_VENDOR:
          if ((rc = tinyrad_dict_parse_begin_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
@@ -960,7 +960,7 @@ tinyrad_dict_parse(
          };
          break;
 
-         case TRAD_DICT_END_VENDOR:
+         case TRAD_DICT_KEYWORD_END_VENDOR:
          if ((rc = tinyrad_dict_parse_end_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
@@ -969,7 +969,7 @@ tinyrad_dict_parse(
          };
          break;
 
-         case TRAD_DICT_INCLUDE:
+         case TRAD_DICT_KEYWORD_INCLUDE:
          if ((rc = tinyrad_dict_parse_include(dict, &file)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
@@ -978,7 +978,7 @@ tinyrad_dict_parse(
          };
          break;
 
-         case TRAD_DICT_VALUE:
+         case TRAD_DICT_KEYWORD_VALUE:
          if ((rc = tinyrad_dict_parse_value(dict, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
@@ -987,7 +987,7 @@ tinyrad_dict_parse(
          };
          break;
 
-         case TRAD_DICT_VENDOR:
+         case TRAD_DICT_KEYWORD_VENDOR:
          if ((rc = tinyrad_dict_parse_vendor(dict, file, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
