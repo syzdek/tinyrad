@@ -32,6 +32,8 @@
 
 CODE=0
 
+test -x src/tinyrad-dict || exit 77
+
 ./src/tinyrad-dict --dump \
    --defaults \
    1> /tmp/tinyrad-dict-defaults1.$$ \

@@ -195,6 +195,7 @@ if ENABLE_TINYRAD
 endif
 if ENABLE_TINYRAD_DICT
    bin_PROGRAMS				+= src/tinyrad-dict
+   TESTS				+= tests/test-dict-defaults.sh
 endif
 if ENABLE_TINYRAD_URL
    bin_PROGRAMS				+= src/tinyrad-url
