@@ -545,6 +545,8 @@ tinyrad_dict_attr_add(
          return(TRAD_EEXISTS);
       if (attr->vendor_id != vendor_id)
          return(TRAD_EEXISTS);
+      if (attr->vendor_type != vendor_type)
+         return(TRAD_EEXISTS);
       if (attr->data_type != datatype)
          return(TRAD_EEXISTS);
       if ((attrp))
@@ -584,6 +586,7 @@ tinyrad_dict_attr_add(
    atomic_init(&attr->ref_count, 1);
    attr->type        = type;
    attr->vendor_id   = vendor_id;
+   attr->vendor_type = vendor_type;
    attr->data_type   = datatype;
    attr->flags       = flags;
    if ((attr->name = strdup(name)) == NULL)
