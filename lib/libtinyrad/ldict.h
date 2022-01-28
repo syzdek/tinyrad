@@ -124,11 +124,5 @@ struct _tinyrad_dict_value
 //////////////////
 #pragma mark - Prototypes
 
-TinyRadDictValue *
-tinyrad_dict_value_lookup(
-         TinyRadDictAttr *            attr,
-         const char *                 name,
-         uint64_t                     num );
-
 
 #endif /* end of header */

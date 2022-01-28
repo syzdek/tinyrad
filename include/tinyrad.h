@@ -342,6 +342,13 @@ tinyrad_dict_value_info(
          void *                        outvalue );
 
 
+_TINYRAD_F TinyRadDictValue *
+tinyrad_dict_value_lookup(
+         TinyRadDictAttr *            attr,
+         const char *                 name,
+         uint64_t                     num );
+
+
 _TINYRAD_F int
 tinyrad_dict_vendor_info(
          TinyRadDictVendor *           vendor,
