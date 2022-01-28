@@ -76,6 +76,7 @@
 #define TRAD_TEST_PARSE       0x0008UL
 #define TRAD_TEST_CHECK       0x0010UL
 #define TRAD_TEST_QUIET       0x0020UL
+#define TRAD_TEST_DFLT_DICT   0x0040UL
 
 
 /////////////////
