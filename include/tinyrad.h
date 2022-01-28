@@ -146,6 +146,17 @@
 #define TRAD_OPT_DEBUG_SYSLOG          11
 #define TRAD_OPT_SCHEME                12
 
+// dictionary options
+#define TRAD_DICT_OPT_REF_COUNT           1  // used by TinyRadDictVendor and TinyRadDictAttr
+#define TRAD_DICT_OPT_NAME                2  // used by TinyRadDictVendor, TinyRadDictAttr, and TinyRadDictValue
+#define TRAD_DICT_OPT_TYPE                3  // used by TinyRadDictAttr and TinyRadDictValue
+#define TRAD_DICT_OPT_VEND_ID             4  // used by TinyRadDictVendor, TinyRadDictAttr, and TinyRadDictValue
+#define TRAD_DICT_OPT_VEND_TYPE           5  // used by TinyRadDictVendor, TinyRadDictAttr, and TinyRadDictValue
+#define TRAD_DICT_OPT_TYPE_OCTS           6  // used by TinyRadDictVendor and TinyRadDictAttr
+#define TRAD_DICT_OPT_LEN_OCTS            7  // used by TinyRadDictVendor and TinyRadDictAttr
+#define TRAD_DICT_OPT_DATA_TYPE           8  // used by TinyRadDictAttr
+#define TRAD_DICT_OPT_FLAGS               9  // used by TinyRadDictAttr
+
 // library debug levels
 #define TRAD_DEBUG_NONE             0
 #define TRAD_DEBUG_TRACE            0x0000001
@@ -273,6 +284,13 @@ _TINYRAD_F int
 tinyrad_dict_add_path(
          TinyRadDict *                 dict,
          const char *                  path );
+
+
+_TINYRAD_F int
+tinyrad_dict_attr_info(
+         TinyRadDictAttr *             attr,
+         int                           param,
+         void *                        outvalue );
 
 
 _TINYRAD_F int

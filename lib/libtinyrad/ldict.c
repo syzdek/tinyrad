@@ -637,6 +637,87 @@ tinyrad_dict_attr_add(
 
 
 int
+tinyrad_dict_attr_info(
+         TinyRadDictAttr *             attr,
+         int                           param,
+         void *                        outvalue )
+{
+   int      ival;
+
+   TinyRadDebugTrace();
+
+   assert(attr      != NULL);
+   assert(param     != 0);
+   assert(outvalue  != NULL);
+
+   // get attribute options
+   switch(param)
+   {
+      case TRAD_DICT_OPT_DATA_TYPE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_DATA_TYPE, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", (uint32_t)attr->data_type);
+      *((uint32_t *)outvalue) = (uint32_t)attr->data_type;
+      break;
+
+      case TRAD_DICT_OPT_FLAGS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_FLAGS, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", attr->flags);
+      *((uint32_t *)outvalue) = attr->flags;
+      break;
+
+      case TRAD_DICT_OPT_LEN_OCTS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_LEN_OCTS, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", attr->len_octs);
+      *((uint8_t *)outvalue) = attr->len_octs;
+      break;
+
+      case TRAD_DICT_OPT_NAME:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", attr->name);
+      if ( (*((char **)outvalue) = strdup(attr->name)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
+      case TRAD_DICT_OPT_REF_COUNT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
+      ival = (int)atomic_fetch_add(&attr->ref_count, 0);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ival);
+      *((int *)outvalue) = ival;
+      break;
+
+      case TRAD_DICT_OPT_TYPE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", attr->type);
+      *((uint8_t *)outvalue) = attr->type;
+      break;
+
+      case TRAD_DICT_OPT_TYPE_OCTS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE_OCTS, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", attr->type_octs);
+      *((uint8_t *)outvalue) = attr->type_octs;
+      break;
+
+      case TRAD_DICT_OPT_VEND_ID:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_ID, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", attr->vendor_id);
+      *((uint32_t *)outvalue) = attr->vendor_id;
+      break;
+
+      case TRAD_DICT_OPT_VEND_TYPE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_TYPE, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", attr->vendor_type);
+      *((uint32_t *)outvalue) = attr->vendor_type;
+      break;
+
+      default:
+      return(TRAD_EOPTERR);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
 tinyrad_dict_attr_cmp_key_name(
          const void *                 ptr,
          const void *                 key )

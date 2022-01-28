@@ -48,6 +48,7 @@ tinyrad_dict_default_values
 #
 # dictionary functions
 tinyrad_dict_add_path
+tinyrad_dict_attr_info
 tinyrad_dict_defaults
 tinyrad_dict_destroy
 tinyrad_dict_import
