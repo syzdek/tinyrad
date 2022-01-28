@@ -175,15 +175,16 @@ main(
    if ((our_dict_initialize(opts, &dict)))
       return(1);
 
-   our_verbose(opts, "Attribute format: type/vendor id/vendor type/name");
+   our_verbose(opts, "                                 %4s %9s %7s  %s", "Type", "Vendor", "Vendor", "Name");
+   our_verbose(opts, "                                 %4s %9s %7s  %s",     "",     "ID",   "Type",     "");
 
-   // verifies default attributes in dictionary by name
-   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
+   // verifies test attributes in dictionary by name
+   for(pos = 0; ((test_dict_data_attrs[pos].name)); pos++)
    {
-      def = &tinyrad_dict_default_attrs[pos];
+      def = &test_dict_data_attrs[pos];
       our_verbose(
          opts,
-         "test attribute search by name %4" PRIu8 "/%" PRIu32 "/%" PRIu32 "  %s ...",
+         "test    attribute search by name %4" PRIu8 " %9" PRIu32 " %7" PRIu32 "  %s ...",
          def->type,
          def->vendor_id,
          def->vendor_type,
@@ -204,7 +205,7 @@ main(
       def = &test_dict_data_attrs[pos];
       our_verbose(
          opts,
-         "test attribute search by type %4" PRIu8 "/%" PRIu32 "/%" PRIu32 "  %s ...",
+         "test    attribute search by type %4" PRIu8 " %9" PRIu32 " %7" PRIu32 "  %s ...",
          def->type,
          def->vendor_id,
          def->vendor_type,
@@ -219,13 +220,13 @@ main(
       };
    };
 
-   // verifies test attributes in dictionary by name
-   for(pos = 0; ((test_dict_data_attrs[pos].name)); pos++)
+   // verifies default attributes in dictionary by name
+   for(pos = 0; ((tinyrad_dict_default_attrs[pos].name)); pos++)
    {
-      def = &test_dict_data_attrs[pos];
+      def = &tinyrad_dict_default_attrs[pos];
       our_verbose(
          opts,
-         "default attribute search by name %4" PRIu8 "/%" PRIu32 "/%" PRIu32 "  %s ...",
+         "default attribute search by name %4" PRIu8 " %9" PRIu32 " %7" PRIu32 "  %s ...",
          def->type,
          def->vendor_id,
          def->vendor_type,
@@ -246,7 +247,7 @@ main(
       def = &tinyrad_dict_default_attrs[pos];
       our_verbose(
          opts,
-         "default attribute search by type %4" PRIu8 "/%" PRIu32 "/%" PRIu32 "  %s ...",
+         "default attribute search by type %4" PRIu8 " %9" PRIu32 " %7" PRIu32 "  %s ...",
          def->type,
          def->vendor_id,
          def->vendor_type,
