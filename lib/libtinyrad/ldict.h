@@ -116,8 +116,15 @@ struct _tinyrad_dict_attr
 
 struct _tinyrad_dict_value
 {
+   atomic_intmax_t       ref_count;
    char *                name;
    uint64_t              value;
+   uint32_t              pad32;
+   uint16_t              pad16;
+   uint8_t               pad8;
+   uint8_t               type;
+   uint32_t              vendor_id;
+   uint32_t              vendor_type;
 };
 
 
