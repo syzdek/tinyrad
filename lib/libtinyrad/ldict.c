@@ -226,25 +226,25 @@ tinyrad_dict_value_add(
 
 
 int
-tinyrad_dict_value_cmp_key_name(
-         const void *                 ptr,
-         const void *                 key );
-
-
-int
-tinyrad_dict_value_cmp_obj_name(
-         const void *                  a,
-         const void *                  b );
-
-
-int
 tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
          const void *                 key );
 
 
 int
+tinyrad_dict_value_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key );
+
+
+int
 tinyrad_dict_value_cmp_obj_data(
+         const void *                  a,
+         const void *                  b );
+
+
+int
+tinyrad_dict_value_cmp_obj_name(
          const void *                  a,
          const void *                  b );
 
@@ -1534,17 +1534,6 @@ tinyrad_dict_value_add(
 
 
 int
-tinyrad_dict_value_cmp_key_name(
-         const void *                 ptr,
-         const void *                 key )
-{
-   const TinyRadDictValue * const * obj = ptr;
-   const char *                     dat = key;
-   return(strcasecmp( (*obj)->name, dat));
-}
-
-
-int
 tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
          const void *                 key )
@@ -1558,13 +1547,13 @@ tinyrad_dict_value_cmp_key_data(
 
 
 int
-tinyrad_dict_value_cmp_obj_name(
-         const void *                 a,
-         const void *                 b )
+tinyrad_dict_value_cmp_key_name(
+         const void *                 ptr,
+         const void *                 key )
 {
-   const TinyRadDictValue * const * x = a;
-   const TinyRadDictValue * const * y = b;
-   return(strcasecmp( (*x)->name, (*y)->name));
+   const TinyRadDictValue * const * obj = ptr;
+   const char *                     dat = key;
+   return(strcasecmp( (*obj)->name, dat));
 }
 
 
@@ -1578,6 +1567,17 @@ tinyrad_dict_value_cmp_obj_data(
    if ((*x)->data == (*y)->data)
       return(0);
    return( ((*x)->data < (*y)->data) ? -1 : 1 );
+}
+
+
+int
+tinyrad_dict_value_cmp_obj_name(
+         const void *                 a,
+         const void *                 b )
+{
+   const TinyRadDictValue * const * x = a;
+   const TinyRadDictValue * const * y = b;
+   return(strcasecmp( (*x)->name, (*y)->name));
 }
 
 
