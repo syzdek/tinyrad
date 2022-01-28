@@ -1900,8 +1900,8 @@ tinyrad_dict_vendor_info(
 
    TinyRadDebugTrace();
 
-   assert(vendor    != NULL);
-   assert(outvalue  != NULL);
+   if ( (!(vendor)) || (!(outvalue)) )
+      return(TRAD_EINVAL);
 
    // get attribute options
    switch(param)
@@ -1939,7 +1939,7 @@ tinyrad_dict_vendor_info(
       break;
 
       default:
-      return(TRAD_EOPTERR);
+      return(TRAD_EINVAL);
    };
 
    return(TRAD_SUCCESS);
