@@ -733,7 +733,7 @@ tinyrad_dict_attr_info(
          int                           param,
          void *                        outvalue )
 {
-   int      ival;
+   unsigned   uval;
 
    TinyRadDebugTrace();
 
@@ -771,9 +771,9 @@ tinyrad_dict_attr_info(
 
       case TRAD_DICT_OPT_REF_COUNT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      ival = (int)atomic_fetch_add(&attr->ref_count, 0);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ival);
-      *((int *)outvalue) = ival;
+      uval = (unsigned)atomic_fetch_add(&attr->ref_count, 0);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
+      *((unsigned *)outvalue) = uval;
       break;
 
       case TRAD_DICT_OPT_TYPE:
@@ -1614,9 +1614,9 @@ tinyrad_dict_value_info(
 
       //case TRAD_DICT_OPT_REF_COUNT:
       //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      //ival = (int)atomic_fetch_add(&value->ref_count, 0);
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ival);
-      //*((int *)outvalue) = ival;
+      //ival = (unsigned)atomic_fetch_add(&value->ref_count, 0);
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
+      //*((unsigned *)outvalue) = uval;
       //break;
 
       //case TRAD_DICT_OPT_TYPE:
@@ -1872,7 +1872,7 @@ tinyrad_dict_vendor_info(
          int                           param,
          void *                        outvalue )
 {
-   int      ival;
+   unsigned    uval;
 
    TinyRadDebugTrace();
 
@@ -1897,9 +1897,9 @@ tinyrad_dict_vendor_info(
 
       case TRAD_DICT_OPT_REF_COUNT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      ival = (int)atomic_fetch_add(&vendor->ref_count, 0);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ival);
-      *((int *)outvalue) = ival;
+      uval = (unsigned)atomic_fetch_add(&vendor->ref_count, 0);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
+      *((unsigned *)outvalue) = uval;
       break;
 
       case TRAD_DICT_OPT_VEND_ID:
