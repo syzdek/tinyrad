@@ -294,6 +294,15 @@ tinyrad_dict_attr_info(
          void *                        outvalue );
 
 
+_TINYRAD_F TinyRadDictAttr *
+tinyrad_dict_attr_lookup(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint8_t                      type,
+         uint32_t                     vendor_id,
+         uint32_t                     vendor_type );
+
+
 _TINYRAD_F int
 tinyrad_dict_defaults(
          TinyRadDict *                 dict,
