@@ -238,7 +238,7 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 int
-tinyrad_dict_value_cmp_key_value(
+tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
          const void *                 key );
 
@@ -1545,7 +1545,7 @@ tinyrad_dict_value_cmp_key_name(
 
 
 int
-tinyrad_dict_value_cmp_key_value(
+tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
          const void *                 key )
 {
@@ -1691,7 +1691,7 @@ tinyrad_dict_value_lookup(
       key      = &num;
       len      = attr->values_numeric_len;
       list     = attr->values_numeric;
-      compar   = &tinyrad_dict_value_cmp_key_value;
+      compar   = &tinyrad_dict_value_cmp_key_data;
    };
 
    res = tinyrad_array_get(list, len, width, key, opts, compar);
