@@ -244,7 +244,7 @@ tinyrad_dict_value_cmp_key_data(
 
 
 int
-tinyrad_dict_value_cmp_obj_value(
+tinyrad_dict_value_cmp_obj_data(
          const void *                  a,
          const void *                  b );
 
@@ -1522,7 +1522,7 @@ tinyrad_dict_value_add(
    // save value by value
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    width    = sizeof(TinyRadDictValue *);
-   compar   = &tinyrad_dict_value_cmp_obj_value;
+   compar   = &tinyrad_dict_value_cmp_obj_data;
    if ((rc = tinyrad_array_add((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
@@ -1569,7 +1569,7 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 int
-tinyrad_dict_value_cmp_obj_value(
+tinyrad_dict_value_cmp_obj_data(
          const void *                 a,
          const void *                 b )
 {
