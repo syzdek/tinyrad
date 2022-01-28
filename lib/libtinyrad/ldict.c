@@ -562,7 +562,7 @@ tinyrad_dict_attr_add(
    size = sizeof(TinyRadDictAttr *) * (dict->attrs_type_len+1);
    if ((ptr = realloc(dict->attrs_type, size)) == NULL)
       return(TRAD_ENOMEM);
-   dict->attrs_type= ptr;
+   dict->attrs_type = ptr;
 
    // resize attribute lists in vendor
    if ((vendor))
@@ -651,12 +651,16 @@ tinyrad_dict_attr_cmp_key_type(
 {
    const TinyRadDictAttr * const *     obj = ptr;
    const TinyRadDictAttrType *         dat = key;
+
    if ((*obj)->type != dat->type)
       return( ((*obj)->type < dat->type) ? -1 : 1 );
+
    if ((*obj)->vendor_id != dat->vendor_id)
       return( ((*obj)->vendor_id < dat->vendor_id) ? -1 : 1 );
+
    if ((*obj)->vendor_type != dat->vendor_type)
       return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
+
    return(0);
 }
 
@@ -679,12 +683,16 @@ tinyrad_dict_attr_cmp_obj_type(
 {
    const TinyRadDictAttr * const * x = a;
    const TinyRadDictAttr * const * y = b;
+
    if ((*x)->type != (*y)->type)
       return( ((*x)->type < (*y)->type) ? -1 : 1 );
+
    if ((*x)->vendor_id != (*y)->vendor_id)
       return( ((*x)->vendor_id < (*y)->vendor_id) ? -1 : 1 );
+
    if ((*x)->vendor_type != (*y)->vendor_type)
       return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
+
    return(0);
 }
 
