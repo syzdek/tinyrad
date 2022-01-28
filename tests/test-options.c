@@ -84,9 +84,9 @@ int main( int argc, char * argv[] )
    int                  opt;
    int                  c;
    int                  opt_index;
-   int                  opts;
    int                  rc;
    int                  debug;
+   unsigned             opts;
    char *               str;
    TinyRad *            tr;
    struct timeval       tv;

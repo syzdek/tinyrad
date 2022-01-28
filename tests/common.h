@@ -70,12 +70,12 @@
 #endif
 
 
-#define TRAD_TEST_VERBOSE     0x0001
-#define TRAD_TEST_RESOLVE     0x0002
-#define TRAD_TEST_DESC2STR    0x0004
-#define TRAD_TEST_PARSE       0x0008
-#define TRAD_TEST_CHECK       0x0010
-#define TRAD_TEST_QUIET       0x0020
+#define TRAD_TEST_VERBOSE     0x0001UL
+#define TRAD_TEST_RESOLVE     0x0002UL
+#define TRAD_TEST_DESC2STR    0x0004UL
+#define TRAD_TEST_PARSE       0x0008UL
+#define TRAD_TEST_CHECK       0x0010UL
+#define TRAD_TEST_QUIET       0x0020UL
 
 
 /////////////////
@@ -105,8 +105,8 @@ extern const char * test_urldesc_strs_resolvable[];
 //-------------------//
 #pragma mark URLDesc functions
 
-int our_urldesc_test_bad(const char * url, int opts);
-int our_urldesc_test_good(const char * url, int opts);
+int our_urldesc_test_bad(const char * url, unsigned opts);
+int our_urldesc_test_good(const char * url, unsigned opts);
 
 
 //---------------//
@@ -114,9 +114,9 @@ int our_urldesc_test_good(const char * url, int opts);
 //---------------//
 #pragma mark log functions
 
-int  our_error(int opts, char ** errs, const char * fmt, ...);
-void our_print(int opts, const char * fmt, ...);
-void our_verbose(int opts, const char * fmt, ...);
+int  our_error(unsigned opts, char ** errs, const char * fmt, ...);
+void our_print(unsigned opts, const char * fmt, ...);
+void our_verbose(unsigned opts, const char * fmt, ...);
 
 
 //----------------//

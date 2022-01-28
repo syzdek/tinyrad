@@ -69,11 +69,11 @@
 
 #define MY_LIST_LEN  256
 
-#define MY_OBJ_NAME     0x01000000
-#define MY_OBJ_VALUE    0x02000000
-#define MY_KEY_NAME     0x04000000
-#define MY_KEY_VALUE    0x08000000
-#define MY_MASK         0x0f000000
+#define MY_OBJ_NAME     0x01000000UL
+#define MY_OBJ_VALUE    0x02000000UL
+#define MY_KEY_NAME     0x04000000UL
+#define MY_KEY_VALUE    0x08000000UL
+#define MY_MASK         0x0f000000UL
 
 
 //////////////////
@@ -148,14 +148,14 @@ my_compare_obj_value(
 
 void
 my_compar_opts(
-         int                           opts,
+         unsigned                      opts,
          const char **                 compar_namep,
          int (**comparp)(const void *, const void *) );
 
 
 int
 my_test_insert(
-         int                           opts,
+         unsigned                      opts,
          MyData ***                    listp,
          size_t *                      list_lenp,
          MyData **                     src,
@@ -166,7 +166,7 @@ my_test_insert(
 
 int
 my_test_remove(
-         int                           opts,
+         unsigned                      opts,
          MyData **                     list,
          size_t *                      list_lenp,
          MyData **                     src,
@@ -177,7 +177,7 @@ my_test_remove(
 
 int
 my_test_search(
-         int                           opts,
+         unsigned                      opts,
          MyData **                     list,
          size_t                        len );
 
@@ -194,7 +194,7 @@ int main( int argc, char * argv[] )
    int                  opt;
    int                  c;
    int                  opt_index;
-   int                  opts;
+   unsigned             opts;
    unsigned             merge;
    size_t               pos;
    size_t               len;
@@ -246,6 +246,8 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'q':
+         opts |=  TRAD_TEST_QUIET;
+         opts &= ~TRAD_TEST_VERBOSE;
          break;
 
          case 'V':
@@ -253,7 +255,8 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'v':
-         opts |= TRAD_TEST_VERBOSE;
+         opts |=  TRAD_TEST_VERBOSE;
+         opts &= ~TRAD_TEST_QUIET;
          break;
 
          case '?':
@@ -539,7 +542,7 @@ int my_compare_obj_value(const void * a, const void *b)
 
 void
 my_compar_opts(
-         int                           opts,
+         unsigned                      opts,
          const char **                 compar_namep,
           int (**comparp)(const void *, const void *) )
 {
@@ -577,7 +580,7 @@ my_compar_opts(
 
 int
 my_test_insert(
-         int                           opts,
+         unsigned                      opts,
          MyData ***                    listp,
          size_t *                      list_lenp,
          MyData **                     src,
@@ -675,7 +678,7 @@ my_test_insert(
 
 int
 my_test_remove(
-         int                           opts,
+         unsigned                      opts,
          MyData **                     list,
          size_t *                      list_lenp,
          MyData **                     src,
@@ -768,7 +771,7 @@ my_test_remove(
 
 int
 my_test_search(
-         int                           opts,
+         unsigned                      opts,
          MyData **                     list,
          size_t                        len )
 {

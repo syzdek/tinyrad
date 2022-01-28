@@ -382,7 +382,7 @@ const char * test_urldesc_strs_resolvable[] =
 //////////////////
 #pragma mark - Prototypes
 
-int our_urldesc_test(const char * url, int opts);
+int our_urldesc_test(const char * url, unsigned opts);
 
 
 /////////////////
@@ -397,7 +397,7 @@ int our_urldesc_test(const char * url, int opts);
 //-------------------//
 #pragma mark URLDesc functions
 
-int our_urldesc_test(const char * url, int opts)
+int our_urldesc_test(const char * url, unsigned opts)
 {
    char *            str;
    TinyRadURLDesc *  trudp;
@@ -470,7 +470,7 @@ int our_urldesc_test(const char * url, int opts)
 }
 
 
-int our_urldesc_test_bad(const char * url, int opts)
+int our_urldesc_test_bad(const char * url, unsigned opts)
 {
    if ((opts & TRAD_TEST_VERBOSE))
       printf("testing bad url: \"%s\" ...\n", url);
@@ -480,7 +480,7 @@ int our_urldesc_test_bad(const char * url, int opts)
 }
 
 
-int our_urldesc_test_good(const char * url, int opts)
+int our_urldesc_test_good(const char * url, unsigned opts)
 {
    if ((opts & TRAD_TEST_VERBOSE))
       printf("testing good url: \"%s\" ...\n", url);
@@ -495,7 +495,7 @@ int our_urldesc_test_good(const char * url, int opts)
 //---------------//
 #pragma mark log functions
 
-int our_error(int opts, char ** errs, const char * fmt, ...)
+int our_error(unsigned opts, char ** errs, const char * fmt, ...)
 {
    int     pos;
    va_list args;
@@ -517,7 +517,7 @@ int our_error(int opts, char ** errs, const char * fmt, ...)
 }
 
 
-void our_print(int opts, const char * fmt, ...)
+void our_print(unsigned opts, const char * fmt, ...)
 {
    va_list args;
    if ((opts & TRAD_TEST_QUIET))
@@ -531,7 +531,7 @@ void our_print(int opts, const char * fmt, ...)
 }
 
 
-void our_verbose(int opts, const char * fmt, ...)
+void our_verbose(unsigned opts, const char * fmt, ...)
 {
    va_list args;
    if (!(opts & TRAD_TEST_VERBOSE))

@@ -92,7 +92,7 @@ int main( int argc, char * argv[] )
    int                  opt;
    int                  c;
    int                  opt_index;
-   int                  opts;
+   unsigned             opts;
    size_t               pos;
 
    // getopt options
@@ -142,6 +142,8 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'q':
+         opts |=  TRAD_TEST_QUIET;
+         opts &= ~TRAD_TEST_VERBOSE;
          break;
 
          case 'V':
@@ -149,7 +151,8 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'v':
-         opts |= TRAD_TEST_VERBOSE;
+         opts |=  TRAD_TEST_VERBOSE;
+         opts &= ~TRAD_TEST_QUIET;
          break;
 
          case '?':
