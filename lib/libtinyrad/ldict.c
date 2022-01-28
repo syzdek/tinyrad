@@ -1591,6 +1591,66 @@ tinyrad_dict_value_destroy(
 }
 
 
+int
+tinyrad_dict_value_info(
+         TinyRadDictValue *            value,
+         int                           param,
+         void *                        outvalue )
+{
+   TinyRadDebugTrace();
+
+   assert(value     != NULL);
+   assert(outvalue  != NULL);
+
+   // get attribute options
+   switch(param)
+   {
+      case TRAD_DICT_OPT_NAME:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", value->name);
+      if ( (*((char **)outvalue) = strdup(value->name)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
+      //case TRAD_DICT_OPT_REF_COUNT:
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
+      //ival = (int)atomic_fetch_add(&value->ref_count, 0);
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ival);
+      //*((int *)outvalue) = ival;
+      //break;
+
+      //case TRAD_DICT_OPT_TYPE:
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", value->type);
+      //*((uint8_t *)outvalue) = value->type;
+      //break;
+
+      case TRAD_DICT_OPT_VALUE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VALUE, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu64 "\"", value->value);
+      *((uint64_t *)outvalue) = value->value;
+      break;
+
+      //case TRAD_DICT_OPT_VEND_ID:
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_ID, outvalue )", __func__);
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", value->vendor_id);
+      //*((uint32_t *)outvalue) = value->vendor_id;
+      //break;
+
+      //case TRAD_DICT_OPT_VEND_TYPE:
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_TYPE, outvalue )", __func__);
+      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", value->vendor_type);
+      //*((uint32_t *)outvalue) = value->vendor_type;
+      //break;
+
+      default:
+      return(TRAD_EOPTERR);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
          TinyRadDictAttr *            attr,
