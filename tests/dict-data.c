@@ -40,6 +40,7 @@
 #pragma mark - Headers
 
 #include <stddef.h>
+#include <stdio.h>
 #include <assert.h>
 
 #include "common.h"
@@ -189,7 +190,7 @@ our_dict_diag_attr(
       tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_TYPE_OCTS,    &attr_type_octets);
       tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_LEN_OCTS,     &attr_len_octets);
       tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_REF_COUNT,    &attr_ref_count);
-      our_verbose(opts, "Attribute Definition");
+      our_verbose(opts, "Attribute Object");
       our_verbose(opts, "   Name:             %s",       (((attr_name)) ? attr_name : ""));
       our_verbose(opts, "   Type:             %" PRIu8,  attr_type);
       our_verbose(opts, "   Vendor ID:        %" PRIu32, attr_vendor_id);
