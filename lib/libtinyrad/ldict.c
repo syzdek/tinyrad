@@ -722,7 +722,7 @@ tinyrad_dict_attr_destroy(
 }
 
 
-_TINYRAD_F TinyRadDictAttr *
+TinyRadDictAttr *
 tinyrad_dict_attr_get(
          TinyRadDict *                 dict,
          const char *                  name,
