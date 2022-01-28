@@ -189,9 +189,10 @@ main(
          def->vendor_type,
          def->name
       );
-      attr = tinyrad_dict_attr_lookup(dict, def->name, 0, 0, 0);
+      attr = tinyrad_dict_attr_get(dict, def->name, 0, NULL, 0, 0);
       if ((my_verify_attr(opts, def, attr)))
       {
+         tinyrad_dict_attr_destroy(attr);
          tinyrad_dict_destroy(dict);
          return(1);
       };
@@ -209,9 +210,10 @@ main(
          def->vendor_type,
          def->name
       );
-      attr = tinyrad_dict_attr_lookup(dict, NULL, (uint8_t)def->type, def->vendor_id, def->vendor_type);
+      attr = tinyrad_dict_attr_get(dict, NULL, (uint8_t)def->type, NULL, def->vendor_id, def->vendor_type);
       if ((my_verify_attr(opts, def, attr)))
       {
+         tinyrad_dict_attr_destroy(attr);
          tinyrad_dict_destroy(dict);
          return(1);
       };
@@ -229,9 +231,10 @@ main(
          def->vendor_type,
          def->name
       );
-      attr = tinyrad_dict_attr_lookup(dict, def->name, 0, 0, 0);
+      attr = tinyrad_dict_attr_get(dict, def->name, 0, NULL, 0, 0);
       if ((my_verify_attr(opts, def, attr)))
       {
+         tinyrad_dict_attr_destroy(attr);
          tinyrad_dict_destroy(dict);
          return(1);
       };
@@ -249,9 +252,10 @@ main(
          def->vendor_type,
          def->name
       );
-      attr = tinyrad_dict_attr_lookup(dict, NULL, (uint8_t)def->type, def->vendor_id, def->vendor_type);
+      attr = tinyrad_dict_attr_get(dict, NULL, (uint8_t)def->type, NULL, def->vendor_id, def->vendor_type);
       if ((my_verify_attr(opts, def, attr)))
       {
+         tinyrad_dict_attr_destroy(attr);
          tinyrad_dict_destroy(dict);
          return(1);
       };

@@ -142,11 +142,6 @@ tinyrad_dict_attr_cmp_obj_type(
          const void *                 b );
 
 
-void
-tinyrad_dict_attr_destroy(
-         TinyRadDictAttr *             attr );
-
-
 //----------------------------//
 // dictionary import functions //
 //----------------------------//
@@ -724,6 +719,26 @@ tinyrad_dict_attr_destroy(
    memset(attr, 0, sizeof(TinyRadDictAttr));
    free(attr);
    return;
+}
+
+
+_TINYRAD_F TinyRadDictAttr *
+tinyrad_dict_attr_get(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         TinyRadDictVendor *           vendor,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type )
+{
+   TinyRadDictAttr * attr;
+   TinyRadDebugTrace();
+   assert(dict   != NULL);
+   vendor_id = ((vendor)) ? vendor->id : vendor_id;
+   if ((attr = tinyrad_dict_attr_lookup(dict, name, type, vendor_id, vendor_type)) == NULL)
+      return(NULL);
+   atomic_fetch_add(&attr->ref_count, 1);
+   return(attr);
 }
 
 

@@ -287,20 +287,26 @@ tinyrad_dict_add_path(
          const char *                  path );
 
 
+_TINYRAD_F void
+tinyrad_dict_attr_destroy(
+         TinyRadDictAttr *             attr );
+
+
+_TINYRAD_F TinyRadDictAttr *
+tinyrad_dict_attr_get(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         TinyRadDictVendor *           vendor,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type );
+
+
 _TINYRAD_F int
 tinyrad_dict_attr_info(
          TinyRadDictAttr *             attr,
          int                           param,
          void *                        outvalue );
-
-
-_TINYRAD_F TinyRadDictAttr *
-tinyrad_dict_attr_lookup(
-         TinyRadDict *                dict,
-         const char *                 name,
-         uint8_t                      type,
-         uint32_t                     vendor_id,
-         uint32_t                     vendor_type );
 
 
 _TINYRAD_F int
