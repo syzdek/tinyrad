@@ -206,6 +206,51 @@ our_dict_diag_attr(
 }
 
 
+void
+our_dict_diag_vendor(
+         unsigned                      opts,
+         const TinyRadDictVendorDef *  def,
+         TinyRadDictVendor *           vendor )
+{
+   char *      vendor_name;
+   uint8_t     vendor_type_octets;
+   uint8_t     vendor_len_octets;
+   uint32_t    vendor_id;
+   unsigned    vendor_ref_count;
+
+   if ((def))
+   {
+      our_verbose(opts, "Vendor Definition");
+      our_verbose(opts, "   Name:             %s",       def->name);
+      our_verbose(opts, "   Vendor ID:        %" PRIu32, def->vendor_id);
+      our_verbose(opts, "   Vendor Type:      %" PRIu32, def->vendor_type_octs);
+      our_verbose(opts, "   Data Type:        %" PRIu32, def->vendor_len_octs);
+   };
+
+   if ((vendor))
+   {
+      vendor_name          = NULL;
+      vendor_id            = 0;
+      vendor_type_octets   = 0;
+      vendor_len_octets    = 0;
+      vendor_ref_count     = 0;
+      tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_NAME,         &vendor_name);
+      tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_VEND_ID,      &vendor_id);
+      tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_TYPE_OCTS,    &vendor_type_octets);
+      tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_LEN_OCTS,     &vendor_len_octets);
+      tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_REF_COUNT,    &vendor_ref_count);
+      our_verbose(opts, "Vendor Object");
+      our_verbose(opts, "   Name:             %s",       (((vendor_name)) ? vendor_name : ""));
+      our_verbose(opts, "   Vendor ID:        %" PRIu32, vendor_id);
+      our_verbose(opts, "   Type Octets:      %" PRIu32, vendor_type_octets);
+      our_verbose(opts, "   Length Octets:    %" PRIu32, vendor_len_octets);
+      our_verbose(opts, "   Reference Count:  %u",       vendor_ref_count);
+   };
+
+   return;
+}
+
+
 int
 our_dict_initialize(
          unsigned                      opts,

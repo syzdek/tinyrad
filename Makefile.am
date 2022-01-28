@@ -90,6 +90,7 @@ EXTRA_PROGRAMS				= examples/socket-example \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
 					  tests/test-dict-attrs \
+					  tests/test-dict-vendors \
 					  tests/test-options \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
@@ -112,6 +113,7 @@ TESTS					= \
 					  tests/test-array-queue \
 					  tests/test-dict-attrs \
 					  tests/test-dict-defaults.sh \
+					  tests/test-dict-vendors \
 					  tests/test-options \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
@@ -348,6 +350,17 @@ tests_test_dict_attrs_SOURCES		= include/tinyrad.h \
 					  tests/common.c tests/common.h \
 					  tests/dict-data.c tests/dict-data.h \
 					  tests/test-dict-attrs.c
+
+
+# macros for tests/tinyrad-dict-vendors
+tests_test_dict_vendors_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_dict_vendors_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_dict_vendors_SOURCES		= include/tinyrad.h \
+					  include/tinyrad_common.h \
+					  include/tinyrad_compat.h \
+					  tests/common.c tests/common.h \
+					  tests/dict-data.c tests/dict-data.h \
+					  tests/test-dict-vendors.c
 
 
 # macros for tests/tinyrad-options
