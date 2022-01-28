@@ -333,6 +333,13 @@ tinyrad_dict_value_info(
          void *                        outvalue );
 
 
+_TINYRAD_F int
+tinyrad_dict_vendor_info(
+         TinyRadDictVendor *           vendor,
+         int                           option,
+         void *                        outvalue );
+
+
 //------------------//
 // error functions //
 //------------------//
