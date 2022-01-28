@@ -157,7 +157,7 @@
 #define TRAD_DICT_OPT_LEN_OCTS            7  // used by TinyRadDictVendor and TinyRadDictAttr
 #define TRAD_DICT_OPT_DATA_TYPE           8  // used by TinyRadDictAttr
 #define TRAD_DICT_OPT_FLAGS               9  // used by TinyRadDictAttr
-#define TRAD_DICT_OPT_VALUE              10  // used by TinyRadDictValue
+#define TRAD_DICT_OPT_DATA               10  // used by TinyRadDictValue
 
 // library debug levels
 #define TRAD_DEBUG_NONE             0

@@ -1634,8 +1634,8 @@ tinyrad_dict_value_info(
       //*((uint8_t *)outvalue) = value->type;
       //break;
 
-      case TRAD_DICT_OPT_VALUE:
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VALUE, outvalue )", __func__);
+      case TRAD_DICT_OPT_DATA:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_DATA, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu64 "\"", value->data);
       *((uint64_t *)outvalue) = value->data;
       break;
