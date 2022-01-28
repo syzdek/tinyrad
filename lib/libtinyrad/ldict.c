@@ -1419,7 +1419,7 @@ tinyrad_dict_print_attribute(
       if (!(values))
          printf("\n# %s Values\n", attr->name);
       value = attr->values_numeric[pos];
-      printf("VALUE         %-31s %-21s %" PRIu64 "\n", attr->name, value->name, value->value );
+      printf("VALUE         %-31s %-21s %" PRIu64 "\n", attr->name, value->name, value->data );
       values++;
    };
    if ((values))
@@ -1502,7 +1502,7 @@ tinyrad_dict_value_add(
    if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
       return(TRAD_ENOMEM);
    memset(value, 0, sizeof(TinyRadDictValue));
-   value->value = numeral;
+   value->data = numeral;
    if ((value->name = strdup(name)) == NULL)
    {
       tinyrad_dict_value_destroy(value);
@@ -1551,9 +1551,9 @@ tinyrad_dict_value_cmp_key_value(
 {
    const TinyRadDictValue * const * obj = ptr;
    const uint64_t *                 dat = key;
-   if ((*obj)->value == *dat)
+   if ((*obj)->data == *dat)
       return(0);
-   return( ((*obj)->value < *dat) ? -1 : 1 );
+   return( ((*obj)->data < *dat) ? -1 : 1 );
 }
 
 
@@ -1575,9 +1575,9 @@ tinyrad_dict_value_cmp_obj_value(
 {
    const TinyRadDictValue * const * x = a;
    const TinyRadDictValue * const * y = b;
-   if ((*x)->value == (*y)->value)
+   if ((*x)->data == (*y)->data)
       return(0);
-   return( ((*x)->value < (*y)->value) ? -1 : 1 );
+   return( ((*x)->data < (*y)->data) ? -1 : 1 );
 }
 
 
@@ -1636,8 +1636,8 @@ tinyrad_dict_value_info(
 
       case TRAD_DICT_OPT_VALUE:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VALUE, outvalue )", __func__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu64 "\"", value->value);
-      *((uint64_t *)outvalue) = value->value;
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu64 "\"", value->data);
+      *((uint64_t *)outvalue) = value->data;
       break;
 
       //case TRAD_DICT_OPT_VEND_ID:

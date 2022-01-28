@@ -118,7 +118,7 @@ struct _tinyrad_dict_value
 {
    atomic_intmax_t       ref_count;
    char *                name;
-   uint64_t              value;
+   uint64_t              data;
    uint32_t              pad32;
    uint16_t              pad16;
    uint8_t               pad8;
