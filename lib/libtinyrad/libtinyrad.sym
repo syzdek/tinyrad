@@ -59,8 +59,9 @@ tinyrad_dict_initialize
 tinyrad_dict_print
 tinyrad_dict_value_info
 tinyrad_dict_value_lookup
+tinyrad_dict_vendor_destroy
+tinyrad_dict_vendor_get
 tinyrad_dict_vendor_info
-tinyrad_dict_vendor_lookup
 #
 # error functions
 tinyrad_strerror

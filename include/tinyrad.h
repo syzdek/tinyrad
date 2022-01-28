@@ -355,18 +355,23 @@ tinyrad_dict_value_lookup(
          uint64_t                     num );
 
 
+_TINYRAD_F void
+tinyrad_dict_vendor_destroy(
+         TinyRadDictVendor *           vendor );
+
+
+_TINYRAD_F TinyRadDictVendor *
+tinyrad_dict_vendor_get(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     vendor_id );
+
+
 _TINYRAD_F int
 tinyrad_dict_vendor_info(
          TinyRadDictVendor *           vendor,
          int                           option,
          void *                        outvalue );
-
-
-_TINYRAD_F TinyRadDictVendor *
-tinyrad_dict_vendor_lookup(
-         TinyRadDict *                dict,
-         const char *                 name,
-         uint32_t                     id );
 
 
 //------------------//

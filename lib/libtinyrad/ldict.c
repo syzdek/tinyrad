@@ -293,11 +293,6 @@ tinyrad_dict_vendor_cmp_obj_name(
          const void *                  b );
 
 
-void
-tinyrad_dict_vendor_destroy(
-         TinyRadDictVendor *           vendor );
-
-
 /////////////////
 //             //
 //  Variables  //
@@ -1878,6 +1873,21 @@ tinyrad_dict_vendor_destroy(
    free(vendor);
 
    return;
+}
+
+
+TinyRadDictVendor *
+tinyrad_dict_vendor_get(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     vendor_id )
+{
+   TinyRadDictVendor * vendor;
+   assert(dict != NULL);
+   if ((vendor = tinyrad_dict_vendor_lookup(dict, name, vendor_id)) == NULL)
+      return(NULL);
+   atomic_fetch_add(&vendor->ref_count, 1);
+   return(vendor);
 }
 
 

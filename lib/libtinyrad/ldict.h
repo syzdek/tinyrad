@@ -133,4 +133,10 @@ tinyrad_dict_attr_lookup(
          uint32_t                     vendor_type );
 
 
+TinyRadDictVendor *
+tinyrad_dict_vendor_lookup(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     id );
+
 #endif /* end of header */
