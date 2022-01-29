@@ -64,6 +64,7 @@ struct _tinyrad_dict
    atomic_intmax_t       ref_count;
    uint32_t              opts;
    uint32_t              pad32;
+   size_t                values_count;
    size_t                attrs_name_len;
    size_t                attrs_type_len;
    size_t                values_name_len;
@@ -119,6 +120,7 @@ struct _tinyrad_dict_value
    atomic_intmax_t       ref_count;
    char *                name;         // value name
    uint64_t              data;         // valu data (i.e the actual value)
+   size_t                order;
 };
 
 

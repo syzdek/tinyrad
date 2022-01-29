@@ -219,6 +219,7 @@ tinyrad_dict_print_vendor(
 
 int
 tinyrad_dict_value_add(
+         TinyRadDict *                 dict,
          TinyRadDictAttr *             attr,
          TinyRadDictValue **           valuep,
          const char *                  name,
@@ -960,7 +961,7 @@ tinyrad_dict_import(
             attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
          if (!(attr))
             return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-         if ((rc = tinyrad_dict_value_add(attr, NULL, value_name, data)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_value_add(dict,attr, NULL, value_name, data)) != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
       };
    };
@@ -1256,7 +1257,7 @@ tinyrad_dict_parse_value(
    if ((ptr[0] != '\0') || (file->argv[3] == ptr))
       return(TRAD_ESYNTAX);
 
-   if ((rc = tinyrad_dict_value_add(attr, NULL, file->argv[2], number)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_value_add(dict, attr, NULL, file->argv[2], number)) != TRAD_SUCCESS)
       return(rc);
 
    return(TRAD_SUCCESS);
@@ -1470,6 +1471,7 @@ tinyrad_dict_print_vendor(
 
 int
 tinyrad_dict_value_add(
+         TinyRadDict *                 dict,
          TinyRadDictAttr *             attr,
          TinyRadDictValue **           valuep,
          const char *                  name,
@@ -1485,6 +1487,7 @@ tinyrad_dict_value_add(
 
    TinyRadDebugTrace();
 
+   assert(dict      != NULL);
    assert(attr      != NULL);
    assert(name      != NULL);
 
@@ -1503,6 +1506,8 @@ tinyrad_dict_value_add(
       return(TRAD_ENOMEM);
    memset(value, 0, sizeof(TinyRadDictValue));
    value->data = numeral;
+   value->order = dict->values_count;
+   dict->values_count++;
    if ((value->name = strdup(name)) == NULL)
    {
       tinyrad_dict_value_destroy(value);
