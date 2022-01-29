@@ -1574,9 +1574,14 @@ tinyrad_dict_value_cmp_obj_data(
 {
    const TinyRadDictValue * const * x = a;
    const TinyRadDictValue * const * y = b;
-   if ((*x)->data == (*y)->data)
-      return(0);
-   return( ((*x)->data < (*y)->data) ? -1 : 1 );
+
+   if ((*x)->data != (*y)->data)
+      return( ((*x)->data < (*y)->data) ? -1 : 1 );
+
+   if ((*x)->order != (*y)->order)
+      return( ((*x)->order < (*y)->order) ? -1 : 1 );
+
+   return(0);
 }
 
 
