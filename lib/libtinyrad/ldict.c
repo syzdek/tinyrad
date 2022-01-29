@@ -1688,7 +1688,7 @@ tinyrad_dict_value_lookup(
       list     = attr->values_name;
       compar   = &tinyrad_dict_value_cmp_key_name;
    } else {
-      key      = &num;
+      key      = &data;
       len      = attr->values_numeric_len;
       list     = attr->values_numeric;
       compar   = &tinyrad_dict_value_cmp_key_data;
