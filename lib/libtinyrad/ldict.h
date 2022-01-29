@@ -66,6 +66,7 @@ struct _tinyrad_dict
    uint32_t              pad32;
    size_t                attrs_count;
    size_t                values_count;
+   size_t                vendors_count;
    size_t                attrs_name_len;
    size_t                attrs_type_len;
    size_t                values_name_len;
@@ -86,6 +87,7 @@ struct _tinyrad_dict
 struct _tinyrad_dict_vendor
 {
    atomic_intmax_t       ref_count;
+   size_t                order;
    char *                name;
    TinyRadDictAttr **    attrs_name;
    TinyRadDictAttr **    attrs_type;

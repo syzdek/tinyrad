@@ -1769,12 +1769,14 @@ tinyrad_dict_vendor_add(
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
+   vendor->order     = dict->vendors_count;
    atomic_init(&vendor->ref_count, 1);
    if ((vendor->name = strdup(name)) == NULL)
    {
       tinyrad_dict_vendor_destroy(vendor);
       return(TRAD_ENOMEM);
    };
+   dict->vendors_count++;
 
    // save value by name
    opts     = TINYRAD_ARRAY_INSERT;
