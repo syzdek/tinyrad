@@ -119,12 +119,6 @@ struct _tinyrad_dict_value
    atomic_intmax_t       ref_count;
    char *                name;         // value name
    uint64_t              data;         // valu data (i.e the actual value)
-   uint32_t              pad32;        // struct padding
-   uint16_t              pad16;        // struct padding
-   uint8_t               pad8;         // struct padding
-   uint8_t               type;         // attribute type of value
-   uint32_t              vendor_id;    // VSA vendor ID (0 if attribute is a vendor-specific attribute)
-   uint32_t              vendor_type;  // VSA vendor type (0 if attribute is a vendor-specific attribute)
 };
 
 
