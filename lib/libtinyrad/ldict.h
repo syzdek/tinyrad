@@ -114,7 +114,6 @@ struct _tinyrad_dict_attr
    TinyRadDictValue **   values_numeric;
 };
 
-
 struct _tinyrad_dict_value
 {
    atomic_intmax_t       ref_count;
