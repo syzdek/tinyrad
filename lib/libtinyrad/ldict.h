@@ -117,9 +117,9 @@ struct _tinyrad_dict_attr
 struct _tinyrad_dict_value
 {
    atomic_intmax_t       ref_count;
+   size_t                order;
    char *                name;         // value name
    uint64_t              data;         // valu data (i.e the actual value)
-   size_t                order;
 };
 
 
