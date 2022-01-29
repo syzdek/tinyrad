@@ -580,11 +580,13 @@ tinyrad_dict_attr_add(
    attr->vendor_type = vendor_type;
    attr->data_type   = datatype;
    attr->flags       = flags;
+   attr->order       = dict->attrs_count;
    if ((attr->name = strdup(name)) == NULL)
    {
       tinyrad_dict_attr_destroy(attr);
       return(TRAD_ENOMEM);
    };
+   dict->attrs_count++;
 
    width = sizeof(TinyRadDictAttr *);
    opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
