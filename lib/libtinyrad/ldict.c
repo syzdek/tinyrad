@@ -1841,9 +1841,14 @@ tinyrad_dict_vendor_cmp_obj_id(
 {
    const TinyRadDictVendor * const * x = a;
    const TinyRadDictVendor * const * y = b;
-   if ((*x)->id == (*y)->id)
-      return(0);
-   return( ((*x)->id < (*y)->id) ? -1 : 1 );
+
+   if ((*x)->id != (*y)->id)
+      return( ((*x)->id < (*y)->id) ? -1 : 1 );
+
+   if ((*x)->order != (*y)->order)
+      return( ((*x)->order < (*y)->order) ? -1 : 1 );
+
+   return(0);
 }
 
 
