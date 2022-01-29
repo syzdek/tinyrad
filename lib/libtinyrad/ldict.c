@@ -689,6 +689,9 @@ tinyrad_dict_attr_cmp_obj_type(
    if ((*x)->vendor_type != (*y)->vendor_type)
       return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
 
+   if ((*x)->order != (*y)->order)
+      return( ((*x)->order < (*y)->order) ? -1 : 1 );
+
    return(0);
 }
 
