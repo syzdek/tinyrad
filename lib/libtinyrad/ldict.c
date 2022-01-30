@@ -668,6 +668,16 @@ tinyrad_dict_attr_cmp_obj_name(
 {
    const TinyRadDictAttr * const * x = a;
    const TinyRadDictAttr * const * y = b;
+
+   if ( (!((*x)->name)) && (!((*y)->name)) )
+      return(0);
+
+   if (!((*x)->name))
+      return(-1);
+
+   if (!((*y)->name))
+      return(1);
+
    return(strcasecmp( (*x)->name, (*y)->name));
 }
 

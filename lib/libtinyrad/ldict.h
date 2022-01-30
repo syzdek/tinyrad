@@ -69,15 +69,13 @@ struct _tinyrad_dict
    size_t                vendors_count;
    size_t                attrs_name_len;
    size_t                attrs_type_len;
-   size_t                values_name_len;
-   size_t                values_data_len;
+   size_t                values_len;
    size_t                vendors_id_len;
    size_t                vendors_name_len;
    size_t                paths_len;
    TinyRadDictAttr **    attrs_name;
    TinyRadDictAttr **    attrs_type;
-   TinyRadDictValue **   values_name;
-   TinyRadDictValue **   values_data;
+   TinyRadDictAttr **    values;
    TinyRadDictVendor **  vendors_name;
    TinyRadDictVendor **  vendors_id;
    char **               paths;
@@ -114,6 +112,7 @@ struct _tinyrad_dict_attr
    uint32_t              flags;
    size_t                values_name_len;
    size_t                values_numeric_len;
+   TinyRadDictAttr *     first;
    TinyRadDictValue **   values_name;
    TinyRadDictValue **   values_numeric;
 };
