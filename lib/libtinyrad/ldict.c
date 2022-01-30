@@ -1879,6 +1879,16 @@ tinyrad_dict_vendor_cmp_obj_name(
 {
    const TinyRadDictVendor * const * x = a;
    const TinyRadDictVendor * const * y = b;
+
+   if ( (!((*x)->name)) && (!((*y)->name)) )
+      return(0);
+
+   if (!((*x)->name))
+      return(-1);
+
+   if (!((*y)->name))
+      return(1);
+
    return(strcasecmp( (*x)->name, (*y)->name));
 }
 
