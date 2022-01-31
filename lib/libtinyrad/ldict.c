@@ -237,6 +237,13 @@ tinyrad_dict_value_add(
          uint64_t                      numeral );
 
 
+TinyRadDictValue *
+tinyrad_dict_value_aalloc(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint64_t                      data );
+
+
 int
 tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
@@ -1598,6 +1605,36 @@ tinyrad_dict_value_add(
       *valuep = value;
 
    return(TRAD_SUCCESS);
+}
+
+
+TinyRadDictValue *
+tinyrad_dict_value_aalloc(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint64_t                      data )
+{
+   TinyRadDictValue *   value;
+
+   assert(dict != NULL);
+   assert(name != NULL);
+
+   if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
+      return(NULL);
+   memset(value, 0, sizeof(TinyRadDictValue));
+   atomic_init(&value->ref_count, 1);
+
+   if ((value->name = strdup(name)) == name)
+   {
+      tinyrad_dict_value_destroy(value);
+      return(NULL);
+   };
+
+   dict->values_count++;
+   value->order   = dict->values_count;
+   value->data    = data;
+
+   return(value);
 }
 
 
