@@ -288,6 +288,15 @@ tinyrad_dict_vendor_add(
          uint8_t                      len_octs );
 
 
+TinyRadDictVendor *
+tinyrad_dict_vendor_alloc(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     id,
+         uint8_t                      type_octs,
+         uint8_t                      len_octs );
+
+
 int
 tinyrad_dict_vendor_cmp_key_id(
          const void *                 a,
@@ -1912,6 +1921,40 @@ tinyrad_dict_vendor_add(
       *vendorp = vendor;
 
    return(0);
+}
+
+
+TinyRadDictVendor *
+tinyrad_dict_vendor_alloc(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint32_t                     id,
+         uint8_t                      type_octs,
+         uint8_t                      len_octs )
+{
+   TinyRadDictVendor *     vendor;
+
+   assert(dict != NULL);
+   assert(name != NULL);
+
+   if ((vendor = malloc(sizeof(TinyRadDictVendor))) == NULL)
+      return(NULL);
+   memset(vendor, 0, sizeof(TinyRadDictVendor));
+   atomic_init(&vendor->ref_count, 1);
+
+   if ((vendor->name = strdup(name)) == NULL)
+   {
+      tinyrad_dict_vendor_destroy(vendor);
+      return(NULL);
+   };
+
+   dict->vendors_count++;
+   vendor->order     = dict->vendors_count;
+   vendor->id        = id;
+   vendor->type_octs = type_octs;
+   vendor->len_octs  = len_octs;
+
+   return(vendor);
 }
 
 
