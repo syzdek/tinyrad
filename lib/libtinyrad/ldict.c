@@ -118,6 +118,17 @@ tinyrad_dict_attr_add(
          uint32_t                      flags );
 
 
+TinyRadDictAttr *
+tinyrad_dict_attr_alloc(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         TinyRadDictVendor *           vendor,
+         uint32_t                      vendor_type,
+         uint8_t                       data_type,
+         uint32_t                      flags );
+
+
 int
 tinyrad_dict_attr_cmp_key_name(
          const void *                 ptr,
@@ -626,6 +637,43 @@ tinyrad_dict_attr_add(
       *attrp = attr;
 
    return(TRAD_SUCCESS);
+}
+
+
+TinyRadDictAttr *
+tinyrad_dict_attr_alloc(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         TinyRadDictVendor *           vendor,
+         uint32_t                      vendor_type,
+         uint8_t                       data_type,
+         uint32_t                      flags )
+{
+   TinyRadDictAttr *    attr;
+
+   if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
+      return(NULL);
+   memset(attr, 0, sizeof(TinyRadDictAttr));
+   atomic_init(&attr->ref_count, 1);
+
+   if ((attr->name = strdup(name)) == NULL)
+   {
+      tinyrad_dict_attr_destroy(attr);
+      return(NULL);
+   };
+
+   dict->attrs_count++;
+   attr->order       = dict->attrs_count;
+   attr->type        = type;
+   attr->data_type   = data_type;
+   attr->flags       = flags;
+   attr->vendor_id   = ((vendor)) ? vendor->id  : 0;
+   attr->vendor_type = ((vendor)) ? vendor_type : 0;
+   attr->len_octs    = ((vendor)) ? vendor->len_octs  : 0;
+   attr->type_octs   = ((vendor)) ? vendor->type_octs : 0;
+
+   return(attr);
 }
 
 
