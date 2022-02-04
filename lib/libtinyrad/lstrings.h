@@ -118,11 +118,6 @@ tinyrad_strings_pop_int(
          char **                       strs );
 
 
-uintmax_t
-tinyrad_strings_pop_uint(
-         char **                       strs );
-
-
 int
 tinyrad_strings_push(
          char ***                      strsp,
