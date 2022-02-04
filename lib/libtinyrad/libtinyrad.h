@@ -45,6 +45,9 @@
 #include <config.h>
 #endif
 
+#include <stddef.h>
+#include <stdint.h>
+#include <stdatomic.h>
 #include <stdio.h>
 #include <assert.h>
 #include <sys/time.h>
@@ -92,6 +95,17 @@
 //              //
 //////////////////
 #pragma mark - Data Types
+
+typedef struct _tinyrad_obj TinyRadObj;
+
+
+struct _tinyrad_obj
+{
+   uint8_t                 magic_header[8];
+   atomic_intptr_t         ref_count;
+   void (*free_func)(void * ptr);
+};
+
 
 struct _tinyrad
 {
