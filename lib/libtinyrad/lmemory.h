@@ -73,8 +73,13 @@ tinyrad_obj_alloc(
          void (*free_func)(void * ptr) );
 
 
+intptr_t
+tinyrad_obj_release(
+         void *                        ptr );
+
+
 void *
 tinyrad_obj_retain(
-         void *                        obj );
+         void *                        ptr );
 
 #endif /* end of header */
