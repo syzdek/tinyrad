@@ -152,7 +152,7 @@ tinyrad_file_error(
    };
 
    // invert errors
-   max = tinyrad_strings_count(msgs);
+   max = tinyrad_strscount(msgs);
    for(pos = 0; (pos < (max >> 1)); pos++)
    {
       ptr             = msgs[pos];

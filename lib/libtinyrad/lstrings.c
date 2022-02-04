@@ -57,7 +57,7 @@
 /// @param[in]  strs          pointer to string array
 /// @return number of strings in array
 size_t
-tinyrad_strings_count(
+tinyrad_strscount(
          char **                       strs )
 {
    size_t count;
@@ -136,7 +136,7 @@ tinyrad_strings_push(
    assert(strsp != NULL);
    assert(str   != NULL);
 
-   count = tinyrad_strings_count(*strsp);
+   count = tinyrad_strscount(*strsp);
 
    // increase size of array
    if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)

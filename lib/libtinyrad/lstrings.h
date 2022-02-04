@@ -63,7 +63,7 @@
 #pragma mark - Prototypes
 
 size_t
-tinyrad_strings_count(
+tinyrad_strscount(
          char **                       strs );
 
 
