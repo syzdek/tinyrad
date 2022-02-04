@@ -92,34 +92,6 @@ tinyrad_strings_free(
 
 /// Appends string to NULL terminated array of strings
 ///
-/// @param[in]  strs          string array
-/// @param[in]  freeit        free string instead of returning it
-/// @return returns error code
-char *
-tinyrad_strings_pop(
-         char **                       strs,
-         int                           freeit )
-{
-   char *      str;
-   size_t      pos;
-   TinyRadDebugTrace();
-   assert(strs != NULL);
-   for(pos = 0; ((strs[pos])); pos++);
-   if (!(pos))
-      return(NULL);
-   str         = strs[pos-1];
-   strs[pos-1] = NULL;
-   if ((freeit))
-   {
-      free(str);
-      return(NULL);
-   };
-   return(str);
-}
-
-
-/// Appends string to NULL terminated array of strings
-///
 /// @param[out] strsp         pointer to string array
 /// @param[in]  str           string to append to array
 /// @return returns error code

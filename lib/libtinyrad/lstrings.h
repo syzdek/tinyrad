@@ -67,12 +67,6 @@ tinyrad_strscount(
          char **                       strs );
 
 
-char *
-tinyrad_strings_pop(
-         char **                       strs,
-         int                           freeit );
-
-
 int
 tinyrad_strings_push(
          char ***                      strsp,
