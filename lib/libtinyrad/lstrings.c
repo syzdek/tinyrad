@@ -69,6 +69,28 @@ tinyrad_strdup(
 }
 
 
+size_t
+tinyrad_strlcat(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize )
+{
+   size_t      pos;
+   size_t      offset;
+   size_t      len;
+   assert(dst     != NULL);
+   assert(src     != NULL);
+   assert(dstsize  > 0);
+   for(pos = 0; ((dst[pos])); pos++);
+   for(offset = 0; ((src[offset])); offset++)
+      if ((pos + offset) < dstsize)
+         dst[pos+offset] = dst[offset];
+   len = offset + pos;
+   dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
+   return(len);
+}
+
+
 char *
 tinyrad_strndup(
          const char *                  s1,
