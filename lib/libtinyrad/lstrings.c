@@ -158,21 +158,6 @@ tinyrad_strings_dup(
 }
 
 
-/// Appends string to NULL terminated array of strings
-///
-/// @param[out] strsp         pointer to string array
-/// @param[in]  str           string to append to array
-/// @return returns error code
-int
-tinyrad_strings_enqueue(
-         char ***                      strsp,
-         const char *                  str )
-{
-   TinyRadDebugTrace();
-   return(tinyrad_strings_push(strsp, str));
-}
-
-
 /// frees NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array

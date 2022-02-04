@@ -89,12 +89,6 @@ tinyrad_strings_dup(
          char ***                      destp );
 
 
-int
-tinyrad_strings_enqueue(
-         char ***                      strsp,
-         const char *                  str );
-
-
 char *
 tinyrad_strings_pop(
          char **                       strs,
