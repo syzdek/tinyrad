@@ -73,11 +73,6 @@ tinyrad_strings_dequeue(
          int                           freeit );
 
 
-intmax_t
-tinyrad_strings_dequeue_int(
-         char **                       strs );
-
-
 uintmax_t
 tinyrad_strings_dequeue_uint(
          char **                       strs );

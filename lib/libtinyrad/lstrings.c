@@ -91,21 +91,6 @@ tinyrad_strings_dequeue(
 }
 
 
-intmax_t
-tinyrad_strings_dequeue_int(
-         char **                       strs )
-{
-   char *      str;
-   intmax_t    i;
-   TinyRadDebugTrace();
-   assert(strs != NULL);
-   str = tinyrad_strings_dequeue(strs, 0);
-   i = (intmax_t)strtoll(str, NULL, 0);
-   free(str);
-   return(i);
-}
-
-
 uintmax_t
 tinyrad_strings_dequeue_uint(
          char **                       strs )
