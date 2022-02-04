@@ -141,16 +141,6 @@ tinyrad_destroy(
 }
 
 
-void
-tinyrad_free(
-         void *                        ptr )
-{
-   TinyRadDebugTrace();
-   free(ptr);
-   return;
-}
-
-
 int
 tinyrad_get_option(
          TinyRad *                     tr,
@@ -578,6 +568,27 @@ tinyrad_set_option_socket_bind_addresses(
 // object functions //
 //------------------//
 #pragma mark object functions
+
+void
+tinyrad_free(
+         void *                        ptr )
+{
+   intptr_t    ref_count;
+   TinyRadDebugTrace();
+   if (tinyrad_verify_is_obj(ptr) == TRAD_NO)
+   {
+      free(ptr);
+      return;
+   };
+   ref_count = atomic_fetch_sub(&((TinyRadObj *)ptr)->ref_count, 1);
+   if (ref_count > 1)
+      return;
+   if (( ((TinyRadObj *)ptr)->free_func ))
+      ((TinyRadObj *)ptr)->free_func(ptr);
+   free(ptr);
+   return;
+}
+
 
 void *
 tinyrad_obj_alloc(
