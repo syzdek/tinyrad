@@ -106,10 +106,4 @@ tinyrad_strings_push(
          const char *                  str );
 
 
-int
-tinyrad_strings_push_int(
-         char ***                      strsp,
-         intmax_t                      i );
-
-
 #endif /* end of header */

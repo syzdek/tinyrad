@@ -260,22 +260,4 @@ tinyrad_strings_push(
 }
 
 
-/// Appends string to NULL terminated array of strings
-///
-/// @param[out] strsp         pointer to string array
-/// @param[in]  i             string to append to array
-/// @return returns error code
-int
-tinyrad_strings_push_int(
-         char ***                      strsp,
-         intmax_t                      i )
-{
-   char str[128];
-   TinyRadDebugTrace();
-   assert(strsp != NULL);
-   snprintf(str, sizeof(str), "%ji", i);
-   return(tinyrad_strings_push(strsp, str));
-}
-
-
 /* end of source */
