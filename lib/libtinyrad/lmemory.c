@@ -626,6 +626,7 @@ tinyrad_verify_is_obj(
          void *                     ptr )
 {
    size_t   pos;
+   TinyRadDebugTrace();
    if (!(ptr))
       return(TRAD_NO);
    for(pos = 0; (pos < 8); pos++)
