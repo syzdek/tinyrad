@@ -581,5 +581,28 @@ tinyrad_set_option_socket_bind_addresses(
 //------------------//
 #pragma mark string functions
 
+size_t
+tinyrad_strlcat(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize )
+{
+   size_t      pos;
+   size_t      offset;
+   size_t      len;
+   assert(dst     != NULL);
+   assert(src     != NULL);
+   assert(dstsize  > 0);
+   for(pos = 0; ((dst[pos])); pos++);
+   for(offset = 0; ((src[offset])); offset++)
+      if ((pos + offset) < dstsize)
+         dst[pos+offset] = dst[offset];
+   len = offset + pos;
+   if (len >= (dstsize-1))
+      dst[dstsize-1] = '\0';
+   return(len);
+}
+
+
 
 /* end of source */
