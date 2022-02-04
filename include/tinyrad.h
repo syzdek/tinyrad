@@ -133,6 +133,9 @@
 #define TRAD_OFF                    0
 #define TRAD_ON                     1
 
+#define TRAD_NO                     0
+#define TRAD_YES                    1
+
 // library options
 #define TRAD_OPT_IPV4                   1
 #define TRAD_OPT_DESC                   2
