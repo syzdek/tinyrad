@@ -69,43 +69,6 @@ tinyrad_strings_count(
 }
 
 
-/// Duplicate array of strings
-///
-/// @param[in]  src           existing array of strings
-/// @param[out] destp         pointer to string new array
-/// @return returns error code
-int
-tinyrad_strings_dup(
-         char **                       src,
-         char ***                      destp )
-{
-   char **     ptr;
-   size_t      count;
-   size_t      pos;
-
-   TinyRadDebugTrace();
-
-   count  = tinyrad_strings_count( src );
-
-   if ((ptr = malloc((count+1) * sizeof(char*))) == NULL)
-      return(TRAD_ENOMEM);
-
-   for(pos = 0; (pos < count); pos++)
-   {
-      if ((ptr[pos] = strdup(src[pos])) == NULL)
-      {
-         tinyrad_strings_free(ptr);
-         return(TRAD_ENOMEM);
-      };
-   };
-   ptr[pos] = NULL;
-
-   *destp = ptr;
-
-   return(TRAD_SUCCESS);
-}
-
-
 /// frees NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array

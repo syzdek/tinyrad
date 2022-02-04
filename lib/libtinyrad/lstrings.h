@@ -67,12 +67,6 @@ tinyrad_strings_count(
          char **                       strs );
 
 
-int
-tinyrad_strings_dup(
-         char **                       src,
-         char ***                      destp );
-
-
 char *
 tinyrad_strings_pop(
          char **                       strs,
