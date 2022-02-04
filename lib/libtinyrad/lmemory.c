@@ -657,7 +657,7 @@ tinyrad_strlcat(
       if ((pos + offset) < dstsize)
          dst[pos+offset] = dst[offset];
    len = offset + pos;
-   dst[((len < (dstsize-1)) ? len : (dstsize-1))] = '\0';
+   dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
    return(len);
 }
 
@@ -675,7 +675,7 @@ tinyrad_strlcpy(
    for(len = 0; ((src[len])); len++)
       if (len < dstsize)
          dst[len] = src[len];
-   dst[((len < (dstsize-1)) ? len : (dstsize-1))] = '\0';
+   dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
    return(len);
 }
 
