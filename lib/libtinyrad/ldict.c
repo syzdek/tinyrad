@@ -326,7 +326,7 @@ tinyrad_dict_vendor_cmp_obj_name(
 
 
 void
-tinyrad_dict_vendor_destroy(
+tinyrad_dict_vendor_free(
          TinyRadDictVendor *          vendor );
 
 
@@ -480,7 +480,11 @@ tinyrad_dict_free(
       free(dict->vendors_name);
    };
    if ((dict->vendors_id))
+   {
+      for(pos = 0; (pos < dict->vendors_id_len); pos++)
+         tinyrad_free(dict->vendors_id[pos]);
       free(dict->vendors_id);
+   };
 
    memset(dict, 0, sizeof(TinyRadDict));
    free(dict);
@@ -1892,7 +1896,7 @@ tinyrad_dict_vendor_add(
    dict->vendors_id = ptr;
 
    // initialize vendor
-   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_destroy)) == NULL)
+   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_free)) == NULL)
       return(TRAD_ENOMEM);
    vendor->id        = id;
    vendor->type_octs = type_octs;
@@ -1900,7 +1904,7 @@ tinyrad_dict_vendor_add(
    vendor->order     = dict->vendors_count;
    if ((vendor->name = strdup(name)) == NULL)
    {
-      tinyrad_dict_vendor_destroy(vendor);
+      tinyrad_dict_vendor_free(vendor);
       return(TRAD_ENOMEM);
    };
    dict->vendors_count++;
@@ -1911,9 +1915,10 @@ tinyrad_dict_vendor_add(
    compar   = &tinyrad_dict_vendor_cmp_obj_name;
    if ((rc = tinyrad_array_add((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
    {
-      tinyrad_dict_vendor_destroy(vendor);
+      tinyrad_dict_vendor_free(vendor);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    };
+   tinyrad_obj_retain(vendor);
 
    // save value by id
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
@@ -1921,8 +1926,8 @@ tinyrad_dict_vendor_add(
    compar   = &tinyrad_dict_vendor_cmp_obj_id;
    if ((rc = tinyrad_array_add((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-
    tinyrad_obj_retain(vendor);
+
    if ((vendorp))
       *vendorp = tinyrad_obj_retain(vendor);
 
@@ -1943,12 +1948,12 @@ tinyrad_dict_vendor_alloc(
    assert(dict != NULL);
    assert(name != NULL);
 
-   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_destroy)) == NULL)
+   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_free)) == NULL)
       return(NULL);
 
    if ((vendor->name = strdup(name)) == NULL)
    {
-      tinyrad_dict_vendor_destroy(vendor);
+      tinyrad_dict_vendor_free(vendor);
       return(NULL);
    };
 
@@ -2029,7 +2034,7 @@ tinyrad_dict_vendor_cmp_obj_name(
 ///
 /// @param[in]  vendor        dictionar vendor reference
 void
-tinyrad_dict_vendor_destroy(
+tinyrad_dict_vendor_free(
          TinyRadDictVendor *          vendor )
 {
    size_t   pos;
@@ -2039,13 +2044,19 @@ tinyrad_dict_vendor_destroy(
    if (!(vendor))
       return;
 
+   if (tinyrad_obj_release(vendor) > 1)
+      return;
+
    if ((vendor->name))
       free(vendor->name);
 
-   for(pos = 0; (pos < vendor->attrs_name_len); pos++)
-      tinyrad_dict_attr_destroy(vendor->attrs_name[pos]);
    if ((vendor->attrs_name))
+   {
+      for(pos = 0; (pos < vendor->attrs_name_len); pos++)
+         tinyrad_dict_attr_destroy(vendor->attrs_name[pos]);
       free(vendor->attrs_name);
+   };
+
    if ((vendor->attrs_type))
       free(vendor->attrs_type);
 
