@@ -70,10 +70,21 @@
 //////////////////
 #pragma mark - Prototypes
 
+//----------------//
+// misc functions //
+//----------------//
+#pragma mark misc functions
+
 int
 tinyrad_set_option_socket_bind_addresses(
          TinyRad *                     tr,
          const char *                  invalue );
+
+
+//------------------//
+// object functions //
+//------------------//
+#pragma mark object functions
 
 
 /////////////////
@@ -82,6 +93,11 @@ tinyrad_set_option_socket_bind_addresses(
 //             //
 /////////////////
 #pragma mark - Functions
+
+//----------------//
+// misc functions //
+//----------------//
+#pragma mark misc functions
 
 /// destroy Tiny RADIUS reference
 ///
@@ -552,5 +568,18 @@ tinyrad_set_option_socket_bind_addresses(
 
    return(TRAD_SUCCESS);
 }
+
+
+//------------------//
+// object functions //
+//------------------//
+#pragma mark object functions
+
+
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
 
 /* end of source */

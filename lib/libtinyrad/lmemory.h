@@ -62,5 +62,16 @@
 //////////////////
 #pragma mark - Prototypes
 
+//------------------//
+// object functions //
+//------------------//
+#pragma mark object functions
+
+
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
 
 #endif /* end of header */
