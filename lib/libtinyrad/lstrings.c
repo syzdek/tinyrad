@@ -188,21 +188,6 @@ tinyrad_strings_enqueue_int(
 }
 
 
-/// Appends string to NULL terminated array of strings
-///
-/// @param[out] strsp         pointer to string array
-/// @param[in]  uint          string to append to array
-/// @return returns error code
-int
-tinyrad_strings_enqueue_uint(
-         char ***                      strsp,
-         uintmax_t                     uint )
-{
-   TinyRadDebugTrace();
-   return(tinyrad_strings_push_uint(strsp, uint));
-}
-
-
 /// frees NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array
