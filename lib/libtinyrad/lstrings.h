@@ -67,6 +67,12 @@ tinyrad_strdup(
          const char *                  s1 );
 
 
+char *
+tinyrad_strndup(
+         const char *                  s1,
+         size_t                        n );
+
+
 int
 tinyrad_strsadd(
          char ***                      strsp,

@@ -679,24 +679,4 @@ tinyrad_strlcpy(
    return(len);
 }
 
-
-char *
-tinyrad_strndup(
-         const char *                  s1,
-         size_t                        n )
-{
-   char *      ptr;
-   size_t      len;
-   if (!(s1))
-      return(NULL);
-   len = strlen(s1);
-   len = (len < n) ? len : n;
-   if ((ptr = malloc(len+2)) == NULL)
-      return(NULL);
-   memcpy(ptr, s1, len);
-   ptr[len+0] = '\0';
-   ptr[len+1] = '\0';
-   return(ptr);
-}
-
 /* end of source */

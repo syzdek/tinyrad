@@ -96,10 +96,4 @@ tinyrad_strlcpy(
          const char * restrict         src,
          size_t                        dstsize );
 
-
-char *
-tinyrad_strndup(
-         const char *                  s1,
-         size_t                        n );
-
 #endif /* end of header */
