@@ -95,11 +95,6 @@ tinyrad_strings_pop(
          int                           freeit );
 
 
-intmax_t
-tinyrad_strings_pop_int(
-         char **                       strs );
-
-
 int
 tinyrad_strings_push(
          char ***                      strsp,

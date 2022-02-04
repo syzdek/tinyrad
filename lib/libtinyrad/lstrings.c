@@ -207,22 +207,6 @@ tinyrad_strings_pop(
 }
 
 
-intmax_t
-tinyrad_strings_pop_int(
-         char **                       strs )
-{
-   intmax_t    i;
-   char *      str;
-   TinyRadDebugTrace();
-   assert(strs != NULL);
-   if ((str = tinyrad_strings_pop(strs, 0)) == NULL)
-      return(0);
-   i = (intmax_t)strtoll(str, NULL, 0);
-   free(str);
-   return(i);
-}
-
-
 /// Appends string to NULL terminated array of strings
 ///
 /// @param[out] strsp         pointer to string array
