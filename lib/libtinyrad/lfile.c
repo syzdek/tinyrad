@@ -50,6 +50,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+#include "lmemory.h"
 #include "lstrings.h"
 #include "lerror.h"
 
@@ -221,7 +222,7 @@ int tinyrad_file_init(
    // fall back to relative path
    if (fullpath[0] == '\0')
    {
-      strncpy(fullpath, path, sizeof(fullpath));
+      tinyrad_strlcpy(fullpath, path, sizeof(fullpath));
       if ((rc = tinyrad_stat(fullpath, &sb, S_IFREG)) != TRAD_SUCCESS)
          return(rc);
    };
