@@ -73,11 +73,6 @@ tinyrad_strings_dequeue(
          int                           freeit );
 
 
-uintmax_t
-tinyrad_strings_dequeue_uint(
-         char **                       strs );
-
-
 int
 tinyrad_strings_dup(
          char **                       src,

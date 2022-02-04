@@ -91,21 +91,6 @@ tinyrad_strings_dequeue(
 }
 
 
-uintmax_t
-tinyrad_strings_dequeue_uint(
-         char **                       strs )
-{
-   char *      str;
-   uintmax_t   uint;
-   TinyRadDebugTrace();
-   assert(strs != NULL);
-   str = tinyrad_strings_dequeue(strs, 0);
-   uint = (uintmax_t)strtoull(str, NULL, 0);
-   free(str);
-   return(uint);
-}
-
-
 /// Duplicate array of strings
 ///
 /// @param[in]  src           existing array of strings
