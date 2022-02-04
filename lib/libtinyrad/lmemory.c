@@ -72,10 +72,10 @@
 //////////////////
 #pragma mark - Prototypes
 
-//----------------//
-// misc functions //
-//----------------//
-#pragma mark misc functions
+//-------------------//
+// TinyRad functions //
+//-------------------//
+#pragma mark TinyRad functions
 
 void
 tinyrad_destroy(
@@ -105,10 +105,10 @@ tinyrad_verify_is_obj(
 /////////////////
 #pragma mark - Functions
 
-//----------------//
-// misc functions //
-//----------------//
-#pragma mark misc functions
+//-------------------//
+// TinyRad functions //
+//-------------------//
+#pragma mark TinyRad functions
 
 /// destroy Tiny RADIUS reference
 ///
