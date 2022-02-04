@@ -67,6 +67,11 @@
 //------------------//
 #pragma mark object functions
 
+void *
+tinyrad_obj_alloc(
+         size_t                        size,
+         void (*free_func)(void * ptr) );
+
 
 //------------------//
 // string functions //

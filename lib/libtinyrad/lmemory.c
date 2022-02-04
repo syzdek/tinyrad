@@ -575,6 +575,23 @@ tinyrad_set_option_socket_bind_addresses(
 //------------------//
 #pragma mark object functions
 
+void *
+tinyrad_obj_alloc(
+         size_t                        size,
+         void (*free_func)(void * ptr) )
+{
+   TinyRadObj *      obj;
+   TinyRadDebugTrace();
+   assert(size > sizeof(TinyRadObj));
+   if ((obj = malloc(size)) == NULL)
+      return(NULL);
+   memset(obj, 0, size);
+   memcpy(obj->magic_header, TRAD_MAGIC, 8);
+   atomic_init(&obj->ref_count, 1);
+   obj->free_func = free_func;
+   return(obj);
+}
+
 
 //------------------//
 // string functions //
