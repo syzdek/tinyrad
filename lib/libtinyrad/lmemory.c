@@ -604,5 +604,22 @@ tinyrad_strlcat(
 }
 
 
+size_t
+tinyrad_strlcpy(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize )
+{
+   size_t len;
+   assert(dst     != NULL);
+   assert(src     != NULL);
+   assert(dstsize  > 0);
+   for(len = 0; ((src[len])); len++)
+      if (len < dstsize)
+         dst[len] = src[len];
+   if (len >= (dstsize-1))
+      dst[dstsize-1] = '\0';
+   return(len);
+}
 
 /* end of source */
