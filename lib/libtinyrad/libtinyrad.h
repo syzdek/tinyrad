@@ -79,6 +79,12 @@
 ///////////////////
 #pragma mark - Definitions
 
+// Magic number used to determine if memory passed to tinyrad_free() is a
+// "TinyRadObj" or raw virtual memory.  The magic number purposely starts
+// and ends with a byte equal to zero so that it cannot match a string.
+#define TRAD_MAGIC                  ((const uint8_t *)"\0TnyRad\0")
+//#define TRAD_MAGIC                  0x00546E7952616400ULL   // value of "\0TnyRad\0"
+
 
 //////////////////
 //              //
