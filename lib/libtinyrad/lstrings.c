@@ -51,6 +51,24 @@
 /////////////////
 #pragma mark - Functions
 
+char *
+tinyrad_strdup(
+         const char *                  s1 )
+{
+   char *      ptr;
+   size_t      len;
+   if (!(s1))
+      return(NULL);
+   len = strlen(s1);
+   if ((ptr = malloc(len+2)) == NULL)
+      return(NULL);
+   memcpy(ptr, s1, len);
+   ptr[len+0] = '\0';
+   ptr[len+1] = '\0';
+   return(ptr);
+}
+
+
 /// Appends string to NULL terminated array of strings
 ///
 /// @param[out] strsp         pointer to string array

@@ -83,11 +83,6 @@ tinyrad_obj_retain(
 //------------------//
 #pragma mark string functions
 
-char *
-tinyrad_strdup(
-         const char *                  s1 );
-
-
 size_t
 tinyrad_strlcat(
          char * restrict               dst,

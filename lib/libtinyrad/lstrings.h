@@ -62,6 +62,11 @@
 //////////////////
 #pragma mark - Prototypes
 
+char *
+tinyrad_strdup(
+         const char *                  s1 );
+
+
 int
 tinyrad_strsadd(
          char ***                      strsp,
