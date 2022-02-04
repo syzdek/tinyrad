@@ -51,6 +51,42 @@
 /////////////////
 #pragma mark - Functions
 
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  str           string to append to array
+/// @return returns error code
+int
+tinyrad_strsadd(
+         char ***                      strsp,
+         const char *                  str )
+{
+   size_t     count;
+   char **    strs;
+
+   TinyRadDebugTrace();
+
+   assert(strsp != NULL);
+   assert(str   != NULL);
+
+   count = tinyrad_strscount(*strsp);
+
+   // increase size of array
+   if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)
+      return(TRAD_ENOMEM);
+   *strsp        = strs;
+
+   // copy string
+   if ((strs[count] = strdup(str)) == NULL)
+      return(TRAD_ENOMEM);
+
+   // terminate array
+   count++;
+   strs[count] = NULL;
+
+   return(TRAD_SUCCESS);
+}
+
 
 /// counts number of strings in NULL terminated array of strings
 ///
@@ -87,43 +123,6 @@ tinyrad_strsfree(
    };
    free(strs);
    return;
-}
-
-
-/// Appends string to NULL terminated array of strings
-///
-/// @param[out] strsp         pointer to string array
-/// @param[in]  str           string to append to array
-/// @return returns error code
-int
-tinyrad_strings_push(
-         char ***                      strsp,
-         const char *                  str )
-{
-   size_t     count;
-   char **    strs;
-
-   TinyRadDebugTrace();
-
-   assert(strsp != NULL);
-   assert(str   != NULL);
-
-   count = tinyrad_strscount(*strsp);
-
-   // increase size of array
-   if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)
-      return(TRAD_ENOMEM);
-   *strsp        = strs;
-
-   // copy string
-   if ((strs[count] = strdup(str)) == NULL)
-      return(TRAD_ENOMEM);
-
-   // terminate array
-   count++;
-   strs[count] = NULL;
-
-   return(TRAD_SUCCESS);
 }
 
 

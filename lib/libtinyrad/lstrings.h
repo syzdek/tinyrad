@@ -62,15 +62,15 @@
 //////////////////
 #pragma mark - Prototypes
 
+int
+tinyrad_strsadd(
+         char ***                      strsp,
+         const char *                  str );
+
+
 size_t
 tinyrad_strscount(
          char **                       strs );
-
-
-int
-tinyrad_strings_push(
-         char ***                      strsp,
-         const char *                  str );
 
 
 #endif /* end of header */
