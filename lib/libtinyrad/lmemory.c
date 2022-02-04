@@ -121,9 +121,6 @@ tinyrad_tiyrad_free(
 
    assert(tr != NULL);
 
-   if (tinyrad_obj_release(tr) > 1)
-      return;
-
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
    tr->trud = NULL;
@@ -588,9 +585,7 @@ tinyrad_free(
       free(ptr);
       return;
    };
-   if (tinyrad_obj_release(ptr) > 1)
-      return;
-   ((TinyRadObj *)ptr)->free_func(ptr);
+   tinyrad_obj_release(ptr);
    return;
 }
 
@@ -613,14 +608,17 @@ tinyrad_obj_alloc(
 }
 
 
-intptr_t
+void
 tinyrad_obj_release(
          void *                        ptr )
 {
    TinyRadDebugTrace();
    assert(ptr != NULL);
    assert(tinyrad_verify_is_obj(ptr) == TRAD_YES);
-   return(atomic_fetch_sub(&((TinyRadObj *)ptr)->ref_count, 1));
+   if (atomic_fetch_sub(&((TinyRadObj *)ptr)->ref_count, 1) > 1)
+      return;
+   ((TinyRadObj *)ptr)->free_func(ptr);
+   return;
 }
 
 

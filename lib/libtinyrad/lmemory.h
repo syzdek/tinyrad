@@ -73,7 +73,7 @@ tinyrad_obj_alloc(
          void (*free_func)(void * ptr) );
 
 
-intptr_t
+void
 tinyrad_obj_release(
          void *                        ptr );
 

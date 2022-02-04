@@ -518,9 +518,6 @@ tinyrad_dict_free(
    if (!(dict))
       return;
 
-   if (tinyrad_obj_release(dict) > 1)
-      return;
-
    // free attributes
    if ((dict->attrs_name))
    {
@@ -1084,7 +1081,7 @@ tinyrad_dict_import(
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
          if ((rc = tinyrad_dict_add_vendor(dict, vendor)) != TRAD_SUCCESS)
          {
-            tinyrad_dict_vendor_free(vendor);
+            tinyrad_obj_release(vendor);
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
          };
       };
@@ -1503,7 +1500,7 @@ tinyrad_dict_parse_vendor(
    if ((vendor = tinyrad_dict_vendor_alloc(dict, file->argv[1], id, type_octs, len_octs)) == NULL)
       return(TRAD_ENOMEM);
    rc = tinyrad_dict_add_vendor(dict, vendor);
-   tinyrad_dict_vendor_free(vendor);
+   tinyrad_obj_release(vendor);
    return(rc);
 }
 
@@ -2024,9 +2021,6 @@ tinyrad_dict_vendor_free(
    TinyRadDebugTrace();
 
    if (!(vendor))
-      return;
-
-   if (tinyrad_obj_release(vendor) > 1)
       return;
 
    if ((vendor->name))
