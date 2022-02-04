@@ -379,7 +379,7 @@ tinyrad_set_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_IDENT, \"%s\" )", __func__, ((!((const char *)invalue)) ? "(NULL)" : (const char *)invalue));
       if (!((const char *)invalue))
          invalue = TRAD_DFLT_DEBUG_IDENT;
-      strncpy(tinyrad_debug_ident_buff, (const char *)invalue, sizeof(tinyrad_debug_ident_buff));
+      tinyrad_strlcpy(tinyrad_debug_ident_buff, (const char *)invalue, sizeof(tinyrad_debug_ident_buff));
       tinyrad_debug_ident = tinyrad_debug_ident_buff;
       return(TRAD_SUCCESS);
 
@@ -509,7 +509,7 @@ tinyrad_set_option_socket_bind_addresses(
 
    invalue = (((invalue)) ? invalue : TRAD_DFLT_SOCKET_BIND_ADDRESSES);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, \"%s\" )", __func__);
-   strncpy(buff, invalue, sizeof(buff));
+   tinyrad_strlcpy(buff, invalue, sizeof(buff));
    if ((strcmp(invalue, buff)))
       return(TRAD_EOPTERR);
 
