@@ -46,8 +46,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-
 #include <stdio.h>
+
+#include "lmemory.h"
 
 
 //////////////////
@@ -78,7 +79,7 @@ tinyrad_is_radius_url(
    TinyRadDebugTrace();
    assert(url    != NULL);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   ====> %s(\"%s\")", __func__, url);
-   strncpy(buff, url, sizeof(buff));
+   tinyrad_strlcpy(buff, url, sizeof(buff));
    return(tinyrad_urldesc_parser(buff, NULL));
 }
 
@@ -255,7 +256,7 @@ tinyrad_urldesc_parse(
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   ====> %s(\"%s\")", __func__, url);
 
-   strncpy(buff, url, sizeof(buff));
+   tinyrad_strlcpy(buff, url, sizeof(buff));
 
    pptr = trudpp;
    str  = buff;
