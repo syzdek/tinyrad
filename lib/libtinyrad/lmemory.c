@@ -579,15 +579,13 @@ void
 tinyrad_free(
          void *                        ptr )
 {
-   intptr_t    ref_count;
    TinyRadDebugTrace();
    if (tinyrad_verify_is_obj(ptr) == TRAD_NO)
    {
       free(ptr);
       return;
    };
-   ref_count = atomic_fetch_sub(&((TinyRadObj *)ptr)->ref_count, 1);
-   if (ref_count > 1)
+   if (tinyrad_obj_release(ptr) > 1)
       return;
    ((TinyRadObj *)ptr)->free_func(ptr);
    return;
