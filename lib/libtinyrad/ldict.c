@@ -100,6 +100,10 @@ struct _tinyrad_dict_attr_key
 //---------------------------//
 #pragma mark dictionary misc functions
 
+void
+tinyrad_dict_destroy(
+         TinyRadDict *                dict );
+
 
 //--------------------------------//
 // dictionary attribute functions //
@@ -442,9 +446,6 @@ tinyrad_dict_destroy(
    if (!(dict))
       return;
 
-   if (atomic_fetch_sub(&dict->ref_count, 1) > 1)
-      return;
-
    // free attributes
    if ((dict->attrs_name))
    {
@@ -496,11 +497,9 @@ tinyrad_dict_initialize(
 
    assert(dictp != NULL);
 
-   if (!(dict = malloc(sizeof(TinyRadDict))))
+   if ((dict = tinyrad_obj_alloc(sizeof(TinyRadDict), (void(*)(void*))&tinyrad_dict_destroy)) == NULL)
       return(-1);
-   memset(dict, 0, sizeof(TinyRadDict));
-   dict->opts      = opts;
-   atomic_init(&dict->ref_count, 1);
+   dict->opts = opts;
 
    // initializes paths
    if ((dict->paths = malloc(sizeof(char *))) == NULL)
@@ -510,7 +509,7 @@ tinyrad_dict_initialize(
    };
    dict->paths[0] = NULL;
 
-   *dictp = dict;
+   *dictp = tinyrad_obj_retain(dict);
 
    return(TRAD_SUCCESS);
 }

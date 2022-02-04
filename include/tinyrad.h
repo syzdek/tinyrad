@@ -320,11 +320,6 @@ tinyrad_dict_defaults(
          uint32_t                      opts );
 
 
-_TINYRAD_F void
-tinyrad_dict_destroy(
-         TinyRadDict *                 dict );
-
-
 _TINYRAD_F int
 tinyrad_dict_initialize(
          TinyRadDict **                dictp,

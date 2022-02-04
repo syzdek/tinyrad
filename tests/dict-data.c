@@ -279,7 +279,7 @@ our_dict_initialize(
       {
          our_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
          tinyrad_strsfree(errs);
-         tinyrad_dict_destroy(*dictp);
+         tinyrad_free(*dictp);
          return(1);
       };
    };
@@ -290,7 +290,7 @@ our_dict_initialize(
    {
       our_error(opts, errs, "tinyrad_dict_import(vendors): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
-      tinyrad_dict_destroy(*dictp);
+      tinyrad_free(*dictp);
       return(1);
    };
 
@@ -300,7 +300,7 @@ our_dict_initialize(
    {
       our_error(opts, errs, "tinyrad_dict_import(attributes): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
-      tinyrad_dict_destroy(*dictp);
+      tinyrad_free(*dictp);
       return(1);
    };
 
@@ -310,7 +310,7 @@ our_dict_initialize(
    {
       our_error(opts, errs, "tinyrad_dict_import(values): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
-      tinyrad_dict_destroy(*dictp);
+      tinyrad_free(*dictp);
       return(1);
    };
 

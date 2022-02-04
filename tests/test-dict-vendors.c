@@ -186,7 +186,7 @@ main(
       if ((my_verify_vendor(opts, def, vendor)))
       {
          tinyrad_dict_vendor_destroy(vendor);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(1);
       };
    };
@@ -200,7 +200,7 @@ main(
       if ((my_verify_vendor(opts, def, vendor)))
       {
          tinyrad_dict_vendor_destroy(vendor);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(1);
       };
    };
@@ -214,7 +214,7 @@ main(
       if ((my_verify_vendor(opts, def, vendor)))
       {
          tinyrad_dict_vendor_destroy(vendor);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(1);
       };
    };
@@ -228,13 +228,13 @@ main(
       if ((my_verify_vendor(opts, def, vendor)))
       {
          tinyrad_dict_vendor_destroy(vendor);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(1);
       };
    };
 
    // cleans up dictionary
-   tinyrad_dict_destroy(dict);
+   tinyrad_free(dict);
 
    return(0);
 }

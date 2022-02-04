@@ -61,7 +61,7 @@
 
 struct _tinyrad_dict
 {
-   atomic_intmax_t       ref_count;
+   TinyRadObj            obj;
    uint32_t              opts;
    uint32_t              pad32;
    size_t                attrs_count;

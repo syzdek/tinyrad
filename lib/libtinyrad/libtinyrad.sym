@@ -52,7 +52,6 @@ tinyrad_dict_attr_destroy
 tinyrad_dict_attr_get
 tinyrad_dict_attr_info
 tinyrad_dict_defaults
-tinyrad_dict_destroy
 tinyrad_dict_import
 tinyrad_dict_parse
 tinyrad_dict_initialize

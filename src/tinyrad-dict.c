@@ -200,7 +200,7 @@ int main(int argc, char * argv[])
          our_error(PROGRAM_NAME, errs, NULL);
          our_strings_free(files);
          our_strings_free(paths);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(our_exit_code(rc));
       };
    };
@@ -212,7 +212,7 @@ int main(int argc, char * argv[])
       {
          our_strings_free(paths);
          our_strings_free(files);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          our_error(PROGRAM_NAME, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
          return(our_exit_code(rc));
       };
@@ -227,7 +227,7 @@ int main(int argc, char * argv[])
          tinyrad_strsfree(errs);
          our_strings_free(paths);
          our_strings_free(files);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(our_exit_code(rc));
       };
    };
@@ -239,7 +239,7 @@ int main(int argc, char * argv[])
    // frees resources
    our_strings_free(paths);
    our_strings_free(files);
-   tinyrad_dict_destroy(dict);
+   tinyrad_free(dict);
 
    return(0);
 }

@@ -136,7 +136,7 @@ int main(int argc, char * argv[])
          if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
          {
             our_error(PROGRAM_NAME, errs, NULL);
-            tinyrad_dict_destroy(dict);
+            tinyrad_free(dict);
             return(1);
          };
          dictloaded++;
@@ -145,7 +145,7 @@ int main(int argc, char * argv[])
          case 'D':
          if (tinyrad_dict_parse(dict, optarg, &errs, 0) != TRAD_SUCCESS)
          {
-            tinyrad_dict_destroy(dict);
+            tinyrad_free(dict);
             our_error(PROGRAM_NAME, errs, NULL);
             tinyrad_strsfree(errs);
             return(1);
@@ -165,7 +165,7 @@ int main(int argc, char * argv[])
          case 'I':
          if ((rc = tinyrad_dict_add_path(dict, optarg)) != TRAD_SUCCESS)
          {
-            tinyrad_dict_destroy(dict);
+            tinyrad_free(dict);
             our_error(PROGRAM_NAME, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
             return(1);
          };
@@ -203,7 +203,7 @@ int main(int argc, char * argv[])
       if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
       {
          our_error(PROGRAM_NAME, errs, NULL);
-         tinyrad_dict_destroy(dict);
+         tinyrad_free(dict);
          return(1);
       };
    };
@@ -211,18 +211,18 @@ int main(int argc, char * argv[])
    if ((dictdump))
    {
       tinyrad_dict_print(dict, 0xffff);
-      tinyrad_dict_destroy(dict);
+      tinyrad_free(dict);
       return(0);
    };
 
    if ((tinyrad_initialize(&tr, url, 0)) != TRAD_SUCCESS)
    {
-      tinyrad_dict_destroy(dict);
+      tinyrad_free(dict);
       return(1);
    };
 
    tinyrad_free(tr);
-   tinyrad_dict_destroy(dict);
+   tinyrad_free(dict);
 
    return(0);
 }
