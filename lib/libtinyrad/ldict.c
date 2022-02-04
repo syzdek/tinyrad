@@ -325,6 +325,11 @@ tinyrad_dict_vendor_cmp_obj_name(
          const void *                  b );
 
 
+void
+tinyrad_dict_vendor_destroy(
+         TinyRadDictVendor *          vendor );
+
+
 /////////////////
 //             //
 //  Variables  //
@@ -468,7 +473,7 @@ tinyrad_dict_destroy(
    if ((dict->vendors_name))
    {
       for(pos = 0; (pos < dict->vendors_name_len); pos++)
-         tinyrad_dict_vendor_destroy(dict->vendors_name[pos]);
+         tinyrad_free(dict->vendors_name[pos]);
       free(dict->vendors_name);
    };
    if ((dict->vendors_id))
@@ -1884,14 +1889,12 @@ tinyrad_dict_vendor_add(
    dict->vendors_id = ptr;
 
    // initialize vendor
-   if ((vendor = malloc(sizeof(TinyRadDictVendor))) == NULL)
+   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_destroy)) == NULL)
       return(TRAD_ENOMEM);
-   memset(vendor, 0, sizeof(TinyRadDictVendor));
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
    vendor->order     = dict->vendors_count;
-   atomic_init(&vendor->ref_count, 1);
    if ((vendor->name = strdup(name)) == NULL)
    {
       tinyrad_dict_vendor_destroy(vendor);
@@ -1916,8 +1919,9 @@ tinyrad_dict_vendor_add(
    if ((rc = tinyrad_array_add((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
 
+   tinyrad_obj_retain(vendor);
    if ((vendorp))
-      *vendorp = vendor;
+      *vendorp = tinyrad_obj_retain(vendor);
 
    return(0);
 }
@@ -1936,10 +1940,8 @@ tinyrad_dict_vendor_alloc(
    assert(dict != NULL);
    assert(name != NULL);
 
-   if ((vendor = malloc(sizeof(TinyRadDictVendor))) == NULL)
+   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_destroy)) == NULL)
       return(NULL);
-   memset(vendor, 0, sizeof(TinyRadDictVendor));
-   atomic_init(&vendor->ref_count, 1);
 
    if ((vendor->name = strdup(name)) == NULL)
    {
@@ -1953,7 +1955,7 @@ tinyrad_dict_vendor_alloc(
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
 
-   return(vendor);
+   return(tinyrad_obj_retain(vendor));
 }
 
 
@@ -2034,9 +2036,6 @@ tinyrad_dict_vendor_destroy(
    if (!(vendor))
       return;
 
-   if (atomic_fetch_sub(&vendor->ref_count, 1) > 1)
-      return;
-
    if ((vendor->name))
       free(vendor->name);
 
@@ -2064,8 +2063,7 @@ tinyrad_dict_vendor_get(
    assert(dict != NULL);
    if ((vendor = tinyrad_dict_vendor_lookup(dict, name, vendor_id)) == NULL)
       return(NULL);
-   atomic_fetch_add(&vendor->ref_count, 1);
-   return(vendor);
+   return(tinyrad_obj_retain(vendor));
 }
 
 
@@ -2100,7 +2098,7 @@ tinyrad_dict_vendor_info(
 
       case TRAD_DICT_OPT_REF_COUNT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      uval = (unsigned)atomic_fetch_add(&vendor->ref_count, 0);
+      uval = (unsigned)atomic_fetch_add(&vendor->obj.ref_count, 0);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
       *((unsigned *)outvalue) = uval;
       break;

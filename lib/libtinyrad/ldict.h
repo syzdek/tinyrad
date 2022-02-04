@@ -84,7 +84,7 @@ struct _tinyrad_dict
 
 struct _tinyrad_dict_vendor
 {
-   atomic_intmax_t       ref_count;
+   TinyRadObj            obj;
    size_t                order;
    char *                name;
    TinyRadDictAttr **    attrs_name;

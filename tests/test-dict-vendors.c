@@ -185,7 +185,7 @@ main(
       vendor = tinyrad_dict_vendor_get(dict, def->name, 0);
       if ((my_verify_vendor(opts, def, vendor)))
       {
-         tinyrad_dict_vendor_destroy(vendor);
+         tinyrad_free(vendor);
          tinyrad_free(dict);
          return(1);
       };
@@ -199,7 +199,7 @@ main(
       vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)def->vendor_id);
       if ((my_verify_vendor(opts, def, vendor)))
       {
-         tinyrad_dict_vendor_destroy(vendor);
+         tinyrad_free(vendor);
          tinyrad_free(dict);
          return(1);
       };
@@ -213,7 +213,7 @@ main(
       vendor = tinyrad_dict_vendor_get(dict, def->name, 0);
       if ((my_verify_vendor(opts, def, vendor)))
       {
-         tinyrad_dict_vendor_destroy(vendor);
+         tinyrad_free(vendor);
          tinyrad_free(dict);
          return(1);
       };
@@ -227,7 +227,7 @@ main(
       vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)def->vendor_id);
       if ((my_verify_vendor(opts, def, vendor)))
       {
-         tinyrad_dict_vendor_destroy(vendor);
+         tinyrad_free(vendor);
          tinyrad_free(dict);
          return(1);
       };

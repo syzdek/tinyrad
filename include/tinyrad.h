@@ -347,11 +347,6 @@ tinyrad_dict_value_info(
          void *                        outvalue );
 
 
-_TINYRAD_F void
-tinyrad_dict_vendor_destroy(
-         TinyRadDictVendor *           vendor );
-
-
 _TINYRAD_F TinyRadDictVendor *
 tinyrad_dict_vendor_get(
          TinyRadDict *                dict,
