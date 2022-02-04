@@ -221,7 +221,7 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   tinyrad_destroy(tr);
+   tinyrad_free(tr);
    tinyrad_dict_destroy(dict);
 
    return(0);

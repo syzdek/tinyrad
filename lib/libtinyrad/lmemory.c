@@ -77,6 +77,11 @@
 //----------------//
 #pragma mark misc functions
 
+void
+tinyrad_destroy(
+         TinyRad *                     tr );
+
+
 int
 tinyrad_set_option_socket_bind_addresses(
          TinyRad *                     tr,
@@ -280,9 +285,8 @@ tinyrad_initialize(
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( \"%s\", 0x08x )", __func__, url, opts);
 
-   if ((tr = malloc(sizeof(TinyRad))) == NULL)
+   if ((tr = tinyrad_obj_alloc(sizeof(TinyRad), (void(*)(void*))&tinyrad_destroy)) == NULL)
       return(TRAD_ENOMEM);
-   memset(tr, 0, sizeof(TinyRad));
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
    tr->timeout    = TRAD_DFLT_TIMEOUT;
@@ -348,7 +352,7 @@ tinyrad_initialize(
       return(rc);
    };
 
-   *trp = tr;
+   *trp = tinyrad_obj_retain(tr);
 
    return(TRAD_SUCCESS);
 }

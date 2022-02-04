@@ -109,6 +109,7 @@ struct _tinyrad_obj
 
 struct _tinyrad
 {
+   TinyRadObj            obj;
    TinyRadDict *         dict;
    TinyRadURLDesc *      trud;
    TinyRadURLDesc *      trud_cur;

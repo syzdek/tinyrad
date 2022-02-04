@@ -393,12 +393,6 @@ tinyrad_strerror_r(
 //------------------//
 #pragma mark memory functions
 
-
-_TINYRAD_F void
-tinyrad_destroy(
-         TinyRad *                     tr );
-
-
 _TINYRAD_F void
 tinyrad_free(
          void *                        ptr );
