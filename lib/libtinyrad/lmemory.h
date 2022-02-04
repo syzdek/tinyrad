@@ -73,6 +73,11 @@ tinyrad_obj_alloc(
          void (*free_func)(void * ptr) );
 
 
+void *
+tinyrad_obj_retain(
+         void *                        obj );
+
+
 //------------------//
 // string functions //
 //------------------//
