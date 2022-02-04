@@ -101,7 +101,7 @@ struct _tinyrad_dict_attr_key
 #pragma mark dictionary misc functions
 
 void
-tinyrad_dict_destroy(
+tinyrad_dict_free(
          TinyRadDict *                dict );
 
 
@@ -441,7 +441,7 @@ tinyrad_dict_add_path(
 ///
 /// @param[in]  dict          dictionary reference
 void
-tinyrad_dict_destroy(
+tinyrad_dict_free(
          TinyRadDict *                dict )
 {
    size_t        pos;
@@ -449,6 +449,9 @@ tinyrad_dict_destroy(
    TinyRadDebugTrace();
 
    if (!(dict))
+      return;
+
+   if (tinyrad_obj_release(dict) > 1)
       return;
 
    // free attributes
@@ -502,15 +505,15 @@ tinyrad_dict_initialize(
 
    assert(dictp != NULL);
 
-   if ((dict = tinyrad_obj_alloc(sizeof(TinyRadDict), (void(*)(void*))&tinyrad_dict_destroy)) == NULL)
-      return(-1);
+   if ((dict = tinyrad_obj_alloc(sizeof(TinyRadDict), (void(*)(void*))&tinyrad_dict_free)) == NULL)
+      return(TRAD_ENOMEM);
    dict->opts = opts;
 
    // initializes paths
    if ((dict->paths = malloc(sizeof(char *))) == NULL)
    {
-      tinyrad_dict_destroy(dict);
-      return(-1);
+      tinyrad_dict_free(dict);
+      return(TRAD_ENOMEM);
    };
    dict->paths[0] = NULL;
 
