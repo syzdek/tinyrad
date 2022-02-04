@@ -86,6 +86,10 @@ tinyrad_set_option_socket_bind_addresses(
 //------------------//
 #pragma mark object functions
 
+int
+tinyrad_verify_is_obj(
+         void *                     ptr );
+
 
 /////////////////
 //             //
@@ -590,6 +594,20 @@ tinyrad_obj_alloc(
    atomic_init(&obj->ref_count, 1);
    obj->free_func = free_func;
    return(obj);
+}
+
+
+int
+tinyrad_verify_is_obj(
+         void *                     ptr )
+{
+   size_t   pos;
+   if (!(ptr))
+      return(TRAD_NO);
+   for(pos = 0; (pos < 8); pos++)
+      if (((TinyRadObj *)ptr)->magic_header[pos] != TRAD_MAGIC[pos])
+         return(TRAD_NO);
+   return(TRAD_YES);
 }
 
 
