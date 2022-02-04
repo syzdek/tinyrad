@@ -278,7 +278,7 @@ our_dict_initialize(
       if ((rc = tinyrad_dict_defaults(*dictp, &errs, 0)) != TRAD_SUCCESS)
       {
          our_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
-         tinyrad_strings_free(errs);
+         tinyrad_strsfree(errs);
          tinyrad_dict_destroy(*dictp);
          return(1);
       };
@@ -289,7 +289,7 @@ our_dict_initialize(
    if ((rc = tinyrad_dict_import(*dictp, test_dict_data_vendors, NULL, NULL, &errs, 0)) != TRAD_SUCCESS)
    {
       our_error(opts, errs, "tinyrad_dict_import(vendors): %s", tinyrad_strerror(rc));
-      tinyrad_strings_free(errs);
+      tinyrad_strsfree(errs);
       tinyrad_dict_destroy(*dictp);
       return(1);
    };
@@ -299,7 +299,7 @@ our_dict_initialize(
    if ((rc = tinyrad_dict_import(*dictp, NULL, test_dict_data_attrs, NULL, &errs, 0)) != TRAD_SUCCESS)
    {
       our_error(opts, errs, "tinyrad_dict_import(attributes): %s", tinyrad_strerror(rc));
-      tinyrad_strings_free(errs);
+      tinyrad_strsfree(errs);
       tinyrad_dict_destroy(*dictp);
       return(1);
    };
@@ -309,7 +309,7 @@ our_dict_initialize(
    if ((rc = tinyrad_dict_import(*dictp, NULL, NULL, test_dict_data_values, &errs, 0)) != TRAD_SUCCESS)
    {
       our_error(opts, errs, "tinyrad_dict_import(values): %s", tinyrad_strerror(rc));
-      tinyrad_strings_free(errs);
+      tinyrad_strsfree(errs);
       tinyrad_dict_destroy(*dictp);
       return(1);
    };

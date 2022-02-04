@@ -147,7 +147,7 @@ int main(int argc, char * argv[])
          {
             tinyrad_dict_destroy(dict);
             our_error(PROGRAM_NAME, errs, NULL);
-            tinyrad_strings_free(errs);
+            tinyrad_strsfree(errs);
             return(1);
          };
          dictloaded++;

@@ -73,7 +73,7 @@ tinyrad_strscount(
 ///
 /// @param[in]  strs          pointer to string array
 void
-tinyrad_strings_free(
+tinyrad_strsfree(
          char **                       strs )
 {
    int i;

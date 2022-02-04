@@ -425,8 +425,13 @@ tinyrad_set_option(
          const void *                  invalue );
 
 
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
 _TINYRAD_F void
-tinyrad_strings_free(
+tinyrad_strsfree(
          char **                       strs );
 
 

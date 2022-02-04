@@ -224,7 +224,7 @@ int main(int argc, char * argv[])
       if ((rc = tinyrad_dict_parse(dict, files[pos], &errs, 0)) != TRAD_SUCCESS)
       {
          our_error(PROGRAM_NAME, errs, NULL);
-         tinyrad_strings_free(errs);
+         tinyrad_strsfree(errs);
          our_strings_free(paths);
          our_strings_free(files);
          tinyrad_dict_destroy(dict);
