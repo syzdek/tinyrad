@@ -95,12 +95,6 @@ tinyrad_strings_enqueue(
          const char *                  str );
 
 
-int
-tinyrad_strings_enqueue_int(
-         char ***                      strsp,
-         intmax_t                      i );
-
-
 char *
 tinyrad_strings_pop(
          char **                       strs,
