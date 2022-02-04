@@ -171,7 +171,7 @@ tinyrad_strerror_r(
       return(TRAD_SUCCESS);
    };
 
-   strncpy(strerrbuf, msg, buflen);
+   tinyrad_strlcpy(strerrbuf, msg, buflen);
    strerrbuf[buflen-1] = '\0';
 
    return(TRAD_SUCCESS);
