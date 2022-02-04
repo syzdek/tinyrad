@@ -605,7 +605,7 @@ tinyrad_obj_alloc(
    if ((obj = malloc(size)) == NULL)
       return(NULL);
    memset(obj, 0, size);
-   memcpy(obj->magic_header, TRAD_MAGIC, 8);
+   memcpy(obj->magic, TRAD_MAGIC, 8);
    atomic_init(&obj->ref_count, 0);
    obj->free_func = ((free_func)) ? free_func : &free;
    return(obj);
@@ -634,7 +634,7 @@ tinyrad_verify_is_obj(
    if (!(ptr))
       return(TRAD_NO);
    for(pos = 0; (pos < 8); pos++)
-      if (((TinyRadObj *)ptr)->magic_header[pos] != TRAD_MAGIC[pos])
+      if (((TinyRadObj *)ptr)->magic[pos] != TRAD_MAGIC[pos])
          return(TRAD_NO);
    return(TRAD_YES);
 }

@@ -101,7 +101,7 @@ typedef struct _tinyrad_obj TinyRadObj;
 
 struct _tinyrad_obj
 {
-   uint8_t                 magic_header[8];
+   uint8_t                 magic[8];
    atomic_intptr_t         ref_count;
    void (*free_func)(void * ptr);
 };
