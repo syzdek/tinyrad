@@ -585,9 +585,7 @@ tinyrad_free(
    ref_count = atomic_fetch_sub(&((TinyRadObj *)ptr)->ref_count, 1);
    if (ref_count > 1)
       return;
-   if (( ((TinyRadObj *)ptr)->free_func ))
-      ((TinyRadObj *)ptr)->free_func(ptr);
-   free(ptr);
+   ((TinyRadObj *)ptr)->free_func(ptr);
    return;
 }
 
@@ -604,8 +602,8 @@ tinyrad_obj_alloc(
       return(NULL);
    memset(obj, 0, size);
    memcpy(obj->magic_header, TRAD_MAGIC, 8);
-   atomic_init(&obj->ref_count, 1);
-   obj->free_func = free_func;
+   atomic_init(&obj->ref_count, 0);
+   obj->free_func = ((free_func)) ? free_func : &free;
    return(obj);
 }
 
