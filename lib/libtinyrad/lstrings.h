@@ -124,10 +124,4 @@ tinyrad_strings_push_int(
          intmax_t                      i );
 
 
-int
-tinyrad_strings_push_uint(
-         char ***                      strsp,
-         uintmax_t                     uint );
-
-
 #endif /* end of header */
