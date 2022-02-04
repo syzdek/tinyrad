@@ -77,15 +77,15 @@
 //-------------------//
 #pragma mark TinyRad functions
 
-void
-tinyrad_destroy(
-         TinyRad *                     tr );
-
-
 int
 tinyrad_set_option_socket_bind_addresses(
          TinyRad *                     tr,
          const char *                  invalue );
+
+
+void
+tinyrad_tiyrad_free(
+         TinyRad *                     tr );
 
 
 //------------------//
@@ -114,12 +114,15 @@ tinyrad_verify_is_obj(
 ///
 /// @param[in]  tr            dictionary reference
 void
-tinyrad_destroy(
+tinyrad_tiyrad_free(
          TinyRad *                     tr )
 {
    TinyRadDebugTrace();
 
    assert(tr != NULL);
+
+   if (tinyrad_obj_release(tr) > 1)
+      return;
 
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
@@ -285,7 +288,7 @@ tinyrad_initialize(
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( \"%s\", 0x08x )", __func__, url, opts);
 
-   if ((tr = tinyrad_obj_alloc(sizeof(TinyRad), (void(*)(void*))&tinyrad_destroy)) == NULL)
+   if ((tr = tinyrad_obj_alloc(sizeof(TinyRad), (void(*)(void*))&tinyrad_tiyrad_free)) == NULL)
       return(TRAD_ENOMEM);
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
@@ -294,14 +297,14 @@ tinyrad_initialize(
    // sets bind addresses
    if ((tr->bind_sa = malloc(sizeof(struct sockaddr_in))) == NULL)
    {
-      tinyrad_destroy(tr);
+      tinyrad_tiyrad_free(tr);
       return(TRAD_ENOMEM);
    };
    memset(tr->bind_sa, 0, sizeof(struct sockaddr_in));
    tr->bind_sa->sin_family = AF_INET;
    if ((tr->bind_sa6 = malloc(sizeof(struct sockaddr_in6))) == NULL)
    {
-      tinyrad_destroy(tr);
+      tinyrad_tiyrad_free(tr);
       return(TRAD_ENOMEM);
    };
    memset(tr->bind_sa6, 0, sizeof(struct sockaddr_in6));
@@ -311,7 +314,7 @@ tinyrad_initialize(
    // sets network timeout
    if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
    {
-      tinyrad_destroy(tr);
+      tinyrad_tiyrad_free(tr);
       return(TRAD_ENOMEM);
    };
    memset(tr->net_timeout, 0, sizeof(struct timeval));
@@ -348,7 +351,7 @@ tinyrad_initialize(
    // parses URL
    if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
    {
-      tinyrad_destroy(tr);
+      tinyrad_tiyrad_free(tr);
       return(rc);
    };
 
