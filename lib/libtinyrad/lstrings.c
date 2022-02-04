@@ -69,28 +69,6 @@ tinyrad_strings_count(
 }
 
 
-char *
-tinyrad_strings_dequeue(
-         char **                       strs,
-         int                           freeit )
-{
-   char *      str;
-   size_t      pos;
-   TinyRadDebugTrace();
-   assert(strs != NULL);
-   str = strs[0];
-   for(pos = 0; ((strs[pos])); pos++)
-      strs[pos] = strs[pos+1];
-   strs[pos] = NULL;
-   if ((freeit))
-   {
-      free(str);
-      return(NULL);
-   };
-   return(str);
-}
-
-
 /// Duplicate array of strings
 ///
 /// @param[in]  src           existing array of strings

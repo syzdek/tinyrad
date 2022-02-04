@@ -67,12 +67,6 @@ tinyrad_strings_count(
          char **                       strs );
 
 
-char *
-tinyrad_strings_dequeue(
-         char **                       strs,
-         int                           freeit );
-
-
 int
 tinyrad_strings_dup(
          char **                       src,
