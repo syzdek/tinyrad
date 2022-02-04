@@ -77,16 +77,4 @@ void *
 tinyrad_obj_retain(
          void *                        obj );
 
-
-//------------------//
-// string functions //
-//------------------//
-#pragma mark string functions
-
-size_t
-tinyrad_strlcpy(
-         char * restrict               dst,
-         const char * restrict         src,
-         size_t                        dstsize );
-
 #endif /* end of header */

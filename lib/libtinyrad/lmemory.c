@@ -52,6 +52,8 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include "lstrings.h"
+
 
 ///////////////////
 //               //
@@ -634,27 +636,5 @@ tinyrad_verify_is_obj(
    return(TRAD_YES);
 }
 
-
-//------------------//
-// string functions //
-//------------------//
-#pragma mark string functions
-
-size_t
-tinyrad_strlcpy(
-         char * restrict               dst,
-         const char * restrict         src,
-         size_t                        dstsize )
-{
-   size_t len;
-   assert(dst     != NULL);
-   assert(src     != NULL);
-   assert(dstsize  > 0);
-   for(len = 0; ((src[len])); len++)
-      if (len < dstsize)
-         dst[len] = src[len];
-   dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
-   return(len);
-}
 
 /* end of source */

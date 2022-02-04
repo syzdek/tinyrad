@@ -48,7 +48,7 @@
 #include <netdb.h>
 #include <stdio.h>
 
-#include "lmemory.h"
+#include "lstrings.h"
 
 
 //////////////////

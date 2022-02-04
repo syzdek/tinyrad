@@ -74,6 +74,13 @@ tinyrad_strlcat(
          size_t                        dstsize );
 
 
+size_t
+tinyrad_strlcpy(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize );
+
+
 char *
 tinyrad_strndup(
          const char *                  s1,
