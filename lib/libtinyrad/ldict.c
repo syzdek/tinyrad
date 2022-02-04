@@ -100,6 +100,12 @@ struct _tinyrad_dict_attr_key
 //---------------------------//
 #pragma mark dictionary misc functions
 
+int
+tinyrad_dict_add_vendor(
+         TinyRadDict *                dict,
+         TinyRadDictVendor *          vendor );
+
+
 void
 tinyrad_dict_free(
          TinyRadDict *                dict );
@@ -282,16 +288,6 @@ tinyrad_dict_value_destroy(
 //-----------------------------//
 #pragma mark dictionary vendor functions
 
-int
-tinyrad_dict_vendor_add(
-         TinyRadDict *                dict,
-         TinyRadDictVendor **         vendorp,
-         const char *                 name,
-         uint32_t                     id,
-         uint8_t                      type_octs,
-         uint8_t                      len_octs );
-
-
 TinyRadDictVendor *
 tinyrad_dict_vendor_alloc(
          TinyRadDict *                dict,
@@ -434,6 +430,77 @@ tinyrad_dict_add_path(
    dict->paths[dict->paths_len] = NULL;
 
    return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_add_vendor(
+         TinyRadDict *                dict,
+         TinyRadDictVendor *          vendor )
+{
+   size_t               size;
+   size_t               width;
+   ssize_t              rc;
+   unsigned             opts;
+   void *               ptr;
+   TinyRadDictVendor *  old;
+   int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
+
+   assert(dict   != NULL);
+   assert(vendor != NULL);
+
+   // verify attribute doesn't exist
+   if ((old = tinyrad_dict_vendor_lookup(dict, vendor->name, 0)) != NULL)
+   {
+      if (vendor->id != old->id)
+         return(TRAD_EEXISTS);
+      if (vendor->type_octs != old->type_octs)
+         return(TRAD_EEXISTS);
+      if (vendor->len_octs != old->len_octs)
+         return(TRAD_EEXISTS);
+      return(TRAD_SUCCESS);
+   };
+   if ((old = tinyrad_dict_vendor_lookup(dict, NULL, vendor->id)) != NULL)
+   {
+      if (vendor->id != old->id)
+         return(TRAD_EEXISTS);
+      if (vendor->type_octs != old->type_octs)
+         return(TRAD_EEXISTS);
+      if (vendor->len_octs != old->len_octs)
+         return(TRAD_EEXISTS);
+   };
+
+   // resize vendor by name list
+   size = sizeof(TinyRadDictVendor *) * (dict->vendors_name_len + 2);
+   if ((ptr = realloc(dict->vendors_name, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->vendors_name = ptr;
+
+   // resize vendor by id list
+   size = sizeof(TinyRadDictVendor *) * (dict->vendors_id_len + 2);
+   if ((ptr = realloc(dict->vendors_id, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->vendors_id = ptr;
+
+   // save vendor by name
+   opts     = TINYRAD_ARRAY_INSERT;
+   width    = sizeof(TinyRadDictVendor *);
+   compar   = &tinyrad_dict_vendor_cmp_obj_name;
+   if ((rc = tinyrad_array_add((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(vendor);
+
+   // save value by id
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
+   width    = sizeof(TinyRadDictVendor *);
+   compar   = &tinyrad_dict_vendor_cmp_obj_id;
+   if ((rc = tinyrad_array_add((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(vendor);
+
+   return(0);
 }
 
 
@@ -1013,8 +1080,13 @@ tinyrad_dict_import(
          vendor_id   = (uint32_t)vendor_defs[pos].vendor_id;
          type_octs   = (uint8_t)vendor_defs[pos].vendor_type_octs;
          len_octs    = (uint8_t)vendor_defs[pos].vendor_len_octs;
-         if ((rc = tinyrad_dict_vendor_add(dict, NULL, vendor_name, vendor_id, type_octs, len_octs)) != TRAD_SUCCESS)
+         if ((vendor = tinyrad_dict_vendor_alloc(dict, vendor_name, vendor_id, type_octs, len_octs)) == NULL)
+            return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
+         if ((rc = tinyrad_dict_add_vendor(dict, vendor)) != TRAD_SUCCESS)
+         {
+            tinyrad_dict_vendor_free(vendor);
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
+         };
       };
    };
 
@@ -1370,8 +1442,8 @@ tinyrad_dict_parse_vendor(
    char *                  endptr;
    char *                  str;
    uint32_t                id;
-   uint32_t                type_octs;
-   uint32_t                len_octs;
+   uint8_t                 type_octs;
+   uint8_t                 len_octs;
 
    TinyRadDictVendor *     vendor;
 
@@ -1408,7 +1480,7 @@ tinyrad_dict_parse_vendor(
       str++;
 
       // parse type length
-      type_octs = (uint32_t)strtoul(str, &endptr, 10);
+      type_octs = (uint8_t)strtoul(str, &endptr, 10);
       if (endptr == str)
          return(TRAD_ESYNTAX);
       if (endptr[0] != ',')
@@ -1418,7 +1490,7 @@ tinyrad_dict_parse_vendor(
          return(TRAD_ESYNTAX);
 
       // parse value length
-      len_octs = (uint32_t)strtoul(str, &endptr, 10);
+      len_octs = (uint8_t)strtoul(str, &endptr, 10);
       if (endptr == str)
          return(TRAD_ESYNTAX);
       if (endptr[0] != '\0')
@@ -1428,10 +1500,11 @@ tinyrad_dict_parse_vendor(
    };
 
    // initialize vendor struct
-   if ((rc = tinyrad_dict_vendor_add(dict, &vendor, file->argv[1], id, (uint8_t)type_octs, (uint8_t)len_octs)) != TRAD_SUCCESS)
-      return(rc);
-
-   return(TRAD_SUCCESS);
+   if ((vendor = tinyrad_dict_vendor_alloc(dict, file->argv[1], id, type_octs, len_octs)) == NULL)
+      return(TRAD_ENOMEM);
+   rc = tinyrad_dict_add_vendor(dict, vendor);
+   tinyrad_dict_vendor_free(vendor);
+   return(rc);
 }
 
 
@@ -1843,97 +1916,6 @@ tinyrad_dict_value_lookup(
 // dictionary vendor functions //
 //-----------------------------//
 #pragma mark dictionary vendor functions
-
-/// wrapper around stat() for dictionary processing
-///
-/// @param[out] vendorp       dictionar vendor reference
-int
-tinyrad_dict_vendor_add(
-         TinyRadDict *                dict,
-         TinyRadDictVendor **         vendorp,
-         const char *                 name,
-         uint32_t                     id,
-         uint8_t                      type_octs,
-         uint8_t                      len_octs )
-{
-   size_t               size;
-   size_t               width;
-   ssize_t              rc;
-   unsigned             opts;
-   void *               ptr;
-   TinyRadDictVendor *  vendor;
-   int (*compar)(const void *, const void *);
-
-   TinyRadDebugTrace();
-
-   assert(dict   != NULL);
-   assert(name   != NULL);
-
-   // verify attribute doesn't exist
-   if ((vendor = tinyrad_dict_vendor_lookup(dict, name, 0)) != NULL)
-   {
-      if (vendor->id != id)
-         return(TRAD_EEXISTS);
-      if (vendor->type_octs != type_octs)
-         return(TRAD_EEXISTS);
-      if (vendor->len_octs != len_octs)
-         return(TRAD_EEXISTS);
-      if ((vendorp))
-         *vendorp = vendor;
-      return(TRAD_SUCCESS);
-   };
-   if ((tinyrad_dict_vendor_lookup(dict, NULL, id)))
-      return(TRAD_EEXISTS);
-
-   // resize vendor lists
-   size = sizeof(TinyRadDictVendor *) * (dict->vendors_name_len + 2);
-   if ((ptr = realloc(dict->vendors_name, size)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->vendors_name = ptr;
-   size = sizeof(TinyRadDictVendor *) * (dict->vendors_id_len + 2);
-   if ((ptr = realloc(dict->vendors_id, size)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->vendors_id = ptr;
-
-   // initialize vendor
-   if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_free)) == NULL)
-      return(TRAD_ENOMEM);
-   vendor->id        = id;
-   vendor->type_octs = type_octs;
-   vendor->len_octs  = len_octs;
-   vendor->order     = dict->vendors_count;
-   if ((vendor->name = strdup(name)) == NULL)
-   {
-      tinyrad_dict_vendor_free(vendor);
-      return(TRAD_ENOMEM);
-   };
-   dict->vendors_count++;
-
-   // save value by name
-   opts     = TINYRAD_ARRAY_INSERT;
-   width    = sizeof(TinyRadDictVendor *);
-   compar   = &tinyrad_dict_vendor_cmp_obj_name;
-   if ((rc = tinyrad_array_add((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
-   {
-      tinyrad_dict_vendor_free(vendor);
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   };
-   tinyrad_obj_retain(vendor);
-
-   // save value by id
-   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
-   width    = sizeof(TinyRadDictVendor *);
-   compar   = &tinyrad_dict_vendor_cmp_obj_id;
-   if ((rc = tinyrad_array_add((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(vendor);
-
-   if ((vendorp))
-      *vendorp = tinyrad_obj_retain(vendor);
-
-   return(0);
-}
-
 
 TinyRadDictVendor *
 tinyrad_dict_vendor_alloc(
