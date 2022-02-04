@@ -616,8 +616,7 @@ tinyrad_strlcpy(
    for(len = 0; ((src[len])); len++)
       if (len < dstsize)
          dst[len] = src[len];
-   if (len >= (dstsize-1))
-      dst[dstsize-1] = '\0';
+   dst[((len < (dstsize-1)) ? len : (dstsize-1))] = '\0';
    return(len);
 }
 
