@@ -248,6 +248,7 @@ tinyrad_dict_print_vendor(
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
          TinyRadDict *                 dict,
+         const char *                  attr_name,
          const char *                  name,
          uint64_t                      data );
 
@@ -1179,7 +1180,7 @@ tinyrad_dict_import(
             attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
          if (!(attr))
             return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-         if ((value = tinyrad_dict_value_alloc(dict, value_name, data)) == NULL)
+         if ((value = tinyrad_dict_value_alloc(dict, attr_name, value_name, data)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
          rc = tinyrad_dict_add_value(dict,attr, value);
          tinyrad_obj_release(value);
@@ -1485,7 +1486,7 @@ tinyrad_dict_parse_value(
    if ((ptr[0] != '\0') || (file->argv[3] == ptr))
       return(TRAD_ESYNTAX);
 
-   if ((value = tinyrad_dict_value_alloc(dict, file->argv[2], data)) == NULL)
+   if ((value = tinyrad_dict_value_alloc(dict, file->argv[1], file->argv[2], data)) == NULL)
       return(TRAD_ENOMEM);
 
    rc = tinyrad_dict_add_value(dict, attr, value);
@@ -1651,7 +1652,7 @@ tinyrad_dict_print_attribute(
       if (!(values))
          printf("\n# %s Values\n", attr->name);
       value = attr->values_numeric[pos];
-      printf("VALUE         %-31s %-21s %" PRIu64 "\n", attr->name, value->name, value->data );
+      printf("VALUE         %-31s %-21s %" PRIu64 "\n", value->attr_name, value->name, value->data );
       values++;
    };
    if ((values))
@@ -1703,18 +1704,26 @@ tinyrad_dict_print_vendor(
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
          TinyRadDict *                 dict,
+         const char *                  attr_name,
          const char *                  name,
          uint64_t                      data )
 {
    TinyRadDictValue *   value;
 
-   assert(dict != NULL);
-   assert(name != NULL);
+   assert(dict       != NULL);
+   assert(attr_name  != NULL);
+   assert(name       != NULL);
 
    if ((value = tinyrad_obj_alloc(sizeof(TinyRadDictValue), (void(*)(void*))&tinyrad_dict_value_free)) == NULL)
       return(NULL);
 
-   if ((value->name = strdup(name)) == name)
+   if ((value->attr_name = strdup(attr_name)) == NULL)
+   {
+      tinyrad_dict_value_free(value);
+      return(NULL);
+   };
+
+   if ((value->name = strdup(name)) == NULL)
    {
       tinyrad_dict_value_free(value);
       return(NULL);
@@ -1799,6 +1808,9 @@ tinyrad_dict_value_free(
 
    if (!(value))
       return;
+
+   if ((value->attr_name))
+      free(value->attr_name);
 
    if ((value->name))
       free(value->name);
