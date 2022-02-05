@@ -101,6 +101,13 @@ struct _tinyrad_dict_attr_key
 #pragma mark dictionary misc functions
 
 int
+tinyrad_dict_add_attr(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor,
+         TinyRadDictAttr *             attr );
+
+
+int
 tinyrad_dict_add_value(
          TinyRadDict *                 dict,
          TinyRadDictAttr *             attr,
@@ -122,18 +129,6 @@ tinyrad_dict_free(
 // dictionary attribute functions //
 //--------------------------------//
 #pragma mark dictionary attribute functions
-
-int
-tinyrad_dict_attr_add(
-         TinyRadDict *                 dict,
-         TinyRadDictAttr **            attrp,
-         const char *                  name,
-         uint8_t                       type,
-         TinyRadDictVendor *           vendor,
-         uint32_t                      vendor_type,
-         uint8_t                       datatype,
-         uint32_t                      flags );
-
 
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
@@ -394,6 +389,106 @@ static const TinyRadMap tinyrad_dict_options[] =
 //---------------------------//
 #pragma mark dictionary misc functions
 
+int
+tinyrad_dict_add_attr(
+         TinyRadDict *                 dict,
+         TinyRadDictVendor *           vendor,
+         TinyRadDictAttr *             attr )
+{
+   size_t               size;
+   size_t               width;
+   void *               ptr;
+   TinyRadDictAttr *    old;
+   ssize_t              rc;
+   unsigned             opts;
+
+   TinyRadDebugTrace();
+
+   assert(dict      != NULL);
+   assert(attr      != NULL);
+
+   // verify attribute doesn't exist
+   if ((old = tinyrad_dict_attr_lookup(dict, attr->name, 0, 0, 0)) != NULL)
+   {
+      if ( (attr->flags|TRAD_DFLT_ATTR) != (old->flags|TRAD_DFLT_ATTR) )
+         return(TRAD_EEXISTS);
+      if (attr->type != old->type)
+         return(TRAD_EEXISTS);
+      if (attr->vendor_id != old->vendor_id)
+         return(TRAD_EEXISTS);
+      if (attr->vendor_type != old->vendor_type)
+         return(TRAD_EEXISTS);
+      if (attr->data_type != old->data_type)
+         return(TRAD_EEXISTS);
+      return(TRAD_SUCCESS);
+   };
+   if ((old = tinyrad_dict_attr_lookup(dict, NULL, attr->type, attr->vendor_id, attr->vendor_type)) != NULL)
+   {
+      if ( (attr->flags|TRAD_DFLT_ATTR) != (old->flags|TRAD_DFLT_ATTR) )
+         return(TRAD_EEXISTS);
+      if (attr->type != old->type)
+         return(TRAD_EEXISTS);
+      if (attr->vendor_id != old->vendor_id)
+         return(TRAD_EEXISTS);
+      if (attr->vendor_type != old->vendor_type)
+         return(TRAD_EEXISTS);
+      if (attr->data_type != old->data_type)
+         return(TRAD_EEXISTS);
+   };
+
+   // resize attribute name list in dictionary
+   size = sizeof(TinyRadDictAttr *) * (dict->attrs_name_len+1);
+   if ((ptr = realloc(dict->attrs_name, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->attrs_name = ptr;
+
+   // resize attribute type list in dictionary
+   size = sizeof(TinyRadDictAttr *) * (dict->attrs_type_len+1);
+   if ((ptr = realloc(dict->attrs_type, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->attrs_type = ptr;
+
+   if ((vendor))
+   {
+      // resize attribute name list in vendor
+      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_name_len+1);
+      if ((ptr = realloc(vendor->attrs_name, size)) == NULL)
+         return(TRAD_ENOMEM);
+      vendor->attrs_name = ptr;
+
+      // resize attribute type list in vendor
+      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_type_len+1);
+      if ((ptr = realloc(vendor->attrs_type, size)) == NULL)
+         return(TRAD_ENOMEM);
+      vendor->attrs_type = ptr;
+   };
+
+   width = sizeof(TinyRadDictAttr *);
+   opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
+
+   // save attribute to dictionary
+   if ((rc = tinyrad_array_add((void **)&dict->attrs_name, &dict->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(attr);
+   if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(attr);
+
+   if (!(vendor))
+      return(TRAD_SUCCESS);
+
+   // save attribute to vendor
+   if ((rc = tinyrad_array_add((void **)&vendor->attrs_name, &vendor->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(attr);
+   if ((rc = tinyrad_array_add((void **)&vendor->attrs_type, &vendor->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(attr);
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// Add directory to search path for dictionary files
 ///
 /// @param[in]  dict          dictionary reference
@@ -644,126 +739,6 @@ tinyrad_dict_initialize(
 // dictionary attribute functions //
 //--------------------------------//
 #pragma mark dictionary attribute functions
-
-
-/// Destroys and frees resources of a RADIUS dictionary attribute
-///
-/// @param[out] attrp         reference to dictionary attribute
-int
-tinyrad_dict_attr_add(
-         TinyRadDict *                 dict,
-         TinyRadDictAttr **            attrp,
-         const char *                  name,
-         uint8_t                       type,
-         TinyRadDictVendor *           vendor,
-         uint32_t                      vendor_type,
-         uint8_t                       datatype,
-         uint32_t                      flags )
-{
-   uint32_t             vendor_id;
-   size_t               size;
-   size_t               width;
-   void *               ptr;
-   TinyRadDictAttr *    attr;
-   ssize_t              rc;
-   unsigned             opts;
-
-   TinyRadDebugTrace();
-
-   assert(dict      != NULL);
-   assert(name      != NULL);
-   assert(type      != 0);
-   assert(datatype  != 0);
-
-   vendor_id   = ((vendor)) ? vendor->id  : 0;
-   vendor_type = ((vendor)) ? vendor_type : 0;
-
-   // verify attribute doesn't exist
-   if ((attr = tinyrad_dict_attr_lookup(dict, name, 0, 0, 0)) != NULL)
-   {
-      if ( (attr->flags|TRAD_DFLT_ATTR) != (flags|TRAD_DFLT_ATTR) )
-         return(TRAD_EEXISTS);
-      if (attr->type != type)
-         return(TRAD_EEXISTS);
-      if (attr->vendor_id != vendor_id)
-         return(TRAD_EEXISTS);
-      if (attr->vendor_type != vendor_type)
-         return(TRAD_EEXISTS);
-      if (attr->data_type != datatype)
-         return(TRAD_EEXISTS);
-      if ((attrp))
-         *attrp = attr;
-      return(TRAD_SUCCESS);
-   };
-   if ((tinyrad_dict_attr_lookup(dict, NULL, type, vendor_id, vendor_type)))
-      return(TRAD_EEXISTS);
-
-   // resize attribute lists in dictionary
-   size = sizeof(TinyRadDictAttr *) * (dict->attrs_name_len+1);
-   if ((ptr = realloc(dict->attrs_name, size)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->attrs_name = ptr;
-   size = sizeof(TinyRadDictAttr *) * (dict->attrs_type_len+1);
-   if ((ptr = realloc(dict->attrs_type, size)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->attrs_type = ptr;
-
-   // resize attribute lists in vendor
-   if ((vendor))
-   {
-      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_name_len+1);
-      if ((ptr = realloc(vendor->attrs_name, size)) == NULL)
-         return(TRAD_ENOMEM);
-      vendor->attrs_name = ptr;
-      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_type_len+1);
-      if ((ptr = realloc(vendor->attrs_type, size)) == NULL)
-         return(TRAD_ENOMEM);
-      vendor->attrs_type = ptr;
-   };
-
-   // allocate memory
-   if ((attr = tinyrad_dict_attr_alloc(dict, name, type, vendor, vendor_type, datatype, flags)) == NULL)
-      return(TRAD_ENOMEM);
-
-   width = sizeof(TinyRadDictAttr *);
-   opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
-
-   // save attribute to dictionary
-   if ((rc = tinyrad_array_add((void **)&dict->attrs_name, &dict->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
-   {
-      tinyrad_dict_attr_destroy(attr);
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   };
-   if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
-
-   if (!(vendor))
-   {
-      if ((attrp))
-         *attrp = attr;
-      return(TRAD_SUCCESS);
-   };
-
-   // add vendor metadata
-   attr->vendor_id   = vendor->id;
-   attr->type_octs   = vendor->type_octs;
-   attr->len_octs    = vendor->len_octs;
-
-   // save attribute to vendor
-   if ((rc = tinyrad_array_add((void **)&vendor->attrs_name, &vendor->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
-   if ((rc = tinyrad_array_add((void **)&vendor->attrs_type, &vendor->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
-
-   if ((attrp))
-      *attrp = tinyrad_obj_retain(attr);
-
-   return(TRAD_SUCCESS);
-}
-
 
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
@@ -1138,7 +1113,11 @@ tinyrad_dict_import(
          flags         |= TRAD_DFLT_ATTR;
          vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
          assert( ((vendor)) || (!(vendor_id)) );
-         if ((rc = tinyrad_dict_attr_add(dict, NULL, attr_name, type, vendor, vendor_type, datatype, flags)) != TRAD_SUCCESS)
+         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, datatype, flags)) == NULL)
+            return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
+         rc = tinyrad_dict_add_attr(dict, vendor, attr);
+         tinyrad_obj_release(attr);
+         if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
       };
    };
@@ -1308,14 +1287,15 @@ tinyrad_dict_parse_attribute(
          TinyRadFile *                file,
          uint32_t                     opts )
 {
-   uint8_t      datatype;
-   uint8_t     type;
-   uint32_t    flags;
-   uint32_t    flag;
-   uint32_t    vendor_type;
-   int         rc;
-   char *      ptr;
-   char *      str;
+   TinyRadDictAttr *    attr;
+   uint8_t              data_type;
+   uint8_t              type;
+   uint32_t             flags;
+   uint32_t             flag;
+   uint32_t             vendor_type;
+   int                  rc;
+   char *               ptr;
+   char *               str;
 
    TinyRadDebugTrace();
 
@@ -1325,10 +1305,13 @@ tinyrad_dict_parse_attribute(
 
    if ( (file->argc < 4) || (file->argc > 5) )
       return(TRAD_ESYNTAX);
-   if ((datatype = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
+
+   if ((data_type = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
       return(TRAD_ESYNTAX);
+
    if ((vendor_type = (uint32_t)strtoul(file->argv[2], &ptr, 10)) == 0)
       return(TRAD_ESYNTAX);
+
    if ((ptr[0] != '\0') || (file->argv[2] == ptr))
       return(TRAD_ESYNTAX);
 
@@ -1352,10 +1335,11 @@ tinyrad_dict_parse_attribute(
    type        = ((vendor)) ? 26          : (uint8_t)vendor_type;
    vendor_type = ((vendor)) ? vendor_type : 0;
 
-   if ((rc = tinyrad_dict_attr_add(dict, NULL, file->argv[1], type, vendor, vendor_type, datatype, flags)) != TRAD_SUCCESS)
-      return(rc);
-
-   return(TRAD_SUCCESS);
+   if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], type, vendor, vendor_type, data_type, flags)) == NULL)
+      return(TRAD_ENOMEM);
+   rc = tinyrad_dict_add_attr(dict, vendor, attr);
+   tinyrad_obj_release(attr);
+   return(rc);
 }
 
 
