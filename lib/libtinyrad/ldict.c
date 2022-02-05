@@ -736,6 +736,7 @@ tinyrad_dict_attr_add(
    };
    if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(attr);
 
    if (!(vendor))
    {
@@ -748,19 +749,17 @@ tinyrad_dict_attr_add(
    attr->vendor_id   = vendor->id;
    attr->type_octs   = vendor->type_octs;
    attr->len_octs    = vendor->len_octs;
-   atomic_fetch_add(&attr->ref_count, 1);
 
    // save attribute to vendor
    if ((rc = tinyrad_array_add((void **)&vendor->attrs_name, &vendor->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
-   {
-      tinyrad_dict_attr_destroy(attr);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   };
+   tinyrad_obj_retain(attr);
    if ((rc = tinyrad_array_add((void **)&vendor->attrs_type, &vendor->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(attr);
 
    if ((attrp))
-      *attrp = attr;
+      *attrp = tinyrad_obj_retain(attr);
 
    return(TRAD_SUCCESS);
 }
@@ -778,10 +777,8 @@ tinyrad_dict_attr_alloc(
 {
    TinyRadDictAttr *    attr;
 
-   if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
+   if ((attr = tinyrad_obj_alloc(sizeof(TinyRadDictAttr), (void(*)(void*))&tinyrad_dict_attr_destroy)) == NULL)
       return(NULL);
-   memset(attr, 0, sizeof(TinyRadDictAttr));
-   atomic_init(&attr->ref_count, 1);
 
    if ((attr->name = strdup(name)) == NULL)
    {
@@ -799,7 +796,7 @@ tinyrad_dict_attr_alloc(
    attr->len_octs    = ((vendor)) ? vendor->len_octs  : 0;
    attr->type_octs   = ((vendor)) ? vendor->type_octs : 0;
 
-   return(attr);
+   return(tinyrad_obj_retain(attr));
 }
 
 
@@ -891,8 +888,7 @@ tinyrad_dict_attr_destroy(
    TinyRadDebugTrace();
    if (!(attr))
       return;
-   if (atomic_fetch_sub(&attr->ref_count, 1) > 1)
-      return;
+
    if ((attr->name))
       free(attr->name);
 
@@ -929,10 +925,8 @@ tinyrad_dict_attr_get(
    TinyRadDebugTrace();
    assert(dict   != NULL);
    vendor_id = ((vendor)) ? vendor->id : vendor_id;
-   if ((attr = tinyrad_dict_attr_lookup(dict, name, type, vendor_id, vendor_type)) == NULL)
-      return(NULL);
-   atomic_fetch_add(&attr->ref_count, 1);
-   return(attr);
+   attr = tinyrad_dict_attr_lookup(dict, name, type, vendor_id, vendor_type);
+   return(tinyrad_obj_retain(attr));
 }
 
 
@@ -979,7 +973,7 @@ tinyrad_dict_attr_info(
 
       case TRAD_DICT_OPT_REF_COUNT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      uval = (unsigned)atomic_fetch_add(&attr->ref_count, 0);
+      uval = (unsigned)tinyrad_obj_retain_count(attr);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
       *((unsigned *)outvalue) = uval;
       break;

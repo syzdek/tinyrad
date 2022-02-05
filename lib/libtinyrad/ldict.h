@@ -100,7 +100,7 @@ struct _tinyrad_dict_vendor
 
 struct _tinyrad_dict_attr
 {
-   atomic_intmax_t       ref_count;
+   TinyRadObj            obj;
    size_t                order;
    char *                name;
    uint8_t               data_type;
