@@ -722,22 +722,8 @@ tinyrad_dict_attr_add(
    };
 
    // allocate memory
-   if ((attr = malloc(sizeof(TinyRadDictAttr))) == NULL)
+   if ((attr = tinyrad_dict_attr_alloc(dict, name, type, vendor, vendor_type, datatype, flags)) == NULL)
       return(TRAD_ENOMEM);
-   memset(attr, 0, sizeof(TinyRadDictAttr));
-   atomic_init(&attr->ref_count, 1);
-   attr->type        = type;
-   attr->vendor_id   = vendor_id;
-   attr->vendor_type = vendor_type;
-   attr->data_type   = datatype;
-   attr->flags       = flags;
-   attr->order       = dict->attrs_count;
-   if ((attr->name = strdup(name)) == NULL)
-   {
-      tinyrad_dict_attr_destroy(attr);
-      return(TRAD_ENOMEM);
-   };
-   dict->attrs_count++;
 
    width = sizeof(TinyRadDictAttr *);
    opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
