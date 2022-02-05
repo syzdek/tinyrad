@@ -101,6 +101,13 @@ struct _tinyrad_dict_attr_key
 #pragma mark dictionary misc functions
 
 int
+tinyrad_dict_add_value(
+         TinyRadDict *                 dict,
+         TinyRadDictAttr *             attr,
+         TinyRadDictValue *            value );
+
+
+int
 tinyrad_dict_add_vendor(
          TinyRadDict *                dict,
          TinyRadDictVendor *          vendor );
@@ -237,15 +244,6 @@ tinyrad_dict_print_vendor(
 // dictionary value functions //
 //----------------------------//
 #pragma mark dictionary value functions
-
-int
-tinyrad_dict_value_add(
-         TinyRadDict *                 dict,
-         TinyRadDictAttr *             attr,
-         TinyRadDictValue **           valuep,
-         const char *                  name,
-         uint64_t                      numeral );
-
 
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
@@ -428,6 +426,57 @@ tinyrad_dict_add_path(
       return(TRAD_ENOMEM);
    dict->paths_len++;
    dict->paths[dict->paths_len] = NULL;
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_add_value(
+         TinyRadDict *                 dict,
+         TinyRadDictAttr *             attr,
+         TinyRadDictValue *            value )
+{
+   size_t               size;
+   size_t               width;
+   ssize_t              rc;
+   void *               ptr;
+   unsigned             opts;
+   int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
+
+   assert(dict  != NULL);
+   assert(attr  != NULL);
+   assert(value != NULL);
+
+    // increase size of list by name
+   size = sizeof(TinyRadDictValue *) * (attr->values_name_len+1);
+   if ((ptr = realloc(attr->values_name, size)) == NULL)
+      return(TRAD_ENOMEM);
+   attr->values_name = ptr;
+
+    // increase size of list by numeric
+   size = sizeof(TinyRadDictValue *) * (attr->values_numeric_len+1);
+   if ((ptr = realloc(attr->values_numeric, size)) == NULL)
+      return(TRAD_ENOMEM);
+   attr->values_numeric = ptr;
+
+   // save value by name
+   opts     = TINYRAD_ARRAY_INSERT;
+   width    = sizeof(TinyRadDictValue *);
+   compar   = &tinyrad_dict_value_cmp_obj_name;
+   if ((rc = tinyrad_array_add((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(value);
+
+   // save value by value
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
+   width    = sizeof(TinyRadDictValue *);
+   compar   = &tinyrad_dict_value_cmp_obj_data;
+   if ((rc = tinyrad_array_add((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(value);
 
    return(TRAD_SUCCESS);
 }
@@ -1058,6 +1107,7 @@ tinyrad_dict_import(
    const char *            attr_name;
    const char *            value_name;
    const char *            vendor_name;
+   TinyRadDictValue *      value;
    TinyRadDictVendor *     vendor;
    TinyRadDictAttr *       attr;
 
@@ -1120,8 +1170,13 @@ tinyrad_dict_import(
             attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
          if (!(attr))
             return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-         if ((rc = tinyrad_dict_value_add(dict,attr, NULL, value_name, data)) != TRAD_SUCCESS)
+         if ((value = tinyrad_dict_value_alloc(dict, value_name, data)) == NULL)
+            return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
+         if ((rc = tinyrad_dict_add_value(dict,attr, value)) != TRAD_SUCCESS)
+         {
+            tinyrad_obj_release(value);
             return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
+         };
       };
    };
 
@@ -1397,10 +1452,11 @@ tinyrad_dict_parse_value(
          TinyRadFile *                file,
          uint32_t                     opts )
 {
-   TinyRadDictAttr *  attr;
-   uint64_t           number;
-   int                rc;
-   char *             ptr;
+   TinyRadDictAttr *    attr;
+   TinyRadDictValue *   value;
+   uint64_t             data;
+   int                  rc;
+   char *               ptr;
 
    TinyRadDebugTrace();
 
@@ -1412,14 +1468,16 @@ tinyrad_dict_parse_value(
       return(TRAD_ESYNTAX);
    if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], 0, 0, 0)) == NULL)
       return(TRAD_ESYNTAX);
-   number = (uint64_t)strtoull(file->argv[3], &ptr, 0);
+   data = (uint64_t)strtoull(file->argv[3], &ptr, 0);
    if ((ptr[0] != '\0') || (file->argv[3] == ptr))
       return(TRAD_ESYNTAX);
 
-   if ((rc = tinyrad_dict_value_add(dict, attr, NULL, file->argv[2], number)) != TRAD_SUCCESS)
-      return(rc);
+   if ((value = tinyrad_dict_value_alloc(dict, file->argv[2], data)) == NULL)
+      return(TRAD_ENOMEM);
 
-   return(TRAD_SUCCESS);
+   rc = tinyrad_dict_add_value(dict, attr, value);
+   tinyrad_obj_release(value);
+   return(rc);
 }
 
 
@@ -1628,75 +1686,6 @@ tinyrad_dict_print_vendor(
 // dictionary value functions //
 //----------------------------//
 #pragma mark dictionary value functions
-
-int
-tinyrad_dict_value_add(
-         TinyRadDict *                 dict,
-         TinyRadDictAttr *             attr,
-         TinyRadDictValue **           valuep,
-         const char *                  name,
-         uint64_t                      numeral )
-{
-   TinyRadDictValue *   value;
-   size_t               size;
-   size_t               width;
-   ssize_t              rc;
-   void *               ptr;
-   unsigned             opts;
-   int (*compar)(const void *, const void *);
-
-   TinyRadDebugTrace();
-
-   assert(dict      != NULL);
-   assert(attr      != NULL);
-   assert(name      != NULL);
-
-    // increase size of lists
-   size = sizeof(TinyRadDictValue *) * (attr->values_name_len+1);
-   if ((ptr = realloc(attr->values_name, size)) == NULL)
-      return(TRAD_ENOMEM);
-   attr->values_name = ptr;
-   size = sizeof(TinyRadDictValue *) * (attr->values_numeric_len+1);
-   if ((ptr = realloc(attr->values_numeric, size)) == NULL)
-      return(TRAD_ENOMEM);
-   attr->values_numeric = ptr;
-
-   // allocate new value
-   if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
-      return(TRAD_ENOMEM);
-   memset(value, 0, sizeof(TinyRadDictValue));
-   value->data = numeral;
-   value->order = dict->values_count;
-   dict->values_count++;
-   if ((value->name = strdup(name)) == NULL)
-   {
-      tinyrad_dict_value_destroy(value);
-      return(TRAD_ENOMEM);
-   };
-
-   // save value by name
-   opts     = TINYRAD_ARRAY_INSERT;
-   width    = sizeof(TinyRadDictValue *);
-   compar   = &tinyrad_dict_value_cmp_obj_name;
-   if ((rc = tinyrad_array_add((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
-   {
-      tinyrad_dict_value_destroy(value);
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   };
-
-   // save value by value
-   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
-   width    = sizeof(TinyRadDictValue *);
-   compar   = &tinyrad_dict_value_cmp_obj_data;
-   if ((rc = tinyrad_array_add((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-
-   if ((valuep))
-      *valuep = value;
-
-   return(TRAD_SUCCESS);
-}
-
 
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
