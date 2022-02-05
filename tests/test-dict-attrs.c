@@ -193,7 +193,7 @@ main(
       attr = tinyrad_dict_attr_get(dict, def->name, 0, NULL, 0, 0);
       if ((my_verify_attr(opts, def, attr)))
       {
-         tinyrad_dict_attr_destroy(attr);
+         tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
@@ -214,7 +214,7 @@ main(
       attr = tinyrad_dict_attr_get(dict, NULL, (uint8_t)def->type, NULL, def->vendor_id, def->vendor_type);
       if ((my_verify_attr(opts, def, attr)))
       {
-         tinyrad_dict_attr_destroy(attr);
+         tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
@@ -235,7 +235,7 @@ main(
       attr = tinyrad_dict_attr_get(dict, def->name, 0, NULL, 0, 0);
       if ((my_verify_attr(opts, def, attr)))
       {
-         tinyrad_dict_attr_destroy(attr);
+         tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
@@ -256,7 +256,7 @@ main(
       attr = tinyrad_dict_attr_get(dict, NULL, (uint8_t)def->type, NULL, def->vendor_id, def->vendor_type);
       if ((my_verify_attr(opts, def, attr)))
       {
-         tinyrad_dict_attr_destroy(attr);
+         tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };

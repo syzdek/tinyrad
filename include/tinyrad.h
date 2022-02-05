@@ -291,11 +291,6 @@ tinyrad_dict_add_path(
          const char *                  path );
 
 
-_TINYRAD_F void
-tinyrad_dict_attr_destroy(
-         TinyRadDictAttr *             attr );
-
-
 _TINYRAD_F TinyRadDictAttr *
 tinyrad_dict_attr_get(
          TinyRadDict *                 dict,

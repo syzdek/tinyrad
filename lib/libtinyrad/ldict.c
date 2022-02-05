@@ -165,6 +165,11 @@ tinyrad_dict_attr_cmp_obj_type(
          const void *                 b );
 
 
+void
+tinyrad_dict_attr_free(
+         TinyRadDictAttr *             attr );
+
+
 //----------------------------//
 // dictionary import functions //
 //----------------------------//
@@ -666,11 +671,15 @@ tinyrad_dict_free(
    if ((dict->attrs_name))
    {
       for(pos = 0; (pos < dict->attrs_name_len); pos++)
-         tinyrad_dict_attr_destroy(dict->attrs_name[pos]);
+         tinyrad_obj_release(dict->attrs_name[pos]);
       free(dict->attrs_name);
    };
    if ((dict->attrs_type))
+   {
+      for(pos = 0; (pos < dict->attrs_type_len); pos++)
+         tinyrad_obj_release(dict->attrs_type[pos]);
       free(dict->attrs_type);
+   };
 
    // free paths
    if ((dict->paths))
@@ -752,12 +761,12 @@ tinyrad_dict_attr_alloc(
 {
    TinyRadDictAttr *    attr;
 
-   if ((attr = tinyrad_obj_alloc(sizeof(TinyRadDictAttr), (void(*)(void*))&tinyrad_dict_attr_destroy)) == NULL)
+   if ((attr = tinyrad_obj_alloc(sizeof(TinyRadDictAttr), (void(*)(void*))&tinyrad_dict_attr_free)) == NULL)
       return(NULL);
 
    if ((attr->name = strdup(name)) == NULL)
    {
-      tinyrad_dict_attr_destroy(attr);
+      tinyrad_dict_attr_free(attr);
       return(NULL);
    };
 
@@ -856,11 +865,13 @@ tinyrad_dict_attr_cmp_obj_type(
 ///
 /// @param[in]  attr          reference to dictionary attribute
 void
-tinyrad_dict_attr_destroy(
+tinyrad_dict_attr_free(
          TinyRadDictAttr *             attr )
 {
    size_t   pos;
+
    TinyRadDebugTrace();
+
    if (!(attr))
       return;
 
@@ -883,6 +894,7 @@ tinyrad_dict_attr_destroy(
 
    memset(attr, 0, sizeof(TinyRadDictAttr));
    free(attr);
+
    return;
 }
 
@@ -1987,12 +1999,16 @@ tinyrad_dict_vendor_free(
    if ((vendor->attrs_name))
    {
       for(pos = 0; (pos < vendor->attrs_name_len); pos++)
-         tinyrad_dict_attr_destroy(vendor->attrs_name[pos]);
+         tinyrad_obj_release(vendor->attrs_name[pos]);
       free(vendor->attrs_name);
    };
 
    if ((vendor->attrs_type))
+   {
+      for(pos = 0; (pos < vendor->attrs_type_len); pos++)
+         tinyrad_obj_release(vendor->attrs_type[pos]);
       free(vendor->attrs_type);
+   };
 
    memset(vendor, 0, sizeof(TinyRadDictVendor));
    free(vendor);
