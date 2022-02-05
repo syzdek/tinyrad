@@ -1103,7 +1103,7 @@ tinyrad_dict_import(
    int                     rc;
    size_t                  pos;
    uint8_t                 type;
-   uint8_t                 datatype;
+   uint8_t                 data_type;
    uint32_t                flags;
    uint64_t                data;
    uint32_t                vendor_id;
@@ -1150,12 +1150,12 @@ tinyrad_dict_import(
          type           = (uint8_t)attr_defs[pos].type;
          vendor_id      = attr_defs[pos].vendor_id;
          vendor_type    = attr_defs[pos].vendor_type;
-         datatype       = (uint8_t)attr_defs[pos].data_type;
+         data_type      = (uint8_t)attr_defs[pos].data_type;
          flags          = (uint32_t)attr_defs[pos].flags;
          flags         |= TRAD_DFLT_ATTR;
          vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
          assert( ((vendor)) || (!(vendor_id)) );
-         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, datatype, flags)) == NULL)
+         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, data_type, flags)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
          rc = tinyrad_dict_add_attr(dict, vendor, attr);
          tinyrad_obj_release(attr);
