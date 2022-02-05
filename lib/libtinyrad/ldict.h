@@ -61,68 +61,68 @@
 
 struct _tinyrad_dict
 {
-   TinyRadObj            obj;
-   uint32_t              opts;
-   uint32_t              pad32;
-   size_t                attrs_count;
-   size_t                values_count;
-   size_t                vendors_count;
-   size_t                attrs_name_len;
-   size_t                attrs_type_len;
-   size_t                values_len;
-   size_t                vendors_id_len;
-   size_t                vendors_name_len;
-   size_t                paths_len;
-   TinyRadDictAttr **    attrs_name;
-   TinyRadDictAttr **    attrs_type;
-   TinyRadDictAttr **    values;
-   TinyRadDictVendor **  vendors_name;
-   TinyRadDictVendor **  vendors_id;
-   char **               paths;
+   TinyRadObj              obj;
+   uint32_t                opts;
+   uint32_t                pad32;
+   size_t                  attrs_count;
+   size_t                  values_count;
+   size_t                  vendors_count;
+   size_t                  attrs_name_len;
+   size_t                  attrs_type_len;
+   size_t                  values_len;
+   size_t                  vendors_id_len;
+   size_t                  vendors_name_len;
+   size_t                  paths_len;
+   TinyRadDictAttr **      attrs_name;
+   TinyRadDictAttr **      attrs_type;
+   TinyRadDictAttr **      values;
+   TinyRadDictVendor **    vendors_name;
+   TinyRadDictVendor **    vendors_id;
+   char **                 paths;
 };
 
 
 struct _tinyrad_dict_vendor
 {
-   TinyRadObj            obj;
-   size_t                order;
-   char *                name;
-   TinyRadDictAttr **    attrs_name;
-   TinyRadDictAttr **    attrs_type;
-   size_t                attrs_name_len;
-   size_t                attrs_type_len;
-   uint32_t              id;
-   uint8_t               type_octs;
-   uint8_t               len_octs;
-   uint16_t              pad16;
+   TinyRadObj              obj;
+   size_t                  order;
+   char *                  name;
+   TinyRadDictAttr **      attrs_name;
+   TinyRadDictAttr **      attrs_type;
+   size_t                  attrs_name_len;
+   size_t                  attrs_type_len;
+   uint32_t                id;
+   uint8_t                 type_octs;
+   uint8_t                 len_octs;
+   uint16_t                pad16;
 };
 
 
 struct _tinyrad_dict_attr
 {
-   TinyRadObj            obj;
-   size_t                order;
-   char *                name;
-   uint8_t               data_type;
-   uint8_t               type_octs;
-   uint8_t               len_octs;
-   uint8_t               type;
-   uint32_t              vendor_id;
-   uint32_t              vendor_type;
-   uint32_t              flags;
-   size_t                values_name_len;
-   size_t                values_numeric_len;
-   TinyRadDictAttr *     first;
-   TinyRadDictValue **   values_name;
-   TinyRadDictValue **   values_numeric;
+   TinyRadObj              obj;
+   size_t                  order;
+   char *                  name;
+   uint8_t                 data_type;
+   uint8_t                 type_octs;
+   uint8_t                 len_octs;
+   uint8_t                 type;
+   uint32_t                vendor_id;
+   uint32_t                vendor_type;
+   uint32_t                flags;
+   size_t                  values_name_len;
+   size_t                  values_numeric_len;
+   TinyRadDictAttr *       first;
+   TinyRadDictValue **     values_name;
+   TinyRadDictValue **     values_numeric;
 };
 
 struct _tinyrad_dict_value
 {
-   TinyRadObj            obj;
-   size_t                order;
-   char *                name;         // value name
-   uint64_t              data;         // valu data (i.e the actual value)
+   TinyRadObj              obj;
+   size_t                  order;
+   char *                  name;         // value name
+   uint64_t                data;         // valu data (i.e the actual value)
 };
 
 
