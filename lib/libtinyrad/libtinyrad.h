@@ -74,6 +74,12 @@
 #   define TinyRadDebugTrace() ((void)0)
 #endif
 
+#ifndef PACKAGE_NAME
+#   define PACKAGE_NAME "TinyRad"
+#endif
+#ifndef PACKAGE_VERSION
+#   define PACKAGE_VERSION "n/a"
+#endif
 
 ///////////////////
 //               //

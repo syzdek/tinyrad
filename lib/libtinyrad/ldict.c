@@ -1594,7 +1594,8 @@ tinyrad_dict_print(
    assert(dict   != NULL);
    assert(opts   != 0);
 
-   printf("# processed dictionary\n");
+   printf("# dictionary processed with %s (%s)\n", PACKAGE_NAME, PACKAGE_VERSION);
+   printf("#\n");
 
    for(pos = 0; (pos < dict->attrs_type_len); pos ++)
       if (!(dict->attrs_type[pos]->vendor_id))
@@ -1603,6 +1604,7 @@ tinyrad_dict_print(
    for(pos = 0; (pos < dict->vendors_name_len); pos++)
       tinyrad_dict_print_vendor(dict, dict->vendors_name[pos]);
 
+   printf("\n");
    printf("# end of processed dictionary\n");
 
    return;
@@ -1668,12 +1670,21 @@ tinyrad_dict_print_vendor(
          TinyRadDictVendor *           vendor )
 {
    size_t pos;
+   char   vendorstr[128];
    char   flagstr[128];
 
    TinyRadDebugTrace();
 
    assert(dict   != NULL);
    assert(vendor != NULL);
+
+   snprintf(vendorstr, sizeof(vendorstr), "%s VSA's", vendor->name);
+   printf("\n");
+   printf("##############################################################################\n");
+   printf("#                                                                            #\n");
+   printf("#   %-70s   #\n", vendorstr);
+   printf("#                                                                            #\n");
+   printf("##############################################################################\n");
 
    flagstr[0] = '\0';
    if ( (vendor->len_octs != 1) || (vendor->type_octs != 1) )
