@@ -176,6 +176,15 @@ tinyrad_dict_attr_free(
          TinyRadDictAttr *             attr );
 
 
+ssize_t
+tinyrad_dict_attr_index(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint8_t                      type,
+         uint32_t                     vendor_id,
+         uint32_t                     vendor_type );
+
+
 //----------------------------//
 // dictionary import functions //
 //----------------------------//
@@ -969,6 +978,58 @@ tinyrad_dict_attr_get(
    vendor_id = ((vendor)) ? vendor->id : vendor_id;
    attr = tinyrad_dict_attr_lookup(dict, name, type, vendor_id, vendor_type);
    return(tinyrad_obj_retain(attr));
+}
+
+
+ssize_t
+tinyrad_dict_attr_index(
+         TinyRadDict *                dict,
+         const char *                 name,
+         uint8_t                      type,
+         uint32_t                     vendor_id,
+         uint32_t                     vendor_type )
+{
+   size_t               width;
+   size_t               len;
+   unsigned             opts;
+   const void *         key;
+   TinyRadDictAttr **   list;
+   TinyRadDictAttrType  attr_type;
+   int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
+
+   assert(dict   != NULL);
+
+   width = sizeof(TinyRadDictAttr *);
+   opts     = TINYRAD_ARRAY_LASTDUP;
+
+   if ((name))
+   {
+      key      = name;
+      len      = dict->attrs_name_len;
+      list     = dict->attrs_name;
+      compar   = &tinyrad_dict_attr_cmp_key_name;
+      opts     = TINYRAD_ARRAY_LASTDUP;
+   } else {
+      memset(&attr_type, 0, sizeof(attr_type));
+      attr_type.type          = type;
+      attr_type.vendor_id     = vendor_id;
+      attr_type.vendor_type   = vendor_type;
+      key      = &attr_type;
+      len      = dict->attrs_type_len;
+      list     = dict->attrs_type;
+      if ( ((vendor_id)) && (!(vendor_type)) )
+      {
+         opts     = TINYRAD_ARRAY_FIRSTDUP;
+         compar   = &tinyrad_dict_attr_cmp_key_vendor;
+      } else {
+         opts     = TINYRAD_ARRAY_LASTDUP;
+         compar   = &tinyrad_dict_attr_cmp_key_type;
+      };
+   };
+
+   return(tinyrad_array_search(list, len, width, key, opts, NULL, compar));
 }
 
 
