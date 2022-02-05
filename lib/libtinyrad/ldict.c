@@ -248,7 +248,7 @@ tinyrad_dict_value_add(
 
 
 TinyRadDictValue *
-tinyrad_dict_value_aalloc(
+tinyrad_dict_value_alloc(
          TinyRadDict *                 dict,
          const char *                  name,
          uint64_t                      data );
@@ -1699,7 +1699,7 @@ tinyrad_dict_value_add(
 
 
 TinyRadDictValue *
-tinyrad_dict_value_aalloc(
+tinyrad_dict_value_alloc(
          TinyRadDict *                 dict,
          const char *                  name,
          uint64_t                      data )
