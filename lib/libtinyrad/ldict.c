@@ -797,8 +797,8 @@ tinyrad_dict_attr_alloc(
       return(NULL);
    };
 
-   dict->attrs_count++;
-   attr->order       = dict->attrs_count;
+   dict->obj_count++;
+   attr->order       = dict->obj_count;
    attr->type        = type;
    attr->data_type   = data_type;
    attr->flags       = flags;
@@ -1729,8 +1729,8 @@ tinyrad_dict_value_alloc(
       return(NULL);
    };
 
-   dict->values_count++;
-   value->order   = dict->values_count;
+   dict->obj_count++;
+   value->order   = dict->obj_count;
    value->data    = data;
 
    return(tinyrad_obj_retain(value));
@@ -1951,8 +1951,8 @@ tinyrad_dict_vendor_alloc(
       return(NULL);
    };
 
-   dict->vendors_count++;
-   vendor->order     = dict->vendors_count;
+   dict->obj_count++;
+   vendor->order     = dict->obj_count;
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;

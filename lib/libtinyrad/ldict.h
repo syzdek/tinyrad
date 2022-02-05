@@ -64,9 +64,7 @@ struct _tinyrad_dict
    TinyRadObj              obj;
    uint32_t                opts;
    uint32_t                pad32;
-   size_t                  attrs_count;
-   size_t                  values_count;
-   size_t                  vendors_count;
+   size_t                  obj_count;
    size_t                  attrs_name_len;
    size_t                  attrs_type_len;
    size_t                  values_len;
