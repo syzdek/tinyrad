@@ -1709,10 +1709,8 @@ tinyrad_dict_value_alloc(
    assert(dict != NULL);
    assert(name != NULL);
 
-   if ((value = malloc(sizeof(TinyRadDictValue))) == NULL)
+   if ((value = tinyrad_obj_alloc(sizeof(TinyRadDictValue), (void(*)(void*))&tinyrad_dict_value_destroy)) == NULL)
       return(NULL);
-   memset(value, 0, sizeof(TinyRadDictValue));
-   atomic_init(&value->ref_count, 1);
 
    if ((value->name = strdup(name)) == name)
    {
@@ -1724,7 +1722,7 @@ tinyrad_dict_value_alloc(
    value->order   = dict->values_count;
    value->data    = data;
 
-   return(value);
+   return(tinyrad_obj_retain(value));
 }
 
 
