@@ -82,4 +82,9 @@ void *
 tinyrad_obj_retain(
          void *                        ptr );
 
+
+intptr_t
+tinyrad_obj_retain_count(
+         void *                        ptr );
+
 #endif /* end of header */
