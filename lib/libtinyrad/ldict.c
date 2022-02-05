@@ -1180,11 +1180,10 @@ tinyrad_dict_import(
             return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
          if ((value = tinyrad_dict_value_alloc(dict, value_name, data)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
-         if ((rc = tinyrad_dict_add_value(dict,attr, value)) != TRAD_SUCCESS)
-         {
-            tinyrad_obj_release(value);
+         rc = tinyrad_dict_add_value(dict,attr, value);
+         tinyrad_obj_release(value);
+         if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
-         };
       };
    };
 
