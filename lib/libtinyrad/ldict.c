@@ -154,6 +154,12 @@ tinyrad_dict_attr_cmp_key_type(
 
 
 int
+tinyrad_dict_attr_cmp_key_vendor(
+         const void *                 ptr,
+         const void *                 key );
+
+
+int
 tinyrad_dict_attr_cmp_obj_name(
          const void *                 a,
          const void *                 b );
@@ -839,6 +845,24 @@ tinyrad_dict_attr_cmp_key_type(
 
    if ((*obj)->vendor_type != dat->vendor_type)
       return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
+
+   return(0);
+}
+
+
+int
+tinyrad_dict_attr_cmp_key_vendor(
+         const void *                 ptr,
+         const void *                 key )
+{
+   const TinyRadDictAttr * const *     obj = ptr;
+   const TinyRadDictAttrType *         dat = key;
+
+   if ((*obj)->type != dat->type)
+      return( ((*obj)->type < dat->type) ? -1 : 1 );
+
+   if ((*obj)->vendor_id != dat->vendor_id)
+      return( ((*obj)->vendor_id < dat->vendor_id) ? -1 : 1 );
 
    return(0);
 }
