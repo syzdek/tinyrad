@@ -1138,11 +1138,10 @@ tinyrad_dict_import(
          len_octs    = (uint8_t)vendor_defs[pos].vendor_len_octs;
          if ((vendor = tinyrad_dict_vendor_alloc(dict, vendor_name, vendor_id, type_octs, len_octs)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
-         if ((rc = tinyrad_dict_add_vendor(dict, vendor)) != TRAD_SUCCESS)
-         {
-            tinyrad_obj_release(vendor);
+         rc = tinyrad_dict_add_vendor(dict, vendor);
+         tinyrad_obj_release(vendor);
+         if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
-         };
       };
    };
 
