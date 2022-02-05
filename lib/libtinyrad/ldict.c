@@ -455,6 +455,9 @@ tinyrad_dict_add_attr(
 
    if ((vendor))
    {
+      // adjust vendor to first matching vendor
+      vendor = vendor->first;
+
       // resize attribute name list in vendor
       size = sizeof(TinyRadDictAttr *) * (vendor->attrs_name_len+1);
       if ((ptr = realloc(vendor->attrs_name, size)) == NULL)
@@ -632,6 +635,14 @@ tinyrad_dict_add_vendor(
    if ((ptr = realloc(dict->vendors_id, size)) == NULL)
       return(TRAD_ENOMEM);
    dict->vendors_id = ptr;
+
+   // saves first vendor
+   if ((old))
+   {
+      if (vendor != vendor->first)
+         tinyrad_obj_release(vendor->first);
+      vendor->first = tinyrad_obj_retain(old->first);
+   };
 
    // save vendor by name
    opts     = TINYRAD_ARRAY_INSERT;
@@ -1911,6 +1922,7 @@ tinyrad_dict_vendor_alloc(
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
+   vendor->first     = vendor;
 
    return(tinyrad_obj_retain(vendor));
 }
@@ -1992,6 +2004,9 @@ tinyrad_dict_vendor_free(
 
    if (!(vendor))
       return;
+
+   if ( ((vendor->first)) && (vendor != vendor->first) )
+      tinyrad_obj_release(vendor->first);
 
    if ((vendor->name))
       free(vendor->name);

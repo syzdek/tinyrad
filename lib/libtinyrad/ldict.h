@@ -87,6 +87,7 @@ struct _tinyrad_dict_vendor
    TinyRadObj              obj;
    size_t                  order;
    char *                  name;
+   TinyRadDictVendor *     first;
    TinyRadDictAttr **      attrs_name;
    TinyRadDictAttr **      attrs_type;
    size_t                  attrs_name_len;
