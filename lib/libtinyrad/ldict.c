@@ -277,7 +277,7 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 void
-tinyrad_dict_value_destroy(
+tinyrad_dict_value_free(
          TinyRadDictValue *           value );
 
 
@@ -909,12 +909,21 @@ tinyrad_dict_attr_destroy(
       return;
    if ((attr->name))
       free(attr->name);
-   for(pos = 0; (pos < attr->values_name_len); pos++)
-      tinyrad_dict_value_destroy(attr->values_name[pos]);
+
    if ((attr->values_name))
+   {
+      for(pos = 0; (pos < attr->values_name_len); pos++)
+         tinyrad_obj_release(attr->values_name[pos]);
       free(attr->values_name);
+   };
+
    if ((attr->values_numeric))
+   {
+      for(pos = 0; (pos < attr->values_numeric_len); pos++)
+         tinyrad_obj_release(attr->values_numeric[pos]);
       free(attr->values_numeric);
+   };
+
    memset(attr, 0, sizeof(TinyRadDictAttr));
    free(attr);
    return;
@@ -1698,12 +1707,12 @@ tinyrad_dict_value_alloc(
    assert(dict != NULL);
    assert(name != NULL);
 
-   if ((value = tinyrad_obj_alloc(sizeof(TinyRadDictValue), (void(*)(void*))&tinyrad_dict_value_destroy)) == NULL)
+   if ((value = tinyrad_obj_alloc(sizeof(TinyRadDictValue), (void(*)(void*))&tinyrad_dict_value_free)) == NULL)
       return(NULL);
 
    if ((value->name = strdup(name)) == name)
    {
-      tinyrad_dict_value_destroy(value);
+      tinyrad_dict_value_free(value);
       return(NULL);
    };
 
@@ -1779,7 +1788,7 @@ tinyrad_dict_value_cmp_obj_name(
 
 
 void
-tinyrad_dict_value_destroy(
+tinyrad_dict_value_free(
          TinyRadDictValue *           value )
 {
    TinyRadDebugTrace();
