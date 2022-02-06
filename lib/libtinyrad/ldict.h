@@ -64,7 +64,7 @@ struct _tinyrad_dict
    TinyRadObj              obj;
    uint32_t                opts;
    uint32_t                pad32;
-   size_t                  obj_count;
+   uintptr_t               obj_count;
    size_t                  attrs_name_len;
    size_t                  attrs_type_len;
    size_t                  values_len;
@@ -83,7 +83,7 @@ struct _tinyrad_dict
 struct _tinyrad_dict_vendor
 {
    TinyRadObj              obj;
-   size_t                  order;
+   uintptr_t               order;
    char *                  name;
    uint32_t                id;
    uint8_t                 type_octs;
@@ -95,7 +95,7 @@ struct _tinyrad_dict_vendor
 struct _tinyrad_dict_attr
 {
    TinyRadObj              obj;
-   size_t                  order;
+   uintptr_t               order;
    char *                  name;
    uint8_t                 data_type;
    uint8_t                 type_octs;
@@ -114,7 +114,7 @@ struct _tinyrad_dict_attr
 struct _tinyrad_dict_value
 {
    TinyRadObj              obj;
-   size_t                  order;
+   uintptr_t               order;
    char *                  attr_name;
    char *                  name;         // value name
    uint64_t                data;         // valu data (i.e the actual value)
