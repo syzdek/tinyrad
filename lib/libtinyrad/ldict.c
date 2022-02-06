@@ -1035,7 +1035,7 @@ tinyrad_dict_attr_info(
 
       case TRAD_DICT_OPT_REF_COUNT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      uval = (unsigned)tinyrad_obj_retain_count(attr);
+      uval = (unsigned)tinyrad_obj_retain_count(&attr->obj);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
       *((unsigned *)outvalue) = uval;
       break;

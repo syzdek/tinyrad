@@ -85,6 +85,6 @@ tinyrad_obj_retain(
 
 intptr_t
 tinyrad_obj_retain_count(
-         void *                        ptr );
+         TinyRadObj *                  obj );
 
 #endif /* end of header */

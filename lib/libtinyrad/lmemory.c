@@ -637,13 +637,13 @@ tinyrad_obj_retain(
 
 intptr_t
 tinyrad_obj_retain_count(
-         void *                        ptr )
+         TinyRadObj *                  obj )
 {
    TinyRadDebugTrace();
-   if (ptr == NULL)
+   if (obj == NULL)
       return(0);
-   assert(tinyrad_verify_is_obj(ptr) == TRAD_YES);
-   return(atomic_fetch_add(&((TinyRadObj *)ptr)->ref_count, 0));
+   assert(tinyrad_verify_is_obj(obj) == TRAD_YES);
+   return(atomic_fetch_add(&obj->ref_count, 0));
 }
 
 
