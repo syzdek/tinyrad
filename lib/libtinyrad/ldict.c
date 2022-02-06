@@ -471,7 +471,7 @@ tinyrad_dict_add_attr(
    if ((old))
    {
       if (attr != attr->first)
-         tinyrad_obj_release(attr->first);
+         tinyrad_obj_release(&attr->first->obj);
       attr->first = tinyrad_obj_retain(old->first);
    };
 
@@ -672,13 +672,13 @@ tinyrad_dict_free(
    if ((dict->attrs_name))
    {
       for(pos = 0; (pos < dict->attrs_name_len); pos++)
-         tinyrad_obj_release(dict->attrs_name[pos]);
+         tinyrad_obj_release(&dict->attrs_name[pos]->obj);
       free(dict->attrs_name);
    };
    if ((dict->attrs_type))
    {
       for(pos = 0; (pos < dict->attrs_type_len); pos++)
-         tinyrad_obj_release(dict->attrs_type[pos]);
+         tinyrad_obj_release(&dict->attrs_type[pos]->obj);
       free(dict->attrs_type);
    };
 
@@ -896,7 +896,7 @@ tinyrad_dict_attr_free(
       return;
 
    if ( ((attr->first)) && (attr != attr->first) )
-      tinyrad_obj_release(attr->first);
+      tinyrad_obj_release(&attr->first->obj);
 
    if ((attr->name))
       free(attr->name);
@@ -904,14 +904,14 @@ tinyrad_dict_attr_free(
    if ((attr->values_name))
    {
       for(pos = 0; (pos < attr->values_name_len); pos++)
-         tinyrad_obj_release(attr->values_name[pos]);
+         tinyrad_obj_release(&attr->values_name[pos]->obj);
       free(attr->values_name);
    };
 
    if ((attr->values_numeric))
    {
       for(pos = 0; (pos < attr->values_numeric_len); pos++)
-         tinyrad_obj_release(attr->values_numeric[pos]);
+         tinyrad_obj_release(&attr->values_numeric[pos]->obj);
       free(attr->values_numeric);
    };
 
@@ -1181,7 +1181,7 @@ tinyrad_dict_import(
          if ((vendor = tinyrad_dict_vendor_alloc(dict, vendor_name, vendor_id, type_octs, len_octs)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
          rc = tinyrad_dict_add_vendor(dict, vendor);
-         tinyrad_obj_release(vendor);
+         tinyrad_obj_release(&vendor->obj);
          if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", vendor_name, vendor_id));
       };
@@ -1203,7 +1203,7 @@ tinyrad_dict_import(
          if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, data_type, flags)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
          rc = tinyrad_dict_add_attr(dict, attr);
-         tinyrad_obj_release(attr);
+         tinyrad_obj_release(&attr->obj);
          if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
       };
@@ -1227,7 +1227,7 @@ tinyrad_dict_import(
          if ((value = tinyrad_dict_value_alloc(dict, attr_name, value_name, data)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
          rc = tinyrad_dict_add_value(dict,attr, value);
-         tinyrad_obj_release(value);
+         tinyrad_obj_release(&value->obj);
          if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
       };
@@ -1425,7 +1425,7 @@ tinyrad_dict_parse_attribute(
    if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], type, vendor, vendor_type, data_type, flags)) == NULL)
       return(TRAD_ENOMEM);
    rc = tinyrad_dict_add_attr(dict, attr);
-   tinyrad_obj_release(attr);
+   tinyrad_obj_release(&attr->obj);
    return(rc);
 }
 
@@ -1534,7 +1534,7 @@ tinyrad_dict_parse_value(
       return(TRAD_ENOMEM);
 
    rc = tinyrad_dict_add_value(dict, attr, value);
-   tinyrad_obj_release(value);
+   tinyrad_obj_release(&value->obj);
    return(rc);
 }
 
@@ -1616,7 +1616,7 @@ tinyrad_dict_parse_vendor(
    if ((vendor = tinyrad_dict_vendor_alloc(dict, file->argv[1], id, type_octs, len_octs)) == NULL)
       return(TRAD_ENOMEM);
    rc = tinyrad_dict_add_vendor(dict, vendor);
-   tinyrad_obj_release(vendor);
+   tinyrad_obj_release(&vendor->obj);
    return(rc);
 }
 

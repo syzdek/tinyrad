@@ -75,7 +75,7 @@ tinyrad_obj_alloc(
 
 void
 tinyrad_obj_release(
-         void *                        ptr );
+         TinyRadObj *                  obj );
 
 
 void *

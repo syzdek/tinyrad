@@ -610,14 +610,14 @@ tinyrad_obj_alloc(
 
 void
 tinyrad_obj_release(
-         void *                        ptr )
+         TinyRadObj *                  obj )
 {
    TinyRadDebugTrace();
-   assert(ptr != NULL);
-   assert(tinyrad_verify_is_obj(ptr) == TRAD_YES);
-   if (atomic_fetch_sub(&((TinyRadObj *)ptr)->ref_count, 1) > 1)
+   assert(obj != NULL);
+   assert(tinyrad_verify_is_obj(obj) == TRAD_YES);
+   if (atomic_fetch_sub(&obj->ref_count, 1) > 1)
       return;
-   ((TinyRadObj *)ptr)->free_func(ptr);
+   obj->free_func(obj);
    return;
 }
 
