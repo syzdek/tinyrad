@@ -251,7 +251,7 @@ tinyrad_dict_print_attribute(
 void
 tinyrad_dict_print_vendor(
          TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor );
+         size_t                        vendor_idx );
 
 
 //----------------------------//
@@ -1644,8 +1644,12 @@ tinyrad_dict_print(
       if (!(dict->attrs_type[pos]->vendor_id))
          tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
 
-   for(pos = 0; (pos < dict->vendors_name_len); pos++)
-      tinyrad_dict_print_vendor(dict, dict->vendors_name[pos]);
+   for(pos = 0; (pos < dict->vendors_id_len); pos++)
+   {
+      if ( ((pos + 1) < dict->vendors_id_len) && (dict->vendors_id[pos]->id == dict->vendors_id[pos+1]->id) )
+         continue;
+      tinyrad_dict_print_vendor(dict, pos);
+   };
 
    printf("\n");
    printf("# end of processed dictionary\n");
@@ -1710,17 +1714,22 @@ tinyrad_dict_print_attribute(
 void
 tinyrad_dict_print_vendor(
          TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor )
+         size_t                        vendor_idx )
 {
-   size_t   pos;
-   ssize_t  idx;
-   char     vendorstr[128];
-   char     flagstr[128];
+   size_t                  pos;
+   ssize_t                 idx;
+   char                    vendorstr[128];
+   TinyRadDictVendor *     vendor;
 
    TinyRadDebugTrace();
 
-   assert(dict   != NULL);
-   assert(vendor != NULL);
+   assert(dict       != NULL);
+   assert(vendor_idx  < dict->vendors_id_len);
+
+   vendor = dict->vendors_id[vendor_idx];
+
+   for(pos = vendor_idx; ((pos > 0) && (dict->vendors_id[pos-1]->id == vendor->id)); pos--);
+   vendor_idx = pos;
 
    snprintf(vendorstr, sizeof(vendorstr), "%s VSA's", vendor->name);
    printf("\n");
@@ -1729,15 +1738,17 @@ tinyrad_dict_print_vendor(
    printf("#   %-70s   #\n", vendorstr);
    printf("#                                                                            #\n");
    printf("##############################################################################\n");
+   printf("\n");
 
-   flagstr[0] = '\0';
-   if ( (vendor->len_octs != 1) || (vendor->type_octs != 1) )
-      snprintf(flagstr, sizeof(flagstr), "format=%" PRIu8 ",%" PRIu8, vendor->type_octs, vendor->len_octs);
-
-   if ((flagstr[0]))
-      printf("\nVENDOR        %-31s %-21" PRIu32 " %s\n\n", vendor->name, vendor->id, flagstr);
-   else
-      printf("\nVENDOR        %-31s %" PRIu32 "\n\n", vendor->name, vendor->id);
+   // print vendor definition
+   for(pos = vendor_idx; ((pos < dict->vendors_id_len) && (dict->vendors_id[pos]->id == vendor->id)); pos++)
+   {
+      if ( (vendor->len_octs != 1) || (vendor->type_octs != 1) )
+         printf("VENDOR        %-31s %-21" PRIu32 " format=%" PRIu8 ",%" PRIu8 "\n", dict->vendors_id[pos]->name, vendor->id, vendor->type_octs, vendor->len_octs);
+      else
+         printf("VENDOR        %-31s %" PRIu32 "\n", dict->vendors_id[pos]->name, vendor->id);
+   };
+   printf("\n");
 
    if ((idx = tinyrad_dict_attr_index(dict, NULL, 26, vendor->id, 0)) < 0)
       return;
