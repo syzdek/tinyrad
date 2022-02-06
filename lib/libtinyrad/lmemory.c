@@ -95,7 +95,7 @@ tinyrad_tiyrad_free(
 
 int
 tinyrad_verify_is_obj(
-         void *                     ptr );
+         TinyRadObj *                  obj );
 
 
 /////////////////
@@ -649,14 +649,14 @@ tinyrad_obj_retain_count(
 
 int
 tinyrad_verify_is_obj(
-         void *                     ptr )
+         TinyRadObj *                  obj )
 {
    size_t   pos;
    TinyRadDebugTrace();
-   if (!(ptr))
+   if (!(obj))
       return(TRAD_NO);
    for(pos = 0; (pos < 8); pos++)
-      if (((TinyRadObj *)ptr)->magic[pos] != TRAD_MAGIC[pos])
+      if (obj->magic[pos] != TRAD_MAGIC[pos])
          return(TRAD_NO);
    return(TRAD_YES);
 }
