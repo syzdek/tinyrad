@@ -111,6 +111,7 @@ struct _tinyrad_dict_attr
    TinyRadDictValue **     values_numeric;
 };
 
+
 struct _tinyrad_dict_value
 {
    TinyRadObj              obj;
