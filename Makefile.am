@@ -89,6 +89,7 @@ EXTRA_PROGRAMS				= examples/socket-example \
 					  tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
+					  tests/test-assumptions \
 					  tests/test-dict-attrs \
 					  tests/test-dict-vendors \
 					  tests/test-options \
@@ -111,6 +112,7 @@ TESTS					= \
 					  tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
+					  tests/test-assumptions \
 					  tests/test-dict-attrs \
 					  tests/test-dict-defaults.sh \
 					  tests/test-dict-vendors \
