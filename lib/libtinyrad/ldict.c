@@ -690,6 +690,20 @@ tinyrad_dict_free(
       free(dict->paths);
    };
 
+   // free values
+   if ((dict->values_data))
+   {
+      for(pos = 0; (pos < dict->values_data_len); pos++)
+         tinyrad_obj_release(&dict->values_data[pos]->obj);
+      free(dict->values_data);
+   };
+   if ((dict->values_name))
+   {
+      for(pos = 0; (pos < dict->values_name_len); pos++)
+         tinyrad_obj_release(&dict->values_name[pos]->obj);
+      free(dict->values_name);
+   };
+
    // free vendors
    if ((dict->vendors_name))
    {
