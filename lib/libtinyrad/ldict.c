@@ -961,7 +961,6 @@ tinyrad_dict_attr_index(
    assert(dict   != NULL);
 
    width = sizeof(TinyRadDictAttr *);
-   opts     = TINYRAD_ARRAY_LASTDUP;
 
    if ((name))
    {
