@@ -352,7 +352,7 @@ tinyrad_initialize(
       return(rc);
    };
 
-   *trp = tinyrad_obj_retain(tr);
+   *trp = tinyrad_obj_retain(&tr->obj);
 
    return(TRAD_SUCCESS);
 }
@@ -624,14 +624,14 @@ tinyrad_obj_release(
 
 void *
 tinyrad_obj_retain(
-         void *                        ptr )
+         TinyRadObj *                  obj )
 {
    TinyRadDebugTrace();
-   if (ptr == NULL)
+   if (obj == NULL)
       return(NULL);
-   assert(tinyrad_verify_is_obj(ptr) == TRAD_YES);
-   atomic_fetch_add(&((TinyRadObj *)ptr)->ref_count, 1);
-   return(ptr);
+   assert(tinyrad_verify_is_obj(obj) == TRAD_YES);
+   atomic_fetch_add(&obj->ref_count, 1);
+   return(obj);
 }
 
 

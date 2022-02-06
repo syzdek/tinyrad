@@ -472,7 +472,7 @@ tinyrad_dict_add_attr(
    {
       if (attr != attr->first)
          tinyrad_obj_release(&attr->first->obj);
-      attr->first = tinyrad_obj_retain(old->first);
+      attr->first = tinyrad_obj_retain(&old->first->obj);
    };
 
    width = sizeof(TinyRadDictAttr *);
@@ -481,12 +481,12 @@ tinyrad_dict_add_attr(
    // save attribute by name to dictionary
    if ((rc = tinyrad_array_add((void **)&dict->attrs_name, &dict->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
+   tinyrad_obj_retain(&attr->obj);
 
    // save attribute by type to dictionary
    if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
+   tinyrad_obj_retain(&attr->obj);
 
    return(TRAD_SUCCESS);
 }
@@ -569,7 +569,7 @@ tinyrad_dict_add_value(
    compar   = &tinyrad_dict_value_cmp_obj_name;
    if ((rc = tinyrad_array_add((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(value);
+   tinyrad_obj_retain(&value->obj);
 
    // save value by value
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
@@ -577,7 +577,7 @@ tinyrad_dict_add_value(
    compar   = &tinyrad_dict_value_cmp_obj_data;
    if ((rc = tinyrad_array_add((void **)&attr->values_numeric, &attr->values_numeric_len, width, &value, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(value);
+   tinyrad_obj_retain(&value->obj);
 
    return(TRAD_SUCCESS);
 }
@@ -640,7 +640,7 @@ tinyrad_dict_add_vendor(
    compar   = &tinyrad_dict_vendor_cmp_obj_name;
    if ((rc = tinyrad_array_add((void **)&dict->vendors_name, &dict->vendors_name_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(vendor);
+   tinyrad_obj_retain(&vendor->obj);
 
    // save value by id
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
@@ -648,7 +648,7 @@ tinyrad_dict_add_vendor(
    compar   = &tinyrad_dict_vendor_cmp_obj_id;
    if ((rc = tinyrad_array_add((void **)&dict->vendors_id, &dict->vendors_id_len, width, &vendor, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(vendor);
+   tinyrad_obj_retain(&vendor->obj);
 
    return(0);
 }
@@ -739,7 +739,7 @@ tinyrad_dict_initialize(
    };
    dict->paths[0] = NULL;
 
-   *dictp = tinyrad_obj_retain(dict);
+   *dictp = tinyrad_obj_retain(&dict->obj);
 
    return(TRAD_SUCCESS);
 }
@@ -782,7 +782,7 @@ tinyrad_dict_attr_alloc(
    attr->type_octs   = ((vendor)) ? vendor->type_octs : 0;
    attr->first       = attr;
 
-   return(tinyrad_obj_retain(attr));
+   return(tinyrad_obj_retain(&attr->obj));
 }
 
 
@@ -936,7 +936,7 @@ tinyrad_dict_attr_get(
    assert(dict   != NULL);
    vendor_id = ((vendor)) ? vendor->id : vendor_id;
    attr = tinyrad_dict_attr_lookup(dict, name, type, vendor_id, vendor_type);
-   return(tinyrad_obj_retain(attr));
+   return(tinyrad_obj_retain(&attr->obj));
 }
 
 
@@ -1789,7 +1789,7 @@ tinyrad_dict_value_alloc(
    value->order   = dict->obj_count;
    value->data    = data;
 
-   return(tinyrad_obj_retain(value));
+   return(tinyrad_obj_retain(&value->obj));
 }
 
 
@@ -2013,7 +2013,7 @@ tinyrad_dict_vendor_alloc(
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
 
-   return(tinyrad_obj_retain(vendor));
+   return(tinyrad_obj_retain(&vendor->obj));
 }
 
 
@@ -2112,7 +2112,7 @@ tinyrad_dict_vendor_get(
    assert(dict != NULL);
    if ((vendor = tinyrad_dict_vendor_lookup(dict, name, vendor_id)) == NULL)
       return(NULL);
-   return(tinyrad_obj_retain(vendor));
+   return(tinyrad_obj_retain(&vendor->obj));
 }
 
 

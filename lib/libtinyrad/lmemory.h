@@ -80,7 +80,7 @@ tinyrad_obj_release(
 
 void *
 tinyrad_obj_retain(
-         void *                        ptr );
+         TinyRadObj *                  obj );
 
 
 intptr_t
