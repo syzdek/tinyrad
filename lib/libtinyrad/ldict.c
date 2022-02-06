@@ -103,7 +103,6 @@ struct _tinyrad_dict_attr_key
 int
 tinyrad_dict_add_attr(
          TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor,
          TinyRadDictAttr *             attr );
 
 
@@ -413,7 +412,6 @@ static const TinyRadMap tinyrad_dict_options[] =
 int
 tinyrad_dict_add_attr(
          TinyRadDict *                 dict,
-         TinyRadDictVendor *           vendor,
          TinyRadDictAttr *             attr )
 {
    size_t               size;
@@ -469,24 +467,6 @@ tinyrad_dict_add_attr(
       return(TRAD_ENOMEM);
    dict->attrs_type = ptr;
 
-   if ((vendor))
-   {
-      // adjust vendor to first matching vendor
-      vendor = vendor->first;
-
-      // resize attribute name list in vendor
-      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_name_len+1);
-      if ((ptr = realloc(vendor->attrs_name, size)) == NULL)
-         return(TRAD_ENOMEM);
-      vendor->attrs_name = ptr;
-
-      // resize attribute type list in vendor
-      size = sizeof(TinyRadDictAttr *) * (vendor->attrs_type_len+1);
-      if ((ptr = realloc(vendor->attrs_type, size)) == NULL)
-         return(TRAD_ENOMEM);
-      vendor->attrs_type = ptr;
-   };
-
    // saves first vendor
    if ((old))
    {
@@ -505,19 +485,6 @@ tinyrad_dict_add_attr(
 
    // save attribute by type to dictionary
    if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
-
-   if (!(vendor))
-      return(TRAD_SUCCESS);
-
-   // save attribute by name to vendor
-   if ((rc = tinyrad_array_add((void **)&vendor->attrs_name, &vendor->attrs_name_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_name, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(attr);
-
-   // save attribute by type to vendor
-   if ((rc = tinyrad_array_add((void **)&vendor->attrs_type, &vendor->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    tinyrad_obj_retain(attr);
 
@@ -666,14 +633,6 @@ tinyrad_dict_add_vendor(
    if ((ptr = realloc(dict->vendors_id, size)) == NULL)
       return(TRAD_ENOMEM);
    dict->vendors_id = ptr;
-
-   // saves first vendor
-   if ((old))
-   {
-      if (vendor != vendor->first)
-         tinyrad_obj_release(vendor->first);
-      vendor->first = tinyrad_obj_retain(old->first);
-   };
 
    // save vendor by name
    opts     = TINYRAD_ARRAY_INSERT;
@@ -1243,7 +1202,7 @@ tinyrad_dict_import(
          assert( ((vendor)) || (!(vendor_id)) );
          if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, data_type, flags)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
-         rc = tinyrad_dict_add_attr(dict, vendor, attr);
+         rc = tinyrad_dict_add_attr(dict, attr);
          tinyrad_obj_release(attr);
          if (rc != TRAD_SUCCESS)
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
@@ -1465,7 +1424,7 @@ tinyrad_dict_parse_attribute(
 
    if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], type, vendor, vendor_type, data_type, flags)) == NULL)
       return(TRAD_ENOMEM);
-   rc = tinyrad_dict_add_attr(dict, vendor, attr);
+   rc = tinyrad_dict_add_attr(dict, attr);
    tinyrad_obj_release(attr);
    return(rc);
 }
@@ -1754,9 +1713,10 @@ tinyrad_dict_print_vendor(
          TinyRadDict *                 dict,
          TinyRadDictVendor *           vendor )
 {
-   size_t pos;
-   char   vendorstr[128];
-   char   flagstr[128];
+   size_t   pos;
+   ssize_t  idx;
+   char     vendorstr[128];
+   char     flagstr[128];
 
    TinyRadDebugTrace();
 
@@ -1780,12 +1740,12 @@ tinyrad_dict_print_vendor(
    else
       printf("\nVENDOR        %-31s %" PRIu32 "\n\n", vendor->name, vendor->id);
 
-   if (!(vendor->attrs_type_len))
+   if ((idx = tinyrad_dict_attr_index(dict, NULL, 26, vendor->id, 0)) < 0)
       return;
 
    printf("BEGIN-VENDOR  %s\n\n", vendor->name);
-   for(pos = 0; (pos < vendor->attrs_type_len); pos++)
-      tinyrad_dict_print_attribute(dict, vendor->attrs_type[pos]);
+   for(pos = ((size_t)idx); ((pos < dict->attrs_type_len) && (dict->attrs_type[pos]->vendor_id == vendor->id)); pos++)
+      tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
    printf("\nEND-VENDOR    %s\n\n", vendor->name);
 
    return;
@@ -2052,7 +2012,6 @@ tinyrad_dict_vendor_alloc(
    vendor->id        = id;
    vendor->type_octs = type_octs;
    vendor->len_octs  = len_octs;
-   vendor->first     = vendor;
 
    return(tinyrad_obj_retain(vendor));
 }
@@ -2128,32 +2087,13 @@ void
 tinyrad_dict_vendor_free(
          TinyRadDictVendor *          vendor )
 {
-   size_t   pos;
-
    TinyRadDebugTrace();
 
    if (!(vendor))
       return;
 
-   if ( ((vendor->first)) && (vendor != vendor->first) )
-      tinyrad_obj_release(vendor->first);
-
    if ((vendor->name))
       free(vendor->name);
-
-   if ((vendor->attrs_name))
-   {
-      for(pos = 0; (pos < vendor->attrs_name_len); pos++)
-         tinyrad_obj_release(vendor->attrs_name[pos]);
-      free(vendor->attrs_name);
-   };
-
-   if ((vendor->attrs_type))
-   {
-      for(pos = 0; (pos < vendor->attrs_type_len); pos++)
-         tinyrad_obj_release(vendor->attrs_type[pos]);
-      free(vendor->attrs_type);
-   };
 
    memset(vendor, 0, sizeof(TinyRadDictVendor));
    free(vendor);
