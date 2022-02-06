@@ -1,3 +1,6 @@
+__The Tiny RADIUS Client Library is still under development and is currently__
+__not ready for use in projects.  Please check back for updates as progress__
+__is made on completing basic functionality.__
 
 Tiny RADIUS Client Library
 ==========================
