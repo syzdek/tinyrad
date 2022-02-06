@@ -771,6 +771,8 @@ tinyrad_dict_attr_alloc(
       return(NULL);
    };
 
+   attr->vendor = tinyrad_obj_retain(&vendor->obj);
+
    dict->obj_count++;
    attr->order       = dict->obj_count;
    attr->type        = type;
@@ -894,6 +896,9 @@ tinyrad_dict_attr_free(
 
    if (!(attr))
       return;
+
+   if ((attr->vendor))
+      tinyrad_obj_release(&attr->vendor->obj);
 
    if ( ((attr->first)) && (attr != attr->first) )
       tinyrad_obj_release(&attr->first->obj);

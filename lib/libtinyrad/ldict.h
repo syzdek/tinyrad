@@ -97,6 +97,7 @@ struct _tinyrad_dict_attr
    TinyRadObj              obj;
    uintptr_t               order;
    char *                  name;
+   TinyRadDictVendor *     vendor;
    uint8_t                 data_type;
    uint8_t                 type_octs;
    uint8_t                 len_octs;
