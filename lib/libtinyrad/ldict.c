@@ -1694,7 +1694,7 @@ tinyrad_dict_print_attribute(
       datatype[pos] = ((str[pos] >= 'A')&&(str[pos] <= 'Z')) ? (str[pos] - 'A' + 'a') : str[pos];
    datatype[pos] = '\0';
 
-   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, attr->type, datatype, flagstr);
+   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((attr->vendor_id)) ? attr->vendor_type : attr->type), datatype, flagstr);
    values = 0;
    for(pos = 0; (pos < attr->values_numeric_len); pos++)
    {
