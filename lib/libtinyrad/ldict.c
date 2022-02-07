@@ -438,7 +438,7 @@ tinyrad_dict_add_attr(
          return(TRAD_EEXISTS);
       if (attr->type != old->type)
          return(TRAD_EEXISTS);
-      if (attr->vendor_id != old->vendor_id)
+      if (__attr_vendor_id(attr) != __attr_vendor_id(old))
          return(TRAD_EEXISTS);
       if (attr->vendor_type != old->vendor_type)
          return(TRAD_EEXISTS);
@@ -446,13 +446,13 @@ tinyrad_dict_add_attr(
          return(TRAD_EEXISTS);
       return(TRAD_SUCCESS);
    };
-   if ((old = tinyrad_dict_attr_lookup(dict, NULL, attr->type, attr->vendor_id, attr->vendor_type)) != NULL)
+   if ((old = tinyrad_dict_attr_lookup(dict, NULL, attr->type, __attr_vendor_id(attr), attr->vendor_type)) != NULL)
    {
       if ( (attr->flags|TRAD_DFLT_ATTR) != (old->flags|TRAD_DFLT_ATTR) )
          return(TRAD_EEXISTS);
       if (attr->type != old->type)
          return(TRAD_EEXISTS);
-      if (attr->vendor_id != old->vendor_id)
+      if (__attr_vendor_id(attr) != __attr_vendor_id(old))
          return(TRAD_EEXISTS);
       if (attr->vendor_type != old->vendor_type)
          return(TRAD_EEXISTS);
@@ -807,7 +807,6 @@ tinyrad_dict_attr_alloc(
    attr->type        = type;
    attr->data_type   = data_type;
    attr->flags       = flags;
-   attr->vendor_id   = ((vendor)) ? vendor->id  : 0;
    attr->vendor_type = ((vendor)) ? vendor_type : 0;
    attr->len_octs    = ((vendor)) ? vendor->len_octs  : 0;
    attr->type_octs   = ((vendor)) ? vendor->type_octs : 0;
@@ -839,8 +838,8 @@ tinyrad_dict_attr_cmp_key_type(
    if ((*obj)->type != dat->type)
       return( ((*obj)->type < dat->type) ? -1 : 1 );
 
-   if ((*obj)->vendor_id != dat->vendor_id)
-      return( ((*obj)->vendor_id < dat->vendor_id) ? -1 : 1 );
+   if (__attr_vendor_id(*obj) != dat->vendor_id)
+      return( (__attr_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
 
    if ((*obj)->vendor_type != dat->vendor_type)
       return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
@@ -860,8 +859,8 @@ tinyrad_dict_attr_cmp_key_vendor(
    if ((*obj)->type != dat->type)
       return( ((*obj)->type < dat->type) ? -1 : 1 );
 
-   if ((*obj)->vendor_id != dat->vendor_id)
-      return( ((*obj)->vendor_id < dat->vendor_id) ? -1 : 1 );
+   if (__attr_vendor_id(*obj) != dat->vendor_id)
+      return( (__attr_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
 
    return(0);
 }
@@ -899,8 +898,8 @@ tinyrad_dict_attr_cmp_obj_type(
    if ((*x)->type != (*y)->type)
       return( ((*x)->type < (*y)->type) ? -1 : 1 );
 
-   if ((*x)->vendor_id != (*y)->vendor_id)
-      return( ((*x)->vendor_id < (*y)->vendor_id) ? -1 : 1 );
+   if (__attr_vendor_id(*x) != __attr_vendor_id(*y))
+      return( (__attr_vendor_id(*x) < __attr_vendor_id(*y)) ? -1 : 1 );
 
    if ((*x)->vendor_type != (*y)->vendor_type)
       return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
@@ -1087,8 +1086,8 @@ tinyrad_dict_attr_info(
 
       case TRAD_DICT_OPT_VEND_ID:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_ID, outvalue )", __func__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", attr->vendor_id);
-      *((uint32_t *)outvalue) = attr->vendor_id;
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", __attr_vendor_id(attr));
+      *((uint32_t *)outvalue) = __attr_vendor_id(attr);
       break;
 
       case TRAD_DICT_OPT_VEND_TYPE:
@@ -1675,7 +1674,7 @@ tinyrad_dict_print(
    printf("#\n");
 
    for(pos = 0; (pos < dict->attrs_type_len); pos ++)
-      if (!(dict->attrs_type[pos]->vendor_id))
+      if (!(__attr_vendor_id(dict->attrs_type[pos])))
          tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
 
    for(pos = 0; (pos < dict->vendors_id_len); pos++)
@@ -1728,7 +1727,7 @@ tinyrad_dict_print_attribute(
       datatype[pos] = ((str[pos] >= 'A')&&(str[pos] <= 'Z')) ? (str[pos] - 'A' + 'a') : str[pos];
    datatype[pos] = '\0';
 
-   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((attr->vendor_id)) ? attr->vendor_type : attr->type), datatype, flagstr);
+   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((__attr_vendor_id(attr))) ? attr->vendor_type : attr->type), datatype, flagstr);
    values = 0;
    for(pos = 0; (pos < attr->values_numeric_len); pos++)
    {
@@ -1788,7 +1787,7 @@ tinyrad_dict_print_vendor(
       return;
 
    printf("BEGIN-VENDOR  %s\n\n", vendor->name);
-   for(pos = ((size_t)idx); ((pos < dict->attrs_type_len) && (dict->attrs_type[pos]->vendor_id == vendor->id)); pos++)
+   for(pos = ((size_t)idx); ((pos < dict->attrs_type_len) && (__attr_vendor_id(dict->attrs_type[pos]) == vendor->id)); pos++)
       tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
    printf("\nEND-VENDOR    %s\n\n", vendor->name);
 
