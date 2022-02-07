@@ -129,6 +129,11 @@ tinyrad_dict_free(
 //---------------------------------//
 #pragma mark dictionary attribute prototypes
 
+static uint32_t
+__attr_vendor_id(
+         const TinyRadDictAttr *       attr );
+
+
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
          TinyRadDict *                 dict,
@@ -763,6 +768,16 @@ tinyrad_dict_initialize(
 // dictionary attribute functions //
 //--------------------------------//
 #pragma mark dictionary attribute functions
+
+static uint32_t
+__attr_vendor_id(
+         const TinyRadDictAttr *       attr )
+{
+   if (!(attr))
+      return(0);
+   return( ((attr->vendor)) ? attr->vendor->id : 0);
+}
+
 
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
