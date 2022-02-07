@@ -2152,6 +2152,7 @@ tinyrad_dict_value_info(
 
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
+         TinyRadDict *                dict,
          TinyRadDictAttr *            attr,
          const char *                 name,
          uint64_t                     data )
@@ -2166,6 +2167,7 @@ tinyrad_dict_value_lookup(
 
    TinyRadDebugTrace();
 
+   assert(dict   != NULL);
    assert(attr   != NULL);
 
    // adjust attribute to first matching attribute
@@ -2183,12 +2185,12 @@ tinyrad_dict_value_lookup(
 
    if ((name))
    {
-      len      = attr->values_name_len;
-      list     = attr->values_name;
+      len      = dict->values_name_len;
+      list     = dict->values_name;
       compar   = &tinyrad_dict_value_cmp_key_name;
    } else {
-      len      = attr->values_numeric_len;
-      list     = attr->values_numeric;
+      len      = dict->values_data_len;
+      list     = dict->values_data;
       compar   = &tinyrad_dict_value_cmp_key_data;
    };
 

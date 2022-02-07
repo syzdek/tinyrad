@@ -143,6 +143,7 @@ tinyrad_dict_attr_lookup(
 
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
+         TinyRadDict *                dict,
          TinyRadDictAttr *            attr,
          const char *                 name,
          uint64_t                     data );
