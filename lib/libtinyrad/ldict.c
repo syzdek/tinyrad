@@ -708,13 +708,13 @@ tinyrad_dict_free(
    if ((dict->vendors_name))
    {
       for(pos = 0; (pos < dict->vendors_name_len); pos++)
-         tinyrad_free(dict->vendors_name[pos]);
+         tinyrad_obj_release(&dict->vendors_name[pos]->obj);
       free(dict->vendors_name);
    };
    if ((dict->vendors_id))
    {
       for(pos = 0; (pos < dict->vendors_id_len); pos++)
-         tinyrad_free(dict->vendors_id[pos]);
+         tinyrad_obj_release(&dict->vendors_id[pos]->obj);
       free(dict->vendors_id);
    };
 
