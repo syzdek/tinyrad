@@ -82,9 +82,13 @@ typedef struct _tinyrad_dict_attr_key TinyRadDictAttrType;
 
 struct _tinyrad_dict_attr_key
 {
-   uint32_t              type;
-   uint32_t              vendor_id;
-   uint32_t              vendor_type;
+   const char *         str;
+   void *               padptr;
+   uint32_t             type;
+   uint32_t             vendor_id;
+   uint32_t             vendor_type;
+   uint32_t             pad32;
+   uint64_t             value_data;
 };
 
 
