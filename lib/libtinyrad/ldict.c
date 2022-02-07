@@ -838,7 +838,6 @@ tinyrad_dict_attr_alloc(
    attr->data_type   = data_type;
    attr->flags       = flags;
    attr->vendor_type = ((vendor)) ? vendor_type : 0;
-   attr->len_octs    = ((vendor)) ? vendor->len_octs  : 0;
    attr->first       = attr;
 
    return(tinyrad_obj_retain(&attr->obj));
@@ -1083,8 +1082,8 @@ tinyrad_dict_attr_info(
 
       case TRAD_DICT_OPT_LEN_OCTS:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_LEN_OCTS, outvalue )", __func__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", attr->len_octs);
-      *((uint8_t *)outvalue) = attr->len_octs;
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", __attr_len_octs(attr));
+      *((uint8_t *)outvalue) = __attr_len_octs(attr);
       break;
 
       case TRAD_DICT_OPT_NAME:
