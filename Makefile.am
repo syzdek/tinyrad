@@ -123,6 +123,7 @@ TESTS					= \
 XFAIL_TESTS				=
 EXTRA_MANS				=
 EXTRA_DIST				= \
+					  DeveloperNotes.md \
 					  $(doc_DATA) \
 					  doc/mans/tinyrad.3.in \
 					  doc/mans/tinyrad_array.3.in \
