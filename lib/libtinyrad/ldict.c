@@ -1899,11 +1899,22 @@ tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
          const void *                 key )
 {
-   const TinyRadDictValue * const * obj = ptr;
-   const uint64_t *                 dat = key;
-   if ((*obj)->data == *dat)
-      return(0);
-   return( ((*obj)->data < *dat) ? -1 : 1 );
+   const TinyRadDictValue * const *    obj = ptr;
+   const TinyRadDictKey *              dat = key;
+
+   if ((*obj)->attr->type != dat->type)
+      return( ((*obj)->attr->type < dat->type) ? -1 : 1 );
+
+   if (__value_vendor_id(*obj) != dat->vendor_id)
+      return( (__value_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
+
+   if (__value_vendor_type(*obj) != dat->vendor_type)
+      return( (__value_vendor_type(*obj) < dat->vendor_type) ? -1 : 1 );
+
+   if ((*obj)->data != dat->value_data)
+      return( ((*obj)->data < dat->value_data) ? -1 : 1 );
+
+   return(0);
 }
 
 
@@ -1912,9 +1923,19 @@ tinyrad_dict_value_cmp_key_name(
          const void *                 ptr,
          const void *                 key )
 {
-   const TinyRadDictValue * const * obj = ptr;
-   const char *                     dat = key;
-   return(strcasecmp( (*obj)->name, dat));
+   const TinyRadDictValue * const *    obj = ptr;
+   const TinyRadDictKey *              dat = key;
+
+   if ((*obj)->attr->type != dat->type)
+      return( ((*obj)->attr->type < dat->type) ? -1 : 1 );
+
+   if (__value_vendor_id(*obj) != dat->vendor_id)
+      return( (__value_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
+
+   if (__value_vendor_type(*obj) != dat->vendor_type)
+      return( (__value_vendor_type(*obj) < dat->vendor_type) ? -1 : 1 );
+
+   return(strcasecmp( (*obj)->name, dat->str));
 }
 
 
@@ -1926,9 +1947,23 @@ tinyrad_dict_value_cmp_obj_data(
    const TinyRadDictValue * const * x = a;
    const TinyRadDictValue * const * y = b;
 
+   // compare attribute type
+   if ((*x)->attr->type != (*y)->attr->type)
+      return( ((*x)->attr->type < (*y)->attr->type) ? -1 : 1 );
+
+   // compare attribute vendor ID
+   if (__value_vendor_id(*x) != __value_vendor_id(*y))
+      return( (__value_vendor_id(*x) < __value_vendor_id(*y)) ? -1 : 1 );
+
+   // compare attribute vendor type
+   if (__value_vendor_type(*x) != __value_vendor_type(*y))
+      return( (__value_vendor_type(*x) < __value_vendor_type(*y)) ? -1 : 1 );
+
+   // compare data of value
    if ((*x)->data != (*y)->data)
       return( ((*x)->data < (*y)->data) ? -1 : 1 );
 
+   // compare definition order
    if ((*x)->order != (*y)->order)
       return( ((*x)->order < (*y)->order) ? -1 : 1 );
 
@@ -2048,7 +2083,7 @@ tinyrad_dict_value_lookup(
    size_t               width;
    size_t               len;
    unsigned             opts;
-   const void *         key;
+   TinyRadDictKey       key;
    TinyRadDictValue **  list;
    TinyRadDictValue **  res;
    int (*compar)(const void *, const void *);
@@ -2063,20 +2098,25 @@ tinyrad_dict_value_lookup(
    width    = sizeof(TinyRadDictValue *);
    opts     = TINYRAD_ARRAY_LASTDUP;
 
+   memset(&key, 0, sizeof(key));
+   key.str           = name;
+   key.type          = attr->type;
+   key.vendor_id     = __attr_vendor_id(attr);
+   key.vendor_type   = attr->vendor_type;
+   key.value_data    = data;
+
    if ((name))
    {
-      key      = name;
       len      = attr->values_name_len;
       list     = attr->values_name;
       compar   = &tinyrad_dict_value_cmp_key_name;
    } else {
-      key      = &data;
       len      = attr->values_numeric_len;
       list     = attr->values_numeric;
       compar   = &tinyrad_dict_value_cmp_key_data;
    };
 
-   res = tinyrad_array_get(list, len, width, key, opts, compar);
+   res = tinyrad_array_get(list, len, width, &key, opts, compar);
    return( ((res)) ? *res : NULL);
 }
 
