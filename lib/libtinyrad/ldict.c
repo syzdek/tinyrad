@@ -1762,7 +1762,7 @@ tinyrad_dict_print_attribute(
       if (!(values))
          printf("\n# %s Values\n", attr->name);
       value = attr->values_numeric[pos];
-      printf("VALUE         %-31s %-21s %" PRIu64 "\n", value->attr_name, value->name, value->data );
+      printf("VALUE         %-31s %-21s %" PRIu64 "\n", value->attr->name, value->name, value->data );
       values++;
    };
    if ((values))
@@ -1844,17 +1844,13 @@ tinyrad_dict_value_alloc(
    if ((value = tinyrad_obj_alloc(sizeof(TinyRadDictValue), (void(*)(void*))&tinyrad_dict_value_free)) == NULL)
       return(NULL);
 
-   if ((value->attr_name = strdup(attr->name)) == NULL)
-   {
-      tinyrad_dict_value_free(value);
-      return(NULL);
-   };
-
    if ((value->name = strdup(name)) == NULL)
    {
       tinyrad_dict_value_free(value);
       return(NULL);
    };
+
+   value->attr = tinyrad_obj_retain(&attr->obj);
 
    dict->obj_count++;
    value->order   = dict->obj_count;
@@ -1936,8 +1932,8 @@ tinyrad_dict_value_free(
    if (!(value))
       return;
 
-   if ((value->attr_name))
-      free(value->attr_name);
+   if ((value->attr))
+      tinyrad_obj_release(&value->attr->obj);
 
    if ((value->name))
       free(value->name);

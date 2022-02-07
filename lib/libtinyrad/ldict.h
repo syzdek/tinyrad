@@ -119,7 +119,7 @@ struct _tinyrad_dict_value
 {
    TinyRadObj              obj;
    uintptr_t               order;
-   char *                  attr_name;
+   TinyRadDictAttr *       attr;
    char *                  name;         // value name
    uint64_t                data;         // valu data (i.e the actual value)
 };
