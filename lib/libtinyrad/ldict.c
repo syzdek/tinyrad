@@ -1755,13 +1755,13 @@ tinyrad_dict_print_attribute(
          TinyRadDict *                 dict,
          TinyRadDictAttr *             attr )
 {
-   size_t              pos;
-   size_t              flags;
-   size_t              values;
-   char                flagstr[128];
-   char                datatype[32];
-   const char *        str;
-   TinyRadDictValue *  value;
+   size_t               pos;
+   size_t               flags;
+   size_t               values;
+   char                 flagstr[128];
+   char                 datatype[32];
+   const char *         str;
+   TinyRadDictValue *   value;
 
    TinyRadDebugTrace();
 
