@@ -95,10 +95,10 @@ struct _tinyrad_dict_attr_key
 //////////////////
 #pragma mark - Prototypes
 
-//---------------------------//
-// dictionary misc functions //
-//---------------------------//
-#pragma mark dictionary misc functions
+//----------------------------//
+// dictionary misc prototypes //
+//----------------------------//
+#pragma mark dictionary misc prototypes
 
 int
 tinyrad_dict_add_attr(
@@ -124,10 +124,10 @@ tinyrad_dict_free(
          TinyRadDict *                dict );
 
 
-//--------------------------------//
-// dictionary attribute functions //
-//--------------------------------//
-#pragma mark dictionary attribute functions
+//---------------------------------//
+// dictionary attribute prototypes //
+//---------------------------------//
+#pragma mark dictionary attribute prototypes
 
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
@@ -184,16 +184,16 @@ tinyrad_dict_attr_index(
          uint32_t                     vendor_type );
 
 
-//----------------------------//
-// dictionary import functions //
-//----------------------------//
-#pragma mark dictionary import functions
+//------------------------------//
+// dictionary import prototypes //
+//------------------------------//
+#pragma mark dictionary import prototypes
 
 
-//----------------------------//
-// dictionary parse functions //
-//----------------------------//
-#pragma mark dictionary parse functions
+//-----------------------------//
+// dictionary parse prototypes //
+//-----------------------------//
+#pragma mark dictionary parse prototypes
 
 int
 tinyrad_dict_parse_attribute(
@@ -237,10 +237,10 @@ tinyrad_dict_parse_vendor(
          uint32_t                     opts );
 
 
-//----------------------------//
-// dictionary print functions //
-//----------------------------//
-#pragma mark dictionary print functions
+//-----------------------------//
+// dictionary print prototypes //
+//-----------------------------//
+#pragma mark dictionary print prototypes
 
 void
 tinyrad_dict_print_attribute(
@@ -254,10 +254,10 @@ tinyrad_dict_print_vendor(
          size_t                        vendor_idx );
 
 
-//----------------------------//
-// dictionary value functions //
-//----------------------------//
-#pragma mark dictionary value functions
+//-----------------------------//
+// dictionary value prototypes //
+//-----------------------------//
+#pragma mark dictionary value prototypes
 
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
@@ -296,10 +296,10 @@ tinyrad_dict_value_free(
          TinyRadDictValue *           value );
 
 
-//-----------------------------//
-// dictionary vendor functions //
-//-----------------------------//
-#pragma mark dictionary vendor functions
+//------------------------------//
+// dictionary vendor prototypes //
+//------------------------------//
+#pragma mark dictionary vendor prototypes
 
 TinyRadDictVendor *
 tinyrad_dict_vendor_alloc(
