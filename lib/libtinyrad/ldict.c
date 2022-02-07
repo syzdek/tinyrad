@@ -130,6 +130,11 @@ tinyrad_dict_free(
 #pragma mark dictionary attribute prototypes
 
 static uint8_t
+__attr_len_octs(
+         const TinyRadDictAttr *       attr );
+
+
+static uint8_t
 __attr_type_octs(
          const TinyRadDictAttr *       attr );
 
@@ -773,6 +778,16 @@ tinyrad_dict_initialize(
 // dictionary attribute functions //
 //--------------------------------//
 #pragma mark dictionary attribute functions
+
+static uint8_t
+__attr_len_octs(
+         const TinyRadDictAttr *       attr )
+{
+   if (!(attr))
+      return(0);
+   return( ((attr->vendor)) ? attr->vendor->len_octs : 0);
+}
+
 
 static uint8_t
 __attr_type_octs(
