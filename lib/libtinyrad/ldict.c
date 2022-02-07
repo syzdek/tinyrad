@@ -78,9 +78,9 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct _tinyrad_dict_attr_key TinyRadDictAttrType;
+typedef struct _tinyrad_dict_key TinyRadDictKey;
 
-struct _tinyrad_dict_attr_key
+struct _tinyrad_dict_key
 {
    const char *         str;
    void *               padptr;
@@ -875,7 +875,7 @@ tinyrad_dict_attr_cmp_key_type(
          const void *                 key )
 {
    const TinyRadDictAttr * const *     obj = ptr;
-   const TinyRadDictAttrType *         dat = key;
+   const TinyRadDictKey *              dat = key;
 
    if ((*obj)->type != dat->type)
       return( ((*obj)->type < dat->type) ? -1 : 1 );
@@ -896,7 +896,7 @@ tinyrad_dict_attr_cmp_key_vendor(
          const void *                 key )
 {
    const TinyRadDictAttr * const *     obj = ptr;
-   const TinyRadDictAttrType *         dat = key;
+   const TinyRadDictKey *              dat = key;
 
    if ((*obj)->type != dat->type)
       return( ((*obj)->type < dat->type) ? -1 : 1 );
@@ -1028,7 +1028,7 @@ tinyrad_dict_attr_index(
    unsigned             opts;
    const void *         key;
    TinyRadDictAttr **   list;
-   TinyRadDictAttrType  attr_type;
+   TinyRadDictKey       attr_type;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
@@ -1160,7 +1160,7 @@ tinyrad_dict_attr_lookup(
    const void *         key;
    TinyRadDictAttr **   list;
    TinyRadDictAttr **   res;
-   TinyRadDictAttrType  attr_type;
+   TinyRadDictKey       attr_type;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
