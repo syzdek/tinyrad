@@ -278,6 +278,11 @@ tinyrad_dict_print_vendor(
 //-----------------------------//
 #pragma mark dictionary value prototypes
 
+uint32_t
+__value_vendor_id(
+         const TinyRadDictValue *      value );
+
+
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
          TinyRadDict *                 dict,
@@ -1831,6 +1836,16 @@ tinyrad_dict_print_vendor(
 // dictionary value functions //
 //----------------------------//
 #pragma mark dictionary value functions
+
+uint32_t
+__value_vendor_id(
+         const TinyRadDictValue *      value )
+{
+   assert(value       != NULL);
+   assert(value->attr != NULL);
+   return( ((value->attr->vendor)) ? value->attr->vendor->id : 0);
+}
+
 
 TinyRadDictValue *
 tinyrad_dict_value_alloc(
