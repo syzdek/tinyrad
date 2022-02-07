@@ -297,6 +297,12 @@ tinyrad_dict_value_alloc(
 
 
 int
+tinyrad_dict_value_cmp_key_attr(
+         const void *                 ptr,
+         const void *                 key );
+
+
+int
 tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
          const void *                 key );
@@ -1895,7 +1901,7 @@ tinyrad_dict_value_alloc(
 
 
 int
-tinyrad_dict_value_cmp_key_data(
+tinyrad_dict_value_cmp_key_attr(
          const void *                 ptr,
          const void *                 key )
 {
@@ -1910,6 +1916,22 @@ tinyrad_dict_value_cmp_key_data(
 
    if (__value_vendor_type(*obj) != dat->vendor_type)
       return( (__value_vendor_type(*obj) < dat->vendor_type) ? -1 : 1 );
+
+   return(0);
+}
+
+
+int
+tinyrad_dict_value_cmp_key_data(
+         const void *                 ptr,
+         const void *                 key )
+{
+   int                                 rc;
+   const TinyRadDictValue * const *    obj = ptr;
+   const TinyRadDictKey *              dat = key;
+
+   if ((rc = tinyrad_dict_value_cmp_key_attr(ptr, key)) != 0)
+      return(rc);
 
    if ((*obj)->data != dat->value_data)
       return( ((*obj)->data < dat->value_data) ? -1 : 1 );
@@ -1923,17 +1945,12 @@ tinyrad_dict_value_cmp_key_name(
          const void *                 ptr,
          const void *                 key )
 {
+   int                                 rc;
    const TinyRadDictValue * const *    obj = ptr;
    const TinyRadDictKey *              dat = key;
 
-   if ((*obj)->attr->type != dat->type)
-      return( ((*obj)->attr->type < dat->type) ? -1 : 1 );
-
-   if (__value_vendor_id(*obj) != dat->vendor_id)
-      return( (__value_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
-
-   if (__value_vendor_type(*obj) != dat->vendor_type)
-      return( (__value_vendor_type(*obj) < dat->vendor_type) ? -1 : 1 );
+   if ((rc = tinyrad_dict_value_cmp_key_attr(ptr, key)) != 0)
+      return(rc);
 
    return(strcasecmp( (*obj)->name, dat->str));
 }
