@@ -331,6 +331,17 @@ tinyrad_dict_value_free(
          TinyRadDictValue *           value );
 
 
+ssize_t
+tinyrad_dict_value_index(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type,
+         uint64_t                      value_data,
+         int                           by_attr );
+
+
 //------------------------------//
 // dictionary vendor prototypes //
 //------------------------------//
@@ -2028,6 +2039,54 @@ tinyrad_dict_value_free(
    free(value);
 
    return;
+}
+
+
+ssize_t
+tinyrad_dict_value_index(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type,
+         uint64_t                      value_data,
+         int                           by_attr )
+{
+   size_t               width;
+   size_t               len;
+   unsigned             opts;
+   TinyRadDictAttr **   list;
+   TinyRadDictKey       key;
+   int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
+
+   assert(dict   != NULL);
+
+   width = sizeof(TinyRadDictAttr *);
+
+   memset(&key, 0, sizeof(key));
+   key.str           = name;
+   key.type          = type;
+   key.vendor_id     = vendor_id;
+   key.vendor_type   = vendor_type;
+   key.value_data    = value_data;
+
+   if ((name))
+   {
+      len      = dict->attrs_name_len;
+      list     = dict->attrs_name;
+      compar   = &tinyrad_dict_value_cmp_key_name;
+      opts     = TINYRAD_ARRAY_LASTDUP;
+   } else {
+      len      = dict->attrs_type_len;
+      list     = dict->attrs_type;
+      //                       Lookup value by dattribute         Lookup value by data
+      compar   = ((by_attr)) ? &tinyrad_dict_value_cmp_key_attr : &tinyrad_dict_value_cmp_key_data;
+      opts     = ((by_attr)) ? TINYRAD_ARRAY_FIRSTDUP           : TINYRAD_ARRAY_LASTDUP;
+   };
+
+   return(tinyrad_array_search(list, len, width, &key, opts, NULL, compar));
 }
 
 
