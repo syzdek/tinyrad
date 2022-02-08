@@ -2247,11 +2247,11 @@ tinyrad_dict_value_info(
       *((unsigned *)outvalue) = uval;
       break;
 
-      //case TRAD_DICT_OPT_TYPE:
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", value->type);
-      //*((uint8_t *)outvalue) = value->type;
-      //break;
+      case TRAD_DICT_OPT_TYPE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", value->attr->type);
+      *((uint8_t *)outvalue) = value->attr->type;
+      break;
 
       case TRAD_DICT_OPT_DATA:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_DATA, outvalue )", __func__);
