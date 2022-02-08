@@ -75,22 +75,20 @@ tinyrad_error_map(
    TinyRadDebugTrace();
    switch(errnum)
    {
-      case TRAD_SUCCESS:    return("success");
-      case TRAD_ENOMEM:     return("out of virtual memory");
-      case TRAD_EACCES:     return("permission denied");
-      case TRAD_ENOBUFS:    return("no buffer space available");
-      case TRAD_ENOENT:     return("no such file or directory");
-      case TRAD_ESYNTAX:    return("invalid or unrecognized syntax");
-      case TRAD_EEXISTS:    return("dictionary object exists");
-      case TRAD_EURL:       return("invalid RADIUS URL");
-      case TRAD_ERESOLVE:   return("unable to resolve host");
-      case TRAD_EOPTERR:    return("option error");
-      case TRAD_ECONNECT:   return("connection error");
-      case TRAD_ESCHEME:    return("invalid or mismatched URL scheme");
-      case TRAD_EINVAL:     return("invalid argument");
+      case TRAD_SUCCESS:      return("success");
+      case TRAD_ENOMEM:       return("out of virtual memory");
+      case TRAD_EACCES:       return("permission denied");
+      case TRAD_ENOBUFS:      return("no buffer space available");
+      case TRAD_ENOENT:       return("no such file or directory");
+      case TRAD_ESYNTAX:      return("invalid or unrecognized syntax");
+      case TRAD_EEXISTS:      return("dictionary object exists");
+      case TRAD_EURL:         return("invalid RADIUS URL");
+      case TRAD_ERESOLVE:     return("unable to resolve host");
+      case TRAD_EOPTERR:      return("option error");
+      case TRAD_ECONNECT:     return("connection error");
+      case TRAD_ESCHEME:      return("invalid or mismatched URL scheme");
+      case TRAD_EINVAL:       return("invalid argument");
       case TRAD_EASSUMPTION:  return("invalid developer assumption");
-
-
       default:
       break;
    };
