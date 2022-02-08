@@ -264,7 +264,7 @@ tinyrad_dict_parse_vendor(
 void
 tinyrad_dict_print_attribute(
          TinyRadDict *                 dict,
-         TinyRadDictAttr *             attr );
+         size_t                        attr_idx );
 
 
 void
@@ -1722,7 +1722,8 @@ tinyrad_dict_print(
          TinyRadDict *                 dict,
          uint32_t                      opts )
 {
-   size_t     pos;
+   size_t            pos;
+   TinyRadDictKey    key;
 
    TinyRadDebugTrace();
 
@@ -1732,10 +1733,21 @@ tinyrad_dict_print(
    printf("# dictionary processed with %s (%s)\n", PACKAGE_NAME, PACKAGE_VERSION);
    printf("#\n");
 
+   // print attribute definitions
+   memset(&key, 0, sizeof(key));
    for(pos = 0; (pos < dict->attrs_type_len); pos ++)
-      if (!(__attr_vendor_id(dict->attrs_type[pos])))
-         tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
+   {
+      key.type          = dict->attrs_type[pos]->type;
+      key.vendor_id     = __attr_vendor_id(dict->attrs_type[pos]);
+      key.vendor_type   = dict->attrs_type[pos]->vendor_type;
+      if ((key.vendor_id))
+         continue;
+      if ( ((pos + 1) < dict->attrs_type_len) && (!(tinyrad_dict_attr_cmp_key_type(&dict->attrs_type[pos+1], &key))) )
+         continue;
+      tinyrad_dict_print_attribute(dict, pos);
+   };
 
+   // print vendor definitions
    for(pos = 0; (pos < dict->vendors_id_len); pos++)
    {
       if ( ((pos + 1) < dict->vendors_id_len) && (dict->vendors_id[pos]->id == dict->vendors_id[pos+1]->id) )
@@ -1753,7 +1765,7 @@ tinyrad_dict_print(
 void
 tinyrad_dict_print_attribute(
          TinyRadDict *                 dict,
-         TinyRadDictAttr *             attr )
+         size_t                        attr_idx )
 {
    size_t               pos;
    size_t               flags;
@@ -1761,12 +1773,15 @@ tinyrad_dict_print_attribute(
    char                 flagstr[128];
    char                 datatype[32];
    const char *         str;
+   TinyRadDictAttr *    attr;
    TinyRadDictValue *   value;
 
    TinyRadDebugTrace();
 
-   assert(dict != NULL);
-   assert(attr != NULL);
+   assert(dict     != NULL);
+   assert(attr_idx  < dict->attrs_type_len);
+
+   attr = dict->attrs_type[attr_idx];
 
    flags      = 0;
    flagstr[0] = '\0';
@@ -1847,7 +1862,7 @@ tinyrad_dict_print_vendor(
 
    printf("BEGIN-VENDOR  %s\n\n", vendor->name);
    for(pos = ((size_t)idx); ((pos < dict->attrs_type_len) && (__attr_vendor_id(dict->attrs_type[pos]) == vendor->id)); pos++)
-      tinyrad_dict_print_attribute(dict, dict->attrs_type[pos]);
+      tinyrad_dict_print_attribute(dict, pos);
    printf("\nEND-VENDOR    %s\n\n", vendor->name);
 
    return;
