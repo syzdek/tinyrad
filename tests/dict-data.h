@@ -85,6 +85,13 @@ our_dict_diag_attr(
 
 
 void
+our_dict_diag_value(
+         unsigned                      opts,
+         const TinyRadDictValueDef *   def,
+         TinyRadDictValue *            value );
+
+
+void
 our_dict_diag_vendor(
          unsigned                      opts,
          const TinyRadDictVendorDef *  def,

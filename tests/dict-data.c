@@ -207,6 +207,58 @@ our_dict_diag_attr(
 
 
 void
+our_dict_diag_value(
+         unsigned                      opts,
+         const TinyRadDictValueDef *   def,
+         TinyRadDictValue *            value )
+{
+   char *      value_name;
+   char *      attr_name;
+   unsigned    value_ref_count;
+   uint8_t     value_type;
+   uint32_t    vendor_id;
+   uint32_t    vendor_type;
+   uint64_t    value_data;
+
+   if ((def))
+   {
+      our_verbose(opts, "Value Definition");
+      our_verbose(opts, "   Attribute Name:   %s",       def->attr_name);
+      our_verbose(opts, "   Value Name:       %s",       def->value_name);
+      our_verbose(opts, "   Value Data:       %" PRIu64, def->data);
+   };
+
+   if ((value))
+   {
+      attr_name            = NULL;
+      value_name           = NULL;
+      value_type           = 0;
+      vendor_id            = 0;
+      vendor_type          = 0;
+      value_data           = 0;
+      value_ref_count      = 0;
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_NAME,         &value_name);
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_ATTR_NAME,    &attr_name);
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_TYPE,         &value_type);
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_VEND_ID,      &vendor_id);
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_VEND_TYPE,    &vendor_type);
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_DATA,         &value_data);
+      tinyrad_dict_value_info(value, TRAD_DICT_OPT_REF_COUNT,    &value_ref_count);
+      our_verbose(opts, "Value Object");
+      our_verbose(opts, "   Value Name:       %s",         (((value_name)) ? value_name : ""));
+      our_verbose(opts, "   Attribute Name:   %s",         (((attr_name))  ? attr_name  : ""));
+      our_verbose(opts, "   Attribute Type:   %" PRIu8,    value_type);
+      our_verbose(opts, "   Vendor ID:        %" PRIu32,   vendor_id);
+      our_verbose(opts, "   Vendor Type:      %" PRIu32,   vendor_type);
+      our_verbose(opts, "   Value Data:       %" PRIu64,   value_data);
+      our_verbose(opts, "   Reference Count:  %u",         value_ref_count);
+   };
+
+   return;
+}
+
+
+void
 our_dict_diag_vendor(
          unsigned                      opts,
          const TinyRadDictVendorDef *  def,
