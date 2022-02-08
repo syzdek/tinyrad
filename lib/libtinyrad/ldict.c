@@ -1098,6 +1098,7 @@ tinyrad_dict_attr_info(
       *((uint8_t *)outvalue) = __attr_len_octs(attr);
       break;
 
+      case TRAD_DICT_OPT_ATTR_NAME:
       case TRAD_DICT_OPT_NAME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", attr->name);
@@ -2174,6 +2175,13 @@ tinyrad_dict_value_info(
    // get attribute options
    switch(param)
    {
+      case TRAD_DICT_OPT_ATTR_NAME:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_ATTR_NAME, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", value->attr->name);
+      if ( (*((char **)outvalue) = strdup(value->attr->name)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
       case TRAD_DICT_OPT_NAME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", value->name);
