@@ -627,12 +627,6 @@ tinyrad_dict_add_value(
       return(TRAD_ENOMEM);
    dict->values_data = ptr;
 
-    // increase size of value by name list in attribute
-   size = sizeof(TinyRadDictValue *) * (attr->values_name_len+1);
-   if ((ptr = realloc(attr->values_name, size)) == NULL)
-      return(TRAD_ENOMEM);
-   attr->values_name = ptr;
-
    // save value by name in dictionary
    opts     = TINYRAD_ARRAY_INSERT;
    width    = sizeof(TinyRadDictValue *);
@@ -646,14 +640,6 @@ tinyrad_dict_add_value(
    width    = sizeof(TinyRadDictValue *);
    compar   = &tinyrad_dict_value_cmp_obj_data;
    if ((rc = tinyrad_array_add((void **)&dict->values_data, &dict->values_data_len, width, &value, opts, compar, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(&value->obj);
-
-   // save value by name in attribute
-   opts     = TINYRAD_ARRAY_INSERT;
-   width    = sizeof(TinyRadDictValue *);
-   compar   = &tinyrad_dict_value_cmp_obj_name;
-   if ((rc = tinyrad_array_add((void **)&attr->values_name, &attr->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    tinyrad_obj_retain(&value->obj);
 
@@ -1006,8 +992,6 @@ void
 tinyrad_dict_attr_free(
          TinyRadDictAttr *             attr )
 {
-   size_t   pos;
-
    TinyRadDebugTrace();
 
    if (!(attr))
@@ -1021,13 +1005,6 @@ tinyrad_dict_attr_free(
 
    if ((attr->name))
       free(attr->name);
-
-   if ((attr->values_name))
-   {
-      for(pos = 0; (pos < attr->values_name_len); pos++)
-         tinyrad_obj_release(&attr->values_name[pos]->obj);
-      free(attr->values_name);
-   };
 
    memset(attr, 0, sizeof(TinyRadDictAttr));
    free(attr);
