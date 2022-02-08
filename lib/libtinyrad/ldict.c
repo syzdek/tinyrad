@@ -531,14 +531,6 @@ tinyrad_dict_add_attr(
       return(TRAD_ENOMEM);
    dict->attrs_type = ptr;
 
-   // saves first vendor
-   if ((old))
-   {
-      if (attr != attr->first)
-         tinyrad_obj_release(&attr->first->obj);
-      attr->first = tinyrad_obj_retain(&old->first->obj);
-   };
-
    width = sizeof(TinyRadDictAttr *);
    opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
 
@@ -611,9 +603,6 @@ tinyrad_dict_add_value(
    assert(dict  != NULL);
    assert(attr  != NULL);
    assert(value != NULL);
-
-   // adjust attribute to first matching attribute
-   attr = attr->first;
 
    // increase size of value by name list in dictionary
    size = sizeof(TinyRadDictValue *) * (dict->values_name_len+1);
@@ -884,7 +873,6 @@ tinyrad_dict_attr_alloc(
    attr->data_type   = data_type;
    attr->flags       = flags;
    attr->vendor_type = ((vendor)) ? vendor_type : 0;
-   attr->first       = attr;
 
    return(tinyrad_obj_retain(&attr->obj));
 }
@@ -999,9 +987,6 @@ tinyrad_dict_attr_free(
 
    if ((attr->vendor))
       tinyrad_obj_release(&attr->vendor->obj);
-
-   if ( ((attr->first)) && (attr != attr->first) )
-      tinyrad_obj_release(&attr->first->obj);
 
    if ((attr->name))
       free(attr->name);
@@ -2254,9 +2239,6 @@ tinyrad_dict_value_lookup(
 
    assert(dict   != NULL);
    assert(attr   != NULL);
-
-   // adjust attribute to first matching attribute
-   attr = attr->first;
 
    width    = sizeof(TinyRadDictValue *);
    opts     = TINYRAD_ARRAY_LASTDUP;
