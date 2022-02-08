@@ -101,12 +101,13 @@ struct _tinyrad_dict_attr
    char *                  name;
    TinyRadDictVendor *     vendor;
    uint8_t                 data_type;
+   uint8_t                 type;
+   uint16_t                flags;
+   uint32_t                vendor_type;
    uint8_t                 deprecated_type_octs;
    uint8_t                 deprecated_len_octs;
-   uint8_t                 type;
+   uint16_t                deprecated_pad16;
    uint32_t                deprecated_vendor_id;
-   uint32_t                vendor_type;
-   uint32_t                flags;
    size_t                  deprecated_values_name_len;
    size_t                  deprecated_values_numeric_len;
    TinyRadDictAttr *       deprecated_first;
