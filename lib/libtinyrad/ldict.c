@@ -2259,11 +2259,11 @@ tinyrad_dict_value_info(
       *((uint64_t *)outvalue) = value->data;
       break;
 
-      //case TRAD_DICT_OPT_VEND_ID:
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_ID, outvalue )", __func__);
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", value->vendor_id);
-      //*((uint32_t *)outvalue) = value->vendor_id;
-      //break;
+      case TRAD_DICT_OPT_VEND_ID:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_ID, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", __value_vendor_id(value));
+      *((uint32_t *)outvalue) = __value_vendor_id(value);
+      break;
 
       //case TRAD_DICT_OPT_VEND_TYPE:
       //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_VEND_TYPE, outvalue )", __func__);
