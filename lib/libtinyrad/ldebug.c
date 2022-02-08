@@ -91,11 +91,11 @@ tinyrad_assertions( void )
    }                          data;
 
    // test offset of TinyRadObj
-   assert( ((void *)&data.tr)       != ((void *)&data.tr.obj)     );
-   assert( ((void *)&data.dict)     != ((void *)&data.dict.obj)   );
-   assert( ((void *)&data.attr)     != ((void *)&data.attr.obj)   );
-   assert( ((void *)&data.value)    != ((void *)&data.value.obj)  );
-   assert( ((void *)&data.vendor)   != ((void *)&data.vendor.obj) );
+   assert( ((void *)&data.tr)       == ((void *)&data.tr.obj)     );
+   assert( ((void *)&data.dict)     == ((void *)&data.dict.obj)   );
+   assert( ((void *)&data.attr)     == ((void *)&data.attr.obj)   );
+   assert( ((void *)&data.value)    == ((void *)&data.value.obj)  );
+   assert( ((void *)&data.vendor)   == ((void *)&data.vendor.obj) );
 
    memset(&data, 0, sizeof(data));
 
