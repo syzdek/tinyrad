@@ -111,7 +111,7 @@ struct _tinyrad_dict_attr
    size_t                  values_numeric_len;
    TinyRadDictAttr *       first;
    TinyRadDictValue **     values_name;
-   TinyRadDictValue **     values_numeric;
+   TinyRadDictValue **     deprecated_values_numeric;
 };
 
 
