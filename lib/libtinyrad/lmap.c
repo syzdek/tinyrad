@@ -39,6 +39,8 @@
 ///////////////
 #pragma mark - Headers
 
+#include <assert.h>
+
 
 /////////////////
 //             //

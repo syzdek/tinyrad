@@ -51,6 +51,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <assert.h>
 
 #include "lstrings.h"
 

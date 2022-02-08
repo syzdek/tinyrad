@@ -49,6 +49,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <assert.h>
 
 #include "lerror.h"
 #include "lfile.h"
