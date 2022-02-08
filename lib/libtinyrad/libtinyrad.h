@@ -50,7 +50,6 @@
 #include <stdatomic.h>
 #include <stdio.h>
 #include <sys/time.h>
-#include <syslog.h>
 #include <stdarg.h>
 
 #include <tinyrad.h>
