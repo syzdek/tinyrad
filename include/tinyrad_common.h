@@ -89,11 +89,11 @@ typedef struct _tinyrad_dict_vendor_def   TinyRadDictVendorDef;
 struct _tinyrad_dict_attr_def
 {
    const char *          name;
-   uint32_t              type;
+   uintptr_t             type;
    uint32_t              vendor_id;
    uint32_t              vendor_type;
    uint32_t              data_type;
-   uint64_t              flags;
+   uint32_t              flags;
 };
 
 
