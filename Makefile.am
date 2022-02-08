@@ -89,6 +89,7 @@ EXTRA_PROGRAMS				= examples/socket-example \
 					  tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
+					  tests/test-assertions \
 					  tests/test-assumptions \
 					  tests/test-dict-attrs \
 					  tests/test-dict-values \
@@ -113,6 +114,7 @@ TESTS					= \
 					  tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
+					  tests/test-assertions \
 					  tests/test-assumptions \
 					  tests/test-dict-attrs \
 					  tests/test-dict-defaults.sh \
@@ -345,6 +347,16 @@ tests_test_array_queue_SOURCES		= include/tinyrad.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-array-queue.c
+
+
+# macros for tests/tinyrad-assertions
+tests_test_assertions_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_assertions_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_assertions_SOURCES		= include/tinyrad.h \
+					  include/tinyrad_internal.h \
+					  include/tinyrad_compat.h \
+					  tests/common.c tests/common.h \
+					  tests/test-assertions.c
 
 
 # macros for tests/tinyrad-dict-attrs
