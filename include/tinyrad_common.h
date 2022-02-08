@@ -108,7 +108,7 @@ struct _tinyrad_dict_value_def
 struct _tinyrad_dict_vendor_def
 {
    const char *          name;
-   uint64_t              vendor_id;
+   uintptr_t             vendor_id;
    uint64_t              vendor_type_octs;
    uint64_t              vendor_len_octs;
 };
