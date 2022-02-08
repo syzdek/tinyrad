@@ -326,6 +326,12 @@ tinyrad_dict_value_cmp_key_name(
 
 
 int
+tinyrad_dict_value_cmp_obj_attr(
+         const void *                 a,
+         const void *                 b );
+
+
+int
 tinyrad_dict_value_cmp_obj_data(
          const void *                  a,
          const void *                  b );
@@ -2007,7 +2013,7 @@ tinyrad_dict_value_cmp_key_name(
 
 
 int
-tinyrad_dict_value_cmp_obj_data(
+tinyrad_dict_value_cmp_obj_attr(
          const void *                 a,
          const void *                 b )
 {
@@ -2026,6 +2032,23 @@ tinyrad_dict_value_cmp_obj_data(
    if (__value_vendor_type(*x) != __value_vendor_type(*y))
       return( (__value_vendor_type(*x) < __value_vendor_type(*y)) ? -1 : 1 );
 
+   return(0);
+}
+
+
+int
+tinyrad_dict_value_cmp_obj_data(
+         const void *                 a,
+         const void *                 b )
+{
+   int                                 rc;
+   const TinyRadDictValue * const *    x = a;
+   const TinyRadDictValue * const *    y = b;
+
+   // compare attribute type, vendor id, and vendor type
+   if ((rc = tinyrad_dict_value_cmp_obj_attr(a, b)) != 0)
+      return(rc);
+
    // compare data of value
    if ((*x)->data != (*y)->data)
       return( ((*x)->data < (*y)->data) ? -1 : 1 );
@@ -2043,18 +2066,23 @@ tinyrad_dict_value_cmp_obj_name(
          const void *                 a,
          const void *                 b )
 {
-   const TinyRadDictValue * const * x = a;
-   const TinyRadDictValue * const * y = b;
+   int                                 rc;
+   const TinyRadDictValue * const *    x = a;
+   const TinyRadDictValue * const *    y = b;
 
+   // compare attribute type, vendor id, and vendor type
+   if ((rc = tinyrad_dict_value_cmp_obj_attr(a, b)) != 0)
+      return(rc);
+
+   // compare pointers
    if ( (!((*x)->name)) && (!((*y)->name)) )
       return(0);
-
    if (!((*x)->name))
       return(-1);
-
    if (!((*y)->name))
       return(1);
 
+   // compare names
    return(strcasecmp( (*x)->name, (*y)->name));
 }
 
