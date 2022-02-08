@@ -76,8 +76,8 @@ man_MANS				=
 info_TEXINFOS				=
 noinst_LTLIBRARIES			=
 noinst_LIBRARIES			=
-noinst_HEADERS				= include/tinyrad_common.h \
-					  include/tinyrad_compat.h
+noinst_HEADERS				= include/tinyrad_compat.h \
+					  include/tinyrad_internal.h
 noinst_PROGRAMS				=
 bin_PROGRAMS				=
 bin_SCRIPTS				=
@@ -144,7 +144,7 @@ EXTRA_DIST				= \
 					  doc/rfc/rfc6929.txt \
 					  doc/rfc/rfc8044.txt \
 					  include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  lib/libtinyrad/libtinyrad.sym \
 					  tests/test-dict-defaults.sh
@@ -221,7 +221,7 @@ lib_libtinyrad_a_CPPFLAGS		= $(AM_CPPFLAGS) \
 					  -I$(srcdir)/lib/libtinyrad
 lib_libtinyrad_a_CFLAGS			= $(AM_CFLAGS)
 lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  lib/libtinyrad/libtinyrad.h \
 					  lib/libtinyrad/larray.c \
@@ -283,7 +283,7 @@ src_tinyrad_SOURCES			= include/tinyrad.h \
 src_tinyrad_dict_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  src/common.c \
 					  src/common.h \
@@ -294,7 +294,7 @@ src_tinyrad_dict_SOURCES		= include/tinyrad.h \
 src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_SOURCES			= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  src/common.c \
 					  src/common.h \
@@ -310,7 +310,7 @@ src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
 src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  src/common.c \
 					  src/common.h \
@@ -321,7 +321,7 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 tests_test_array_sorted_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_sorted_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_sorted_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-array-sorted.c
@@ -331,7 +331,7 @@ tests_test_array_sorted_SOURCES		= include/tinyrad.h \
 tests_test_array_stack_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_stack_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_stack_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-array-stack.c
@@ -341,7 +341,7 @@ tests_test_array_stack_SOURCES		= include/tinyrad.h \
 tests_test_array_queue_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_queue_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_queue_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-array-queue.c
@@ -351,7 +351,7 @@ tests_test_array_queue_SOURCES		= include/tinyrad.h \
 tests_test_dict_attrs_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_attrs_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_attrs_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/dict-data.c tests/dict-data.h \
@@ -362,7 +362,7 @@ tests_test_dict_attrs_SOURCES		= include/tinyrad.h \
 tests_test_dict_values_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_values_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_values_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/dict-data.c tests/dict-data.h \
@@ -373,7 +373,7 @@ tests_test_dict_values_SOURCES		= include/tinyrad.h \
 tests_test_dict_vendors_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_vendors_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_vendors_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/dict-data.c tests/dict-data.h \
@@ -384,7 +384,7 @@ tests_test_dict_vendors_SOURCES		= include/tinyrad.h \
 tests_test_options_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_options_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_options_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-options.c
@@ -394,7 +394,7 @@ tests_test_options_SOURCES		= include/tinyrad.h \
 tests_test_url_desc2str_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_desc2str_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_desc2str_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-url-desc2str.c
@@ -404,7 +404,7 @@ tests_test_url_desc2str_SOURCES		= include/tinyrad.h \
 tests_test_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_parse_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-url-parse.c
@@ -414,7 +414,7 @@ tests_test_url_parse_SOURCES		= include/tinyrad.h \
 tests_test_url_resolve_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_resolve_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_resolve_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_common.h \
+					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  tests/common.c tests/common.h \
 					  tests/test-url-resolve.c

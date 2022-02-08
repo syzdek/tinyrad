@@ -46,7 +46,7 @@
 #endif
 
 #include <tinyrad.h>
-#include <tinyrad_common.h>
+#include <tinyrad_internal.h>
 
 
 ///////////////////
