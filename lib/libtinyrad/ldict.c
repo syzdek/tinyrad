@@ -614,19 +614,47 @@ tinyrad_dict_add_value(
    // adjust attribute to first matching attribute
    attr = attr->first;
 
-    // increase size of list by name
+   // increase size of value by name list in dictionary
+   size = sizeof(TinyRadDictValue *) * (dict->values_name_len+1);
+   if ((ptr = realloc(dict->values_name, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->values_name = ptr;
+
+    // increase size of value by data list in dictionary
+   size = sizeof(TinyRadDictValue *) * (dict->values_data_len+1);
+   if ((ptr = realloc(dict->values_data, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->values_data = ptr;
+
+    // increase size of value by name list in attribute
    size = sizeof(TinyRadDictValue *) * (attr->values_name_len+1);
    if ((ptr = realloc(attr->values_name, size)) == NULL)
       return(TRAD_ENOMEM);
    attr->values_name = ptr;
 
-    // increase size of list by numeric
+    // increase size of value by numeric list in attribute
    size = sizeof(TinyRadDictValue *) * (attr->values_numeric_len+1);
    if ((ptr = realloc(attr->values_numeric, size)) == NULL)
       return(TRAD_ENOMEM);
    attr->values_numeric = ptr;
 
-   // save value by name
+   // save value by name in dictionary
+   opts     = TINYRAD_ARRAY_INSERT;
+   width    = sizeof(TinyRadDictValue *);
+   compar   = &tinyrad_dict_value_cmp_obj_name;
+   if ((rc = tinyrad_array_add((void **)&dict->values_name, &dict->values_name_len, width, &value, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(&value->obj);
+
+   // save value by data in dictionary
+   opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
+   width    = sizeof(TinyRadDictValue *);
+   compar   = &tinyrad_dict_value_cmp_obj_data;
+   if ((rc = tinyrad_array_add((void **)&dict->values_data, &dict->values_data_len, width, &value, opts, compar, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(&value->obj);
+
+   // save value by name in attribute
    opts     = TINYRAD_ARRAY_INSERT;
    width    = sizeof(TinyRadDictValue *);
    compar   = &tinyrad_dict_value_cmp_obj_name;
@@ -634,7 +662,7 @@ tinyrad_dict_add_value(
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    tinyrad_obj_retain(&value->obj);
 
-   // save value by value
+   // save value by numeric in attribute
    opts     = TINYRAD_ARRAY_MERGE | TINYRAD_ARRAY_LASTDUP;
    width    = sizeof(TinyRadDictValue *);
    compar   = &tinyrad_dict_value_cmp_obj_data;
