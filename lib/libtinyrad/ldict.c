@@ -2136,7 +2136,7 @@ tinyrad_dict_value_index(
    size_t               width;
    size_t               len;
    unsigned             opts;
-   TinyRadDictAttr **   list;
+   TinyRadDictValue **  list;
    TinyRadDictKey       key;
    int (*compar)(const void *, const void *);
 
@@ -2156,13 +2156,13 @@ tinyrad_dict_value_index(
 
    if ((name))
    {
-      len      = dict->attrs_name_len;
-      list     = dict->attrs_name;
+      len      = dict->values_name_len;
+      list     = dict->values_name;
       compar   = &tinyrad_dict_value_cmp_key_name;
       opts     = TINYRAD_ARRAY_LASTDUP;
    } else {
-      len      = dict->attrs_type_len;
-      list     = dict->attrs_type;
+      len      = dict->values_data_len;
+      list     = dict->values_data;
       //                                 Lookup value by dattribute         Lookup value by data
       compar   = (by_attr == TRAD_YES) ? &tinyrad_dict_value_cmp_key_attr : &tinyrad_dict_value_cmp_key_data;
       opts     = (by_attr == TRAD_YES) ? TINYRAD_ARRAY_FIRSTDUP           : TINYRAD_ARRAY_LASTDUP;
