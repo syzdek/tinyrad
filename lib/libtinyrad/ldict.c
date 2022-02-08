@@ -148,11 +148,6 @@ __attr_vendor_id(
          const TinyRadDictAttr *       attr );
 
 
-static uint32_t
-__attr_vendor_type(
-         const TinyRadDictAttr *       attr );
-
-
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
          TinyRadDict *                 dict,
@@ -879,15 +874,6 @@ __attr_vendor_id(
 {
    assert(attr != NULL);
    return( ((attr->vendor)) ? attr->vendor->id : 0);
-}
-
-
-static uint32_t
-__attr_vendor_type(
-         const TinyRadDictAttr *       attr )
-{
-   assert(attr != NULL);
-   return( ((attr->vendor)) ? attr->vendor_type : 0);
 }
 
 
