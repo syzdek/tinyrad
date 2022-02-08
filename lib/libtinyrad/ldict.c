@@ -2111,6 +2111,34 @@ tinyrad_dict_value_free(
 }
 
 
+TinyRadDictValue *
+tinyrad_dict_value_get(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         TinyRadDictAttr *             attr,
+         uint8_t                       type,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type,
+         uint64_t                      data )
+{
+   TinyRadDictValue * value;
+   assert(dict != NULL);
+
+   TinyRadDebugTrace();
+
+   if (!(attr))
+   {
+      attr = tinyrad_dict_attr_lookup(dict, NULL, type, vendor_id, vendor_type);
+      if (!(attr))
+         return(NULL);
+   };
+
+   value = tinyrad_dict_value_lookup(dict, attr, name, data);
+
+   return(tinyrad_obj_retain(&value->obj));
+}
+
+
 ssize_t
 tinyrad_dict_value_index(
          TinyRadDict *                 dict,

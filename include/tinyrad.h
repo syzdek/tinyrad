@@ -336,6 +336,17 @@ tinyrad_dict_print(
          uint32_t                      opts );
 
 
+_TINYRAD_F TinyRadDictValue *
+tinyrad_dict_value_get(
+         TinyRadDict *                 dict,
+         const char *                  name,
+         TinyRadDictAttr *             attr,
+         uint8_t                       type,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type,
+         uint64_t                      data );
+
+
 _TINYRAD_F int
 tinyrad_dict_value_info(
          TinyRadDictValue *            value,

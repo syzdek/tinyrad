@@ -55,6 +55,7 @@ tinyrad_dict_import
 tinyrad_dict_parse
 tinyrad_dict_initialize
 tinyrad_dict_print
+tinyrad_dict_value_get
 tinyrad_dict_value_info
 tinyrad_dict_value_lookup
 tinyrad_dict_vendor_get
