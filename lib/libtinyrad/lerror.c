@@ -88,6 +88,8 @@ tinyrad_error_map(
       case TRAD_ECONNECT:   return("connection error");
       case TRAD_ESCHEME:    return("invalid or mismatched URL scheme");
       case TRAD_EINVAL:     return("invalid argument");
+      case TRAD_EASSUMPTION:  return("invalid developer assumption");
+
 
       default:
       break;

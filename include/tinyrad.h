@@ -111,6 +111,7 @@
 #define TRAD_ECONNECT               0x000b ///< connection error
 #define TRAD_ESCHEME                0x000c ///< invalid or mismatched URL scheme
 #define TRAD_EINVAL                 0x000d ///< invalid argument
+#define TRAD_EASSUMPTION            0x000e ///< invalid developer assumption
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFFU
