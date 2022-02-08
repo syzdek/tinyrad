@@ -109,8 +109,8 @@
 #define TRAD_ERESOLVE               0x0009 ///< unable to resolve host
 #define TRAD_EOPTERR                0x000a ///< option error
 #define TRAD_ECONNECT               0x000b ///< connection error
-#define TRAD_ESCHEME                0x000C ///< invalid or mismatched URL scheme
-#define TRAD_EINVAL                 0x000D ///< invalid argument
+#define TRAD_ESCHEME                0x000c ///< invalid or mismatched URL scheme
+#define TRAD_EINVAL                 0x000d ///< invalid argument
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFFU
