@@ -135,7 +135,7 @@ struct _tinyrad
 struct _tinyrad_map
 {
    const char *          name;
-   uint64_t              value;
+   uintptr_t             value;
 };
 
 
