@@ -269,6 +269,12 @@ tinyrad_dict_print_attribute(
 
 
 void
+tinyrad_dict_print_value(
+         TinyRadDict *                 dict,
+         size_t                        value_idx );
+
+
+void
 tinyrad_dict_print_vendor(
          TinyRadDict *                 dict,
          size_t                        vendor_idx );
@@ -1803,12 +1809,12 @@ tinyrad_dict_print_attribute(
 {
    size_t               pos;
    size_t               flags;
-   size_t               values;
    char                 flagstr[128];
    char                 datatype[32];
    const char *         str;
+   ssize_t              value_idx;
+   TinyRadDictKey       key;
    TinyRadDictAttr *    attr;
-   TinyRadDictValue *   value;
 
    TinyRadDebugTrace();
 
@@ -1836,17 +1842,57 @@ tinyrad_dict_print_attribute(
    datatype[pos] = '\0';
 
    printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((__attr_vendor_id(attr))) ? attr->vendor_type : attr->type), datatype, flagstr);
-   values = 0;
-   for(pos = 0; (pos < attr->values_numeric_len); pos++)
+
+   memset(&key, 0, sizeof(key));
+   key.type          = attr->type;
+   key.vendor_id     = __attr_vendor_id(attr);
+   key.vendor_type   = ((attr->vendor)) ? attr->vendor_type : 0;
+
+   if ((value_idx = tinyrad_dict_value_index(dict, NULL, key.type, key.vendor_id, key.vendor_type, 0, TRAD_YES)) < 0)
+      return;
+
+   tinyrad_dict_print_value(dict, value_idx);
+
+   return;
+}
+
+
+void
+tinyrad_dict_print_value(
+         TinyRadDict *                 dict,
+         size_t                        value_idx )
+{
+   size_t               pos;
+   ssize_t              attr_idx;
+   TinyRadDictKey       key;
+   TinyRadDictAttr *    attr;
+   TinyRadDictValue *   value;
+
+   TinyRadDebugTrace();
+
+   assert(dict     != NULL);
+   assert(value_idx  < dict->values_data_len);
+
+   value = dict->values_data[value_idx];
+   memset(&key, 0, sizeof(key));
+   key.type          = __value_type(value);
+   key.vendor_id     = __value_vendor_id(value);
+   key.vendor_type   = __value_vendor_type(value);
+
+   for(pos = value_idx; ((pos > 0) && (!(tinyrad_dict_value_cmp_key_attr(&dict->values_data[pos-1], &key)))); pos--);
+   value_idx = pos;
+
+   if ((attr_idx = tinyrad_dict_attr_index(dict, NULL, key.type, key.vendor_id, key.vendor_type, TRAD_NO)) < 0)
+      return;
+   attr = dict->attrs_type[attr_idx];
+
+   printf("\n# %s Values\n", attr->name);
+   for(pos = value_idx; ((pos < dict->values_data_len) && (!(tinyrad_dict_value_cmp_key_attr(&dict->values_data[pos], &key)))); pos++)
    {
-      if (!(values))
-         printf("\n# %s Values\n", attr->name);
-      value = attr->values_numeric[pos];
-      printf("VALUE         %-31s %-21s %" PRIu64 "\n", value->attr->name, value->name, value->data );
-      values++;
+      value = dict->values_data[pos];
+      printf("VALUE         %-31s %-21s %" PRIu64 "\n", attr->name, value->name, value->data );
    };
-   if ((values))
-      printf("\n");
+   printf("\n");
 
    return;
 }
