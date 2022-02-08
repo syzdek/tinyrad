@@ -107,7 +107,7 @@ struct _tinyrad_dict_attr
    uint32_t                deprecated_vendor_id;
    uint32_t                vendor_type;
    uint32_t                flags;
-   size_t                  values_name_len;
+   size_t                  deprecated_values_name_len;
    size_t                  deprecated_values_numeric_len;
    TinyRadDictAttr *       first;
    TinyRadDictValue **     deprecated_values_name;
