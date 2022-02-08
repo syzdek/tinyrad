@@ -825,8 +825,7 @@ static uint8_t
 __attr_len_octs(
          const TinyRadDictAttr *       attr )
 {
-   if (!(attr))
-      return(0);
+   assert(attr != NULL);
    return( ((attr->vendor)) ? attr->vendor->len_octs : 0);
 }
 
@@ -835,8 +834,7 @@ static uint8_t
 __attr_type_octs(
          const TinyRadDictAttr *       attr )
 {
-   if (!(attr))
-      return(0);
+   assert(attr != NULL);
    return( ((attr->vendor)) ? attr->vendor->type_octs : 0);
 }
 
@@ -845,8 +843,7 @@ static uint32_t
 __attr_vendor_id(
          const TinyRadDictAttr *       attr )
 {
-   if (!(attr))
-      return(0);
+   assert(attr != NULL);
    return( ((attr->vendor)) ? attr->vendor->id : 0);
 }
 
