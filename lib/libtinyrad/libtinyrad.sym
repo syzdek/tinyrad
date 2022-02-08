@@ -46,6 +46,9 @@ tinyrad_dict_default_vendors
 tinyrad_dict_default_attrs
 tinyrad_dict_default_values
 #
+# debug functions
+tinyrad_assertions
+#
 # dictionary functions
 tinyrad_dict_add_path
 tinyrad_dict_attr_get

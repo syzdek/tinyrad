@@ -221,6 +221,15 @@ tinyrad_array_search(
          int (*compar)(const void *, const void *) );
 
 
+//-----------------//
+// debug functions //
+//-----------------//
+#pragma mark debug functions
+
+_TINYRAD_F void *
+tinyrad_assertions( void );
+
+
 //----------------------//
 // dictionary functions //
 //----------------------//

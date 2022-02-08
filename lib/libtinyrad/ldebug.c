@@ -39,11 +39,16 @@
 ///////////////
 #pragma mark - Headers
 
+#undef NDEBUG
+
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <assert.h>
+
+#include "ldict.h"
 
 
 /////////////////
@@ -66,6 +71,37 @@ int            tinyrad_debug_syslog    = TRAD_DFLT_DEBUG_SYSLOG;
 //             //
 /////////////////
 #pragma mark - Functions
+
+void *
+tinyrad_assertions( void )
+{
+   static union
+   {
+      TinyRad                 tr;
+      TinyRadDict             dict;
+      TinyRadObj              obj;
+      TinyRadDictAttr         attr;
+      TinyRadDictAttrDef      attr_def;
+      TinyRadDictValue        value;
+      TinyRadDictValueDef     value_def;
+      TinyRadDictVendor       vendor;
+      TinyRadDictVendorDef    vendor_def;
+      TinyRadMap              map;
+      TinyRadURLDesc          urldesc;
+   }                          data;
+
+   // test offset of TinyRadObj
+   assert( ((void *)&data.tr)       != ((void *)&data.tr.obj)     );
+   assert( ((void *)&data.dict)     != ((void *)&data.dict.obj)   );
+   assert( ((void *)&data.attr)     != ((void *)&data.attr.obj)   );
+   assert( ((void *)&data.value)    != ((void *)&data.value.obj)  );
+   assert( ((void *)&data.vendor)   != ((void *)&data.vendor.obj) );
+
+   memset(&data, 0, sizeof(data));
+
+   return(&data);
+}
+
 
 void
 tinyrad_debug(
