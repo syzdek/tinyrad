@@ -286,10 +286,6 @@ main(
    assert(sizeof( uint32_t  )  ==  4 );
    assert(sizeof(  int64_t  )  ==  8 );
    assert(sizeof( uint64_t  )  ==  8 );
-   assert(sizeof(  intptr_t )  ==  sizeof(void *) );
-   assert(sizeof( uintptr_t )  ==  sizeof(void *) );
-   assert(sizeof(    size_t )  ==  sizeof(void *) );
-   assert(sizeof(   ssize_t )  ==  sizeof(void *) );
 
    // struct packing assumptions
    assert(sizeof( struct my_data8  )     ==  (1*9));
@@ -298,7 +294,14 @@ main(
    assert(sizeof( struct my_data64 )     ==  (8*6));
    assert(sizeof( struct my_data_mixed ) ==  (8*6));
    assert(sizeof( struct my_data_ptr )   ==  sizeof( struct my_data_intptr) );
-   assert(sizeof( struct my_data )       == (16 + (sizeof(void *) * 2)) );
+   assert(sizeof( struct my_data )       ==  (16 + (sizeof(void *) * 2)) );
+
+   // pointer sizes
+   assert(sizeof( void * )  >=  4);
+   assert(sizeof( void * )  ==  sizeof(  intptr_t ));
+   assert(sizeof( void * )  ==  sizeof( uintptr_t ));
+   assert(sizeof( void * )  ==  sizeof(    size_t ));
+   assert(sizeof( void * )  ==  sizeof(   ssize_t ));
 
    if ((opts & TRAD_TEST_VERBOSE))
       printf("%s: It appears that the developer's assumptions are correct.\n", PROGRAM_NAME);
