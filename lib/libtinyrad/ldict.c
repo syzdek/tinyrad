@@ -2074,7 +2074,8 @@ tinyrad_dict_value_index(
 
    TinyRadDebugTrace();
 
-   assert(dict   != NULL);
+   assert(dict != NULL);
+   assert((by_attr == TRAD_YES) || (by_attr == TRAD_NO));
 
    width = sizeof(TinyRadDictAttr *);
 
@@ -2094,9 +2095,9 @@ tinyrad_dict_value_index(
    } else {
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
-      //                       Lookup value by dattribute         Lookup value by data
-      compar   = ((by_attr)) ? &tinyrad_dict_value_cmp_key_attr : &tinyrad_dict_value_cmp_key_data;
-      opts     = ((by_attr)) ? TINYRAD_ARRAY_FIRSTDUP           : TINYRAD_ARRAY_LASTDUP;
+      //                                 Lookup value by dattribute         Lookup value by data
+      compar   = (by_attr == TRAD_YES) ? &tinyrad_dict_value_cmp_key_attr : &tinyrad_dict_value_cmp_key_data;
+      opts     = (by_attr == TRAD_YES) ? TINYRAD_ARRAY_FIRSTDUP           : TINYRAD_ARRAY_LASTDUP;
    };
 
    return(tinyrad_array_search(list, len, width, &key, opts, NULL, compar));
