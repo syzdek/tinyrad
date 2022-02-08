@@ -2224,6 +2224,7 @@ tinyrad_dict_value_info(
          int                           param,
          void *                        outvalue )
 {
+   unsigned       uval;
    TinyRadDebugTrace();
 
    assert(value     != NULL);
@@ -2239,12 +2240,12 @@ tinyrad_dict_value_info(
          return(TRAD_ENOMEM);
       break;
 
-      //case TRAD_DICT_OPT_REF_COUNT:
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
-      //ival = (unsigned)atomic_fetch_add(&value->ref_count, 0);
-      //TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
-      //*((unsigned *)outvalue) = uval;
-      //break;
+      case TRAD_DICT_OPT_REF_COUNT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
+      uval = (unsigned)tinyrad_obj_retain_count(&value->obj);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
+      *((unsigned *)outvalue) = uval;
+      break;
 
       //case TRAD_DICT_OPT_TYPE:
       //TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
