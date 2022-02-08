@@ -200,7 +200,8 @@ tinyrad_dict_attr_index(
          const char *                 name,
          uint8_t                      type,
          uint32_t                     vendor_id,
-         uint32_t                     vendor_type );
+         uint32_t                     vendor_type,
+         int                          by_vendor );
 
 
 //------------------------------//
@@ -1038,7 +1039,8 @@ tinyrad_dict_attr_index(
          const char *                 name,
          uint8_t                      type,
          uint32_t                     vendor_id,
-         uint32_t                     vendor_type )
+         uint32_t                     vendor_type,
+         int                          by_vendor )
 {
    size_t               width;
    size_t               len;
@@ -1050,7 +1052,8 @@ tinyrad_dict_attr_index(
 
    TinyRadDebugTrace();
 
-   assert(dict   != NULL);
+   assert(dict != NULL);
+   assert((by_vendor == TRAD_NO) || (by_vendor == TRAD_YES));
 
    width = sizeof(TinyRadDictAttr *);
 
@@ -1069,14 +1072,9 @@ tinyrad_dict_attr_index(
       key      = &attr_type;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
-      if ( ((vendor_id)) && (!(vendor_type)) )
-      {
-         opts     = TINYRAD_ARRAY_FIRSTDUP;
-         compar   = &tinyrad_dict_attr_cmp_key_vendor;
-      } else {
-         opts     = TINYRAD_ARRAY_LASTDUP;
-         compar   = &tinyrad_dict_attr_cmp_key_type;
-      };
+      //                                  Lookup attrobute by type          Lookup attribute by vendor
+      opts     = (by_vendor == TRAD_NO) ? TINYRAD_ARRAY_LASTDUP           : TINYRAD_ARRAY_FIRSTDUP;
+      compar   = (by_vendor == TRAD_NO) ? &tinyrad_dict_attr_cmp_key_type : &tinyrad_dict_attr_cmp_key_vendor;
    };
 
    return(tinyrad_array_search(list, len, width, key, opts, NULL, compar));
@@ -1857,7 +1855,7 @@ tinyrad_dict_print_vendor(
    };
    printf("\n");
 
-   if ((idx = tinyrad_dict_attr_index(dict, NULL, 26, vendor->id, 0)) < 0)
+   if ((idx = tinyrad_dict_attr_index(dict, NULL, 26, vendor->id, 0, TRAD_YES)) < 0)
       return;
 
    printf("BEGIN-VENDOR  %s\n\n", vendor->name);
