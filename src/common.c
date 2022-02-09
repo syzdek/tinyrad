@@ -183,6 +183,7 @@ our_version(
          const char *                  prog_name )
 {
    printf("%s (%s) %s\n", prog_name, PACKAGE_NAME, PACKAGE_VERSION);
+   printf("%s (%s) %s\n", tinyrad_lib_name(), tinyrad_pkg_name(), tinyrad_pkg_version(NULL, NULL, NULL, NULL));
    return;
 }
 
