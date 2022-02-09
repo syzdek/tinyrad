@@ -133,10 +133,10 @@ extern const TinyRadDictValueDef       tinyrad_dict_default_values[];
 //////////////////
 #pragma mark - Prototypes
 
-//-----------------//
-// array functions //
-//-----------------//
-#pragma mark array functions
+//------------------//
+// array prototypes //
+//------------------//
+#pragma mark array prototypes
 
 _TINYRAD_F ssize_t
 tinyrad_array_add(
@@ -221,19 +221,19 @@ tinyrad_array_search(
          int (*compar)(const void *, const void *) );
 
 
-//-----------------//
-// debug functions //
-//-----------------//
-#pragma mark debug functions
+//------------------//
+// debug prototypes //
+//------------------//
+#pragma mark debug prototypes
 
 _TINYRAD_F void *
 tinyrad_assertions( void );
 
 
-//----------------------//
-// dictionary functions //
-//----------------------//
-#pragma mark dictionary functions
+//-----------------------//
+// dictionary prototypes //
+//-----------------------//
+#pragma mark dictionary prototypes
 
 _TINYRAD_F int
 tinyrad_dict_import(

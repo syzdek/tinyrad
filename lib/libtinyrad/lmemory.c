@@ -73,10 +73,10 @@
 //////////////////
 #pragma mark - Prototypes
 
-//-------------------//
-// TinyRad functions //
-//-------------------//
-#pragma mark TinyRad functions
+//--------------------//
+// TinyRad prototypes //
+//--------------------//
+#pragma mark TinyRad prototypes
 
 int
 tinyrad_set_option_socket_bind_addresses(
@@ -89,10 +89,10 @@ tinyrad_tiyrad_free(
          TinyRad *                     tr );
 
 
-//------------------//
-// object functions //
-//------------------//
-#pragma mark object functions
+//-------------------//
+// object prototypes //
+//-------------------//
+#pragma mark object prototypes
 
 int
 tinyrad_verify_is_obj(

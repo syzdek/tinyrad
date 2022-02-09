@@ -282,10 +282,10 @@ struct tinyrad_url_desc
 //////////////////
 #pragma mark - Prototypes
 
-//----------------------//
-// dictionary functions //
-//----------------------//
-#pragma mark dictionary functions
+//-----------------------//
+// dictionary prototypes //
+//-----------------------//
+#pragma mark dictionary prototypes
 
 _TINYRAD_F int
 tinyrad_dict_add_path(
@@ -370,9 +370,9 @@ tinyrad_dict_vendor_info(
 
 
 //------------------//
-// error functions //
+// error prototypes //
 //------------------//
-#pragma mark error functions
+#pragma mark error prototypes
 
 _TINYRAD_F const char *
 tinyrad_strerror(
@@ -386,10 +386,10 @@ tinyrad_strerror_r(
          size_t                        buflen );
 
 
-//------------------//
-// memory functions //
-//------------------//
-#pragma mark memory functions
+//-------------------//
+// memory prototypes //
+//-------------------//
+#pragma mark memory prototypes
 
 _TINYRAD_F void
 tinyrad_free(
@@ -417,20 +417,20 @@ tinyrad_set_option(
          const void *                  invalue );
 
 
-//------------------//
-// string functions //
-//------------------//
-#pragma mark string functions
+//-------------------//
+// string prototypes //
+//-------------------//
+#pragma mark string prototypes
 
 _TINYRAD_F void
 tinyrad_strsfree(
          char **                       strs );
 
 
-//---------------//
-// URL functions //
-//---------------//
-#pragma mark URL functions
+//----------------//
+// URL prototypes //
+//----------------//
+#pragma mark URL prototypes
 
 _TINYRAD_F int
 tinyrad_is_radius_url(

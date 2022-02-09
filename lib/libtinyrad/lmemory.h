@@ -62,10 +62,10 @@
 //////////////////
 #pragma mark - Prototypes
 
-//------------------//
-// object functions //
-//------------------//
-#pragma mark object functions
+//-------------------//
+// object prototypes //
+//-------------------//
+#pragma mark object prototypes
 
 void *
 tinyrad_obj_alloc(
