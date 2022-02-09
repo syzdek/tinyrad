@@ -48,6 +48,7 @@ tinyrad_dict_default_values
 #
 # debug functions
 tinyrad_assertions
+tinyrad_lib_version
 tinyrad_pkg_version
 #
 # dictionary functions

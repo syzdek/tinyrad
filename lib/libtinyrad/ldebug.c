@@ -76,6 +76,20 @@
 #endif
 
 
+#ifndef LIB_VERSION_CURRENT
+#   define LIB_VERSION_CURRENT 0
+#endif
+#ifndef LIB_VERSION_REVISION
+#   define LIB_VERSION_REVISION 0
+#endif
+#ifndef LIB_VERSION_AGE
+#   define LIB_VERSION_AGE 0
+#endif
+#ifndef LIB_VERSION_INFO
+#   define LIB_VERSION_INFO "0:0:0"
+#endif
+
+
 /////////////////
 //             //
 //  Variables  //
@@ -195,6 +209,25 @@ tinyrad_debug(
       printf("\n");
 
    return;
+}
+
+
+const char *
+tinyrad_lib_version(
+         unsigned *                    currentp,
+         unsigned *                    revisionp,
+         unsigned *                    agep )
+{
+   if ((currentp))
+      *currentp = LIB_VERSION_CURRENT;
+
+   if ((revisionp))
+      *revisionp = LIB_VERSION_REVISION;
+
+   if ((agep))
+      *agep = LIB_VERSION_AGE;
+
+   return(LIB_VERSION_INFO);
 }
 
 

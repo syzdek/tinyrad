@@ -319,6 +319,13 @@ struct tinyrad_url_desc
 #pragma mark debug prototypes
 
 _TINYRAD_F const char *
+tinyrad_lib_version(
+         unsigned *                    currentp,
+         unsigned *                    revisionp,
+         unsigned *                    agep );
+
+
+_TINYRAD_F const char *
 tinyrad_pkg_version(
          unsigned *                    majorp,
          unsigned *                    minorp,
