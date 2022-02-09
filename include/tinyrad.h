@@ -247,17 +247,17 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct _tinyrad                TinyRad;
-typedef struct _tinyrad_dict           TinyRadDict;
-typedef struct _tinyrad_dict_vendor    TinyRadDictVendor;
-typedef struct _tinyrad_dict_attr      TinyRadDictAttr;
+typedef struct _tinyrad                   TinyRad;
+typedef struct _tinyrad_dict              TinyRadDict;
+typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
+typedef struct _tinyrad_dict_attr         TinyRadDictAttr;
 typedef struct _tinyrad_dict_attr_def     TinyRadDictAttrDef;
-typedef struct _tinyrad_dict_value     TinyRadDictValue;
+typedef struct _tinyrad_dict_value        TinyRadDictValue;
 typedef struct _tinyrad_dict_value_def    TinyRadDictValueDef;
 typedef struct _tinyrad_dict_vendor_def   TinyRadDictVendorDef;
-typedef struct _tinyrad_map            TinyRadMap;
-typedef struct tinyrad_url_desc        TinyRadURLDesc;
-typedef struct sockaddr_storage        TinyRadSockAddr;
+typedef struct _tinyrad_map               TinyRadMap;
+typedef struct tinyrad_url_desc           TinyRadURLDesc;
+typedef struct sockaddr_storage           TinyRadSockAddr;
 
 
 struct _tinyrad_dict_attr_def
