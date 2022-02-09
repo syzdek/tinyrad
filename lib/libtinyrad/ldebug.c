@@ -232,6 +232,13 @@ tinyrad_lib_version(
 
 
 const char *
+tinyrad_pkg_name( void )
+{
+   return(PACKAGE_NAME);
+}
+
+
+const char *
 tinyrad_pkg_version(
          unsigned *                    majorp,
          unsigned *                    minorp,

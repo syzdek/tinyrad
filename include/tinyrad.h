@@ -326,6 +326,10 @@ tinyrad_lib_version(
 
 
 _TINYRAD_F const char *
+tinyrad_pkg_name( void );
+
+
+_TINYRAD_F const char *
 tinyrad_pkg_version(
          unsigned *                    majorp,
          unsigned *                    minorp,
