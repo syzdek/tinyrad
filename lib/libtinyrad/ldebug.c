@@ -213,6 +213,13 @@ tinyrad_debug(
 
 
 const char *
+tinyrad_lib_name( void )
+{
+   return("libtinyrad");
+}
+
+
+const char *
 tinyrad_lib_version(
          unsigned *                    currentp,
          unsigned *                    revisionp,
