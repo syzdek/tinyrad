@@ -52,6 +52,30 @@
 #include "ldict.h"
 
 
+///////////////////
+//               //
+//  Definitions  //
+//               //
+///////////////////
+#pragma mark - Definitions
+
+#ifndef GIT_PACKAGE_MAJOR
+#   define GIT_PACKAGE_MAJOR 0
+#endif
+#ifndef GIT_PACKAGE_MINOR
+#   define GIT_PACKAGE_MINOR 0
+#endif
+#ifndef GIT_PACKAGE_PATCH
+#   define GIT_PACKAGE_PATCH 0
+#endif
+#ifndef GIT_PACKAGE_BUILD
+#   define GIT_PACKAGE_BUILD "g0000000"
+#endif
+#ifndef GIT_PACKAGE_VERSION_BUILD
+#   define GIT_PACKAGE_VERSION_BUILD "0.0.0.g0000000"
+#endif
+
+
 /////////////////
 //             //
 //  Variables  //
@@ -171,6 +195,29 @@ tinyrad_debug(
       printf("\n");
 
    return;
+}
+
+
+const char *
+tinyrad_pkg_version(
+         unsigned *                    majorp,
+         unsigned *                    minorp,
+         unsigned *                    patchp,
+         const char **                 buildp )
+{
+   if ((majorp))
+      *majorp = GIT_PACKAGE_MAJOR;
+
+   if ((minorp))
+      *minorp = GIT_PACKAGE_MINOR;
+
+   if ((patchp))
+      *patchp = GIT_PACKAGE_PATCH;
+
+   if ((buildp))
+      *buildp = GIT_PACKAGE_BUILD;
+
+   return(GIT_PACKAGE_VERSION_BUILD);
 }
 
 

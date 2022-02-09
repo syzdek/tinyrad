@@ -313,6 +313,19 @@ struct tinyrad_url_desc
 //////////////////
 #pragma mark - Prototypes
 
+//------------------//
+// debug prototypes //
+//------------------//
+#pragma mark debug prototypes
+
+_TINYRAD_F const char *
+tinyrad_pkg_version(
+         unsigned *                    majorp,
+         unsigned *                    minorp,
+         unsigned *                    patchp,
+         const char **                 buildp );
+
+
 //-----------------------//
 // dictionary prototypes //
 //-----------------------//
