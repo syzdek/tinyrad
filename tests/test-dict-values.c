@@ -154,7 +154,7 @@ main(
          break;
 
          case 'V':
-         printf("%s (%s) %s\n", PROGRAM_NAME, PACKAGE_NAME, PACKAGE_VERSION);
+         our_version(PROGRAM_NAME);
          return(0);
 
          case 'v':

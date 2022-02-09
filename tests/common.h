@@ -135,4 +135,10 @@ our_random_str(
          size_t                        min,
          size_t                        max );
 
+
+void
+our_version(
+         const char *                  program_name );
+
+
 #endif /* end of header */
