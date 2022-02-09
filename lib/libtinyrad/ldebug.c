@@ -46,6 +46,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <stdatomic.h>
 #include <assert.h>
 
 #include "ldict.h"
@@ -75,31 +76,73 @@ int            tinyrad_debug_syslog    = TRAD_DFLT_DEBUG_SYSLOG;
 void *
 tinyrad_assertions( void )
 {
-   static union
-   {
-      TinyRad                 tr;
-      TinyRadDict             dict;
-      TinyRadObj              obj;
-      TinyRadDictAttr         attr;
-      TinyRadDictAttrDef      attr_def;
-      TinyRadDictValue        value;
-      TinyRadDictValueDef     value_def;
-      TinyRadDictVendor       vendor;
-      TinyRadDictVendorDef    vendor_def;
-      TinyRadMap              map;
-      TinyRadURLDesc          urldesc;
-   }                          data;
+   TinyRad                 tr;
+   TinyRadDict             dict;
+   TinyRadDictAttr         attr;
+   //TinyRadDictAttrDef      attrdef;
+   TinyRadDictValue        value;
+   //TinyRadDictValueDef     valuedef;
+   TinyRadDictVendor       vendor;
+   //TinyRadDictVendorDef    vendordef;
+   //TinyRadMap              map;
+   TinyRadObj              obj;
+   //TinyRadURLDesc          urldesc;
+
+   // test size of structs
+   assert( sizeof(TinyRad)             > sizeof(TinyRadObj) );
+   assert( sizeof(TinyRadDict)         > sizeof(TinyRadObj) );
+   assert( sizeof(TinyRadDictAttr)     > sizeof(TinyRadObj) );
+   assert( sizeof(TinyRadDictValue)    > sizeof(TinyRadObj) );
+   assert( sizeof(TinyRadDictVendor)   > sizeof(TinyRadObj) );
 
    // test offset of TinyRadObj
-   assert( ((void *)&data.tr)       == ((void *)&data.tr.obj)     );
-   assert( ((void *)&data.dict)     == ((void *)&data.dict.obj)   );
-   assert( ((void *)&data.attr)     == ((void *)&data.attr.obj)   );
-   assert( ((void *)&data.value)    == ((void *)&data.value.obj)  );
-   assert( ((void *)&data.vendor)   == ((void *)&data.vendor.obj) );
+   assert( ((void *)&tr)       == ((void *)&tr.obj)     );
+   assert( ((void *)&dict)     == ((void *)&dict.obj)   );
+   assert( ((void *)&attr)     == ((void *)&attr.obj)   );
+   assert( ((void *)&value)    == ((void *)&value.obj)  );
+   assert( ((void *)&vendor)   == ((void *)&vendor.obj) );
 
-   memset(&data, 0, sizeof(data));
+   // initialize variables
+   memset(&tr,       0, sizeof(tr));
+   memset(&dict,     0, sizeof(dict));
+   memset(&attr,     0, sizeof(attr));
+   memset(&value,    0, sizeof(value));
+   memset(&vendor,   0, sizeof(vendor));
+   memset(&obj,      0, sizeof(obj));
 
-   return(&data);
+   // set magic numbers
+   memcpy(&tr,       TRAD_MAGIC, 8);
+   memcpy(&dict,     TRAD_MAGIC, 8);
+   memcpy(&attr,     TRAD_MAGIC, 8);
+   memcpy(&value,    TRAD_MAGIC, 8);
+   memcpy(&vendor,   TRAD_MAGIC, 8);
+   memcpy(&obj,      TRAD_MAGIC, 8);
+
+   // initialize ref_count
+   atomic_init( &((TinyRadObj *)&tr)->ref_count,      0xf0f00f0f );
+   atomic_init( &((TinyRadObj *)&dict)->ref_count,    0xf0f00f0f );
+   atomic_init( &((TinyRadObj *)&attr)->ref_count,    0xf0f00f0f );
+   atomic_init( &((TinyRadObj *)&value)->ref_count,   0xf0f00f0f );
+   atomic_init( &((TinyRadObj *)&vendor)->ref_count,  0xf0f00f0f );
+   atomic_init( &((TinyRadObj *)&obj)->ref_count,     0xf0f00f0f );
+
+   // verify magic numbers
+   assert( memcmp(tr.obj.magic,       TRAD_MAGIC, 8) == 0 );
+   assert( memcmp(dict.obj.magic,     TRAD_MAGIC, 8) == 0 );
+   assert( memcmp(attr.obj.magic,     TRAD_MAGIC, 8) == 0 );
+   assert( memcmp(value.obj.magic,    TRAD_MAGIC, 8) == 0 );
+   assert( memcmp(vendor.obj.magic,   TRAD_MAGIC, 8) == 0 );
+   assert( memcmp(obj.magic,          TRAD_MAGIC, 8) == 0 );
+
+   // verify ref_count
+   assert( (unsigned long)atomic_fetch_add( &tr.obj.ref_count,       0 ) == 0xf0f00f0fUL );
+   assert( (unsigned long)atomic_fetch_add( &dict.obj.ref_count,     0 ) == 0xf0f00f0fUL );
+   assert( (unsigned long)atomic_fetch_add( &attr.obj.ref_count,     0 ) == 0xf0f00f0fUL );
+   assert( (unsigned long)atomic_fetch_add( &value.obj.ref_count,    0 ) == 0xf0f00f0fUL );
+   assert( (unsigned long)atomic_fetch_add( &vendor.obj.ref_count,   0 ) == 0xf0f00f0fUL );
+   assert( (unsigned long)atomic_fetch_add( &obj.ref_count,          0 ) == 0xf0f00f0fUL );
+
+   return(NULL);
 }
 
 
