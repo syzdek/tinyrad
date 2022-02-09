@@ -74,46 +74,6 @@
 #define TINYRAD_ARRAY_MASK          ( TINYRAD_ARRAY_MASK_ACTION | TINYRAD_ARRAY_MASK_DUPS )                    ///< mask of all sorted array options
 
 
-//////////////////
-//              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-typedef struct _tinyrad_dict_attr_def     TinyRadDictAttrDef;
-typedef struct _tinyrad_dict_value_def    TinyRadDictValueDef;
-typedef struct _tinyrad_dict_vendor_def   TinyRadDictVendorDef;
-
-
-struct _tinyrad_dict_attr_def
-{
-   const char *          name;
-   uintptr_t             type;
-   uint32_t              vendor_id;
-   uint32_t              vendor_type;
-   uint32_t              data_type;
-   uint32_t              flags;
-};
-
-
-struct _tinyrad_dict_value_def
-{
-   const char *          attr_name;
-   const char *          value_name;
-   uint64_t              data;
-};
-
-
-struct _tinyrad_dict_vendor_def
-{
-   const char *          name;
-   uintptr_t             vendor_id;
-   uint64_t              vendor_type_octs;
-   uint64_t              vendor_len_octs;
-};
-
-
 /////////////////
 //             //
 //  Variables  //
@@ -228,21 +188,6 @@ tinyrad_array_search(
 
 _TINYRAD_F void *
 tinyrad_assertions( void );
-
-
-//-----------------------//
-// dictionary prototypes //
-//-----------------------//
-#pragma mark dictionary prototypes
-
-_TINYRAD_F int
-tinyrad_dict_import(
-         TinyRadDict *                 dict,
-         const TinyRadDictVendorDef *  vendor_defs,
-         const TinyRadDictAttrDef *    attr_defs,
-         const TinyRadDictValueDef *   value_defs,
-         char ***                      msgsp,
-         uint32_t                      opts );
 
 
 #endif /* end of header */
