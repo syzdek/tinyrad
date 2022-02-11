@@ -65,17 +65,17 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "User-Name",                  1,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.1  User-Name
    { "User-Password",              2,         0,           0,   TRAD_STRING,   TRAD_ENCRYPT1 },  // RFC2865 Section 5.2  User-Password
    { "CHAP-Password",              3,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.3   CHAP-Password
-   { "NAS-IP-Address",             4,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.4   NAS-IP-Address
+   { "NAS-IP-Address",             4,         0,           0,   TRAD_IPV4ADDR,             0 },  // RFC2865 Section 5.4   NAS-IP-Address
    { "NAS-Port",                   5,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.5   NAS-Port
    { "Service-Type",               6,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.6   Service-Type
    { "Framed-Protocol",            7,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.7   Framed-Protocol
-   { "Framed-IP-Address",          8,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.8   Framed-IP-Address
-   { "Framed-IP-Netmask",          9,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.9   Framed-IP-Netmask
+   { "Framed-IP-Address",          8,         0,           0,   TRAD_IPV4ADDR,             0 },  // RFC2865 Section 5.8   Framed-IP-Address
+   { "Framed-IP-Netmask",          9,         0,           0,   TRAD_IPV4ADDR,             0 },  // RFC2865 Section 5.9   Framed-IP-Netmask
    { "Framed-Routing",            10,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.10  Framed-Routing
    { "Filter-Id",                 11,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.11  Filter-Id
    { "Framed-MTU",                12,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.12  Framed-MTU
    { "Framed-Compression",        13,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.13  Framed-Compression
-   { "Login-IP-Host",             14,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.14  Login-IP-Host
+   { "Login-IP-Host",             14,         0,           0,   TRAD_IPV4ADDR,             0 },  // RFC2865 Section 5.14  Login-IP-Host
    { "Login-Service",             15,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.15  Login-Service
    { "Login-TCP-Port",            16,         0,           0,   TRAD_INTEGER,              0 },  // RFC2865 Section 5.16  Login-TCP-Port
    // unassigned                  17
@@ -84,7 +84,7 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "Callback-Id",               20,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.20  Callback-Id
    // unassigned                  21
    { "Framed-Route",              22,         0,           0,   TRAD_STRING,               0 },  // RFC2865 Section 5.22  Framed-Route
-   { "Framed-IPX-Network",        23,         0,           0,   TRAD_IPADDR,               0 },  // RFC2865 Section 5.23  Framed-IPX-Network
+   { "Framed-IPX-Network",        23,         0,           0,   TRAD_IPV4ADDR,             0 },  // RFC2865 Section 5.23  Framed-IPX-Network
    { "State",                     24,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.24  State
    { "Class",                     25,         0,           0,   TRAD_OCTETS,               0 },  // RFC2865 Section 5.25  Class
    { "Vendor-Specific",           26,         0,           0,   TRAD_VSA,                  0 },  // RFC2865 Section 5.26  Vendor-Specific

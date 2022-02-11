@@ -188,7 +188,7 @@
 // RADIUS Attribute Types
 #define TRAD_STRING                 1 ///< UTF-8 printable text (the RFCs call this "text")
 #define TRAD_OCTETS                 2 ///< opaque binary data (the RFCs call this "string")
-#define TRAD_IPADDR                 3 ///< IPv4 address
+#define TRAD_IPV4ADDR               3 ///< IPv4 address
 #define TRAD_DATE                   4 ///< Seconds since January 1, 1970 (32-bits)
 #define TRAD_INTEGER                5 ///< 32-bit unsigned integer
 #define TRAD_IPV6ADDR               6 ///< IPv6 Address

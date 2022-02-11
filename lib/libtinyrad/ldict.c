@@ -422,7 +422,7 @@ static const TinyRadMap tinyrad_dict_data_type[] =
    { "IFID",         TRAD_IFID},
    { "INTEGER",      TRAD_INTEGER},
    { "INTEGER64",    TRAD_INTEGER64},
-   { "IPADDR",       TRAD_IPADDR},
+   { "IPADDR",       TRAD_IPV4ADDR},
    { "IPV4PREFIX",   TRAD_IPV4PREFIX},
    { "IPV6ADDR",     TRAD_IPV6ADDR},
    { "IPV6PREFIX",   TRAD_IPV6PREFIX},
