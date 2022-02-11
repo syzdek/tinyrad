@@ -239,9 +239,6 @@
 #define TRAD_COA_NAK                45
 
 
-// Tiny RADIUS Crypto Methods
-
-
 //////////////////
 //              //
 //  Data Types  //
