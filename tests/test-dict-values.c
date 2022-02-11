@@ -80,7 +80,7 @@ main(
 int
 my_verify_value(
          unsigned                      opts,
-         const TinyRadDictValueDef *   def,
+         const TinyRadDictValueDef *   value_def,
          TinyRadDictAttr *             attr,
          TinyRadDictValue *            value );
 
@@ -105,7 +105,7 @@ main(
    TinyRadDict *                 dict;
    TinyRadDictAttr *             attr;
    TinyRadDictValue *            value;
-   const TinyRadDictValueDef *   def;
+   const TinyRadDictValueDef *   value_def;
 
    // getopt options
    static char          short_opt[] = "dhVvq";
@@ -183,23 +183,23 @@ main(
    // verifies test values in dictionary by name
    for(pos = 0; ((test_dict_data_values[pos].value_name)); pos++)
    {
-      def = &test_dict_data_values[pos];
+      value_def = &test_dict_data_values[pos];
       our_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
-         def->attr_name,
-         def->value_name,
-         def->data
+         value_def->attr_name,
+         value_def->value_name,
+         value_def->data
       );
-      if ((attr = tinyrad_dict_attr_get(dict, def->attr_name, 0, NULL, 0, 0)) == NULL)
+      if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", def->attr_name, def->value_name);
+         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
-      value = tinyrad_dict_value_get(dict, def->value_name, attr, 0, 0, 0, 0);
-      if ((my_verify_value(opts, def, attr, value)))
+      value = tinyrad_dict_value_get(dict, value_def->value_name, attr, 0, 0, 0, 0);
+      if ((my_verify_value(opts, value_def, attr, value)))
       {
          tinyrad_free(value);
          tinyrad_free(attr);
@@ -213,23 +213,23 @@ main(
    // verifies test values in dictionary by data
    for(pos = 0; ((test_dict_data_values[pos].value_name)); pos++)
    {
-      def = &test_dict_data_values[pos];
+      value_def = &test_dict_data_values[pos];
       our_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
-         def->attr_name,
-         def->value_name,
-         def->data
+         value_def->attr_name,
+         value_def->value_name,
+         value_def->data
       );
-      if ((attr = tinyrad_dict_attr_get(dict, def->attr_name, 0, NULL, 0, 0)) == NULL)
+      if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", def->attr_name, def->value_name);
+         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
-      value = tinyrad_dict_value_get(dict, NULL, attr, 0, 0, 0, def->data);
-      if ((my_verify_value(opts, def, attr, value)))
+      value = tinyrad_dict_value_get(dict, NULL, attr, 0, 0, 0, value_def->data);
+      if ((my_verify_value(opts, value_def, attr, value)))
       {
          tinyrad_free(value);
          tinyrad_free(attr);
@@ -243,23 +243,23 @@ main(
    // verifies default attributes in dictionary by name
    for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
    {
-      def = &tinyrad_dict_default_values[pos];
+      value_def = &tinyrad_dict_default_values[pos];
       our_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
-         def->attr_name,
-         def->value_name,
-         def->data
+         value_def->attr_name,
+         value_def->value_name,
+         value_def->data
       );
-      if ((attr = tinyrad_dict_attr_get(dict, def->attr_name, 0, NULL, 0, 0)) == NULL)
+      if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", def->attr_name, def->value_name);
+         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
-      value = tinyrad_dict_value_get(dict, def->value_name, attr, 0, 0, 0, 0);
-      if ((my_verify_value(opts, def, attr, value)))
+      value = tinyrad_dict_value_get(dict, value_def->value_name, attr, 0, 0, 0, 0);
+      if ((my_verify_value(opts, value_def, attr, value)))
       {
          tinyrad_free(value);
          tinyrad_free(attr);
@@ -273,23 +273,23 @@ main(
    // verifies default attributes in dictionary by type
    for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
    {
-      def = &tinyrad_dict_default_values[pos];
+      value_def = &tinyrad_dict_default_values[pos];
       our_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
-         def->attr_name,
-         def->value_name,
-         def->data
+         value_def->attr_name,
+         value_def->value_name,
+         value_def->data
       );
-      if ((attr = tinyrad_dict_attr_get(dict, def->attr_name, 0, NULL, 0, 0)) == NULL)
+      if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", def->attr_name, def->value_name);
+         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
       };
-      value = tinyrad_dict_value_get(dict, NULL, attr, 0, 0, 0, def->data);
-      if ((my_verify_value(opts, def, attr, value)))
+      value = tinyrad_dict_value_get(dict, NULL, attr, 0, 0, 0, value_def->data);
+      if ((my_verify_value(opts, value_def, attr, value)))
       {
          tinyrad_free(value);
          tinyrad_free(attr);
@@ -310,7 +310,7 @@ main(
 int
 my_verify_value(
          unsigned                      opts,
-         const TinyRadDictValueDef *   def,
+         const TinyRadDictValueDef *   value_def,
          TinyRadDictAttr *             attr,
          TinyRadDictValue *            value )
 {
@@ -321,12 +321,12 @@ my_verify_value(
    uint32_t    v_u32;
    uint64_t    u64;
 
-   assert(def  != NULL);
-   assert(attr != NULL);
+   assert(value_def  != NULL);
+   assert(attr       != NULL);
 
    if (!(value))
    {
-      our_dict_diag_value(opts, def, value);
+      our_dict_diag_value(opts, value_def, value);
       return(our_error(opts, NULL, "value was not found"));
    };
 
@@ -355,7 +355,7 @@ my_verify_value(
    tinyrad_dict_value_info( value, TRAD_DICT_OPT_TYPE, &v_u8);
    if (a_u8 != v_u8)
    {
-      our_dict_diag_value(opts, def, value);
+      our_dict_diag_value(opts, value_def, value);
       return(our_error(opts, NULL, "attribute type does not match"));
    };
 
@@ -364,7 +364,7 @@ my_verify_value(
    tinyrad_dict_value_info( value, TRAD_DICT_OPT_VEND_ID, &v_u32);
    if (a_u32 != v_u32)
    {
-      our_dict_diag_value(opts, def, value);
+      our_dict_diag_value(opts, value_def, value);
       return(our_error(opts, NULL, "attribute vendor id does not match"));
    };
 
@@ -373,15 +373,15 @@ my_verify_value(
    tinyrad_dict_value_info( value, TRAD_DICT_OPT_VEND_TYPE, &v_u32);
    if (a_u32 != v_u32)
    {
-      our_dict_diag_value(opts, def, value);
+      our_dict_diag_value(opts, value_def, value);
       return(our_error(opts, NULL, "attribute vendor type does not match"));
    };
 
    // compare value data
    tinyrad_dict_value_info(value, TRAD_DICT_OPT_DATA, &u64);
-   if (def->data != u64)
+   if (value_def->data != u64)
    {
-      our_dict_diag_value(opts, def, value);
+      our_dict_diag_value(opts, value_def, value);
       return(our_error(opts, NULL, "value data does not match"));
    };
 

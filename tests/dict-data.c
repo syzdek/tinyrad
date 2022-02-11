@@ -209,7 +209,7 @@ our_dict_diag_attr(
 void
 our_dict_diag_value(
          unsigned                      opts,
-         const TinyRadDictValueDef *   def,
+         const TinyRadDictValueDef *   value_def,
          TinyRadDictValue *            value )
 {
    char *      value_name;
@@ -220,12 +220,12 @@ our_dict_diag_value(
    uint32_t    vendor_type;
    uint64_t    value_data;
 
-   if ((def))
+   if ((value_def))
    {
       our_verbose(opts, "Value Definition");
-      our_verbose(opts, "   Attribute Name:   %s",       def->attr_name);
-      our_verbose(opts, "   Value Name:       %s",       def->value_name);
-      our_verbose(opts, "   Value Data:       %" PRIu64, def->data);
+      our_verbose(opts, "   Attribute Name:   %s",       value_def->attr_name);
+      our_verbose(opts, "   Value Name:       %s",       value_def->value_name);
+      our_verbose(opts, "   Value Data:       %" PRIu64, value_def->data);
    };
 
    if ((value))
