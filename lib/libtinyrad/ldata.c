@@ -63,7 +63,7 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
 {
    // Name                      Type  Vendor ID  Vendor Type    Data Type                       Flags
    { "User-Name",                  1,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2865 Section 5.1  User-Name
-   { "User-Password",              2,         0,           0,   TRAD_DATATYPE_TEXT,     TRAD_ENCRYPT1 },  // RFC2865 Section 5.2  User-Password
+   { "User-Password",              2,         0,           0,   TRAD_DATATYPE_TEXT,     TRAD_FLG_ENCRYPT1 },  // RFC2865 Section 5.2  User-Password
    { "CHAP-Password",              3,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2865 Section 5.3   CHAP-Password
    { "NAS-IP-Address",             4,         0,           0,   TRAD_DATATYPE_IPV4ADDR,             0 },  // RFC2865 Section 5.4   NAS-IP-Address
    { "NAS-Port",                   5,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2865 Section 5.5   NAS-Port

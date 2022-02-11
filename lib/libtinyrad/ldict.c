@@ -442,7 +442,7 @@ static const TinyRadMap tinyrad_dict_data_type[] =
 #pragma mark tinyrad_dict_attr_flags[]
 static const TinyRadMap tinyrad_dict_attr_flags[] =
 {
-   { "encrypt=1",    TRAD_ENCRYPT1},
+   { "encrypt=1",    TRAD_FLG_ENCRYPT1},
    { "encrypt=2",    TRAD_ENCRYPT2},
    { "encrypt=3",    TRAD_ENCRYPT3},
    { "has_tag",      TRAD_HAS_TAG},
