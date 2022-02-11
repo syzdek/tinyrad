@@ -251,7 +251,7 @@ typedef struct _tinyrad_dict              TinyRadDict;
 typedef struct _tinyrad_dict_attr         TinyRadDictAttr;
 typedef struct _tinyrad_dict_value        TinyRadDictValue;
 typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
-typedef struct sockaddr_storage           TinyRadSockAddr;
+typedef struct sockaddr_storage           tinyrad_sockaddr_t;
 
 
 typedef struct tinyrad_binval
@@ -309,7 +309,7 @@ typedef struct tinyrad_url_desc
    unsigned                      trud_opts;
    /* may contain additional fields for internal use */
    struct tinyrad_url_desc *     trud_next;
-   TinyRadSockAddr **            sockaddrs;
+   tinyrad_sockaddr_t **         sockaddrs;
    size_t                        sockaddrs_len;
 } TinyRadURLDesc;
 
