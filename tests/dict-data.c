@@ -68,7 +68,7 @@ const TinyRadDictAttrDef test_dict_data_attrs[] =
    { "Syzdek-HTML-Color",         26,      27893,            0,   TRAD_INTEGER,              0 },  // custom attribute for testing
    { "Syzdek-Faith",              26,      27893,            1,   TRAD_INTEGER,              0 },  // custom attribute for testing
    { "Syzdek-Animal-Group",       26,      27893,            2,   TRAD_INTEGER,              0 },  // custom attribute for testing
-   { "TinyrRad-Foobar",          224,          0,            0,    TRAD_STRING,              0 },  // custom attribute for testing
+   { "TinyrRad-Foobar",          224,          0,            0,   TRAD_TEXT,                 0 },  // custom attribute for testing
    { "TinyrRad-Signature",       225,          0,            0,    TRAD_OCTETS,              0 },  // custom attribute for testing
    { "TinyrRad-YoYo-Make",       226,          0,            0,   TRAD_INTEGER,              0 },  // custom attribute for testing
    { NULL, 0, 0, 0, 0, 0 }

@@ -431,7 +431,7 @@ static const TinyRadMap tinyrad_dict_data_type[] =
    { "RAD_TLV",      TRAD_TLV},
    { "SHORT",        TRAD_SHORT},
    { "SIGNED",       TRAD_SIGNED},
-   { "STRING",       TRAD_STRING },
+   { "STRING",       TRAD_TEXT },
    { "VSA",          TRAD_VSA },
    { NULL, 0 }
 };
