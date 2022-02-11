@@ -167,8 +167,8 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "Extended-Attribute-2",     242,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.2   Extended-Type-2
    { "Extended-Attribute-3",     243,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.3   Extended-Type-3
    { "Extended-Attribute-4",     244,         0,           0,   TRAD_EXTENDED,             0 },  // RFC6929 Section 3.4   Extended-Type-4
-   { "Extended-Attribute-5",     245,         0,           0,   TRAD_LONGEXTENDED,         0 },  // RFC6929 Section 3.5   Long-Extended-Type-1
-   { "Extended-Attribute-6",     246,         0,           0,   TRAD_LONGEXTENDED,         0 },  // RFC6929 Section 3.6   Long-Extended-Type-2
+   { "Extended-Attribute-5",     245,         0,           0,   TRAD_LONG_EXTENDED,        0 },  // RFC6929 Section 3.5   Long-Extended-Type-1
+   { "Extended-Attribute-6",     246,         0,           0,   TRAD_LONG_EXTENDED,        0 },  // RFC6929 Section 3.6   Long-Extended-Type-2
    // Reserved                   247-255
    { NULL, 0, 0, 0, 0, 0 }
 };

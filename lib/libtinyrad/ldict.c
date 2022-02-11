@@ -426,7 +426,7 @@ static const TinyRadMap tinyrad_dict_data_type[] =
    { "IPV4PREFIX",     TRAD_IPV4PREFIX},
    { "IPV6ADDR",       TRAD_IPV6ADDR},
    { "IPV6PREFIX",     TRAD_IPV6PREFIX},
-   { "LONGEXTENDED",   TRAD_LONGEXTENDED},
+   { "LONGEXTENDED",   TRAD_LONG_EXTENDED},
    { "OCTETS",         TRAD_OCTETS},
    { "RAD_TLV",        TRAD_TLV},
    { "SHORT",          TRAD_SHORT},

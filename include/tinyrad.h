@@ -204,7 +204,7 @@
 #define TRAD_IPV4PREFIX            16 ///< IPv4 Prefix as given in RFC 6572.
 #define TRAD_VSA                   17 ///< Vendor specific attribute
 #define TRAD_EXTENDED              18 ///< Extended Type (RFC 6929: Section 2.1 Extended Type)
-#define TRAD_LONGEXTENDED          19 ///< Long Extended Type (RFC 6929: Section 2.2 Long Extended Type)
+#define TRAD_LONG_EXTENDED         19 ///< Long Extended Type (RFC 6929: Section 2.2 Long Extended Type)
 
 
 // RADIUS Attribute flags
