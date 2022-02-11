@@ -223,20 +223,18 @@
 
 
 // RADIUS codes
-#define TRAD_ACCESS_REQ             1
-#define TRAD_ACCESS_ACCEPT          2
-#define TRAD_ACCESS_REJECT          3
-#define TRAD_ACCOUNT_REQ            4
-#define TRAD_ACCOUNT_RES            5
-#define TRAD_ACCESS_CHALLENGE       11
-#define TRAD_STATUS_SERVER          12
-#define TRAD_STATUS_CLIENT          13
-#define TRAD_DISCONNECT_REQ         40
-#define TRAD_DISCONNECT_ACK         41
-#define TRAD_DISCONNECT_NAK         42
-#define TRAD_COA_REQ                43
-#define TRAD_COA_ACK                44
-#define TRAD_COA_NAK                45
+#define TRAD_ACCESS_REQ             1     // RFC 2865 Section 4.1.  Access-Request
+#define TRAD_ACCESS_ACCEPT          2     // RFC 2865 Section 4.2.  Access-Accept
+#define TRAD_ACCESS_REJECT          3     // RFC 2865 Section 4.3.  Access-Reject
+#define TRAD_ACCOUNT_REQ            4     // RFC 2866 Section 4.1.  Accounting-Request
+#define TRAD_ACCOUNT_RES            5     // RFC 2866 Section 4.2.  Accounting-Response
+#define TRAD_ACCESS_CHALLENGE      11     // RFC 2865 Section 4.4.  Access-Challenge
+#define TRAD_DISCONNECT_REQ        40     // RFC 3576 Section 2.3.  Packet Format
+#define TRAD_DISCONNECT_ACK        41     // RFC 3576 Section 2.3.  Packet Format
+#define TRAD_DISCONNECT_NAK        42     // RFC 3576 Section 2.3.  Packet Format
+#define TRAD_COA_REQ               43     // RFC 3576 Section 2.3.  Packet Format
+#define TRAD_COA_ACK               44     // RFC 3576 Section 2.3.  Packet Format
+#define TRAD_COA_NAK               45     // RFC 3576 Section 2.3.  Packet Format
 
 
 //////////////////
