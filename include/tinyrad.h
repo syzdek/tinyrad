@@ -215,7 +215,7 @@
 
 // RADIUS Attribute flags
 #define TRAD_FLG_ENCRYPT1           0x0001 ///< encrypted with the method as defined in RFC2865 for the User-Password attribute
-#define TRAD_ENCRYPT2               0x0002 ///< encrypted with the method as defined in RFC2868 for the Tunnel-Password attribute
+#define TRAD_FLG_ENCRYPT2           0x0002 ///< encrypted with the method as defined in RFC2868 for the Tunnel-Password attribute
 #define TRAD_ENCRYPT3               0x0004 ///< encrypted as per Ascend's definitions for the Ascend-Send-Secret attribute
 #define TRAD_ENCRYPT_MASK           0x00FF ///< encrypt method mask
 #define TRAD_HAS_TAG                0x0100 ///< attribute may have tag as defined in RFC 2868

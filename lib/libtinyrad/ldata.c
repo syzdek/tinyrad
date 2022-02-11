@@ -130,7 +130,7 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "Tunnel-Client-Endpoint",    66,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.3   Tunnel-Client-Endpoint
    { "Tunnel-Server-Endpoint",    67,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.4   Tunnel-Server-Endpoint
    { "Acct-Tunnel-Connection",    68,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2867 Section 4.1   Acct-Tunnel-Connection
-   { "Tunnel-Password",           69,         0,           0,   TRAD_DATATYPE_TEXT,     TRAD_HAS_TAG|TRAD_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
+   { "Tunnel-Password",           69,         0,           0,   TRAD_DATATYPE_TEXT,     TRAD_HAS_TAG|TRAD_FLG_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
    { "ARAP-Password",             70,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2869 Section 5.4   ARAP-Password
    { "ARAP-Features",             71,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2869 Section 5.5   ARAP-Features
    { "ARAP-Zone-Access",          72,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2869 Section 5.6   ARAP-Zone-Access
