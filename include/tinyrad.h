@@ -255,6 +255,13 @@ typedef struct tinyrad_url_desc           TinyRadURLDesc;
 typedef struct sockaddr_storage           TinyRadSockAddr;
 
 
+typedef struct tinyrad_binval
+{
+    size_t              bv_len;
+    char *              bv_val;
+} TinyRadBinValue;
+
+
 typedef struct tinyrad_dict_attr_def
 {
    const char *          name;
