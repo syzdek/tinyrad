@@ -414,6 +414,7 @@ tinyrad_dict_vendor_free(
 #pragma mark tinyrad_dict_data_type[]
 static const TinyRadMap tinyrad_dict_data_type[] =
 {
+//   FreeRADIUS Name   RFC Name
    { "ABINARY",        TRAD_ABINARY},
    { "BYTE",           TRAD_BYTE},
    { "DATE",           TRAD_TIME},
@@ -427,11 +428,11 @@ static const TinyRadMap tinyrad_dict_data_type[] =
    { "IPV6ADDR",       TRAD_IPV6ADDR},
    { "IPV6PREFIX",     TRAD_IPV6PREFIX},
    { "LONGEXTENDED",   TRAD_LONG_EXTENDED},
-   { "OCTETS",         TRAD_STRING},
+   { "OCTETS",         TRAD_STRING},            // a FreeRADIUS dictionary refers to a RADDIUS string as "octets"
    { "RAD_TLV",        TRAD_TLV},
    { "SHORT",          TRAD_SHORT},
    { "SIGNED",         TRAD_SIGNED},
-   { "STRING",         TRAD_TEXT },
+   { "STRING",         TRAD_TEXT },             // a FreeRADIUS dictionary refers to a RADDIUS text as "string"
    { "VSA",            TRAD_VSA },
    { NULL, 0 }
 };
