@@ -97,7 +97,8 @@
 ///////////////////
 #pragma mark - Definitions
 
-#define TRAD_SUCCESS                0x0000
+// library error codes
+#define TRAD_SUCCESS                0x0000 ///< success
 #define TRAD_EUNKNOWN               0x0001 ///< unknown error
 #define TRAD_ENOMEM                 0x0002 ///< out of virtual memory
 #define TRAD_EACCES                 0x0003 ///< permission denied
@@ -137,7 +138,7 @@
 #define TRAD_NO                     0
 #define TRAD_YES                    1
 
-// library options
+// library get/set options
 #define TRAD_OPT_IPV4                   1
 #define TRAD_OPT_DESC                   2
 #define TRAD_OPT_URI                    3
@@ -151,7 +152,7 @@
 #define TRAD_OPT_DEBUG_SYSLOG          11
 #define TRAD_OPT_SCHEME                12
 
-// dictionary options
+// dictionary get options
 #define TRAD_DICT_OPT_REF_COUNT           1  // used by TinyRadDictVendor and TinyRadDictAttr
 #define TRAD_DICT_OPT_NAME                2  // used by TinyRadDictVendor, TinyRadDictAttr, and TinyRadDictValue
 #define TRAD_DICT_OPT_TYPE                3  // used by TinyRadDictAttr and TinyRadDictValue
