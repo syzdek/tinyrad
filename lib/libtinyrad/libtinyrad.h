@@ -129,13 +129,6 @@ struct _tinyrad
 };
 
 
-struct _tinyrad_map
-{
-   const char *          name;
-   uintptr_t             value;
-};
-
-
 /////////////////
 //             //
 //  Variables  //
