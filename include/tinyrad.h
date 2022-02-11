@@ -195,7 +195,7 @@
 #define TRAD_DATATYPE_TIME           3 ///< RFC 8044 Section 3.3.  time:          32-bit unsigned integer in seconds since 00:00:00 UTC, January 1, 1970
 #define TRAD_DATATYPE_TEXT           4 ///< RFC 8044 Section 3.4.  text:          encoded UTF-8 text
 #define TRAD_DATATYPE_STRING         5 ///< RFC 8044 Section 3.5.  string:        binary data
-#define TRAD_DATATYPE_CONCAT                 6 ///< RFC 8044 Section 3.6.  concat:        more than 253 octets of binary data
+#define TRAD_DATATYPE_CONCAT         6 ///< RFC 8044 Section 3.6.  concat:        more than 253 octets of binary data
 #define TRAD_DATATYPE_IFID           7 ///< RFC 8044 Section 3.7.  ifid:          8-octet IPv6 Interface Identifier (hex:hex:hex:hex)
 #define TRAD_DATATYPE_IPV4ADDR       8 ///< RFC 8044 Section 3.8.  ipv4addr:      IPv4 address in network byte order
 #define TRAD_DATATYPE_IPV6ADDR       9 ///< RFC 8044 Section 3.9.  ipv6addr:      IPv6 address in network byte order
