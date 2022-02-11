@@ -320,7 +320,7 @@ my_verify_attr(
 
    // compare flags
    tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_FLAGS, &u32);
-   if ((def->flags|TRAD_DFLT_ATTR) != (u32|TRAD_DFLT_ATTR))
+   if (def->flags != u32)
    {
       our_dict_diag_attr(opts, def, attr);
       return(our_error(opts, NULL, "attribute flags do not match"));

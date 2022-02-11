@@ -496,7 +496,7 @@ tinyrad_dict_add_attr(
    // verify attribute doesn't exist
    if ((old = tinyrad_dict_attr_lookup(dict, attr->name, 0, 0, 0)) != NULL)
    {
-      if ( (attr->flags|TRAD_DFLT_ATTR) != (old->flags|TRAD_DFLT_ATTR) )
+      if (attr->flags != old->flags)
          return(TRAD_EEXISTS);
       if (attr->type != old->type)
          return(TRAD_EEXISTS);
@@ -510,7 +510,7 @@ tinyrad_dict_add_attr(
    };
    if ((old = tinyrad_dict_attr_lookup(dict, NULL, attr->type, __attr_vendor_id(attr), attr->vendor_type)) != NULL)
    {
-      if ( (attr->flags|TRAD_DFLT_ATTR) != (old->flags|TRAD_DFLT_ATTR) )
+      if (attr->flags != old->flags)
          return(TRAD_EEXISTS);
       if (attr->type != old->type)
          return(TRAD_EEXISTS);
@@ -1273,7 +1273,6 @@ tinyrad_dict_import(
          vendor_type    = attr_defs[pos].vendor_type;
          data_type      = (uint8_t)attr_defs[pos].data_type;
          flags          = (uint32_t)attr_defs[pos].flags;
-         flags         |= TRAD_DFLT_ATTR;
          vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
          assert( ((vendor)) || (!(vendor_id)) );
          if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, data_type, flags)) == NULL)
