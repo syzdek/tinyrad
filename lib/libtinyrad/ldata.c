@@ -125,12 +125,12 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "NAS-Port-Type",             61,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2865 Section 5.41  NAS-Port-Type
    { "Port-Limit",                62,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2865 Section 5.42  Port-Limit
    { "Login-LAT-Port",            63,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2865 Section 5.43  Login-LAT-Port
-   { "Tunnel-Type",               64,         0,           0,   TRAD_DATATYPE_INTEGER,   TRAD_HAS_TAG },  // RFC2868 Section 3.1   Tunnel-Type
-   { "Tunnel-Medium-Type",        65,         0,           0,   TRAD_DATATYPE_INTEGER,   TRAD_HAS_TAG },  // RFC2868 Section 3.2   Tunnel-Medium-Type
-   { "Tunnel-Client-Endpoint",    66,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.3   Tunnel-Client-Endpoint
-   { "Tunnel-Server-Endpoint",    67,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.4   Tunnel-Server-Endpoint
+   { "Tunnel-Type",               64,         0,           0,   TRAD_DATATYPE_INTEGER,   TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.1   Tunnel-Type
+   { "Tunnel-Medium-Type",        65,         0,           0,   TRAD_DATATYPE_INTEGER,   TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.2   Tunnel-Medium-Type
+   { "Tunnel-Client-Endpoint",    66,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.3   Tunnel-Client-Endpoint
+   { "Tunnel-Server-Endpoint",    67,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.4   Tunnel-Server-Endpoint
    { "Acct-Tunnel-Connection",    68,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2867 Section 4.1   Acct-Tunnel-Connection
-   { "Tunnel-Password",           69,         0,           0,   TRAD_DATATYPE_TEXT,     TRAD_HAS_TAG|TRAD_FLG_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
+   { "Tunnel-Password",           69,         0,           0,   TRAD_DATATYPE_TEXT,     TRAD_FLG_HAS_TAG|TRAD_FLG_ENCRYPT2 }, // RFC2868 Section 3.5 Tunnel-Password
    { "ARAP-Password",             70,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2869 Section 5.4   ARAP-Password
    { "ARAP-Features",             71,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2869 Section 5.5   ARAP-Features
    { "ARAP-Zone-Access",          72,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2869 Section 5.6   ARAP-Zone-Access
@@ -142,15 +142,15 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "Configuration-Token",       78,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2869 Section 5.12  Configuration-Token
    { "EAP-Message",               79,         0,           0,   TRAD_DATATYPE_STRING,     TRAD_CONCAT },  // RFC2869 Section 5.13  EAP-Message
    { "Message-Authenticator",     80,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2869 Section 5.14  Message-Authenticator
-   { "Tunnel-Private-Group-Id",   81,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.6   Tunnel-Private-Group-Id
-   { "Tunnel-Assignment-Id",      82,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.7   Tunnel-Assignment-Id
-   { "Tunnel-Preference",         83,         0,           0,   TRAD_DATATYPE_INTEGER,   TRAD_HAS_TAG },  // RFC2868 Section 3.8   Tunnel-Preference
+   { "Tunnel-Private-Group-Id",   81,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.6   Tunnel-Private-Group-Id
+   { "Tunnel-Assignment-Id",      82,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.7   Tunnel-Assignment-Id
+   { "Tunnel-Preference",         83,         0,           0,   TRAD_DATATYPE_INTEGER,   TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.8   Tunnel-Preference
    { "Acct-Tunnel-Packets-Lost",  86,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2867 Section 4.2   Acct-Tunnel-Packets-Lost
    { "NAS-Port-Id",               87,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2869 Section 5.17  NAS-Port-Id
    { "Framed-Pool",               88,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2869 Section 5.18  Framed-Pool
    { "Chargeable-User-Identity",  89,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC4372 Section 2.2   CUI Attribute
-   { "Tunnel-Client-Auth-Id",     90,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.9   Tunnel-Client-Auth-Id
-   { "Tunnel-Server-Auth-Id",     91,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_HAS_TAG },  // RFC2868 Section 3.10  Tunnel-Server-Auth-Id
+   { "Tunnel-Client-Auth-Id",     90,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.9   Tunnel-Client-Auth-Id
+   { "Tunnel-Server-Auth-Id",     91,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.10  Tunnel-Server-Auth-Id
    { "NAS-Filter-Rule",           92,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC4849 Section 2     NAS-Filter-Rule Attribute
    // unassigned                  93
    { "Originating-Line-Info",     94,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC7155 Section 4.2.8 Originating-Line-Info AVP
