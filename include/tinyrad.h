@@ -249,7 +249,6 @@
 typedef struct _tinyrad                   TinyRad;
 typedef struct _tinyrad_dict              TinyRadDict;
 typedef struct _tinyrad_dict_attr         TinyRadDictAttr;
-typedef struct _tinyrad_dict_attr_def     TinyRadDictAttrDef;
 typedef struct _tinyrad_dict_value        TinyRadDictValue;
 typedef struct _tinyrad_dict_value_def    TinyRadDictValueDef;
 typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
@@ -259,7 +258,7 @@ typedef struct tinyrad_url_desc           TinyRadURLDesc;
 typedef struct sockaddr_storage           TinyRadSockAddr;
 
 
-struct _tinyrad_dict_attr_def
+typedef struct tinyrad_dict_attr_def
 {
    const char *          name;
    uintptr_t             type;
@@ -267,7 +266,7 @@ struct _tinyrad_dict_attr_def
    uint32_t              vendor_type;
    uint32_t              data_type;
    uint32_t              flags;
-};
+} TinyRadDictAttrDef;
 
 
 struct _tinyrad_dict_value_def
