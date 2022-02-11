@@ -415,11 +415,11 @@ tinyrad_dict_vendor_free(
 static const TinyRadMap tinyrad_dict_data_type[] =
 {
 //   FreeRADIUS Name   RFC Name
-   { "ABINARY",        TRAD_DATATYPE_ABINARY},
-   { "BYTE",           TRAD_DATATYPE_BYTE},
+   { "ABINARY",        TRAD_DATATYPE_ABINARY},           // custom FreeRADIUS 3.x dictionary attribute
+   { "BYTE",           TRAD_DATATYPE_BYTE},              // custom FreeRADIUS 3.x dictionary attribute
    { "CONCAT",         TRAD_DATATYPE_CONCAT},
    { "DATE",           TRAD_DATATYPE_TIME},
-   { "ETHER",          TRAD_DATATYPE_ETHER},
+   { "ETHER",          TRAD_DATATYPE_ETHER},             // custom FreeRADIUS 3.x dictionary attribute
    { "EXTENDED",       TRAD_DATATYPE_EXTENDED},
    { "IFID",           TRAD_DATATYPE_IFID},
    { "INTEGER",        TRAD_DATATYPE_INTEGER},
@@ -429,11 +429,11 @@ static const TinyRadMap tinyrad_dict_data_type[] =
    { "IPV6ADDR",       TRAD_DATATYPE_IPV6ADDR},
    { "IPV6PREFIX",     TRAD_DATATYPE_IPV6PREFIX},
    { "LONGEXTENDED",   TRAD_DATATYPE_LONGEXTENDED},
-   { "OCTETS",         TRAD_DATATYPE_STRING},            // a FreeRADIUS dictionary refers to a RADDIUS string as "octets"
+   { "OCTETS",         TRAD_DATATYPE_STRING},            // FreeRADIUS dictionary refers to a RADIUS string as "octets"
    { "RAD_TLV",        TRAD_DATATYPE_TLV},
-   { "SHORT",          TRAD_DATATYPE_SHORT},
-   { "SIGNED",         TRAD_DATATYPE_SIGNED},
-   { "STRING",         TRAD_DATATYPE_TEXT },             // a FreeRADIUS dictionary refers to a RADDIUS text as "string"
+   { "SHORT",          TRAD_DATATYPE_SHORT},             // custom FreeRADIUS 3.x dictionary attribute
+   { "SIGNED",         TRAD_DATATYPE_SIGNED},            // custom FreeRADIUS 3.x dictionary attribute
+   { "STRING",         TRAD_DATATYPE_TEXT },             // FreeRADIUS dictionary refers to a RADIUS text as "string"
    { "VSA",            TRAD_DATATYPE_VSA },
    { NULL, 0 }
 };
