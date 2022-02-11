@@ -185,26 +185,28 @@
 #define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
 
-// RADIUS Attribute Types
-#define TRAD_TEXT                   1 ///< UTF-8 printable text (the RFCs call this "text")
-#define TRAD_STRING                 2 ///< opaque binary data (the RFCs call this "string")
-#define TRAD_IPV4ADDR               3 ///< IPv4 address
-#define TRAD_TIME                   4 ///< Seconds since January 1, 1970 (32-bits)
-#define TRAD_INTEGER                5 ///< 32-bit unsigned integer
-#define TRAD_IPV6ADDR               6 ///< IPv6 Address
-#define TRAD_IPV6PREFIX             7 ///< IPV6 prefix, with mask
-#define TRAD_IFID                   8 ///< Interface Id (hex:hex:hex:hex)
-#define TRAD_INTEGER64              9 ///< 64-bit unsigned integer
-#define TRAD_ETHER                 10 ///< Ethernet MAC address
-#define TRAD_ABINARY               11 ///< Ascend binary filter format
-#define TRAD_BYTE                  12 ///< 8-bit unsigned integer
-#define TRAD_SHORT                 13 ///< 16-bit unsigned integer
-#define TRAD_SIGNED                14 ///< 31-bit signed integer (packed into 32-bit field)
-#define TRAD_TLV                   15 ///< Type-Length-Value, allows nested attributes (RFC 6929: Section 2.3 TLV Data Type)
-#define TRAD_IPV4PREFIX            16 ///< IPv4 Prefix as given in RFC 6572.
-#define TRAD_VSA                   17 ///< Vendor specific attribute
-#define TRAD_EXTENDED              18 ///< Extended Type (RFC 6929: Section 2.1 Extended Type)
-#define TRAD_LONG_EXTENDED         19 ///< Long Extended Type (RFC 6929: Section 2.2 Long Extended Type)
+// RADIUS Attribute Data Type Definitions
+#define TRAD_INTEGER                1 ///< RFC 8044 Section 3.1.  integer:       32-bit unsigned integer
+#define TRAD_ENUM                   2 ///< RFC 8044 Section 3.2.  enum:          32-bit unsigned integer enumerated types
+#define TRAD_TIME                   3 ///< RFC 8044 Section 3.3.  time:          32-bit unsigned integer in seconds since 00:00:00 UTC, January 1, 1970
+#define TRAD_TEXT                   4 ///< RFC 8044 Section 3.4.  text:          encoded UTF-8 text
+#define TRAD_STRING                 5 ///< RFC 8044 Section 3.5.  string:        binary data
+//#define TRAD_CONCAT                 6 ///< RFC 8044 Section 3.6.  concat:        more than 253 octets of binary data
+#define TRAD_IFID                   7 ///< RFC 8044 Section 3.7.  ifid:          8-octet IPv6 Interface Identifier (hex:hex:hex:hex)
+#define TRAD_IPV4ADDR               8 ///< RFC 8044 Section 3.8.  ipv4addr:      IPv4 address in network byte order
+#define TRAD_IPV6ADDR               9 ///< RFC 8044 Section 3.9.  ipv6addr:      IPv6 address in network byte order
+#define TRAD_IPV6PREFIX            10 ///< RFC 8044 Section 3.10. ipv6prefix:    encoded an IPv6 prefix
+#define TRAD_IPV4PREFIX            11 ///< RFC 8044 Section 3.11. ipv4prefix:    encoded an IPv4 prefix
+#define TRAD_INTEGER64             12 ///< RFC 8044 Section 3.12. integer64:     64-bit unsigned integer
+#define TRAD_TLV                   13 ///< RFC 8044 Section 3.13. tlv:           Type-Length-Value, allows nested attributes (RFC 6929: Section 2.3 TLV Data Type)
+#define TRAD_VSA                   14 ///< RFC 8044 Section 3.14. vsa:           vendor-specific data, see [RFC2865], Section 5.26
+#define TRAD_EXTENDED              15 ///< RFC 8044 Section 3.15. extended:      "Extended Type" format, see [RFC6929], Section 2.1
+#define TRAD_LONG_EXTENDED         16 ///< RFC 8044 Section 3.16. long-extended: "Long Extended Type" format, see [RFC6929], Section 2.2
+#define TRAD_ETHER                128 ///< FreeRADIUS 3.x Dictionary: ether:      Ethernet MAC address
+#define TRAD_ABINARY              129 ///< FreeRADIUS 3.x Dictionary: abinary:    Ascend binary filter format
+#define TRAD_BYTE                 130 ///< FreeRADIUS 3.x Dictionary: byte:       8-bit unsigned integer
+#define TRAD_SHORT                131 ///< FreeRADIUS 3.x Dictionary: short       16-bit unsigned integer
+#define TRAD_SIGNED               132 ///< FreeRADIUS 3.x Dictionary: signed      31-bit signed integer (packed into 32-bit field)
 
 
 // RADIUS Attribute flags
