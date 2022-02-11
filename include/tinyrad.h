@@ -240,7 +240,6 @@
 
 
 // Tiny RADIUS Crypto Methods
-#define TRAD_MD5                    1
 #define TRAD_SHA1                   2
 #define TRAD_SHA512                 3
 
