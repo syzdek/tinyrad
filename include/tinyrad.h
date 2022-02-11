@@ -186,7 +186,7 @@
 #define TRAD_PACKET_MAX_LEN         4096           // RFC 2865 Section 3. Packet Format: Length
 #define TRAD_PACKET_MIN_LEN         20             // RFC 2865 Section 3. Packet Format: Length
 
-#define TRAD_RADSEC_SECRET_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
+#define TRAD_SECRET_RADSEC_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
 
 // RADIUS Attribute Data Type Definitions

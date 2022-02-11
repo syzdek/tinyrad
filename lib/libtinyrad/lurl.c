@@ -348,7 +348,7 @@ tinyrad_urldesc_parser(
 
       case TRAD_RADSEC:
       trud_port         = 2083;
-      trud_secret       = TRAD_RADSEC_SECRET_TCP;
+      trud_secret       = TRAD_SECRET_RADSEC_TCP;
       trud_opts         |= TRAD_TCP;
       break;
 
