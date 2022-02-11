@@ -459,7 +459,7 @@ tinyrad_urldesc_parser(
       {
          trud_opts &= ~(TRAD_TCP);
          if ((trud_opts & TRAD_SCHEME) == TRAD_RADSEC)
-            trud_secret = TRAD_RADSEC_SECRET_UDP;
+            trud_secret = TRAD_SECRET_RADSEC_UDP;
       }
       else if (!(strcasecmp("tcp", &ptr[1])))
          trud_opts |= TRAD_TCP;

@@ -187,7 +187,7 @@
 #define TRAD_PACKET_MIN_LEN         20             // RFC 2865 Section 3. Packet Format: Length
 
 #define TRAD_SECRET_RADSEC_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
-#define TRAD_RADSEC_SECRET_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
+#define TRAD_SECRET_RADSEC_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
 
 // RADIUS Attribute Data Type Definitions
 #define TRAD_DATATYPE_INTEGER        1 ///< RFC 8044 Section 3.1.  integer:       32-bit unsigned integer
