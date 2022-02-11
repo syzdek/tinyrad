@@ -116,7 +116,7 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "Acct-Input-Gigawords",      52,         0,           0,   TRAD_INTEGER,              0 },  // RFC2869 Section 5.1   Acct-Input-Gigawords
    { "Acct-Output-Gigawords",     53,         0,           0,   TRAD_INTEGER,              0 },  // RFC2869 Section 5.2   Acct-Output-Gigawords
    // unassigned                  54
-   { "Event-Timestamp",           55,         0,           0,   TRAD_DATE,                 0 },  // RFC2869 Section 5.3   Event-Timestamp
+   { "Event-Timestamp",           55,         0,           0,   TRAD_TIME,                 0 },  // RFC2869 Section 5.3   Event-Timestamp
    { "Egress-VLANID",             56,         0,           0,   TRAD_INTEGER,              0 },  // RFC4675 Section 2.1   Egress-VLANID
    { "Ingress-Filters",           57,         0,           0,   TRAD_INTEGER,              0 },  // RFC4675 Section 2.2   Ingress-Filters
    { "Egress-VLAN-Name",          58,         0,           0,   TRAD_TEXT,                 0 },  // RFC4675 Section 2.3   Egress-VLAN-Name

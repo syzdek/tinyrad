@@ -416,7 +416,7 @@ static const TinyRadMap tinyrad_dict_data_type[] =
 {
    { "ABINARY",      TRAD_ABINARY},
    { "BYTE",         TRAD_BYTE},
-   { "DATE",         TRAD_DATE},
+   { "DATE",         TRAD_TIME},
    { "ETHER",        TRAD_ETHER},
    { "EXTENDED",     TRAD_EXTENDED},
    { "IFID",         TRAD_IFID},
