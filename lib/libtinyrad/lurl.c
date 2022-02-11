@@ -559,12 +559,12 @@ tinyrad_urldesc_resolve(
    {
       if ((trudp_ptr->trud_sockaddrs))
       {
-         for(pos = 0; (pos < trudp_ptr->sockaddrs_len); pos++)
+         for(pos = 0; (pos < trudp_ptr->trud_sockaddrs_len); pos++)
             free(trudp_ptr->trud_sockaddrs[pos]);
          free(trudp_ptr->trud_sockaddrs);
       };
       trudp_ptr->trud_sockaddrs       = NULL;
-      trudp_ptr->sockaddrs_len   = 0;
+      trudp_ptr->trud_sockaddrs_len   = 0;
    };
 
    ai_flags  = ((opts & TRAD_SERVER)) ? (AI_NUMERICHOST | AI_NUMERICSERV) : 0;
@@ -602,7 +602,7 @@ tinyrad_urldesc_resolve(
          return(TRAD_ERESOLVE);
 
       // initialize memory
-      sas_len = ((trudp->sockaddrs_len)) ? trudp->sockaddrs_len : 0;
+      sas_len = ((trudp->trud_sockaddrs_len)) ? trudp->trud_sockaddrs_len : 0;
       if ((sasp = trudp->trud_sockaddrs) == NULL)
       {
          if ((sasp = malloc(sizeof(struct sockaddr_storage *))) == NULL)
@@ -610,7 +610,7 @@ tinyrad_urldesc_resolve(
          sasp[0]              = NULL;
          trudp->trud_sockaddrs     = sasp;
          sas_len              = 0;
-         trudp->sockaddrs_len = sas_len;
+         trudp->trud_sockaddrs_len = sas_len;
       };
 
       next = res;
@@ -643,7 +643,7 @@ tinyrad_urldesc_resolve(
          };
 
          sas_len++;
-         trudp->sockaddrs_len = sas_len;
+         trudp->trud_sockaddrs_len = sas_len;
 
          next = next->ai_next;
       };

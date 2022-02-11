@@ -310,7 +310,7 @@ typedef struct tinyrad_url_desc
    /* may contain additional fields for internal use */
    struct tinyrad_url_desc *     trud_next;
    tinyrad_sockaddr_t **         trud_sockaddrs;
-   size_t                        sockaddrs_len;
+   size_t                        trud_sockaddrs_len;
 } TinyRadURLDesc;
 
 
