@@ -140,7 +140,7 @@ const TinyRadDictAttrDef tinyrad_dict_default_attrs[] =
    { "Prompt",                    76,         0,           0,   TRAD_DATATYPE_INTEGER,              0 },  // RFC2869 Section 5.10  Prompt
    { "Connect-Info",              77,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2869 Section 5.11  Connect-Info
    { "Configuration-Token",       78,         0,           0,   TRAD_DATATYPE_TEXT,                 0 },  // RFC2869 Section 5.12  Configuration-Token
-   { "EAP-Message",               79,         0,           0,   TRAD_DATATYPE_STRING,     TRAD_CONCAT },  // RFC2869 Section 5.13  EAP-Message
+   { "EAP-Message",               79,         0,           0,   TRAD_DATATYPE_STRING,     TRAD_FLG_CONCAT },  // RFC2869 Section 5.13  EAP-Message
    { "Message-Authenticator",     80,         0,           0,   TRAD_DATATYPE_STRING,               0 },  // RFC2869 Section 5.14  Message-Authenticator
    { "Tunnel-Private-Group-Id",   81,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.6   Tunnel-Private-Group-Id
    { "Tunnel-Assignment-Id",      82,         0,           0,   TRAD_DATATYPE_TEXT,      TRAD_FLG_HAS_TAG },  // RFC2868 Section 3.7   Tunnel-Assignment-Id
