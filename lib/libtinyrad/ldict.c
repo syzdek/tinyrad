@@ -1769,12 +1769,12 @@ tinyrad_dict_print_attribute(
 
    flags      = 0;
    flagstr[0] = '\0';
-   for(pos = 0; ((tinyrad_dict_attr_flags[pos].name)); pos++)
+   for(pos = 0; ((tinyrad_dict_attr_flags[pos].map_name)); pos++)
    {
       if ((attr->flags & tinyrad_dict_attr_flags[pos].value) != 0)
       {
          strncat(flagstr, (((flags)) ? "," : " "), (sizeof(flagstr)-strlen(flagstr)-1));
-         strncat(flagstr, tinyrad_dict_attr_flags[pos].name, (sizeof(flagstr)-strlen(flagstr)-1));
+         strncat(flagstr, tinyrad_dict_attr_flags[pos].map_name, (sizeof(flagstr)-strlen(flagstr)-1));
          flags++;
       };
    };

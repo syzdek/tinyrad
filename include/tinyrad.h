@@ -291,7 +291,7 @@ typedef struct tinyrad_dict_vendor_def
 
 typedef struct tinyrad_map
 {
-   const char *          name;
+   const char *          map_name;
    uintptr_t             value;
 } TinyRadMap;
 

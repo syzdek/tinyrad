@@ -83,9 +83,9 @@ tinyrad_map_lookup_name(
    assert(map  != NULL);
    assert(name != NULL);
 
-   for(pos = 0; ((map[pos].name)); pos++)
+   for(pos = 0; ((map[pos].map_name)); pos++)
    {
-      if (!(strcasecmp(map[pos].name, name)))
+      if (!(strcasecmp(map[pos].map_name, name)))
       {
          if ((mapp))
             *mapp = &map[pos];
@@ -112,13 +112,13 @@ tinyrad_map_lookup_value(
 
    assert(map  != NULL);
 
-   for(pos = 0; ((map[pos].name)); pos++)
+   for(pos = 0; ((map[pos].map_name)); pos++)
    {
       if (map[pos].value == value)
       {
          if ((mapp))
             *mapp = &map[pos];
-         return(map[pos].name);
+         return(map[pos].map_name);
       };
    };
 
