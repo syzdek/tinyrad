@@ -146,7 +146,7 @@ const TinyRadDictVendorDef test_dict_data_vendors[] =
 void
 our_dict_diag_attr(
          unsigned                      opts,
-         const TinyRadDictAttrDef *    def,
+         const TinyRadDictAttrDef *    attr_def,
          TinyRadDictAttr *             attr )
 {
    char *      attr_name;
@@ -159,15 +159,15 @@ our_dict_diag_attr(
    uint32_t    attr_flags;
    unsigned    attr_ref_count;
 
-   if ((def))
+   if ((attr_def))
    {
       our_verbose(opts, "Attribute Definition");
-      our_verbose(opts, "   Name:             %s",       def->name);
-      our_verbose(opts, "   Type:             %" PRIu8,  def->type);
-      our_verbose(opts, "   Vendor ID:        %" PRIu32, def->vendor_id);
-      our_verbose(opts, "   Vendor Type:      %" PRIu32, def->vendor_type);
-      our_verbose(opts, "   Data Type:        %" PRIu32, def->data_type);
-      our_verbose(opts, "   Flags:            0x%08x",   (unsigned)def->flags);
+      our_verbose(opts, "   Name:             %s",       attr_def->name);
+      our_verbose(opts, "   Type:             %" PRIu8,  attr_def->type);
+      our_verbose(opts, "   Vendor ID:        %" PRIu32, attr_def->vendor_id);
+      our_verbose(opts, "   Vendor Type:      %" PRIu32, attr_def->vendor_type);
+      our_verbose(opts, "   Data Type:        %" PRIu32, attr_def->data_type);
+      our_verbose(opts, "   Flags:            0x%08x",   (unsigned)attr_def->flags);
    };
 
    if ((attr))

@@ -80,7 +80,7 @@ extern const TinyRadDictVendorDef test_dict_data_vendors[];
 void
 our_dict_diag_attr(
          unsigned                      opts,
-         const TinyRadDictAttrDef *    def,
+         const TinyRadDictAttrDef *    attr_def,
          TinyRadDictAttr *             attr );
 
 
