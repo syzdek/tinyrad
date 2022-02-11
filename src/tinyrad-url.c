@@ -269,11 +269,11 @@ int my_print_urldesc( TinyRadURLDesc * trudp)
    printf("   port:       %i\n", trudp->trud_port);
    printf("   secret:     %s\n", trudp->trud_secret);
    printf("   protocol:   %s\n", ((trudp->trud_opts & TRAD_TCP)) ? "tcp" : "udp");
-   if ( ((trudp->sockaddrs)) && ((trudp->sockaddrs[0])) )
+   if ( ((trudp->trud_sockaddrs)) && ((trudp->trud_sockaddrs[0])) )
    {
-      for(pos = 0; ((trudp->sockaddrs[pos])); pos++)
+      for(pos = 0; ((trudp->trud_sockaddrs[pos])); pos++)
       {
-         sas = trudp->sockaddrs[pos];
+         sas = trudp->trud_sockaddrs[pos];
          switch(sas->ss_family)
          {
             case AF_INET:  inet_ntop(sas->ss_family, &((struct sockaddr_in  *)sas)->sin_addr,  addr, sizeof(addr)); break;

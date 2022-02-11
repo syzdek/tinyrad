@@ -110,13 +110,13 @@ tinyrad_socket_open(
       trud = tr->trud_cur;
 
       for(tr->trud_pos = 0; (tr->trud_pos < trud->sockaddrs_len); tr->trud_pos++)
-         if (trud->sockaddrs[tr->trud_pos]->ss_family != AF_INET6)
-            if (tinyrad_socket_open_socket(tr, trud->sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
+         if (trud->trud_sockaddrs[tr->trud_pos]->ss_family != AF_INET6)
+            if (tinyrad_socket_open_socket(tr, trud->trud_sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
                return(TRAD_SUCCESS);
 
       for(tr->trud_pos = 0; (tr->trud_pos < trud->sockaddrs_len); tr->trud_pos++)
-         if (trud->sockaddrs[tr->trud_pos]->ss_family == AF_INET)
-            if (tinyrad_socket_open_socket(tr, trud->sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
+         if (trud->trud_sockaddrs[tr->trud_pos]->ss_family == AF_INET)
+            if (tinyrad_socket_open_socket(tr, trud->trud_sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
                return(TRAD_SUCCESS);
 
       tr->trud_pos = 0;
@@ -227,7 +227,7 @@ tinyrad_socket_reopen(
       trud = tr->trud_cur;
 
       for(; (tr->trud_pos < trud->sockaddrs_len); tr->trud_pos++)
-         if (tinyrad_socket_open_socket(tr, trud->sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
+         if (tinyrad_socket_open_socket(tr, trud->trud_sockaddrs[tr->trud_pos]) == TRAD_SUCCESS)
             return(TRAD_SUCCESS);
 
       tr->trud_pos = 0;

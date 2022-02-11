@@ -309,7 +309,7 @@ typedef struct tinyrad_url_desc
    unsigned                      trud_opts;
    /* may contain additional fields for internal use */
    struct tinyrad_url_desc *     trud_next;
-   tinyrad_sockaddr_t **         sockaddrs;
+   tinyrad_sockaddr_t **         trud_sockaddrs;
    size_t                        sockaddrs_len;
 } TinyRadURLDesc;
 
