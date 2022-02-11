@@ -415,25 +415,26 @@ tinyrad_dict_vendor_free(
 static const TinyRadMap tinyrad_dict_data_type[] =
 {
 //   FreeRADIUS Name   RFC Name
-   { "ABINARY",        TRAD_ABINARY},
-   { "BYTE",           TRAD_BYTE},
-   { "DATE",           TRAD_TIME},
-   { "ETHER",          TRAD_ETHER},
-   { "EXTENDED",       TRAD_EXTENDED},
-   { "IFID",           TRAD_IFID},
-   { "INTEGER",        TRAD_INTEGER},
-   { "INTEGER64",      TRAD_INTEGER64},
-   { "IPADDR",         TRAD_IPV4ADDR},
-   { "IPV4PREFIX",     TRAD_IPV4PREFIX},
-   { "IPV6ADDR",       TRAD_IPV6ADDR},
-   { "IPV6PREFIX",     TRAD_IPV6PREFIX},
-   { "LONGEXTENDED",   TRAD_LONG_EXTENDED},
-   { "OCTETS",         TRAD_STRING},            // a FreeRADIUS dictionary refers to a RADDIUS string as "octets"
-   { "RAD_TLV",        TRAD_TLV},
-   { "SHORT",          TRAD_SHORT},
-   { "SIGNED",         TRAD_SIGNED},
-   { "STRING",         TRAD_TEXT },             // a FreeRADIUS dictionary refers to a RADDIUS text as "string"
-   { "VSA",            TRAD_VSA },
+   { "ABINARY",        TRAD_DATATYPE_ABINARY},
+   { "BYTE",           TRAD_DATATYPE_BYTE},
+   { "CONCAT",         TRAD_DATATYPE_CONCAT},
+   { "DATE",           TRAD_DATATYPE_TIME},
+   { "ETHER",          TRAD_DATATYPE_ETHER},
+   { "EXTENDED",       TRAD_DATATYPE_EXTENDED},
+   { "IFID",           TRAD_DATATYPE_IFID},
+   { "INTEGER",        TRAD_DATATYPE_INTEGER},
+   { "INTEGER64",      TRAD_DATATYPE_INTEGER64},
+   { "IPADDR",         TRAD_DATATYPE_IPV4ADDR},
+   { "IPV4PREFIX",     TRAD_DATATYPE_IPV4PREFIX},
+   { "IPV6ADDR",       TRAD_DATATYPE_IPV6ADDR},
+   { "IPV6PREFIX",     TRAD_DATATYPE_IPV6PREFIX},
+   { "LONGEXTENDED",   TRAD_DATATYPE_LONGEXTENDED},
+   { "OCTETS",         TRAD_DATATYPE_STRING},            // a FreeRADIUS dictionary refers to a RADDIUS string as "octets"
+   { "RAD_TLV",        TRAD_DATATYPE_TLV},
+   { "SHORT",          TRAD_DATATYPE_SHORT},
+   { "SIGNED",         TRAD_DATATYPE_SIGNED},
+   { "STRING",         TRAD_DATATYPE_TEXT },             // a FreeRADIUS dictionary refers to a RADDIUS text as "string"
+   { "VSA",            TRAD_DATATYPE_VSA },
    { NULL, 0 }
 };
 
