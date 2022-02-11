@@ -1487,7 +1487,7 @@ tinyrad_dict_parse_attribute(
             ptr[0] = '\0';
          if ((flag = (uint32_t)tinyrad_map_lookup_name(tinyrad_dict_attr_flags, str, NULL)) == 0)
             return(TRAD_ESYNTAX);
-         if ( ((flag & TRAD_ENCRYPT_MASK) != 0) && ((flags & TRAD_ENCRYPT_MASK) != 0) )
+         if ( ((flag & TRAD_FLG_ENCRYPT_MASK) != 0) && ((flags & TRAD_FLG_ENCRYPT_MASK) != 0) )
             return(TRAD_ESYNTAX);
          flags |= flag;
          ptr = ((ptr)) ? &ptr[1] : NULL;
