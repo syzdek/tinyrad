@@ -89,7 +89,7 @@ tinyrad_map_lookup_name(
       {
          if ((mapp))
             *mapp = &map[pos];
-         return(map[pos].value);
+         return(map[pos].map_value);
       };
    };
 
@@ -114,7 +114,7 @@ tinyrad_map_lookup_value(
 
    for(pos = 0; ((map[pos].map_name)); pos++)
    {
-      if (map[pos].value == value)
+      if (map[pos].map_value == value)
       {
          if ((mapp))
             *mapp = &map[pos];
