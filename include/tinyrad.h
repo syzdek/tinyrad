@@ -251,7 +251,6 @@ typedef struct _tinyrad_dict              TinyRadDict;
 typedef struct _tinyrad_dict_attr         TinyRadDictAttr;
 typedef struct _tinyrad_dict_value        TinyRadDictValue;
 typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
-typedef struct _tinyrad_dict_vendor_def   TinyRadDictVendorDef;
 typedef struct _tinyrad_map               TinyRadMap;
 typedef struct tinyrad_url_desc           TinyRadURLDesc;
 typedef struct sockaddr_storage           TinyRadSockAddr;
@@ -276,13 +275,13 @@ typedef struct tinyrad_dict_value_def
 } TinyRadDictValueDef;
 
 
-struct _tinyrad_dict_vendor_def
+typedef struct tinyrad_dict_vendor_def
 {
    const char *          name;
    uintptr_t             vendor_id;
    uint64_t              vendor_type_octs;
    uint64_t              vendor_len_octs;
-};
+} TinyRadDictVendorDef;
 
 
 // Support RADIUS URLs
