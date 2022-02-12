@@ -52,11 +52,6 @@
 //////////////////
 #pragma mark - Prototypes
 
-void
-tinyrad_packet_destroy(
-         TinyRadPacket *               pckt );
-
-
 TinyRadPcktBuff *
 tinyrad_pckt_buff_alloc( void );
 
@@ -72,18 +67,6 @@ tinyrad_pckt_buff_free(
 //             //
 /////////////////
 #pragma mark - Functions
-
-void
-tinyrad_packet_destroy(
-         TinyRadPacket *               pckt )
-{
-   if (!(pckt))
-      return;
-   memset(pckt, 0, sizeof(TinyRadPacket));
-   free(pckt);
-   return;
-}
-
 
 TinyRadPcktBuff *
 tinyrad_pckt_buff_alloc( void )
