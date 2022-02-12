@@ -57,12 +57,6 @@ tinyrad_packet_destroy(
          TinyRadPacket *               pckt );
 
 
-int
-tinyrad_packet_initialize(
-         TinyRadPacket **              pcktp,
-         uint32_t                      opts );
-
-
 TinyRadPcktBuff *
 tinyrad_pckt_buff_alloc( void );
 
@@ -88,24 +82,6 @@ tinyrad_packet_destroy(
    memset(pckt, 0, sizeof(TinyRadPacket));
    free(pckt);
    return;
-}
-
-
-int
-tinyrad_packet_initialize(
-         TinyRadPacket **              pcktp,
-         uint32_t                      opts )
-{
-   TinyRadPacket *   pckt;
-
-   assert(pcktp != NULL);
-   assert(opts  == 0);
-
-   if ((pckt = malloc(sizeof(TinyRadPacket))) == NULL)
-      return(TRAD_ENOMEM);
-   *pcktp = pckt;
-
-   return(TRAD_SUCCESS);
 }
 
 
