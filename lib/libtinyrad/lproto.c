@@ -67,6 +67,11 @@ TinyRadPcktBuff *
 tinyrad_pckt_buff_alloc( void );
 
 
+void
+tinyrad_pckt_buff_free(
+         TinyRadPcktBuff *             buff );
+
+
 /////////////////
 //             //
 //  Functions  //
@@ -123,6 +128,19 @@ tinyrad_pckt_buff_alloc( void )
    buff->buf_size = TRAD_PACKET_MAX_LEN;
 
    return(buff);
+}
+
+
+void
+tinyrad_pckt_buff_free(
+         TinyRadPcktBuff *             buff )
+{
+   if (!(buff))
+      return;
+   if ((buff->buf.ptr))
+      free(buff->buf.ptr);
+   free(buff);
+   return;
 }
 
 
