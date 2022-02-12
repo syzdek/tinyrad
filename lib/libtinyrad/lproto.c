@@ -63,6 +63,10 @@ tinyrad_packet_initialize(
          uint32_t                      opts );
 
 
+TinyRadPcktBuff *
+tinyrad_pckt_buff_alloc( void );
+
+
 /////////////////
 //             //
 //  Functions  //
@@ -97,6 +101,28 @@ tinyrad_packet_initialize(
    *pcktp = pckt;
 
    return(TRAD_SUCCESS);
+}
+
+
+TinyRadPcktBuff *
+tinyrad_pckt_buff_alloc( void )
+{
+   TinyRadPcktBuff * buff;
+
+   if ((buff = malloc(sizeof(TinyRadPcktBuff))) == NULL)
+      return(NULL);
+   memset(buff, 0, sizeof(TinyRadPcktBuff));
+
+   if ((buff->buf.ptr = malloc(TRAD_PACKET_MAX_LEN)) == NULL)
+   {
+      free(buff);
+      return(NULL);
+   };
+   memset(buff->buf.ptr, 0, TRAD_PACKET_MAX_LEN);
+
+   buff->buf_size = TRAD_PACKET_MAX_LEN;
+
+   return(buff);
 }
 
 
