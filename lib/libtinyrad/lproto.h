@@ -61,6 +61,7 @@
 
 typedef struct _tinyrad_packet         TinyRadPacket;
 typedef struct _tinyrad_pckt_hdr       TinyRadPcktHdr;
+typedef struct _tinyrad_pckt_buffer       TinyRadPcktBuff;
 
 
 typedef struct tinyrad_packet
@@ -88,6 +89,19 @@ typedef struct tinyrad_vsa                      // RFC 2865 5.26. Vendor-Specifi
    uint8_t              vsa_vendor_id[4];       // RFC 2865 5.26. Vendor-Specific: Vendor-Id
    uint8_t              vsa_string[];           // RFC 2865 5.26. Vendor-Specific: String
 } tinyrad_vsa_t;
+
+
+struct _tinyrad_pckt_buffer
+{
+   size_t                  buf_size;
+   size_t                  buf_len;
+   union
+   {
+      tinyrad_packet_t *   pckt;
+      uint8_t *            raw;
+      void *               ptr;
+   }                       buf;
+};
 
 
 struct _tinyrad_pckt_hdr
