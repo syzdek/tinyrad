@@ -42,6 +42,7 @@
 #include "libtinyrad.h"
 
 #include <stdint.h>
+#include <sys/socket.h>
 
 
 ///////////////////
@@ -94,6 +95,7 @@ struct _tinyrad_pckt_buffer
    size_t                  buf_size;
    size_t                  buf_len;
    tinyrad_packet_t *      buf_pckt;
+   struct sockaddr_storage buff_sa;
 };
 
 
