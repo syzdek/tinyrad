@@ -63,6 +63,16 @@ typedef struct _tinyrad_packet         TinyRadPacket;
 typedef struct _tinyrad_pckt_hdr       TinyRadPcktHdr;
 
 
+typedef struct tinyrad_packet
+{
+   uint8_t              pckt_code;               // RFC 2865 Section 3. Packet Format: Code
+   uint8_t              pckt_identifier;         // RFC 2865 Section 3. Packet Format: Identifier
+   uint16_t             pckt_length;             // RFC 2865 Section 3. Packet Format: Length
+   uint32_t             pckt_authenticator[4];   // RFC 2865 Section 3. Packet Format: Authenticator (specifies "sixteen (16) octets")
+   uint8_t              pckt_attrs[];
+} tinyrad_packet_t;
+
+
 struct _tinyrad_pckt_hdr
 {
    uint8_t              code;
