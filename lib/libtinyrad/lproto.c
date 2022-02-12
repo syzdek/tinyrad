@@ -77,12 +77,12 @@ tinyrad_pckt_buff_alloc( void )
       return(NULL);
    memset(buff, 0, sizeof(TinyRadPcktBuff));
 
-   if ((buff->buf.ptr = malloc(TRAD_PACKET_MAX_LEN)) == NULL)
+   if ((buff->buf_pckt = malloc(TRAD_PACKET_MAX_LEN)) == NULL)
    {
       free(buff);
       return(NULL);
    };
-   memset(buff->buf.ptr, 0, TRAD_PACKET_MAX_LEN);
+   memset(buff->buf_pckt, 0, TRAD_PACKET_MAX_LEN);
 
    buff->buf_size = TRAD_PACKET_MAX_LEN;
 
@@ -96,8 +96,8 @@ tinyrad_pckt_buff_free(
 {
    if (!(buff))
       return;
-   if ((buff->buf.ptr))
-      free(buff->buf.ptr);
+   if ((buff->buf_pckt))
+      free(buff->buf_pckt);
    free(buff);
    return;
 }

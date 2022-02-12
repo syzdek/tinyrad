@@ -93,12 +93,7 @@ struct _tinyrad_pckt_buffer
 {
    size_t                  buf_size;
    size_t                  buf_len;
-   union
-   {
-      tinyrad_packet_t *   pckt;
-      uint8_t *            raw;
-      void *               ptr;
-   }                       buf;
+   tinyrad_packet_t *      buf_pckt;
 };
 
 
