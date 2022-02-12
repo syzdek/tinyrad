@@ -59,7 +59,6 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct _tinyrad_pckt_hdr       TinyRadPcktHdr;
 typedef struct _tinyrad_pckt_buffer       TinyRadPcktBuff;
 
 
@@ -100,15 +99,6 @@ struct _tinyrad_pckt_buffer
       uint8_t *            raw;
       void *               ptr;
    }                       buf;
-};
-
-
-struct _tinyrad_pckt_hdr
-{
-   uint8_t              code;
-   uint8_t              identifier;
-   uint16_t             length;
-   uint32_t             authenticator;
 };
 
 
