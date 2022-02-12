@@ -42,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <arpa/inet.h>
 #include <assert.h>
 
 
@@ -58,6 +59,11 @@ tinyrad_pckt_buff_alloc( void );
 
 void
 tinyrad_pckt_buff_free(
+         TinyRadPcktBuff *             buff );
+
+
+TinyRadPcktBuff *
+tinyrad_pckt_buff_realloc(
          TinyRadPcktBuff *             buff );
 
 
@@ -100,6 +106,32 @@ tinyrad_pckt_buff_free(
       free(buff->buf_pckt);
    free(buff);
    return;
+}
+
+
+TinyRadPcktBuff *
+tinyrad_pckt_buff_realloc(
+         TinyRadPcktBuff *             buff )
+{
+   size_t      size;
+   void *      ptr;
+
+   // determine size of packet/message
+   size = (size_t) ntohs(buff->buf_pckt->pckt_length);
+   if (size <= buff->buf_size)
+      return(buff);
+
+   // packet size exceeds RFC limits
+   if (size > TRAD_TCP_MAX_LEN)
+      return(NULL);
+
+   // increase size of buffer to hold packet
+   if ((ptr = realloc(buff->buf_pckt, size)) == NULL)
+      return(NULL);
+   buff->buf_pckt = ptr;
+   buff->buf_size = size;
+
+   return(buff);
 }
 
 
