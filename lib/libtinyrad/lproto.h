@@ -104,6 +104,15 @@ typedef struct tinyrad_pckt_vsa_value
 } tinyrad_vsa_value_t;
 
 
+typedef struct tinyrad_pckt_vsa_value_should
+{
+   uint8_t              val_vendor_id[4];       // RFC 2865 5.26. Vendor-Specific: Vendor-Id
+   uint8_t              val_vendor_type;        // RFC 2865 5.26. Vendor-Specific: String
+   uint8_t              val_vendor_len;         // RFC 2865 5.26. Vendor-Specific: String
+   uint8_t              val_value[];            // RFC 2865 5.26. Vendor-Specific: String};
+} tinyrad_vsa_should_t;
+
+
 //////////////////
 //              //
 //  Prototypes  //
