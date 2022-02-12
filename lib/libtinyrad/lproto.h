@@ -81,6 +81,15 @@ typedef struct tinyrad_attr
 } tinyrad_attr_t;
 
 
+typedef struct tinyrad_vsa                      // RFC 2865 5.26. Vendor-Specific
+{
+   uint8_t              vsa_type;               // RFC 2865 5.26. Vendor-Specific: Type (must be 26)
+   uint8_t              vsa_len;                // RFC 2865 5.26. Vendor-Specific: Length (>= 7)
+   uint8_t              vsa_vendor_id[4];       // RFC 2865 5.26. Vendor-Specific: Vendor-Id
+   uint8_t              vsa_string[];           // RFC 2865 5.26. Vendor-Specific: String
+} tinyrad_vsa_t;
+
+
 struct _tinyrad_pckt_hdr
 {
    uint8_t              code;
