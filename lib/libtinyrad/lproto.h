@@ -73,6 +73,14 @@ typedef struct tinyrad_packet
 } tinyrad_packet_t;
 
 
+typedef struct tinyrad_attr
+{
+   uint8_t              attr_type;              // RFC 2865 Section 5. Attributes: Type
+   uint8_t              attr_len;               // RFC 2865 Section 5. Attributes: Length
+   uint8_t              attr_value[];           // RFC 2865 Section 5. Attributes: Value
+} tinyrad_attr_t;
+
+
 struct _tinyrad_pckt_hdr
 {
    uint8_t              code;
