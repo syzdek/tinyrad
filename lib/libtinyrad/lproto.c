@@ -53,6 +53,11 @@
 //////////////////
 #pragma mark - Prototypes
 
+//------------------------//
+// pckt memory prototypes //
+//------------------------//
+#pragma mark pckt memory prototypes
+
 TinyRadPcktBuff *
 tinyrad_pckt_buff_alloc( void );
 
@@ -73,6 +78,11 @@ tinyrad_pckt_buff_realloc(
 //             //
 /////////////////
 #pragma mark - Functions
+
+//-----------------------//
+// pckt memory functions //
+//-----------------------//
+#pragma mark pckt memory functions
 
 TinyRadPcktBuff *
 tinyrad_pckt_buff_alloc( void )
@@ -133,6 +143,12 @@ tinyrad_pckt_buff_realloc(
 
    return(buff);
 }
+
+
+//----------------------//
+// conversion functions //
+//----------------------//
+#pragma mark conversion functions
 
 
 /* end of source */

@@ -122,5 +122,10 @@ typedef struct tinyrad_pckt_vsa_value_should
 //////////////////
 #pragma mark - Prototypes
 
+//-----------------------//
+// conversion prototypes //
+//-----------------------//
+#pragma mark conversion prototypes
+
 
 #endif /* end of header */
