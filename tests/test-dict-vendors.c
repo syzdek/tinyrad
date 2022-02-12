@@ -80,7 +80,7 @@ main(
 int
 my_verify_vendor(
          unsigned                      opts,
-         const TinyRadDictVendorDef *  def,
+         const TinyRadDictVendorDef *  vendor_def,
          TinyRadDictVendor *           vendor );
 
 
@@ -103,7 +103,7 @@ main(
    unsigned                      opts;
    TinyRadDict *                 dict;
    TinyRadDictVendor *           vendor;
-   const TinyRadDictVendorDef *  def;
+   const TinyRadDictVendorDef *  vendor_def;
 
    // getopt options
    static char          short_opt[] = "dhVvq";
@@ -180,10 +180,10 @@ main(
    // verifies default attributes in dictionary by name
    for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
    {
-      def = &tinyrad_dict_default_vendors[pos];
-      our_verbose( opts, "default attribute search by name %8" PRIu32 "  %s ...", def->vendor_id, def->name);
-      vendor = tinyrad_dict_vendor_get(dict, def->name, 0);
-      if ((my_verify_vendor(opts, def, vendor)))
+      vendor_def = &tinyrad_dict_default_vendors[pos];
+      our_verbose( opts, "default attribute search by name %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      vendor = tinyrad_dict_vendor_get(dict, vendor_def->name, 0);
+      if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
          tinyrad_free(vendor);
          tinyrad_free(dict);
@@ -194,10 +194,10 @@ main(
    // verifies test attributes in dictionary by type
    for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
    {
-      def = &tinyrad_dict_default_vendors[pos];
-      our_verbose( opts, "default attribute search by id   %8" PRIu32 "  %s ...", def->vendor_id, def->name);
-      vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)def->vendor_id);
-      if ((my_verify_vendor(opts, def, vendor)))
+      vendor_def = &tinyrad_dict_default_vendors[pos];
+      our_verbose( opts, "default attribute search by id   %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)vendor_def->vendor_id);
+      if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
          tinyrad_free(vendor);
          tinyrad_free(dict);
@@ -208,10 +208,10 @@ main(
    // verifies test attributes in dictionary by name
    for(pos = 0; ((test_dict_data_vendors[pos].name)); pos++)
    {
-      def = &test_dict_data_vendors[pos];
-      our_verbose( opts, "test attribute search by name %8" PRIu32 "  %s ...", def->vendor_id, def->name);
-      vendor = tinyrad_dict_vendor_get(dict, def->name, 0);
-      if ((my_verify_vendor(opts, def, vendor)))
+      vendor_def = &test_dict_data_vendors[pos];
+      our_verbose( opts, "test attribute search by name %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      vendor = tinyrad_dict_vendor_get(dict, vendor_def->name, 0);
+      if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
          tinyrad_free(vendor);
          tinyrad_free(dict);
@@ -222,10 +222,10 @@ main(
    // verifies default attributes in dictionary by type
    for(pos = 0; ((test_dict_data_vendors[pos].name)); pos++)
    {
-      def = &test_dict_data_vendors[pos];
-      our_verbose( opts, "test attribute search by id   %8" PRIu32 "  %s ...", def->vendor_id, def->name);
-      vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)def->vendor_id);
-      if ((my_verify_vendor(opts, def, vendor)))
+      vendor_def = &test_dict_data_vendors[pos];
+      our_verbose( opts, "test attribute search by id   %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)vendor_def->vendor_id);
+      if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
          tinyrad_free(vendor);
          tinyrad_free(dict);
@@ -243,41 +243,41 @@ main(
 int
 my_verify_vendor(
          unsigned                      opts,
-         const TinyRadDictVendorDef *  def,
+         const TinyRadDictVendorDef *  vendor_def,
          TinyRadDictVendor *           vendor )
 {
    uint8_t     u8;
    uint32_t    u32;
 
-   assert(def != NULL);
+   assert(vendor_def != NULL);
 
    if (!(vendor))
    {
-      our_dict_diag_vendor(opts, def, NULL);
+      our_dict_diag_vendor(opts, vendor_def, NULL);
       return(our_error(opts, NULL, "vendor was not found"));
    };
 
    // compare vendor ID
    tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_VEND_ID, &u32);
-   if (def->vendor_id != u32)
+   if (vendor_def->vendor_id != u32)
    {
-      our_dict_diag_vendor(opts, def, vendor);
+      our_dict_diag_vendor(opts, vendor_def, vendor);
       return(our_error(opts, NULL, "vendor ID do not match"));
    };
 
    // compare vendor type octets
    tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_TYPE_OCTS, &u8);
-   if (def->vendor_type_octs != u8)
+   if (vendor_def->vendor_type_octs != u8)
    {
-      our_dict_diag_vendor(opts, def, vendor);
+      our_dict_diag_vendor(opts, vendor_def, vendor);
       return(our_error(opts, NULL, "attribute type octets do not match"));
    };
 
    // compare vendor len octets
    tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_LEN_OCTS, &u8);
-   if (def->vendor_len_octs != u8)
+   if (vendor_def->vendor_len_octs != u8)
    {
-      our_dict_diag_vendor(opts, def, vendor);
+      our_dict_diag_vendor(opts, vendor_def, vendor);
       return(our_error(opts, NULL, "attribute len octets do not match"));
    };
 

@@ -94,7 +94,7 @@ our_dict_diag_value(
 void
 our_dict_diag_vendor(
          unsigned                      opts,
-         const TinyRadDictVendorDef *  def,
+         const TinyRadDictVendorDef *  vendor_def,
          TinyRadDictVendor *           vendor );
 
 

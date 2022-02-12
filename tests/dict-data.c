@@ -261,7 +261,7 @@ our_dict_diag_value(
 void
 our_dict_diag_vendor(
          unsigned                      opts,
-         const TinyRadDictVendorDef *  def,
+         const TinyRadDictVendorDef *  vendor_def,
          TinyRadDictVendor *           vendor )
 {
    char *      vendor_name;
@@ -270,13 +270,13 @@ our_dict_diag_vendor(
    uint32_t    vendor_id;
    unsigned    vendor_ref_count;
 
-   if ((def))
+   if ((vendor_def))
    {
       our_verbose(opts, "Vendor Definition");
-      our_verbose(opts, "   Name:             %s",       def->name);
-      our_verbose(opts, "   Vendor ID:        %" PRIu32, def->vendor_id);
-      our_verbose(opts, "   Vendor Type:      %" PRIu32, def->vendor_type_octs);
-      our_verbose(opts, "   Data Type:        %" PRIu32, def->vendor_len_octs);
+      our_verbose(opts, "   Name:             %s",       vendor_def->name);
+      our_verbose(opts, "   Vendor ID:        %" PRIu32, vendor_def->vendor_id);
+      our_verbose(opts, "   Vendor Type:      %" PRIu32, vendor_def->vendor_type_octs);
+      our_verbose(opts, "   Data Type:        %" PRIu32, vendor_def->vendor_len_octs);
    };
 
    if ((vendor))
