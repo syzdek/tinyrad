@@ -127,9 +127,6 @@ typedef struct tinyrad_pckt_vsa_value_should
 //-----------------------//
 #pragma mark conversion prototypes
 
-uint64_t
-tinyrad_ptohll(
-         void *                        src );
 
 
 #endif /* end of header */

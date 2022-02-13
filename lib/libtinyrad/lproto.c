@@ -150,21 +150,5 @@ tinyrad_pckt_buff_realloc(
 //----------------------//
 #pragma mark conversion functions
 
-/// converts 8 bytes of the packet buffer to uint64_t
-///
-/// @param[in]  src           pointer area of buffer to convert
-/// @return returns error code
-uint64_t
-tinyrad_ptohll(
-         void *                        src )
-{
-   size_t         pos;
-   uint64_t       val;
-   val = 0;
-   for(pos = 0; (pos < sizeof(uint64_t)); pos++)
-      val |= ((uint8_t*)src)[sizeof(uint64_t) - 1 - pos];
-   return(val);
-}
-
 
 /* end of source */
