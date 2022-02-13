@@ -80,6 +80,7 @@ tinyrad_set_option
 #
 # protocol functions
 tinyrad_htonll
+tinyrad_ntohll
 #
 # string functions
 tinyrad_strsfree

@@ -568,6 +568,11 @@ tinyrad_htonll(
          uint64_t                      hostlonglong );
 
 
+uint64_t
+tinyrad_ntohll(
+         uint64_t                      netlonglong );
+
+
 //-------------------//
 // string prototypes //
 //-------------------//

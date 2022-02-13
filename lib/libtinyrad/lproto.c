@@ -167,4 +167,21 @@ tinyrad_htonll(
 }
 
 
+uint64_t
+tinyrad_ntohll(
+         uint64_t                      netlonglong )
+{
+   return(
+      ((uint64_t)((((uint8_t*)&netlonglong)[0])) << 56) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[1])) << 48) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[2])) << 40) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[3])) << 32) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[4])) << 24) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[5])) << 16) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[6])) <<  8) |
+      ((uint64_t)((((uint8_t*)&netlonglong)[7])) <<  0)
+   );
+}
+
+
 /* end of source */
