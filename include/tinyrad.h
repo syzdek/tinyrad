@@ -97,6 +97,15 @@
          }
 
 
+// copies uint32_t as network byte order to buffer (host to packet long)
+#define tinyrad_htopl( dst, val ) \
+         {  ((uint8_t*)(dst))[0] = (uint8_t)(((uint32_t)(val)) >> 24); \
+            ((uint8_t*)(dst))[1] = (uint8_t)(((uint32_t)(val)) >> 16); \
+            ((uint8_t*)(dst))[2] = (uint8_t)(((uint32_t)(val)) >>  8); \
+            ((uint8_t*)(dst))[3] = (uint8_t)(((uint32_t)(val)) >>  0); \
+         }
+
+
 ///////////////////
 //               //
 //  Definitions  //
