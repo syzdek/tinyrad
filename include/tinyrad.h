@@ -90,6 +90,13 @@
 #endif
 
 
+// copies uint16_t as network byte order to buffer (host to packet short)
+#define tinyrad_htops( dst, val ) \
+         {  ((uint8_t*)(dst))[0] = (uint8_t)(((uint16_t)(val)) >>  8); \
+            ((uint8_t*)(dst))[1] = (uint8_t)(((uint16_t)(val)) >>  0); \
+         }
+
+
 ///////////////////
 //               //
 //  Definitions  //
