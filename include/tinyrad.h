@@ -128,6 +128,17 @@
          )
 
 
+// reads uint32_t from buffer as host byte order (packet to host long)
+#define tinyrad_ptohl( src ) \
+         (  (uint32_t) \
+            (  ((uint32_t)((((uint8_t*)(src))[0])) << 24) | \
+               ((uint32_t)((((uint8_t*)(src))[1])) << 16) | \
+               ((uint32_t)((((uint8_t*)(src))[2])) <<  8) | \
+               ((uint32_t)((((uint8_t*)(src))[3])) <<  0) \
+            ) \
+         )
+
+
 ///////////////////
 //               //
 //  Definitions  //
