@@ -218,7 +218,7 @@ my_print_header(
       break;
 
       case 8:
-      hton_str = "n/a for 64 bit"; // htonll() is not standard
+      hton_str = "tinyrad_htonll(value)"; // htonll() is not standard
       htop_str = "tinyrad_htopll(&b[x], value)";
       ptoh_str = "tinyrad_ptohll(&b[x])";
       break;
@@ -274,7 +274,7 @@ my_test_value(
 
       case 8:
       title = "uint64_t:";
-      hton  = 0; // htonll() is not standard
+      hton  = tinyrad_htonll(value); // htonll() is not standard
               tinyrad_htopll(&buff[offset], value);
       ptoh  = tinyrad_ptohll(&buff[offset]);
       break;
