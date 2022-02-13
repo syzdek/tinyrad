@@ -45,6 +45,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 
 
 ///////////////////
