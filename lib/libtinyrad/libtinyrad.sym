@@ -78,6 +78,9 @@ tinyrad_get_option
 tinyrad_initialize
 tinyrad_set_option
 #
+# protocol functions
+tinyrad_htonll
+#
 # string functions
 tinyrad_strsfree
 #

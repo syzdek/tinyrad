@@ -558,6 +558,16 @@ tinyrad_set_option(
          const void *                  invalue );
 
 
+//---------------------//
+// protocol prototypes //
+//---------------------//
+#pragma mark protocol prototypes
+
+uint64_t
+tinyrad_htonll(
+         uint64_t                      hostlonglong );
+
+
 //-------------------//
 // string prototypes //
 //-------------------//

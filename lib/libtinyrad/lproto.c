@@ -150,5 +150,21 @@ tinyrad_pckt_buff_realloc(
 //----------------------//
 #pragma mark conversion functions
 
+uint64_t
+tinyrad_htonll(
+         uint64_t                      hostlonglong )
+{
+   return(
+      ((uint64_t)((((uint8_t*)&hostlonglong)[0])) << 56) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[1])) << 48) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[2])) << 40) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[3])) << 32) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[4])) << 24) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[5])) << 16) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[6])) <<  8) |
+      ((uint64_t)((((uint8_t*)&hostlonglong)[7])) <<  0)
+   );
+}
+
 
 /* end of source */
