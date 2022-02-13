@@ -95,6 +95,7 @@ EXTRA_PROGRAMS				= examples/socket-example \
 					  tests/test-dict-values \
 					  tests/test-dict-vendors \
 					  tests/test-options \
+					  tests/test-pckt-byte-order \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
 					  tests/test-url-resolve
@@ -121,6 +122,7 @@ TESTS					= \
 					  tests/test-dict-values \
 					  tests/test-dict-vendors \
 					  tests/test-options \
+					  tests/test-pckt-byte-order \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
 					  tests/test-url-resolve
@@ -381,6 +383,14 @@ tests_test_options_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_options_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  tests/common.c tests/common.h \
 					  tests/test-options.c
+
+
+# macros for tests/test-pckt-byte-order
+tests_test_pckt_byte_order_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_pckt_byte_order_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_pckt_byte_order_SOURCES	= $(noinst_HEADERS) $(include_HEADERS) \
+					  tests/common.c tests/common.h \
+					  tests/test-pckt-byte-order.c
 
 
 # macros for tests/test-url-desc2str
