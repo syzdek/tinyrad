@@ -119,6 +119,15 @@
          }
 
 
+// reads uint16_t from buffer as host byte order (packet to host short)
+#define tinyrad_ptohs( src ) \
+         (  (uint64_t) \
+            (  ((uint16_t)((((uint8_t*)(src))[0])) << 8) | \
+               ((uint16_t)((((uint8_t*)(src))[1])) << 0) \
+            ) \
+         )
+
+
 ///////////////////
 //               //
 //  Definitions  //
