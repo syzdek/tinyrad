@@ -321,7 +321,7 @@ typedef struct sockaddr_storage           tinyrad_sockaddr_t;
 typedef struct tinyrad_binval
 {
     size_t              bv_len;
-    char *              bv_val;
+    uint8_t             bv_val[];
 } TinyRadBinValue;
 
 
