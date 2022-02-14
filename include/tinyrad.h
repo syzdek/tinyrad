@@ -537,6 +537,12 @@ tinyrad_binval_alloc(
          size_t                        size );
 
 
+_TINYRAD_F TinyRadBinValue *
+tinyrad_binval_realloc(
+         TinyRadBinValue *             ptr,
+         size_t                        size );
+
+
 _TINYRAD_F void
 tinyrad_free(
          void *                        ptr );
