@@ -571,6 +571,25 @@ tinyrad_set_option_socket_bind_addresses(
 }
 
 
+//---------------------------//
+// TinyRadBinValue functions //
+//---------------------------//
+#pragma mark TinyRadBinValue functions
+
+TinyRadBinValue *
+tinyrad_binval_alloc(
+         size_t                        size )
+{
+   TinyRadBinValue * ptr;
+   assert(size >= sizeof(TinyRadBinValue));
+   if ((ptr = malloc(size)) == NULL)
+      return(NULL);
+   memset(ptr, 0, size);
+   ptr->bv_len = size;
+   return(ptr);
+}
+
+
 //------------------//
 // object functions //
 //------------------//

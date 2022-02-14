@@ -532,6 +532,11 @@ tinyrad_strerror_r(
 //-------------------//
 #pragma mark memory prototypes
 
+_TINYRAD_F TinyRadBinValue *
+tinyrad_binval_alloc(
+         size_t                        size );
+
+
 _TINYRAD_F void
 tinyrad_free(
          void *                        ptr );
