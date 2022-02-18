@@ -66,6 +66,7 @@ check_PROGRAMS				=
 doc_DATA				= AUTHORS.md \
 					  ChangeLog.md \
 					  COPYING.md \
+					  DeveloperNotes.md \
 					  README.md \
 					  TODO.md
 include_HEADERS				=
