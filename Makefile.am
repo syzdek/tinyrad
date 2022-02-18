@@ -63,8 +63,7 @@ rfcdocdir				= $(docdir)/rfc
 
 # automake targets
 check_PROGRAMS				=
-doc_DATA				= \
-					  AUTHORS.md \
+doc_DATA				= AUTHORS.md \
 					  ChangeLog.md \
 					  COPYING.md \
 					  README.md \
@@ -111,8 +110,7 @@ EXTRA					= lib/libtinyrad.a \
 # lists
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
 BUILT_SOURCES				=
-TESTS					= \
-					  tests/test-array-sorted \
+TESTS					= tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
 					  tests/test-assertions \
@@ -128,8 +126,7 @@ TESTS					= \
 					  tests/test-url-resolve
 XFAIL_TESTS				=
 EXTRA_MANS				=
-EXTRA_DIST				= \
-					  DeveloperNotes.md \
+EXTRA_DIST				= DeveloperNotes.md \
 					  $(doc_DATA) \
 					  doc/mans/tinyrad.3.in \
 					  doc/mans/tinyrad_array.3.in \
@@ -152,8 +149,7 @@ EXTRA_DIST				= \
 					  include/tinyrad_compat.h \
 					  lib/libtinyrad/libtinyrad.sym \
 					  tests/test-dict-defaults.sh
-CLEANFILES				= \
-					  $(builddir)/a.out   $(srcdir)/a.out \
+CLEANFILES				= $(builddir)/a.out   $(srcdir)/a.out \
 					  $(builddir)/*/a.out $(srcdir)/*/a.out \
 					  config.h.in~ $(srcdir)/config.h.in~ \
 					  $(man_MANS) \
