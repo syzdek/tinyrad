@@ -66,6 +66,12 @@ tinyrad_avp_free(
          TinyRadAVP *                  avp );
 
 
+int
+tinyrad_avp_initialize(
+         TinyRadAVP **                 avpp,
+         TinyRadDictAttr *             attr );
+
+
 //------------------------//
 // pckt memory prototypes //
 //------------------------//
@@ -117,6 +123,28 @@ tinyrad_avp_free(
    free(avp);
 
    return;
+}
+
+
+int
+tinyrad_avp_initialize(
+         TinyRadAVP **                 avpp,
+         TinyRadDictAttr *             attr )
+{
+   TinyRadAVP *            avp;
+
+   TinyRadDebugTrace();
+
+   assert(avpp != NULL);
+   assert(attr != NULL);
+
+   if ((avp = tinyrad_obj_alloc(sizeof(TinyRadAVP), (void(*)(void*))&tinyrad_avp_free)) == NULL)
+      return(TRAD_ENOMEM);
+   avp->attr = tinyrad_obj_retain(&attr->obj);
+
+   *avpp = tinyrad_obj_retain(&avp->obj);
+
+   return(TRAD_SUCCESS);
 }
 
 
