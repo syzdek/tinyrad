@@ -74,27 +74,6 @@
 
 //////////////////
 //              //
-//  Data Types  //
-//              //
-//////////////////
-#pragma mark - Data Types
-
-typedef struct _tinyrad_dict_key TinyRadDictKey;
-
-struct _tinyrad_dict_key
-{
-   const char *         str;
-   void *               padptr;
-   uint32_t             type;
-   uint32_t             vendor_id;
-   uint32_t             vendor_type;
-   uint32_t             pad32;
-   uint64_t             value_data;
-};
-
-
-//////////////////
-//              //
 //  Prototypes  //
 //              //
 //////////////////
