@@ -315,6 +315,7 @@ typedef struct _tinyrad_dict              TinyRadDict;
 typedef struct _tinyrad_dict_attr         TinyRadDictAttr;
 typedef struct _tinyrad_dict_value        TinyRadDictValue;
 typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
+typedef struct _tinyrad_avp_list          TinyRadAVPList;
 typedef struct sockaddr_storage           tinyrad_sockaddr_t;
 
 
