@@ -81,6 +81,7 @@ tinyrad_initialize
 tinyrad_set_option
 #
 # protocol functions
+tinyrad_avplist_initialize
 tinyrad_htonll
 tinyrad_ntohll
 #

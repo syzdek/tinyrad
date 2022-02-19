@@ -575,6 +575,11 @@ tinyrad_set_option(
 //---------------------//
 #pragma mark protocol prototypes
 
+_TINYRAD_F int
+tinyrad_avplist_initialize(
+         TinyRadAVPList **             avplistp );
+
+
 uint64_t
 tinyrad_htonll(
          uint64_t                      hostlonglong );

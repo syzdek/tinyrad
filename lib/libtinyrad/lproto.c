@@ -177,6 +177,20 @@ tinyrad_avplist_free(
 }
 
 
+int
+tinyrad_avplist_initialize(
+         TinyRadAVPList **             avplistp )
+{
+   TinyRadAVPList * avplist;
+   TinyRadDebugTrace();
+   assert(avplistp != NULL);
+   if ((avplist = tinyrad_obj_alloc(sizeof(TinyRadAVPList), (void(*)(void*))&tinyrad_avplist_free)) == NULL)
+      return(TRAD_ENOMEM);
+   *avplistp = tinyrad_obj_retain(&avplist->obj);
+   return(TRAD_SUCCESS);
+}
+
+
 //-----------------------//
 // pckt memory functions //
 //-----------------------//
