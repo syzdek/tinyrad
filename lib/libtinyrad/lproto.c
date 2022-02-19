@@ -72,6 +72,16 @@ tinyrad_avp_initialize(
          TinyRadDictAttr *             attr );
 
 
+//---------------------//
+// AVP list prototypes //
+//---------------------//
+#pragma mark AVP list prototypes
+
+void
+tinyrad_avplist_free(
+         TinyRadAVPList *              avplist );
+
+
 //------------------------//
 // pckt memory prototypes //
 //------------------------//
@@ -145,6 +155,25 @@ tinyrad_avp_initialize(
    *avpp = tinyrad_obj_retain(&avp->obj);
 
    return(TRAD_SUCCESS);
+}
+
+
+//--------------------//
+// AVP list functions //
+//--------------------//
+#pragma mark AVP list functions
+
+void
+tinyrad_avplist_free(
+         TinyRadAVPList *              avplist )
+{
+   size_t pos;
+   if ((avplist->list))
+      for(pos = 0; (pos < avplist->list_len); pos++)
+         tinyrad_obj_release(&avplist->list[pos]->obj);
+   memset(avplist, 0, sizeof(TinyRadAVPList));
+   free(avplist);
+   return;
 }
 
 
