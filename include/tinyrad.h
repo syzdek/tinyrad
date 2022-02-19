@@ -255,6 +255,108 @@
 #define TRAD_SECRET_RADSEC_TCP      "radsec"       // RFC 6614 Section 2.3: Connection Setup
 #define TRAD_SECRET_RADSEC_UDP      "radius/dtls"  // RFC 7360 Section 2.1: Changes to RADIUS
 
+// RADIUS Attributes
+#define  TRAD_ATTR_USER_NAME                     1  // RFC2865 Section 5.1     User-Name
+#define  TRAD_ATTR_USER_PASSWORD                 2  // RFC2865 Section 5.2     User-Password
+#define  TRAD_ATTR_CHAP_PASSWORD                 3  // RFC2865 Section 5.3     CHAP-Password
+#define  TRAD_ATTR_NAS_IP_ADDRESS                4  // RFC2865 Section 5.4     NAS-IP-Address
+#define  TRAD_ATTR_NAS_PORT                      5  // RFC2865 Section 5.5     NAS-Port
+#define  TRAD_ATTR_SERVICE_TYPE                  6  // RFC2865 Section 5.6     Service-Type
+#define  TRAD_ATTR_FRAMED_PROTOCOL               7  // RFC2865 Section 5.7     Framed-Protocol
+#define  TRAD_ATTR_FRAMED_IP_ADDRESS             8  // RFC2865 Section 5.8     Framed-IP-Address
+#define  TRAD_ATTR_FRAMED_IP_NETMASK             9  // RFC2865 Section 5.9     Framed-IP-Netmask
+#define  TRAD_ATTR_FRAMED_ROUTING               10  // RFC2865 Section 5.10    Framed-Routing
+#define  TRAD_ATTR_FILTER_ID                    11  // RFC2865 Section 5.11    Filter-Id
+#define  TRAD_ATTR_FRAMED_MTU                   12  // RFC2865 Section 5.12    Framed-MTU
+#define  TRAD_ATTR_FRAMED_COMPRESSION           13  // RFC2865 Section 5.13    Framed-Compression
+#define  TRAD_ATTR_LOGIN_IP_HOST                14  // RFC2865 Section 5.14    Login-IP-Host
+#define  TRAD_ATTR_LOGIN_SERVICE                15  // RFC2865 Section 5.15    Login-Service
+#define  TRAD_ATTR_LOGIN_TCP_PORT               16  // RFC2865 Section 5.16    Login-TCP-Port
+#define  TRAD_ATTR_REPLY_MESSAGE                18  // RFC2865 Section 5.18    Reply-Message
+#define  TRAD_ATTR_CALLBACK_NUMBER              19  // RFC2865 Section 5.19    Callback-Number
+#define  TRAD_ATTR_CALLBACK_ID                  20  // RFC2865 Section 5.20    Callback-Id
+#define  TRAD_ATTR_FRAMED_ROUTE                 22  // RFC2865 Section 5.22    Framed-Route
+#define  TRAD_ATTR_FRAMED_IPX_NETWORK           23  // RFC2865 Section 5.23    Framed-IPX-Network
+#define  TRAD_ATTR_STATE                        24  // RFC2865 Section 5.24    State
+#define  TRAD_ATTR_CLASS                        25  // RFC2865 Section 5.25    Class
+#define  TRAD_ATTR_VENDOR_SPECIFIC              26  // RFC2865 Section 5.26    Vendor-Specific
+#define  TRAD_ATTR_SESSION_TIMEOUT              27  // RFC2865 Section 5.27    Session-Timeout
+#define  TRAD_ATTR_IDLE_TIMEOUT                 28  // RFC2865 Section 5.28    Idle-Timeout
+#define  TRAD_ATTR_TERMINATION_ACTION           29  // RFC2865 Section 5.29    Termination-Action
+#define  TRAD_ATTR_CALLED_STATION_ID            30  // RFC2865 Section 5.30    Called-Station-Id
+#define  TRAD_ATTR_CALLING_STATION_ID           31  // RFC2865 Section 5.31    Calling-Station-Id
+#define  TRAD_ATTR_NAS_IDENTIFIER               32  // RFC2865 Section 5.32    NAS-Identifier
+#define  TRAD_ATTR_PROXY_STATE                  33  // RFC2865 Section 5.33    Proxy-State
+#define  TRAD_ATTR_LOGIN_LAT_SERVICE            34  // RFC2865 Section 5.34    Login-LAT-Service
+#define  TRAD_ATTR_LOGIN_LAT_NODE               35  // RFC2865 Section 5.35    Login-LAT-Node
+#define  TRAD_ATTR_LOGIN_LAT_GROUP              36  // RFC2865 Section 5.36    Login-LAT-Group
+#define  TRAD_ATTR_FRAMED_APPLETALK_LINK        37  // RFC2865 Section 5.37    Framed-AppleTalk-Link
+#define  TRAD_ATTR_FRAMED_APPLETALK_NETWORK     38  // RFC2865 Section 5.38    Framed-AppleTalk-Network
+#define  TRAD_ATTR_FRAMED_APPLETALK_ZONE        39  // RFC2865 Section 5.39    Framed-AppleTalk-Zone
+#define  TRAD_ATTR_ACCT_STATUS_TYPE             40  // RFC2866 Section 5.1     Acct-Status-Type
+#define  TRAD_ATTR_ACCT_DELAY_TIME              41  // RFC2866 Section 5.2     Acct-Delay-Time
+#define  TRAD_ATTR_ACCT_INPUT_OCTETS            42  // RFC2866 Section 5.3     Acct-Input-Octets
+#define  TRAD_ATTR_ACCT_OUTPUT_OCTETS           43  // RFC2866 Section 5.4     Acct-Output-Octets
+#define  TRAD_ATTR_ACCT_SESSION_ID              44  // RFC2866 Section 5.5     Acct-Session-Id
+#define  TRAD_ATTR_ACCT_AUTHENTIC               45  // RFC2866 Section 5.6     Acct-Authentic
+#define  TRAD_ATTR_ACCT_SESSION_TIME            46  // RFC2866 Section 5.7     Acct-Session-Time
+#define  TRAD_ATTR_ACCT_INPUT_PACKETS           47  // RFC2866 Section 5.8     Acct-Input-Packets
+#define  TRAD_ATTR_ACCT_OUTPUT_PACKETS          48  // RFC2866 Section 5.9     Acct-Output-Packets
+#define  TRAD_ATTR_ACCT_TERMINATE_CAUSE         49  // RFC2866 Section 5.10    Acct-Terminate-Cause
+#define  TRAD_ATTR_ACCT_MULTI_SESSION_ID        50  // RFC2866 Section 5.11    Acct-Multi-Session-Id
+#define  TRAD_ATTR_ACCT_LINK_COUNT              51  // RFC2866 Section 5.12    Acct-Link-Count
+#define  TRAD_ATTR_ACCT_INPUT_GIGAWORDS         52  // RFC2869 Section 5.1     Acct-Input-Gigawords
+#define  TRAD_ATTR_ACCT_OUTPUT_GIGAWORDS        53  // RFC2869 Section 5.2     Acct-Output-Gigawords
+#define  TRAD_ATTR_EVENT_TIMESTAMP              55  // RFC2869 Section 5.3     Event-Timestamp
+#define  TRAD_ATTR_EGRESS_VLANID                56  // RFC4675 Section 2.1     Egress-VLANID
+#define  TRAD_ATTR_INGRESS_FILTERS              57  // RFC4675 Section 2.2     Ingress-Filters
+#define  TRAD_ATTR_EGRESS_VLAN_NAME             58  // RFC4675 Section 2.3     Egress-VLAN-Name
+#define  TRAD_ATTR_USER_PRIORITY_TABLE          59  // RFC4675 Section 2.4     User-Priority-Table
+#define  TRAD_ATTR_CHAP_CHALLENGE               60  // RFC2865 Section 5.40    CHAP-Challenge
+#define  TRAD_ATTR_NAS_PORT_TYPE                61  // RFC2865 Section 5.41    NAS-Port-Type
+#define  TRAD_ATTR_PORT_LIMIT                   62  // RFC2865 Section 5.42    Port-Limit
+#define  TRAD_ATTR_LOGIN_LAT_PORT               63  // RFC2865 Section 5.43    Login-LAT-Port
+#define  TRAD_ATTR_TUNNEL_TYPE                  64  // RFC2868 Section 3.1     Tunnel-Type
+#define  TRAD_ATTR_TUNNEL_MEDIUM_TYPE           65  // RFC2868 Section 3.2     Tunnel-Medium-Type
+#define  TRAD_ATTR_TUNNEL_CLIENT_ENDPOINT       66  // RFC2868 Section 3.3     Tunnel-Client-Endpoint
+#define  TRAD_ATTR_TUNNEL_SERVER_ENDPOINT       67  // RFC2868 Section 3.4     Tunnel-Server-Endpoint
+#define  TRAD_ATTR_ACCT_TUNNEL_CONNECTION       68  // RFC2867 Section 4.1     Acct-Tunnel-Connection
+#define  TRAD_ATTR_TUNNEL_PASSWORD              69  // RFC2868 Section 3.5     Tunnel-Password
+#define  TRAD_ATTR_ARAP_PASSWORD                70  // RFC2869 Section 5.4     ARAP-Password
+#define  TRAD_ATTR_ARAP_FEATURES                71  // RFC2869 Section 5.5     ARAP-Features
+#define  TRAD_ATTR_ARAP_ZONE_ACCESS             72  // RFC2869 Section 5.6     ARAP-Zone-Access
+#define  TRAD_ATTR_ARAP_SECURITY                73  // RFC2869 Section 5.7     ARAP-Security
+#define  TRAD_ATTR_ARAP_SECURITY_DATA           74  // RFC2869 Section 5.8     ARAP-Security-Data
+#define  TRAD_ATTR_PASSWORD_RETRY               75  // RFC2869 Section 5.9     Password-Retry
+#define  TRAD_ATTR_PROMPT                       76  // RFC2869 Section 5.10    Prompt
+#define  TRAD_ATTR_CONNECT_INFO                 77  // RFC2869 Section 5.11    Connect-Info
+#define  TRAD_ATTR_CONFIGURATION_TOKEN          78  // RFC2869 Section 5.12    Configuration-Token
+#define  TRAD_ATTR_EAP_MESSAGE                  79  // RFC2869 Section 5.13    EAP-Message
+#define  TRAD_ATTR_MESSAGE_AUTHENTICATOR        80  // RFC2869 Section 5.14    Message-Authenticator
+#define  TRAD_ATTR_TUNNEL_PRIVATE_GROUP_ID      81  // RFC2868 Section 3.6     Tunnel-Private-Group-Id
+#define  TRAD_ATTR_TUNNEL_ASSIGNMENT_ID         82  // RFC2868 Section 3.7     Tunnel-Assignment-Id
+#define  TRAD_ATTR_TUNNEL_PREFERENCE            83  // RFC2868 Section 3.8     Tunnel-Preference
+#define  TRAD_ATTR_ACCT_TUNNEL_PACKETS_LOST     86  // RFC2867 Section 4.2     Acct-Tunnel-Packets-Lost
+#define  TRAD_ATTR_NAS_PORT_ID                  87  // RFC2869 Section 5.17    NAS-Port-Id
+#define  TRAD_ATTR_FRAMED_POOL                  88  // RFC2869 Section 5.18    Framed-Pool
+#define  TRAD_ATTR_CHARGEABLE_USER_IDENTITY     89  // RFC4372 Section 2.2     CUI Attribute
+#define  TRAD_ATTR_TUNNEL_CLIENT_AUTH_ID        90  // RFC2868 Section 3.9     Tunnel-Client-Auth-Id
+#define  TRAD_ATTR_TUNNEL_SERVER_AUTH_ID        91  // RFC2868 Section 3.10    Tunnel-Server-Auth-Id
+#define  TRAD_ATTR_NAS_FILTER_RULE              92  // RFC4849 Section 2       NAS-Filter-Rule Attribute
+#define  TRAD_ATTR_ORIGINATING_LINE_INFO        94  // RFC7155 Section 4.2.8   Originating-Line-Info AVP
+#define  TRAD_ATTR_NAS_IPV6_ADDRESS             95  // RFC3162 Section 2.1     NAS-IPv6-Address
+#define  TRAD_ATTR_FRAMED_INTERFACE_ID          96  // RFC3162 Section 2.2     Framed-Interface-Id (listed in RFC as section 3.2)
+#define  TRAD_ATTR_FRAMED_IPV6_PREFIX           97  // RFC3162 Section 2.3     Framed-IPv6-Prefix
+#define  TRAD_ATTR_LOGIN_IPV6_HOST              98  // RFC3162 Section 2.4     Login-IPv6-Host
+#define  TRAD_ATTR_FRAMED_IPV6_ROUTE            99  // RFC3162 Section 2.5     Framed-IPv6-Route
+#define  TRAD_ATTR_FRAMED_IPV6_POOL            100  // RFC3162 Section 2.6     Framed-IPv6-Pool
+#define  TRAD_ATTR_EXTENDED_ATTRIBUTE_1        241  // RFC6929 Section 3.1     Extended-Type-1
+#define  TRAD_ATTR_EXTENDED_ATTRIBUTE_2        242  // RFC6929 Section 3.2     Extended-Type-2
+#define  TRAD_ATTR_EXTENDED_ATTRIBUTE_3        243  // RFC6929 Section 3.3     Extended-Type-3
+#define  TRAD_ATTR_EXTENDED_ATTRIBUTE_4        244  // RFC6929 Section 3.4     Extended-Type-4
+#define  TRAD_ATTR_EXTENDED_ATTRIBUTE_5        245  // RFC6929 Section 3.5     Long-Extended-Type-1
+#define  TRAD_ATTR_EXTENDED_ATTRIBUTE_6        246  // RFC6929 Section 3.6     Long-Extended-Type-2
+
 // RADIUS Attribute Data Type Definitions
 #define TRAD_DATATYPE_INTEGER        1 ///< RFC 8044 Section 3.1.  integer:       32-bit unsigned integer
 #define TRAD_DATATYPE_ENUM           2 ///< RFC 8044 Section 3.2.  enum:          32-bit unsigned integer enumerated types
