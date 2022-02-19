@@ -66,6 +66,10 @@ typedef struct _tinyrad_pckt_buffer       TinyRadPcktBuff;
 typedef struct _tinyrad_avp
 {
    TinyRadObj           obj;
+   uint8_t              data_type;
+   uint8_t              attr_type;
+   uint16_t             pad16;
+   uint32_t             vendor_id;
    size_t               values_len;
    TinyRadDictAttr *    attr;
    TinyRadBinValue *    values;

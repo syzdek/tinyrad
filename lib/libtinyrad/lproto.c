@@ -69,7 +69,9 @@ tinyrad_avp_free(
 int
 tinyrad_avp_initialize(
          TinyRadAVP **                 avpp,
-         TinyRadDictAttr *             attr );
+         TinyRadDictAttr *             attr,
+         uint8_t                       attr_type,
+         uint8_t                       data_type );
 
 
 //---------------------//
@@ -139,18 +141,28 @@ tinyrad_avp_free(
 int
 tinyrad_avp_initialize(
          TinyRadAVP **                 avpp,
-         TinyRadDictAttr *             attr )
+         TinyRadDictAttr *             attr,
+         uint8_t                       attr_type,
+         uint8_t                       data_type )
 {
    TinyRadAVP *            avp;
 
    TinyRadDebugTrace();
 
    assert(avpp != NULL);
-   assert(attr != NULL);
 
    if ((avp = tinyrad_obj_alloc(sizeof(TinyRadAVP), (void(*)(void*))&tinyrad_avp_free)) == NULL)
       return(TRAD_ENOMEM);
-   avp->attr = tinyrad_obj_retain(&attr->obj);
+
+   avp->attr_type = attr_type;
+   avp->data_type = data_type;
+
+   if ((attr))
+   {
+      avp->attr      = tinyrad_obj_retain(&attr->obj);
+      avp->attr_type = attr->type;
+      avp->data_type = attr->data_type;
+   };
 
    *avpp = tinyrad_obj_retain(&avp->obj);
 
