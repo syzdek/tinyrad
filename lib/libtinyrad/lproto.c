@@ -45,6 +45,9 @@
 #include <arpa/inet.h>
 #include <assert.h>
 
+#include "ldict.h"
+#include "lmemory.h"
+
 
 //////////////////
 //              //
@@ -52,6 +55,16 @@
 //              //
 //////////////////
 #pragma mark - Prototypes
+
+//----------------//
+// AVP prototypes //
+//----------------//
+#pragma mark AVP prototypes
+
+void
+tinyrad_avp_free(
+         TinyRadAVP *                  avp );
+
 
 //------------------------//
 // pckt memory prototypes //
@@ -78,6 +91,34 @@ tinyrad_pckt_buff_realloc(
 //             //
 /////////////////
 #pragma mark - Functions
+
+//---------------//
+// AVP functions //
+//---------------//
+#pragma mark AVP functions
+
+void
+tinyrad_avp_free(
+         TinyRadAVP *                  avp )
+{
+   size_t      pos;
+
+   if (!(avp))
+      return;
+
+   if ((avp->attr))
+      tinyrad_obj_release(&avp->attr->obj);
+
+   if ((avp->values))
+      for(pos = 0; (pos < avp->values_len); pos++)
+         tinyrad_free(&avp->values[pos]);
+
+   memset(avp, 0, sizeof(TinyRadAVP));
+   free(avp);
+
+   return;
+}
+
 
 //-----------------------//
 // pckt memory functions //
