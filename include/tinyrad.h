@@ -641,6 +641,11 @@ tinyrad_binval_alloc(
 
 
 _TINYRAD_F TinyRadBinValue *
+tinyrad_binval_dup(
+         const TinyRadBinValue *       ptr );
+
+
+_TINYRAD_F TinyRadBinValue *
 tinyrad_binval_realloc(
          TinyRadBinValue *             ptr,
          size_t                        size );

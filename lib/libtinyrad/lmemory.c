@@ -590,6 +590,20 @@ tinyrad_binval_alloc(
 }
 
 
+_TINYRAD_F TinyRadBinValue *
+tinyrad_binval_dup(
+         const TinyRadBinValue *       ptr )
+{
+   TinyRadBinValue *    binval;
+   assert(ptr           != NULL);
+   assert(ptr->bv_len   >= sizeof(TinyRadBinValue));
+   if ((binval = malloc(ptr->bv_len)) == NULL)
+      return(NULL);
+   memcpy(binval, ptr, ptr->bv_len);
+   return(binval);
+}
+
+
 TinyRadBinValue *
 tinyrad_binval_realloc(
          TinyRadBinValue *             ptr,

@@ -74,6 +74,7 @@ tinyrad_strerror_r
 #
 # memory functions
 tinyrad_binval_alloc
+tinyrad_binval_dup
 tinyrad_binval_realloc
 tinyrad_free
 tinyrad_get_option
