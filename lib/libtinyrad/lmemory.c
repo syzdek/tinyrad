@@ -53,8 +53,6 @@
 #include <netdb.h>
 #include <assert.h>
 
-#include "lstrings.h"
-
 
 ///////////////////
 //               //
@@ -803,6 +801,164 @@ tinyrad_oid_realloc(
       return(ptr);
    ptr->oid_len = len;
    return(ptr);
+}
+
+
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
+char *
+tinyrad_strdup(
+         const char *                  s1 )
+{
+   char *      ptr;
+   size_t      len;
+   if (!(s1))
+      return(NULL);
+   len = strlen(s1);
+   if ((ptr = malloc(len+2)) == NULL)
+      return(NULL);
+   memcpy(ptr, s1, len);
+   ptr[len+0] = '\0';
+   ptr[len+1] = '\0';
+   return(ptr);
+}
+
+
+size_t
+tinyrad_strlcpy(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize )
+{
+   size_t len;
+   assert(dst     != NULL);
+   assert(src     != NULL);
+   assert(dstsize  > 0);
+   for(len = 0; ((src[len])); len++)
+      if (len < dstsize)
+         dst[len] = src[len];
+   dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
+   return(len);
+}
+
+
+size_t
+tinyrad_strlcat(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize )
+{
+   size_t      pos;
+   size_t      offset;
+   size_t      len;
+   assert(dst     != NULL);
+   assert(src     != NULL);
+   assert(dstsize  > 0);
+   for(pos = 0; ((dst[pos])); pos++);
+   for(offset = 0; ((src[offset])); offset++)
+      if ((pos + offset) < dstsize)
+         dst[pos+offset] = dst[offset];
+   len = offset + pos;
+   dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
+   return(len);
+}
+
+
+char *
+tinyrad_strndup(
+         const char *                  s1,
+         size_t                        n )
+{
+   char *      ptr;
+   size_t      len;
+   if (!(s1))
+      return(NULL);
+   len = strlen(s1);
+   len = (len < n) ? len : n;
+   if ((ptr = malloc(len+2)) == NULL)
+      return(NULL);
+   memcpy(ptr, s1, len);
+   ptr[len+0] = '\0';
+   ptr[len+1] = '\0';
+   return(ptr);
+}
+
+
+/// Appends string to NULL terminated array of strings
+///
+/// @param[out] strsp         pointer to string array
+/// @param[in]  str           string to append to array
+/// @return returns error code
+int
+tinyrad_strsadd(
+         char ***                      strsp,
+         const char *                  str )
+{
+   size_t     count;
+   char **    strs;
+
+   TinyRadDebugTrace();
+
+   assert(strsp != NULL);
+   assert(str   != NULL);
+
+   count = tinyrad_strscount(*strsp);
+
+   // increase size of array
+   if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)
+      return(TRAD_ENOMEM);
+   *strsp        = strs;
+
+   // copy string
+   if ((strs[count] = strdup(str)) == NULL)
+      return(TRAD_ENOMEM);
+
+   // terminate array
+   count++;
+   strs[count] = NULL;
+
+   return(TRAD_SUCCESS);
+}
+
+
+/// counts number of strings in NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+/// @return number of strings in array
+size_t
+tinyrad_strscount(
+         char **                       strs )
+{
+   size_t count;
+   TinyRadDebugTrace();
+   if (!(strs))
+      return(0);
+   for(count = 0; ((strs != NULL)&&(strs[count] != NULL)); count++);
+   return(count);
+}
+
+
+/// frees NULL terminated array of strings
+///
+/// @param[in]  strs          pointer to string array
+void
+tinyrad_strsfree(
+         char **                       strs )
+{
+   int i;
+   TinyRadDebugTrace();
+   if (!(strs))
+      return;
+   for(i = 0; ((strs[i])); i++)
+   {
+      free(strs[i]);
+      strs[i] = NULL;
+   };
+   free(strs);
+   return;
 }
 
 

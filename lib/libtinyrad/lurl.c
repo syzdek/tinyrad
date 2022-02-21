@@ -49,7 +49,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "lstrings.h"
+#include "lmemory.h"
 
 
 //////////////////
