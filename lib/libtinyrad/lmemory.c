@@ -599,11 +599,17 @@ tinyrad_binval_dup(
          const TinyRadBinValue *       ptr )
 {
    TinyRadBinValue *    binval;
+   size_t               adjsize;
+
    assert(ptr           != NULL);
    assert(ptr->bv_len   >= sizeof(TinyRadBinValue));
-   if ((binval = malloc(ptr->bv_len)) == NULL)
+
+   adjsize = sizeof(TinyRadBinValue) + ptr->bv_len;
+
+   if ((binval = malloc(adjsize)) == NULL)
       return(NULL);
-   memcpy(binval, ptr, ptr->bv_len);
+   memcpy(binval, ptr, adjsize);
+
    return(binval);
 }
 
