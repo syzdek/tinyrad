@@ -677,33 +677,6 @@ tinyrad_initialize(
          uint64_t                      opts );
 
 
-_TINYRAD_F TinyRadOID *
-tinyrad_oid_alloc(
-         size_t                        len );
-
-
-_TINYRAD_F TinyRadOID *
-tinyrad_oid_dup(
-         const TinyRadOID *            ptr );
-
-
-_TINYRAD_F uint32_t
-tinyrad_oid_pop(
-         TinyRadOID *                  oid );
-
-
-_TINYRAD_F int
-tinyrad_oid_push(
-         TinyRadOID **                 oidp,
-         uint32_t                      val );
-
-
-_TINYRAD_F TinyRadOID *
-tinyrad_oid_realloc(
-         TinyRadOID *                  ptr,
-         size_t                        len );
-
-
 _TINYRAD_F int
 tinyrad_set_option(
          TinyRad *                     tr,

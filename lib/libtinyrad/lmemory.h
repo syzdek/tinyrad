@@ -88,6 +88,38 @@ tinyrad_obj_retain_count(
          TinyRadObj *                  obj );
 
 
+//----------------//
+// OID prototypes //
+//----------------//
+#pragma mark OID prototypes
+
+TinyRadOID *
+tinyrad_oid_alloc(
+         size_t                        len );
+
+
+TinyRadOID *
+tinyrad_oid_dup(
+         const TinyRadOID *            ptr );
+
+
+uint32_t
+tinyrad_oid_pop(
+         TinyRadOID *                  oid );
+
+
+int
+tinyrad_oid_push(
+         TinyRadOID **                 oidp,
+         uint32_t                      val );
+
+
+TinyRadOID *
+tinyrad_oid_realloc(
+         TinyRadOID *                  ptr,
+         size_t                        len );
+
+
 //-------------------//
 // string prototypes //
 //-------------------//

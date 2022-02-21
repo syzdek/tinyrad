@@ -79,11 +79,6 @@ tinyrad_binval_realloc
 tinyrad_free
 tinyrad_get_option
 tinyrad_initialize
-tinyrad_oid_alloc
-tinyrad_oid_dup
-tinyrad_oid_pop
-tinyrad_oid_push
-tinyrad_oid_realloc
 tinyrad_set_option
 #
 # protocol functions
