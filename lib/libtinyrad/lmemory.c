@@ -743,6 +743,25 @@ tinyrad_oid_alloc(
 
 
 TinyRadOID *
+tinyrad_oid_dup(
+         const TinyRadOID *            ptr )
+{
+   TinyRadOID *         oid;
+   size_t               size;
+
+   assert(ptr           != NULL);
+
+   size = (ptr->oid_len * sizeof(uint32_t)) + sizeof(TinyRadOID);
+
+   if ((oid = malloc(size)) == NULL)
+      return(oid);
+   memcpy(oid, ptr, size);
+
+   return(oid);
+}
+
+
+TinyRadOID *
 tinyrad_oid_realloc(
          TinyRadOID *                  ptr,
          size_t                        len )

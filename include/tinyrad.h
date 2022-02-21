@@ -683,6 +683,11 @@ tinyrad_oid_alloc(
 
 
 _TINYRAD_F TinyRadOID *
+tinyrad_oid_dup(
+         const TinyRadOID *            ptr );
+
+
+_TINYRAD_F TinyRadOID *
 tinyrad_oid_realloc(
          TinyRadOID *                  ptr,
          size_t                        len );
