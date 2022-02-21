@@ -687,6 +687,12 @@ tinyrad_oid_dup(
          const TinyRadOID *            ptr );
 
 
+_TINYRAD_F int
+tinyrad_oid_push(
+         TinyRadOID **                 oidp,
+         uint32_t                      val );
+
+
 _TINYRAD_F TinyRadOID *
 tinyrad_oid_realloc(
          TinyRadOID *                  ptr,

@@ -761,6 +761,27 @@ tinyrad_oid_dup(
 }
 
 
+int
+tinyrad_oid_push(
+         TinyRadOID **                 oidp,
+         uint32_t                      val )
+{
+   TinyRadOID *   oid;
+   size_t         len;
+
+   assert(oidp != NULL);
+
+   len = (*oidp)->oid_len;
+   if ((oid = tinyrad_oid_realloc(*oidp, (len+1))) == NULL)
+      return(TRAD_ENOMEM);
+   oid->oid_val[len] = val;
+
+   *oidp             = oid;
+
+   return(TRAD_SUCCESS);
+}
+
+
 TinyRadOID *
 tinyrad_oid_realloc(
          TinyRadOID *                  ptr,
