@@ -677,6 +677,11 @@ tinyrad_initialize(
          uint64_t                      opts );
 
 
+_TINYRAD_F TinyRadOID *
+tinyrad_oid_alloc(
+         size_t                        len );
+
+
 _TINYRAD_F int
 tinyrad_set_option(
          TinyRad *                     tr,

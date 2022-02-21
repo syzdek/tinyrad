@@ -719,4 +719,27 @@ tinyrad_verify_is_obj(
 }
 
 
+//----------------------//
+// TinyRadOID functions //
+//----------------------//
+#pragma mark TinyRadOID functions
+
+TinyRadOID *
+tinyrad_oid_alloc(
+         size_t                        len )
+{
+   TinyRadOID *      ptr;
+   size_t            size;
+
+   size = (len * sizeof(uint32_t)) + sizeof(TinyRadOID);
+
+   if ((ptr = malloc(size)) == NULL)
+      return(ptr);
+   memset(ptr, 0, size);
+   ptr->oid_len = len;
+
+   return(ptr);
+}
+
+
 /* end of source */
