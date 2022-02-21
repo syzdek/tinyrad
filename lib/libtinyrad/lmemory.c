@@ -580,12 +580,16 @@ TinyRadBinValue *
 tinyrad_binval_alloc(
          size_t                        size )
 {
-   TinyRadBinValue * ptr;
-   assert(size >= sizeof(TinyRadBinValue));
-   if ((ptr = malloc(size)) == NULL)
-      return(NULL);
-   memset(ptr, 0, size);
+   TinyRadBinValue *    ptr;
+   size_t               adjsize;
+
+   adjsize = size + sizeof(TinyRadBinValue);
+
+   if ((ptr = malloc(adjsize)) == NULL)
+      return(ptr);
+   memset(ptr, 0, adjsize);
    ptr->bv_len = size;
+
    return(ptr);
 }
 
