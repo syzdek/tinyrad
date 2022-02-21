@@ -761,6 +761,16 @@ tinyrad_oid_dup(
 }
 
 
+uint32_t
+tinyrad_oid_pop(
+         TinyRadOID *                  oid )
+{
+   assert(oid != NULL);
+   oid->oid_len--;
+   return(oid->oid_val[oid->oid_len]);
+}
+
+
 int
 tinyrad_oid_push(
          TinyRadOID **                 oidp,
