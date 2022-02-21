@@ -742,4 +742,18 @@ tinyrad_oid_alloc(
 }
 
 
+TinyRadOID *
+tinyrad_oid_realloc(
+         TinyRadOID *                  ptr,
+         size_t                        len )
+{
+   size_t               size;
+   size = (len * sizeof(uint32_t)) + sizeof(TinyRadOID);
+   if ((ptr = realloc(ptr, size)) == NULL)
+      return(ptr);
+   ptr->oid_len = len;
+   return(ptr);
+}
+
+
 /* end of source */

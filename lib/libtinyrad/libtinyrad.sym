@@ -80,6 +80,7 @@ tinyrad_free
 tinyrad_get_option
 tinyrad_initialize
 tinyrad_oid_alloc
+tinyrad_oid_realloc
 tinyrad_set_option
 #
 # protocol functions
