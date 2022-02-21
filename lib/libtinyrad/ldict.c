@@ -132,9 +132,7 @@ TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
          TinyRadDict *                 dict,
          const char *                  name,
-         uint8_t                       type,
-         TinyRadDictVendor *           vendor,
-         uint32_t                      vendor_type,
+         const TinyRadOID *            oid,
          uint8_t                       data_type,
          uint32_t                      flags );
 
@@ -830,16 +828,26 @@ TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
          TinyRadDict *                 dict,
          const char *                  name,
-         uint8_t                       type,
-         TinyRadDictVendor *           vendor,
-         uint32_t                      vendor_type,
+         const TinyRadOID *            oid,
          uint8_t                       data_type,
          uint32_t                      flags )
 {
    TinyRadDictAttr *    attr;
+   TinyRadDictVendor *  vendor;
+
+   assert(dict != NULL);
+   assert(name != NULL);
+   assert(oid  != NULL);
+   assert((oid->oid_len));
 
    if ((attr = tinyrad_obj_alloc(sizeof(TinyRadDictAttr), (void(*)(void*))&tinyrad_dict_attr_free)) == NULL)
       return(NULL);
+
+   if ((attr->oid = tinyrad_oid_dup(oid)) == NULL)
+   {
+      tinyrad_dict_attr_free(attr);
+      return(NULL);
+   };
 
    if ((attr->name = strdup(name)) == NULL)
    {
@@ -847,14 +855,27 @@ tinyrad_dict_attr_alloc(
       return(NULL);
    };
 
-   attr->vendor = tinyrad_obj_retain(&vendor->obj);
-
    dict->obj_count++;
    attr->order       = dict->obj_count;
-   attr->type        = type;
+   attr->type        = attr->oid->oid_val[0];
    attr->data_type   = data_type;
    attr->flags       = flags;
-   attr->vendor_type = ((vendor)) ? vendor_type : 0;
+
+   switch(attr->oid->oid_val[0])
+   {
+      case TRAD_ATTR_VENDOR_SPECIFIC:
+      if (attr->oid->oid_len < 3)
+         break;
+      if ((vendor = tinyrad_dict_vendor_get(dict, NULL, attr->oid->oid_val[1])) != NULL)
+      {
+         attr->vendor      = tinyrad_obj_retain(&vendor->obj);
+         attr->vendor_type = (attr->oid->oid_len > 2) ? attr->oid->oid_val[2] : 0;
+      };
+      break;
+
+      default:
+      break;
+   };
 
    return(tinyrad_obj_retain(&attr->obj));
 }
@@ -972,6 +993,9 @@ tinyrad_dict_attr_free(
 
    if ((attr->name))
       free(attr->name);
+
+   if ((attr->oid))
+      tinyrad_free(attr->oid);
 
    memset(attr, 0, sizeof(TinyRadDictAttr));
    free(attr);
@@ -1232,7 +1256,6 @@ tinyrad_dict_import(
    uint32_t                flags;
    uint64_t                data;
    uint32_t                vendor_id;
-   uint32_t                vendor_type;
    uint8_t                 type_octs;
    uint8_t                 len_octs;
    const char *            attr_name;
@@ -1241,6 +1264,7 @@ tinyrad_dict_import(
    TinyRadDictValue *      value;
    TinyRadDictVendor *     vendor;
    TinyRadDictAttr *       attr;
+   TinyRadOID *            oid;
 
    TinyRadDebugTrace();
 
@@ -1269,23 +1293,32 @@ tinyrad_dict_import(
 
    if ((attr_defs))
    {
+      if ((oid = tinyrad_oid_alloc(4)) == NULL)
+         return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
       for(pos = 0; ((attr_defs[pos].name)); pos++)
       {
-         attr_name      = attr_defs[pos].name;
-         type           = (uint8_t)attr_defs[pos].type;
-         vendor_id      = attr_defs[pos].vendor_id;
-         vendor_type    = attr_defs[pos].vendor_type;
-         data_type      = (uint8_t)attr_defs[pos].data_type;
-         flags          = (uint32_t)attr_defs[pos].flags;
-         vendor         = tinyrad_dict_vendor_lookup(dict, NULL, vendor_id);
-         assert( ((vendor)) || (!(vendor_id)) );
-         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, type, vendor, vendor_type, data_type, flags)) == NULL)
+         attr_name       = attr_defs[pos].name;
+         type            = (uint8_t)attr_defs[pos].type;
+         data_type       = (uint8_t)attr_defs[pos].data_type;
+         flags           = (uint32_t)attr_defs[pos].flags;
+         oid->oid_len    = ((attr_defs[pos].vendor_id)) ? 3 : 1;
+         oid->oid_val[0] = (uint32_t)attr_defs[pos].type;
+         oid->oid_val[1] = (uint32_t)attr_defs[pos].vendor_id;
+         oid->oid_val[2] = (uint32_t)attr_defs[pos].vendor_type;
+         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, oid, data_type, flags)) == NULL)
+         {
+            tinyrad_free(oid);
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
+         };
          rc = tinyrad_dict_add_attr(dict, attr);
          tinyrad_obj_release(&attr->obj);
          if (rc != TRAD_SUCCESS)
+         {
+            tinyrad_free(oid);
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
+         };
       };
+      tinyrad_free(oid);
    };
 
    if ((value_defs))
@@ -1455,13 +1488,13 @@ tinyrad_dict_parse_attribute(
 {
    TinyRadDictAttr *    attr;
    uint8_t              data_type;
-   uint8_t              type;
    uint32_t             flags;
    uint32_t             flag;
-   uint32_t             vendor_type;
+   uint32_t             attr_type;
    int                  rc;
    char *               ptr;
    char *               str;
+   TinyRadOID *         oid;
 
    TinyRadDebugTrace();
 
@@ -1475,7 +1508,7 @@ tinyrad_dict_parse_attribute(
    if ((data_type = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
       return(TRAD_ESYNTAX);
 
-   if ((vendor_type = (uint32_t)strtoul(file->argv[2], &ptr, 10)) == 0)
+   if ((attr_type = (uint32_t)strtoul(file->argv[2], &ptr, 10)) == 0)
       return(TRAD_ESYNTAX);
 
    if ((ptr[0] != '\0') || (file->argv[2] == ptr))
@@ -1498,11 +1531,19 @@ tinyrad_dict_parse_attribute(
       };
    };
 
-   type        = ((vendor)) ? 26          : (uint8_t)vendor_type;
-   vendor_type = ((vendor)) ? vendor_type : 0;
-
-   if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], type, vendor, vendor_type, data_type, flags)) == NULL)
+   if ((oid = tinyrad_oid_alloc(4)) == NULL)
       return(TRAD_ENOMEM);
+   oid->oid_len    = ((vendor)) ? 3                         : 1;
+   oid->oid_val[0] = ((vendor)) ? TRAD_ATTR_VENDOR_SPECIFIC : attr_type;
+   oid->oid_val[1] = ((vendor)) ? vendor->id                : 0;
+   oid->oid_val[2] = ((vendor)) ? attr_type                 : 0;
+
+   if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], oid, data_type, flags)) == NULL)
+   {
+      tinyrad_free(oid);
+      return(TRAD_ENOMEM);
+   };
+   tinyrad_free(oid);
    rc = tinyrad_dict_add_attr(dict, attr);
    tinyrad_obj_release(&attr->obj);
    return(rc);
