@@ -619,9 +619,10 @@ tinyrad_binval_realloc(
          TinyRadBinValue *             ptr,
          size_t                        size )
 {
-   assert(size >= sizeof(TinyRadBinValue));
-   if ((ptr = realloc(ptr, size)) == NULL)
-      return(NULL);
+   size_t adjsize;
+   adjsize = sizeof(TinyRadBinValue) + size;
+   if ((ptr = realloc(ptr, adjsize)) == NULL)
+      return(ptr);
    ptr->bv_len = size;
    return(ptr);
 }
