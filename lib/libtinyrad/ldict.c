@@ -959,15 +959,10 @@ tinyrad_dict_attr_cmp_obj_type(
 {
    const TinyRadDictAttr * const * x = a;
    const TinyRadDictAttr * const * y = b;
+   int                             rc;
 
-   if ((*x)->type != (*y)->type)
-      return( ((*x)->type < (*y)->type) ? -1 : 1 );
-
-   if (__attr_vendor_id(*x) != __attr_vendor_id(*y))
-      return( (__attr_vendor_id(*x) < __attr_vendor_id(*y)) ? -1 : 1 );
-
-   if ((*x)->vendor_type != (*y)->vendor_type)
-      return( ((*x)->vendor_type < (*y)->vendor_type) ? -1 : 1 );
+   if ((rc = tinyrad_oid_cmp(&(*x)->oid, &(*y)->oid)) != 0)
+      return(rc);
 
    if ((*x)->order != (*y)->order)
       return( ((*x)->order < (*y)->order) ? -1 : 1 );
