@@ -594,15 +594,14 @@ tinyrad_binval_alloc(
 }
 
 
-_TINYRAD_F TinyRadBinValue *
+TinyRadBinValue *
 tinyrad_binval_dup(
          const TinyRadBinValue *       ptr )
 {
    TinyRadBinValue *    binval;
    size_t               adjsize;
 
-   assert(ptr           != NULL);
-   assert(ptr->bv_len   >= sizeof(TinyRadBinValue));
+   assert(ptr != NULL);
 
    adjsize = sizeof(TinyRadBinValue) + ptr->bv_len;
 
