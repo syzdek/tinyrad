@@ -112,6 +112,7 @@ struct _tinyrad_dict_attr
    uintptr_t               order;
    char *                  name;
    TinyRadDictVendor *     vendor;
+   TinyRadOID *            oid;
    uint8_t                 data_type;
    uint8_t                 type;
    uint16_t                flags;
