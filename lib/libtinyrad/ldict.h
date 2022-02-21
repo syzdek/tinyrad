@@ -146,6 +146,11 @@ tinyrad_dict_attr_lookup(
          uint32_t                     vendor_type );
 
 
+char *
+tinyrad_dict_attr_oidname(
+         const TinyRadOID *            oid );
+
+
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
          TinyRadDict *                dict,

@@ -1173,6 +1173,31 @@ tinyrad_dict_attr_lookup(
 }
 
 
+char *
+tinyrad_dict_attr_oidname(
+         const TinyRadOID *            oid )
+{
+   char        buff[128];
+   char        num[8];
+   size_t      pos;
+   size_t      len;
+
+   assert(oid          != NULL);
+   assert(oid->oid_len  > 0);
+
+   len = snprintf(buff, (sizeof(buff)-1), "Attr-%u", (unsigned)oid->oid_val[0]);
+   for(pos = 1; (pos < oid->oid_len); pos++)
+   {
+      len += snprintf(num, sizeof(num), ".%u", (unsigned)oid->oid_val[pos]);
+      tinyrad_strlcat(buff, num, sizeof(buff));
+   };
+
+   assert(len < sizeof(buff));
+
+   return(tinyrad_strdup(buff));
+}
+
+
 //-----------------------------//
 // dictionary import functions //
 //-----------------------------//
