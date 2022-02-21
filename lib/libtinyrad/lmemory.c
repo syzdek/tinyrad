@@ -745,30 +745,21 @@ tinyrad_oid_cmp(
          const void *                 a,
          const void *                 b )
 {
-   const TinyRadOID *   x;
-   const TinyRadOID *   y;
-   size_t               len;
-   size_t               pos;
+   const TinyRadOID * const * x = a;
+   const TinyRadOID * const * y = b;
+   size_t                     len;
+   size_t                     pos;
 
-   assert(a != NULL);
-   assert(b != NULL);
-
-   x = *((const TinyRadOID * const *)a);
-   y = *((const TinyRadOID * const *)a);
-
-   assert(x != NULL);
-   assert(y != NULL);
-
-   len = (x->oid_len < y->oid_len) ? x->oid_len : y->oid_len;
+   len = ((*x)->oid_len < (*y)->oid_len) ? (*x)->oid_len : (*y)->oid_len;
 
    for(pos = 0; (pos < len); pos++)
    {
-      if (x->oid_val[pos] != y->oid_val[pos])
-         return( (x->oid_val[pos] < y->oid_val[pos]) ? -1 : 1 );
+      if ((*x)->oid_val[pos] != (*y)->oid_val[pos])
+         return( ((*x)->oid_val[pos] < (*y)->oid_val[pos]) ? -1 : 1 );
    };
 
-   if (x->oid_len != y->oid_len)
-      return( (x->oid_len < y->oid_len) ? -1 : 1 );
+   if ((*x)->oid_len != (*y)->oid_len)
+      return( ((*x)->oid_len < (*y)->oid_len) ? -1 : 1 );
 
    return(0);
 }
