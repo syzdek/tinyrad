@@ -428,6 +428,13 @@ typedef struct tinyrad_binval
 } TinyRadBinValue;
 
 
+typedef struct tinyrad_oid
+{
+    size_t              oid_len;
+    uint32_t            oid_val[];
+} TinyRadOID;
+
+
 typedef struct tinyrad_dict_attr_def
 {
    const char *          name;
