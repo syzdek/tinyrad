@@ -418,6 +418,7 @@ typedef struct _tinyrad_dict_attr         TinyRadDictAttr;
 typedef struct _tinyrad_dict_value        TinyRadDictValue;
 typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
 typedef struct _tinyrad_avp_list          TinyRadAVPList;
+typedef struct _tinyrad_oid               TinyRadOID;
 typedef struct sockaddr_storage           tinyrad_sockaddr_t;
 
 
@@ -426,13 +427,6 @@ typedef struct tinyrad_binval
     size_t              bv_len;
     uint8_t             bv_val[];
 } TinyRadBinValue;
-
-
-typedef struct tinyrad_oid
-{
-    size_t              oid_len;
-    uint32_t            oid_val[];
-} TinyRadOID;
 
 
 typedef struct tinyrad_dict_attr_def

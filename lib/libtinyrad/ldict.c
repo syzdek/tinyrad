@@ -1302,7 +1302,7 @@ tinyrad_dict_import(
    TinyRadDictValue *      value;
    TinyRadDictVendor *     vendor;
    TinyRadDictAttr *       attr;
-   TinyRadOID *            oid;
+   TinyRadOID              oid;
 
    TinyRadDebugTrace();
 
@@ -1331,32 +1331,23 @@ tinyrad_dict_import(
 
    if ((attr_defs))
    {
-      if ((oid = tinyrad_oid_alloc(4)) == NULL)
-         return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
       for(pos = 0; ((attr_defs[pos].name)); pos++)
       {
          attr_name       = attr_defs[pos].name;
          type            = (uint8_t)attr_defs[pos].type;
          data_type       = (uint8_t)attr_defs[pos].data_type;
          flags           = (uint32_t)attr_defs[pos].flags;
-         oid->oid_len    = ((attr_defs[pos].vendor_id)) ? 3 : 1;
-         oid->oid_val[0] = (uint32_t)attr_defs[pos].type;
-         oid->oid_val[1] = (uint32_t)attr_defs[pos].vendor_id;
-         oid->oid_val[2] = (uint32_t)attr_defs[pos].vendor_type;
-         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, oid, data_type, flags)) == NULL)
-         {
-            tinyrad_free(oid);
+         oid.oid_len     = ((attr_defs[pos].vendor_id)) ? 3 : 1;
+         oid.oid_val[0]  = (uint32_t)attr_defs[pos].type;
+         oid.oid_val[1]  = (uint32_t)attr_defs[pos].vendor_id;
+         oid.oid_val[2]  = (uint32_t)attr_defs[pos].vendor_type;
+         if ((attr = tinyrad_dict_attr_alloc(dict, attr_name, &oid, data_type, flags)) == NULL)
             return(tinyrad_error_msgs(TRAD_ENOMEM, msgsp, "out of virtual memory"));
-         };
          rc = tinyrad_dict_add_attr(dict, attr);
          tinyrad_obj_release(&attr->obj);
          if (rc != TRAD_SUCCESS)
-         {
-            tinyrad_free(oid);
             return(tinyrad_error_msgs(rc, msgsp, "default attribute %s(%" PRIu32 "): ", attr_name, type));
-         };
       };
-      tinyrad_free(oid);
    };
 
    if ((value_defs))
@@ -1532,7 +1523,7 @@ tinyrad_dict_parse_attribute(
    int                  rc;
    char *               ptr;
    char *               str;
-   TinyRadOID *         oid;
+   TinyRadOID           oid;
 
    TinyRadDebugTrace();
 
@@ -1569,19 +1560,13 @@ tinyrad_dict_parse_attribute(
       };
    };
 
-   if ((oid = tinyrad_oid_alloc(4)) == NULL)
-      return(TRAD_ENOMEM);
-   oid->oid_len    = ((vendor)) ? 3                         : 1;
-   oid->oid_val[0] = ((vendor)) ? TRAD_ATTR_VENDOR_SPECIFIC : attr_type;
-   oid->oid_val[1] = ((vendor)) ? vendor->id                : 0;
-   oid->oid_val[2] = ((vendor)) ? attr_type                 : 0;
+   oid.oid_len    = ((vendor)) ? 3                         : 1;
+   oid.oid_val[0] = ((vendor)) ? TRAD_ATTR_VENDOR_SPECIFIC : attr_type;
+   oid.oid_val[1] = ((vendor)) ? vendor->id                : 0;
+   oid.oid_val[2] = ((vendor)) ? attr_type                 : 0;
 
-   if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], oid, data_type, flags)) == NULL)
-   {
-      tinyrad_free(oid);
+   if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], &oid, data_type, flags)) == NULL)
       return(TRAD_ENOMEM);
-   };
-   tinyrad_free(oid);
    rc = tinyrad_dict_add_attr(dict, attr);
    tinyrad_obj_release(&attr->obj);
    return(rc);

@@ -95,7 +95,7 @@ tinyrad_obj_retain_count(
 
 TinyRadOID *
 tinyrad_oid_alloc(
-         size_t                        len );
+         void );
 
 
 int
@@ -116,14 +116,8 @@ tinyrad_oid_pop(
 
 int
 tinyrad_oid_push(
-         TinyRadOID **                 oidp,
+         TinyRadOID *                  oid,
          uint32_t                      val );
-
-
-TinyRadOID *
-tinyrad_oid_realloc(
-         TinyRadOID *                  ptr,
-         size_t                        len );
 
 
 //-------------------//

@@ -724,17 +724,13 @@ tinyrad_verify_is_obj(
 
 TinyRadOID *
 tinyrad_oid_alloc(
-         size_t                        len )
+         void )
 {
    TinyRadOID *      ptr;
-   size_t            size;
 
-   size = (len * sizeof(uint32_t)) + sizeof(TinyRadOID);
-
-   if ((ptr = malloc(size)) == NULL)
+   if ((ptr = malloc(sizeof(TinyRadOID))) == NULL)
       return(ptr);
-   memset(ptr, 0, size);
-   ptr->oid_len = len;
+   memset(ptr, 0, sizeof(TinyRadOID));
 
    return(ptr);
 }
@@ -770,15 +766,18 @@ tinyrad_oid_dup(
          const TinyRadOID *            ptr )
 {
    TinyRadOID *         oid;
-   size_t               size;
+   size_t               pos;
 
    assert(ptr           != NULL);
 
-   size = (ptr->oid_len * sizeof(uint32_t)) + sizeof(TinyRadOID);
-
-   if ((oid = malloc(size)) == NULL)
+   // copy verbatim
+   if ((oid = malloc(sizeof(TinyRadOID))) == NULL)
       return(oid);
-   memcpy(oid, ptr, size);
+   memcpy(oid, ptr, sizeof(TinyRadOID));
+
+   // zero unused values
+   for(pos = oid->oid_len; (pos < TRAD_OID_MAX_LEN); pos++)
+      oid->oid_val[pos] = 0;
 
    return(oid);
 }
@@ -789,6 +788,8 @@ tinyrad_oid_pop(
          TinyRadOID *                  oid )
 {
    assert(oid != NULL);
+   if (!(oid->oid_len))
+      return(0);
    oid->oid_len--;
    return(oid->oid_val[oid->oid_len]);
 }
@@ -796,36 +797,16 @@ tinyrad_oid_pop(
 
 int
 tinyrad_oid_push(
-         TinyRadOID **                 oidp,
+         TinyRadOID *                  oid,
          uint32_t                      val )
 {
-   TinyRadOID *   oid;
-   size_t         len;
+   assert(oid != NULL);
+   assert((oid->oid_len+1) < TRAD_OID_MAX_LEN);
 
-   assert(oidp != NULL);
-
-   len = (*oidp)->oid_len;
-   if ((oid = tinyrad_oid_realloc(*oidp, (len+1))) == NULL)
-      return(TRAD_ENOMEM);
-   oid->oid_val[len] = val;
-
-   *oidp             = oid;
+   oid->oid_val[oid->oid_len] = val;
+   oid->oid_len++;
 
    return(TRAD_SUCCESS);
-}
-
-
-TinyRadOID *
-tinyrad_oid_realloc(
-         TinyRadOID *                  ptr,
-         size_t                        len )
-{
-   size_t               size;
-   size = (len * sizeof(uint32_t)) + sizeof(TinyRadOID);
-   if ((ptr = realloc(ptr, size)) == NULL)
-      return(ptr);
-   ptr->oid_len = len;
-   return(ptr);
 }
 
 
