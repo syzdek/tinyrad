@@ -480,13 +480,9 @@ tinyrad_dict_add_attr(
    {
       if (attr->flags != old->flags)
          return(TRAD_EEXISTS);
-      if (attr->type != old->type)
-         return(TRAD_EEXISTS);
-      if (__attr_vendor_id(attr) != __attr_vendor_id(old))
-         return(TRAD_EEXISTS);
-      if (attr->vendor_type != old->vendor_type)
-         return(TRAD_EEXISTS);
       if (attr->data_type != old->data_type)
+         return(TRAD_EEXISTS);
+      if ((tinyrad_oid_cmp(&attr->oid, &old->oid)))
          return(TRAD_EEXISTS);
       return(TRAD_SUCCESS);
    };
@@ -494,13 +490,9 @@ tinyrad_dict_add_attr(
    {
       if (attr->flags != old->flags)
          return(TRAD_EEXISTS);
-      if (attr->type != old->type)
-         return(TRAD_EEXISTS);
-      if (__attr_vendor_id(attr) != __attr_vendor_id(old))
-         return(TRAD_EEXISTS);
-      if (attr->vendor_type != old->vendor_type)
-         return(TRAD_EEXISTS);
       if (attr->data_type != old->data_type)
+         return(TRAD_EEXISTS);
+      if ((tinyrad_oid_cmp(&attr->oid, &old->oid)))
          return(TRAD_EEXISTS);
    };
 
