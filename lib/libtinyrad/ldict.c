@@ -1122,6 +1122,16 @@ tinyrad_dict_attr_index(
       list     = dict->attrs_name;
       compar   = &tinyrad_dict_attr_cmp_key_name;
       opts     = TINYRAD_ARRAY_LASTDUP;
+   } else if (by_vendor == TRAD_NO) {
+      memset(&attr_type, 0, sizeof(attr_type));
+      attr_type.type          = type;
+      attr_type.vendor_id     = vendor_id;
+      attr_type.vendor_type   = vendor_type;
+      key      = &attr_type;
+      len      = dict->attrs_type_len;
+      list     = dict->attrs_type;
+      opts     = TINYRAD_ARRAY_LASTDUP;
+      compar   = &tinyrad_dict_attr_cmp_key_type;
    } else {
       memset(&attr_type, 0, sizeof(attr_type));
       attr_type.type          = type;
@@ -1130,9 +1140,8 @@ tinyrad_dict_attr_index(
       key      = &attr_type;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
-      //                                  Lookup attrobute by type          Lookup attribute by vendor
-      opts     = (by_vendor == TRAD_NO) ? TINYRAD_ARRAY_LASTDUP           : TINYRAD_ARRAY_FIRSTDUP;
-      compar   = (by_vendor == TRAD_NO) ? &tinyrad_dict_attr_cmp_key_type : &tinyrad_dict_attr_cmp_key_vendor;
+      opts     = TINYRAD_ARRAY_FIRSTDUP;
+      compar   = &tinyrad_dict_attr_cmp_key_vendor;
    };
 
    return(tinyrad_array_search(list, len, width, key, opts, NULL, compar));
