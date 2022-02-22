@@ -934,16 +934,14 @@ tinyrad_dict_attr_cmp_key_type(
          const void *                 key )
 {
    const TinyRadDictAttr * const *     obj = ptr;
-   const TinyRadDictKey *              dat = key;
+   const TinyRadOID *                  dat = key;
+   int                                 rc;
 
-   if (__attr_vendor_id(*obj) != dat->vendor_id)
-      return( (__attr_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
+   if (__attr_vendor_id(*obj) != __attr_oid_vendor_id(dat))
+      return( (__attr_vendor_id(*obj) < __attr_oid_vendor_id(dat)) ? -1 : 1 );
 
-   if ((*obj)->type != dat->type)
-      return( ((*obj)->type < dat->type) ? -1 : 1 );
-
-   if ((*obj)->vendor_type != dat->vendor_type)
-      return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
+   if ((rc = tinyrad_oid_cmp(&(*obj)->oid, &dat)) != 0)
+      return(rc);
 
    return(0);
 }
@@ -1069,7 +1067,7 @@ tinyrad_dict_attr_index(
    unsigned             opts;
    const void *         key;
    TinyRadDictAttr **   list;
-   TinyRadDictKey       attr_type;
+   TinyRadOID           oid;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
@@ -1087,11 +1085,12 @@ tinyrad_dict_attr_index(
       compar   = &tinyrad_dict_attr_cmp_key_name;
       opts     = TINYRAD_ARRAY_LASTDUP;
    } else if (by_vendor == TRAD_NO) {
-      memset(&attr_type, 0, sizeof(attr_type));
-      attr_type.type          = type;
-      attr_type.vendor_id     = vendor_id;
-      attr_type.vendor_type   = vendor_type;
-      key      = &attr_type;
+      memset(&oid, 0, sizeof(oid));
+      oid.oid_val[0]  = type;
+      oid.oid_val[1]  = vendor_id;
+      oid.oid_val[2]  = vendor_type;
+      oid.oid_len     = ((vendor_id)) ? 3 : 1;
+      key      = &oid;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
       opts     = TINYRAD_ARRAY_LASTDUP;
@@ -1203,7 +1202,7 @@ tinyrad_dict_attr_lookup(
    const void *         key;
    TinyRadDictAttr **   list;
    TinyRadDictAttr **   res;
-   TinyRadDictKey       attr_type;
+   TinyRadOID           oid;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
@@ -1220,11 +1219,12 @@ tinyrad_dict_attr_lookup(
       list     = dict->attrs_name;
       compar   = &tinyrad_dict_attr_cmp_key_name;
    } else {
-      memset(&attr_type, 0, sizeof(attr_type));
-      attr_type.type          = type;
-      attr_type.vendor_id     = vendor_id;
-      attr_type.vendor_type   = vendor_type;
-      key      = &attr_type;
+      memset(&oid, 0, sizeof(oid));
+      oid.oid_val[0]  = type;
+      oid.oid_val[1]  = vendor_id;
+      oid.oid_val[2]  = vendor_type;
+      oid.oid_len     = ((vendor_id)) ? 3 : 1;
+      key      = &oid;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
       compar   = &tinyrad_dict_attr_cmp_key_type;
@@ -1775,7 +1775,6 @@ tinyrad_dict_print(
          uint32_t                      opts )
 {
    size_t            pos;
-   TinyRadDictKey    key;
 
    TinyRadDebugTrace();
 
@@ -1786,15 +1785,11 @@ tinyrad_dict_print(
    printf("#\n");
 
    // print attribute definitions
-   memset(&key, 0, sizeof(key));
    for(pos = 0; (pos < dict->attrs_type_len); pos ++)
    {
-      key.type          = dict->attrs_type[pos]->type;
-      key.vendor_id     = __attr_vendor_id(dict->attrs_type[pos]);
-      key.vendor_type   = dict->attrs_type[pos]->vendor_type;
-      if ((key.vendor_id))
+      if ((__attr_vendor_id(dict->attrs_type[pos])))
          continue;
-      if ( ((pos + 1) < dict->attrs_type_len) && (!(tinyrad_dict_attr_cmp_key_type(&dict->attrs_type[pos+1], &key))) )
+      if ( ((pos + 1) < dict->attrs_type_len) && (!(tinyrad_oid_cmp(&dict->attrs_type[pos+1]->oid, &dict->attrs_type[pos]->oid))) )
          continue;
       tinyrad_dict_print_attribute(dict, pos);
    };
