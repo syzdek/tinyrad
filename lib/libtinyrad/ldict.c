@@ -167,6 +167,12 @@ tinyrad_dict_attr_cmp_obj_type(
          const void *                 b );
 
 
+int
+tinyrad_dict_attr_cmp_obj_vendor(
+         const void *                 a,
+         const void *                 b );
+
+
 void
 tinyrad_dict_attr_free(
          TinyRadDictAttr *             attr );
@@ -996,6 +1002,21 @@ tinyrad_dict_attr_cmp_obj_type(
       return( ((*x)->order < (*y)->order) ? -1 : 1 );
 
    return(0);
+}
+
+
+int
+tinyrad_dict_attr_cmp_obj_vendor(
+         const void *                 a,
+         const void *                 b )
+{
+   const TinyRadDictAttr * const * x      = a;
+   const TinyRadDictAttr * const * y      = b;
+   uint32_t                        vend_x = __attr_vendor_id(*x);
+   uint32_t                        vend_y = __attr_vendor_id(*y);
+   if (vend_x != vend_y)
+      return( (vend_x < vend_y) ? -1 : 1 );
+   return(tinyrad_dict_attr_cmp_obj_type(a, b));
 }
 
 
