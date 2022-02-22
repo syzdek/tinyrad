@@ -172,12 +172,6 @@ tinyrad_dict_attr_cmp_obj_type(
          const void *                 b );
 
 
-int
-tinyrad_dict_attr_cmp_obj_vendor(
-         const void *                 a,
-         const void *                 b );
-
-
 void
 tinyrad_dict_attr_free(
          TinyRadDictAttr *             attr );
@@ -522,12 +516,6 @@ tinyrad_dict_add_attr(
       return(TRAD_ENOMEM);
    dict->attrs_type = ptr;
 
-   // resize attribute vend list in dictionary
-   size = sizeof(TinyRadDictAttr *) * (dict->attrs_vend_len+1);
-   if ((ptr = realloc(dict->attrs_vend, size)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->attrs_vend = ptr;
-
    width = sizeof(TinyRadDictAttr *);
    opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
 
@@ -538,11 +526,6 @@ tinyrad_dict_add_attr(
 
    // save attribute by type to dictionary
    if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
-      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
-   tinyrad_obj_retain(&attr->obj);
-
-   // save attribute by vendor to dictionary
-   if ((rc = tinyrad_array_add((void **)&dict->attrs_vend, &dict->attrs_vend_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_vendor, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    tinyrad_obj_retain(&attr->obj);
 
@@ -735,12 +718,6 @@ tinyrad_dict_free(
       for(pos = 0; (pos < dict->attrs_type_len); pos++)
          tinyrad_obj_release(&dict->attrs_type[pos]->obj);
       free(dict->attrs_type);
-   };
-   if ((dict->attrs_vend))
-   {
-      for(pos = 0; (pos < dict->attrs_vend_len); pos++)
-         tinyrad_obj_release(&dict->attrs_vend[pos]->obj);
-      free(dict->attrs_vend);
    };
 
    // free paths
@@ -959,11 +936,11 @@ tinyrad_dict_attr_cmp_key_type(
    const TinyRadDictAttr * const *     obj = ptr;
    const TinyRadDictKey *              dat = key;
 
-   if ((*obj)->type != dat->type)
-      return( ((*obj)->type < dat->type) ? -1 : 1 );
-
    if (__attr_vendor_id(*obj) != dat->vendor_id)
       return( (__attr_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
+
+   if ((*obj)->type != dat->type)
+      return( ((*obj)->type < dat->type) ? -1 : 1 );
 
    if ((*obj)->vendor_type != dat->vendor_type)
       return( ((*obj)->vendor_type < dat->vendor_type) ? -1 : 1 );
@@ -978,13 +955,10 @@ tinyrad_dict_attr_cmp_key_vendor(
          const void *                 key )
 {
    const TinyRadDictAttr * const *     obj = ptr;
-   const TinyRadDictKey *              dat = key;
+   const uint32_t *                    dat = key;
 
-   if ((*obj)->type != dat->type)
-      return( ((*obj)->type < dat->type) ? -1 : 1 );
-
-   if (__attr_vendor_id(*obj) != dat->vendor_id)
-      return( (__attr_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
+   if (__attr_vendor_id(*obj) != *dat)
+      return( (__attr_vendor_id(*obj) < *dat) ? -1 : 1 );
 
    return(0);
 }
@@ -1019,6 +993,11 @@ tinyrad_dict_attr_cmp_obj_type(
    const TinyRadDictAttr * const * x = a;
    const TinyRadDictAttr * const * y = b;
    int                             rc;
+   uint32_t                        vend_x = __attr_vendor_id(*x);
+   uint32_t                        vend_y = __attr_vendor_id(*y);
+
+   if (vend_x != vend_y)
+      return( (vend_x < vend_y) ? -1 : 1 );
 
    if ((rc = tinyrad_oid_cmp(&(*x)->oid, &(*y)->oid)) != 0)
       return(rc);
@@ -1027,21 +1006,6 @@ tinyrad_dict_attr_cmp_obj_type(
       return( ((*x)->order < (*y)->order) ? -1 : 1 );
 
    return(0);
-}
-
-
-int
-tinyrad_dict_attr_cmp_obj_vendor(
-         const void *                 a,
-         const void *                 b )
-{
-   const TinyRadDictAttr * const * x      = a;
-   const TinyRadDictAttr * const * y      = b;
-   uint32_t                        vend_x = __attr_vendor_id(*x);
-   uint32_t                        vend_y = __attr_vendor_id(*y);
-   if (vend_x != vend_y)
-      return( (vend_x < vend_y) ? -1 : 1 );
-   return(tinyrad_dict_attr_cmp_obj_type(a, b));
 }
 
 
@@ -1133,11 +1097,7 @@ tinyrad_dict_attr_index(
       opts     = TINYRAD_ARRAY_LASTDUP;
       compar   = &tinyrad_dict_attr_cmp_key_type;
    } else {
-      memset(&attr_type, 0, sizeof(attr_type));
-      attr_type.type          = type;
-      attr_type.vendor_id     = vendor_id;
-      attr_type.vendor_type   = vendor_type;
-      key      = &attr_type;
+      key      = &vendor_id;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
       opts     = TINYRAD_ARRAY_FIRSTDUP;
