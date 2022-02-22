@@ -62,7 +62,7 @@
 typedef struct tinyrad_dict_key
 {
    const char *         str;
-   void *               padptr;
+   const TinyRadOID *   oid;
    uint32_t             type;
    uint32_t             vendor_id;
    uint32_t             vendor_type;
