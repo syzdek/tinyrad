@@ -118,6 +118,11 @@ __attr_len_octs(
          const TinyRadDictAttr *       attr );
 
 
+static uint32_t
+__attr_attr_vendor_id(
+         const TinyRadOID *            oid );
+
+
 static uint8_t
 __attr_type_octs(
          const TinyRadDictAttr *       attr );
@@ -829,6 +834,37 @@ __attr_len_octs(
 }
 
 
+static uint32_t
+__attr_attr_vendor_id(
+         const TinyRadOID *            oid )
+{
+   assert(oid != NULL);
+   switch(oid->oid_val[0])
+   {
+      case TRAD_ATTR_VENDOR_SPECIFIC:
+      if (oid->oid_len < 2)
+         return(0);
+      return(oid->oid_val[1]);
+
+      case TRAD_ATTR_EXTENDED_ATTRIBUTE_1:
+      case TRAD_ATTR_EXTENDED_ATTRIBUTE_2:
+      case TRAD_ATTR_EXTENDED_ATTRIBUTE_3:
+      case TRAD_ATTR_EXTENDED_ATTRIBUTE_4:
+      case TRAD_ATTR_EXTENDED_ATTRIBUTE_5:
+      case TRAD_ATTR_EXTENDED_ATTRIBUTE_6:
+      if (oid->oid_len < 3)
+         return(0);
+      if (oid->oid_val[1] != 26)
+         return(0);
+      return(oid->oid_val[2]);
+
+      default:
+      break;
+   };
+   return(0);
+}
+
+
 static uint8_t
 __attr_type_octs(
          const TinyRadDictAttr *       attr )
@@ -843,29 +879,7 @@ __attr_vendor_id(
          const TinyRadDictAttr *       attr )
 {
    assert(attr != NULL);
-   switch(attr->oid->oid_val[0])
-   {
-      case TRAD_ATTR_VENDOR_SPECIFIC:
-      if (attr->oid->oid_len < 2)
-         return(0);
-      return(attr->oid->oid_val[1]);
-
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_1:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_2:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_3:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_4:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_5:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_6:
-      if (attr->oid->oid_len < 3)
-         return(0);
-      if (attr->oid->oid_val[1] != 26)
-         return(0);
-      return(attr->oid->oid_val[2]);
-
-      default:
-      break;
-   };
-   return(0);
+   return(__attr_attr_vendor_id(attr->oid));
 }
 
 
