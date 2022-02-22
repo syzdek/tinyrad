@@ -79,6 +79,7 @@ struct _tinyrad_dict
    uintptr_t               obj_count;
    size_t                  attrs_name_len;
    size_t                  attrs_type_len;
+   size_t                  attrs_vend_len;
    size_t                  values_data_len;
    size_t                  values_name_len;
    size_t                  vendors_id_len;
@@ -86,6 +87,7 @@ struct _tinyrad_dict
    size_t                  paths_len;
    TinyRadDictAttr **      attrs_name;
    TinyRadDictAttr **      attrs_type;
+   TinyRadDictAttr **      attrs_vend;
    TinyRadDictValue **     values_data;
    TinyRadDictValue **     values_name;
    TinyRadDictVendor **    vendors_name;
@@ -113,6 +115,7 @@ struct _tinyrad_dict_attr
    char *                  name;
    TinyRadDictVendor *     vendor;
    TinyRadOID *            oid;
+
    uint8_t                 data_type;
    uint8_t                 type;
    uint16_t                flags;

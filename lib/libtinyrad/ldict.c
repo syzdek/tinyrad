@@ -714,6 +714,12 @@ tinyrad_dict_free(
          tinyrad_obj_release(&dict->attrs_type[pos]->obj);
       free(dict->attrs_type);
    };
+   if ((dict->attrs_vend))
+   {
+      for(pos = 0; (pos < dict->attrs_vend_len); pos++)
+         tinyrad_obj_release(&dict->attrs_vend[pos]->obj);
+      free(dict->attrs_vend);
+   };
 
    // free paths
    if ((dict->paths))
