@@ -341,9 +341,7 @@ ssize_t
 tinyrad_dict_value_index(
          TinyRadDict *                 dict,
          const char *                  name,
-         uint8_t                       type,
-         uint32_t                      vendor_id,
-         uint32_t                      vendor_type,
+         TinyRadOID *                  oid,
          uint64_t                      value_data,
          int                           by_attr );
 
@@ -1824,7 +1822,6 @@ tinyrad_dict_print_attribute(
    char                 datatype[32];
    const char *         str;
    ssize_t              value_idx;
-   TinyRadDictKey       key;
    TinyRadDictAttr *    attr;
 
    TinyRadDebugTrace();
@@ -1854,12 +1851,7 @@ tinyrad_dict_print_attribute(
 
    printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((__attr_vendor_id(attr))) ? attr->vendor_type : attr->type), datatype, flagstr);
 
-   memset(&key, 0, sizeof(key));
-   key.type          = attr->type;
-   key.vendor_id     = __attr_vendor_id(attr);
-   key.vendor_type   = ((attr->vendor)) ? attr->vendor_type : 0;
-
-   if ((value_idx = tinyrad_dict_value_index(dict, NULL, key.type, key.vendor_id, key.vendor_type, 0, TRAD_YES)) < 0)
+   if ((value_idx = tinyrad_dict_value_index(dict, NULL, attr->oid, 0, TRAD_YES)) < 0)
       return;
 
    tinyrad_dict_print_value(dict, value_idx);
@@ -2218,9 +2210,7 @@ ssize_t
 tinyrad_dict_value_index(
          TinyRadDict *                 dict,
          const char *                  name,
-         uint8_t                       type,
-         uint32_t                      vendor_id,
-         uint32_t                      vendor_type,
+         TinyRadOID *                  oid,
          uint64_t                      value_data,
          int                           by_attr )
 {
@@ -2240,9 +2230,10 @@ tinyrad_dict_value_index(
 
    memset(&key, 0, sizeof(key));
    key.str           = name;
-   key.type          = type;
-   key.vendor_id     = vendor_id;
-   key.vendor_type   = vendor_type;
+   key.oid           = oid;
+   key.type          = oid->oid_val[0];
+   key.vendor_id     = (oid->oid_len > 1) ? oid->oid_val[1] : 0;
+   key.vendor_type   = (oid->oid_len > 1) ? oid->oid_val[2] : 0;
    key.value_data    = value_data;
 
    if ((name))
@@ -2251,12 +2242,16 @@ tinyrad_dict_value_index(
       list     = dict->values_name;
       compar   = &tinyrad_dict_value_cmp_key_name;
       opts     = TINYRAD_ARRAY_LASTDUP;
+   } else if (by_attr == TRAD_YES) {
+      len      = dict->values_data_len;
+      list     = dict->values_data;
+      compar   = &tinyrad_dict_value_cmp_key_attr;
+      opts     = TINYRAD_ARRAY_FIRSTDUP;
    } else {
       len      = dict->values_data_len;
       list     = dict->values_data;
-      //                                 Lookup value by dattribute         Lookup value by data
-      compar   = (by_attr == TRAD_YES) ? &tinyrad_dict_value_cmp_key_attr : &tinyrad_dict_value_cmp_key_data;
-      opts     = (by_attr == TRAD_YES) ? TINYRAD_ARRAY_FIRSTDUP           : TINYRAD_ARRAY_LASTDUP;
+      compar   = &tinyrad_dict_value_cmp_key_data;
+      opts     = TINYRAD_ARRAY_LASTDUP;
    };
 
    return(tinyrad_array_search(list, len, width, &key, opts, NULL, compar));
