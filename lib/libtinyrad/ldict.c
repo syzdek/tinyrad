@@ -186,9 +186,7 @@ ssize_t
 tinyrad_dict_attr_index(
          TinyRadDict *                dict,
          const char *                 name,
-         uint8_t                      type,
-         uint32_t                     vendor_id,
-         uint32_t                     vendor_type,
+         TinyRadOID *                 oid,
          int                          by_vendor );
 
 
@@ -1066,17 +1064,15 @@ ssize_t
 tinyrad_dict_attr_index(
          TinyRadDict *                dict,
          const char *                 name,
-         uint8_t                      type,
-         uint32_t                     vendor_id,
-         uint32_t                     vendor_type,
+         TinyRadOID *                 oid,
          int                          by_vendor )
 {
    size_t               width;
    size_t               len;
    unsigned             opts;
    const void *         key;
+   uint32_t             vendor_id;
    TinyRadDictAttr **   list;
-   TinyRadOID           oid;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
@@ -1094,17 +1090,13 @@ tinyrad_dict_attr_index(
       compar   = &tinyrad_dict_attr_cmp_key_name;
       opts     = TINYRAD_ARRAY_LASTDUP;
    } else if (by_vendor == TRAD_NO) {
-      memset(&oid, 0, sizeof(oid));
-      oid.oid_val[0]  = type;
-      oid.oid_val[1]  = vendor_id;
-      oid.oid_val[2]  = vendor_type;
-      oid.oid_len     = ((vendor_id)) ? 3 : 1;
       key      = &oid;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
       opts     = TINYRAD_ARRAY_LASTDUP;
       compar   = &tinyrad_dict_attr_cmp_key_type;
    } else {
+      vendor_id = __attr_oid_vendor_id(oid);
       key      = &vendor_id;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
@@ -1885,7 +1877,7 @@ tinyrad_dict_print_value(
    for(pos = value_idx; ((pos > 0) && (!(tinyrad_dict_value_cmp_key_attr(&dict->values_data[pos-1], &key)))); pos--);
    value_idx = pos;
 
-   if ((attr_idx = tinyrad_dict_attr_index(dict, NULL, key.type, key.vendor_id, key.vendor_type, TRAD_NO)) < 0)
+   if ((attr_idx = tinyrad_dict_attr_index(dict, NULL, value->attr->oid, TRAD_NO)) < 0)
       return;
    attr = dict->attrs_type[attr_idx];
 
@@ -1909,6 +1901,7 @@ tinyrad_dict_print_vendor(
    size_t                  pos;
    ssize_t                 idx;
    char                    vendorstr[128];
+   TinyRadOID              oid;
    TinyRadDictVendor *     vendor;
 
    TinyRadDebugTrace();
@@ -1940,7 +1933,11 @@ tinyrad_dict_print_vendor(
    };
    printf("\n");
 
-   if ((idx = tinyrad_dict_attr_index(dict, NULL, 26, vendor->id, 0, TRAD_YES)) < 0)
+   oid.oid_val[0] = TRAD_ATTR_VENDOR_SPECIFIC;
+   oid.oid_val[1] = vendor->id;
+   oid.oid_val[2] = 0;
+   oid.oid_len    = 3;
+   if ((idx = tinyrad_dict_attr_index(dict, NULL, &oid, TRAD_YES)) < 0)
       return;
 
    printf("BEGIN-VENDOR  %s\n\n", vendor->name);
