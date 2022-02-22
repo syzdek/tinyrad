@@ -517,6 +517,12 @@ tinyrad_dict_add_attr(
       return(TRAD_ENOMEM);
    dict->attrs_type = ptr;
 
+   // resize attribute vend list in dictionary
+   size = sizeof(TinyRadDictAttr *) * (dict->attrs_vend_len+1);
+   if ((ptr = realloc(dict->attrs_vend, size)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->attrs_vend = ptr;
+
    width = sizeof(TinyRadDictAttr *);
    opts  = TINYRAD_ARRAY_INSERT | TINYRAD_ARRAY_LASTDUP;
 
@@ -527,6 +533,11 @@ tinyrad_dict_add_attr(
 
    // save attribute by type to dictionary
    if ((rc = tinyrad_array_add((void **)&dict->attrs_type, &dict->attrs_type_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_type, NULL, NULL)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(&attr->obj);
+
+   // save attribute by vendor to dictionary
+   if ((rc = tinyrad_array_add((void **)&dict->attrs_vend, &dict->attrs_vend_len, width, &attr, opts, &tinyrad_dict_attr_cmp_obj_vendor, NULL, NULL)) < 0)
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
    tinyrad_obj_retain(&attr->obj);
 
