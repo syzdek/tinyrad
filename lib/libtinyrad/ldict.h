@@ -141,11 +141,11 @@ struct _tinyrad_dict_value
 
 TinyRadDictAttr *
 tinyrad_dict_attr_lookup(
-         TinyRadDict *                dict,
-         const char *                 name,
-         uint8_t                      type,
-         uint32_t                     vendor_id,
-         uint32_t                     vendor_type );
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint8_t                       type,
+         uint32_t                      vendor_id,
+         uint32_t                      vendor_type );
 
 
 char *
@@ -155,16 +155,16 @@ tinyrad_dict_attr_oidname(
 
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
-         TinyRadDict *                dict,
-         TinyRadDictAttr *            attr,
-         const char *                 name,
-         uint64_t                     data );
+         TinyRadDict *                 dict,
+         TinyRadDictAttr *             attr,
+         const char *                  name,
+         uint64_t                      data );
 
 
 TinyRadDictVendor *
 tinyrad_dict_vendor_lookup(
-         TinyRadDict *                dict,
-         const char *                 name,
-         uint32_t                     id );
+         TinyRadDict *                 dict,
+         const char *                  name,
+         uint32_t                      id );
 
 #endif /* end of header */
