@@ -119,7 +119,7 @@ __attr_len_octs(
 
 
 static uint32_t
-__attr_attr_vendor_id(
+__attr_oid_vendor_id(
          const TinyRadOID *            oid );
 
 
@@ -835,7 +835,7 @@ __attr_len_octs(
 
 
 static uint32_t
-__attr_attr_vendor_id(
+__attr_oid_vendor_id(
          const TinyRadOID *            oid )
 {
    assert(oid != NULL);
@@ -879,7 +879,7 @@ __attr_vendor_id(
          const TinyRadDictAttr *       attr )
 {
    assert(attr != NULL);
-   return(__attr_attr_vendor_id(attr->oid));
+   return(__attr_oid_vendor_id(attr->oid));
 }
 
 
