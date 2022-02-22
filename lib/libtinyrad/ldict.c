@@ -476,7 +476,7 @@ tinyrad_dict_add_attr(
    assert(attr      != NULL);
 
    // verify attribute doesn't exist
-   if ((old = tinyrad_dict_attr_lookup(dict, attr->name, 0, 0, 0)) != NULL)
+   if ((old = tinyrad_dict_attr_lookup(dict, attr->name, NULL)) != NULL)
    {
       if (attr->flags != old->flags)
          return(TRAD_EEXISTS);
@@ -490,7 +490,7 @@ tinyrad_dict_add_attr(
          return(TRAD_EEXISTS);
       return(TRAD_SUCCESS);
    };
-   if ((old = tinyrad_dict_attr_lookup(dict, NULL, attr->type, __attr_vendor_id(attr), attr->vendor_type)) != NULL)
+   if ((old = tinyrad_dict_attr_lookup(dict, NULL, attr->oid)) != NULL)
    {
       if (attr->flags != old->flags)
          return(TRAD_EEXISTS);
@@ -1045,10 +1045,15 @@ tinyrad_dict_attr_get(
          uint32_t                      vendor_type )
 {
    TinyRadDictAttr * attr;
+   TinyRadOID        oid;
    TinyRadDebugTrace();
    assert(dict   != NULL);
-   vendor_id = ((vendor)) ? vendor->id : vendor_id;
-   attr = tinyrad_dict_attr_lookup(dict, name, type, vendor_id, vendor_type);
+   memset(&oid, 0, sizeof(oid));
+   oid.oid_val[0] = type;
+   oid.oid_val[1] = ((vendor))         ? vendor->id  : vendor_id;
+   oid.oid_val[2] = ((oid.oid_val[1])) ? vendor_type : 0;
+   oid.oid_len    = ((oid.oid_val[1])) ? 3           : 1;
+   attr = tinyrad_dict_attr_lookup(dict, name, &oid);
    return(tinyrad_obj_retain(&attr->obj));
 }
 
@@ -1190,11 +1195,9 @@ tinyrad_dict_attr_info(
 
 TinyRadDictAttr *
 tinyrad_dict_attr_lookup(
-         TinyRadDict *                dict,
-         const char *                 name,
-         uint8_t                      type,
-         uint32_t                     vendor_id,
-         uint32_t                     vendor_type )
+         TinyRadDict *                 dict,
+         const char *                  name,
+         TinyRadOID *                  oid )
 {
    size_t               width;
    size_t               len;
@@ -1202,12 +1205,12 @@ tinyrad_dict_attr_lookup(
    const void *         key;
    TinyRadDictAttr **   list;
    TinyRadDictAttr **   res;
-   TinyRadOID           oid;
    int (*compar)(const void *, const void *);
 
    TinyRadDebugTrace();
 
    assert(dict   != NULL);
+   assert( ((name)) || ((oid)) );
 
    width = sizeof(TinyRadDictAttr *);
    opts     = TINYRAD_ARRAY_LASTDUP;
@@ -1219,12 +1222,7 @@ tinyrad_dict_attr_lookup(
       list     = dict->attrs_name;
       compar   = &tinyrad_dict_attr_cmp_key_name;
    } else {
-      memset(&oid, 0, sizeof(oid));
-      oid.oid_val[0]  = type;
-      oid.oid_val[1]  = vendor_id;
-      oid.oid_val[2]  = vendor_type;
-      oid.oid_len     = ((vendor_id)) ? 3 : 1;
-      key      = &oid;
+      key      = oid;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;
       compar   = &tinyrad_dict_attr_cmp_key_type;
@@ -1362,7 +1360,7 @@ tinyrad_dict_import(
             if ((strcasecmp(attr_name, attr->name)))
                attr = NULL;
          if (!(attr))
-            attr = tinyrad_dict_attr_lookup(dict, attr_name, 0, 0, 0);
+            attr = tinyrad_dict_attr_lookup(dict, attr_name, NULL);
          if (!(attr))
             return(tinyrad_error_msgs(TRAD_ENOENT, msgsp, "default value: %s %s(%" PRIu64 "): ", attr_name, value_name, data));
          if ((value = tinyrad_dict_value_alloc(dict, attr, value_name, data)) == NULL)
@@ -1667,7 +1665,7 @@ tinyrad_dict_parse_value(
 
    if (file->argc == 3)
       return(TRAD_ESYNTAX);
-   if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], 0, 0, 0)) == NULL)
+   if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], NULL)) == NULL)
       return(TRAD_ESYNTAX);
    data = (uint64_t)strtoull(file->argv[3], &ptr, 0);
    if ((ptr[0] != '\0') || (file->argv[3] == ptr))
@@ -2187,13 +2185,19 @@ tinyrad_dict_value_get(
          uint64_t                      data )
 {
    TinyRadDictValue * value;
+   TinyRadOID         oid;
+
    assert(dict != NULL);
 
    TinyRadDebugTrace();
 
    if (!(attr))
    {
-      attr = tinyrad_dict_attr_lookup(dict, NULL, type, vendor_id, vendor_type);
+      oid.oid_val[0] = type;
+      oid.oid_val[1] = vendor_id;
+      oid.oid_val[2] = vendor_type;
+      oid.oid_len    = ((vendor_id)) ? 3 : 1;
+      attr = tinyrad_dict_attr_lookup(dict, NULL, &oid);
       if (!(attr))
          return(NULL);
    };
