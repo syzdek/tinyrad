@@ -1870,9 +1870,7 @@ tinyrad_dict_print_value(
 
    value = dict->values_data[value_idx];
    memset(&key, 0, sizeof(key));
-   key.type          = __value_type(value);
-   key.vendor_id     = __value_vendor_id(value);
-   key.vendor_type   = __value_vendor_type(value);
+   key.oid           = value->attr->oid;
 
    for(pos = value_idx; ((pos > 0) && (!(tinyrad_dict_value_cmp_key_attr(&dict->values_data[pos-1], &key)))); pos--);
    value_idx = pos;
@@ -2029,15 +2027,10 @@ tinyrad_dict_value_cmp_key_attr(
 {
    const TinyRadDictValue * const *    obj = ptr;
    const TinyRadDictKey *              dat = key;
+   int                                 rc;
 
-   if ((*obj)->attr->type != dat->type)
-      return( ((*obj)->attr->type < dat->type) ? -1 : 1 );
-
-   if (__value_vendor_id(*obj) != dat->vendor_id)
-      return( (__value_vendor_id(*obj) < dat->vendor_id) ? -1 : 1 );
-
-   if (__value_vendor_type(*obj) != dat->vendor_type)
-      return( (__value_vendor_type(*obj) < dat->vendor_type) ? -1 : 1 );
+   if ((rc = tinyrad_oid_cmp(&(*obj)->attr->oid, &dat->oid)) != 0)
+      return(rc);
 
    return(0);
 }
@@ -2104,18 +2097,10 @@ tinyrad_dict_value_cmp_obj_attr(
 {
    const TinyRadDictValue * const * x = a;
    const TinyRadDictValue * const * y = b;
+   int                              rc;
 
-   // compare attribute type
-   if ((*x)->attr->type != (*y)->attr->type)
-      return( ((*x)->attr->type < (*y)->attr->type) ? -1 : 1 );
-
-   // compare attribute vendor ID
-   if (__value_vendor_id(*x) != __value_vendor_id(*y))
-      return( (__value_vendor_id(*x) < __value_vendor_id(*y)) ? -1 : 1 );
-
-   // compare attribute vendor type
-   if (__value_vendor_type(*x) != __value_vendor_type(*y))
-      return( (__value_vendor_type(*x) < __value_vendor_type(*y)) ? -1 : 1 );
+   if ((rc = tinyrad_oid_cmp(&(*x)->attr->oid, &(*y)->attr->oid)))
+      return(rc);
 
    return(0);
 }
@@ -2268,9 +2253,6 @@ tinyrad_dict_value_index(
    memset(&key, 0, sizeof(key));
    key.str           = name;
    key.oid           = oid;
-   key.type          = oid->oid_val[0];
-   key.vendor_id     = (oid->oid_len > 1) ? oid->oid_val[1] : 0;
-   key.vendor_type   = (oid->oid_len > 1) ? oid->oid_val[2] : 0;
    key.value_data    = value_data;
 
    if ((name))
@@ -2388,9 +2370,7 @@ tinyrad_dict_value_lookup(
 
    memset(&key, 0, sizeof(key));
    key.str           = name;
-   key.type          = attr->type;
-   key.vendor_id     = __attr_vendor_id(attr);
-   key.vendor_type   = attr->vendor_type;
+   key.oid           = attr->oid;
    key.value_data    = data;
 
    if ((name))
