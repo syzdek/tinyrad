@@ -2391,8 +2391,8 @@ tinyrad_dict_value_info(
 
       case TRAD_DICT_OPT_TYPE:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", value->attr->type);
-      *((uint8_t *)outvalue) = value->attr->type;
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", __value_type(value));
+      *((uint8_t *)outvalue) = __value_type(value);
       break;
 
       case TRAD_DICT_OPT_DATA:
