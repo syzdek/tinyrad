@@ -2016,6 +2016,12 @@ tinyrad_dict_value_alloc(
 }
 
 
+/// Compares value object to dictionary key by attribute
+///
+/// @param[in]  ptr           pointer to value reference
+/// @param[in]  key           reference to dictionary key
+/// @return return an integer greater than, equal to, or less than 0,
+/// according as the object is greater than, equal to, or less than key.
 int
 tinyrad_dict_value_cmp_key_attr(
          const void *                 ptr,
@@ -2037,6 +2043,12 @@ tinyrad_dict_value_cmp_key_attr(
 }
 
 
+/// Compares value object to dictionary key by attribute then data
+///
+/// @param[in]  ptr           pointer to value reference
+/// @param[in]  key           reference to dictionary key
+/// @return return an integer greater than, equal to, or less than 0,
+/// according as the object is greater than, equal to, or less than key.
 int
 tinyrad_dict_value_cmp_key_data(
          const void *                 ptr,
@@ -2056,6 +2068,12 @@ tinyrad_dict_value_cmp_key_data(
 }
 
 
+/// Compares value object to dictionary key by name
+///
+/// @param[in]  ptr           pointer to value reference
+/// @param[in]  key           reference to dictionary key
+/// @return return an integer greater than, equal to, or less than 0,
+/// according as the object is greater than, equal to, or less than key.
 int
 tinyrad_dict_value_cmp_key_name(
          const void *                 ptr,
@@ -2072,6 +2090,13 @@ tinyrad_dict_value_cmp_key_name(
 }
 
 
+/// Compares two value objects and sorts by attribute
+///
+/// @param[in]  a             pointer to first value reference
+/// @param[in]  b             pointer to second value reference
+/// @return return an integer greater than, equal to, or less than 0,
+/// according as the object 'a' is greater than, equal to, or less than object
+/// 'b'.
 int
 tinyrad_dict_value_cmp_obj_attr(
          const void *                 a,
@@ -2096,6 +2121,14 @@ tinyrad_dict_value_cmp_obj_attr(
 }
 
 
+/// Compares two value objects and sorts by attribute, data, and then creation
+/// order
+///
+/// @param[in]  a             pointer to first value reference
+/// @param[in]  b             pointer to second value reference
+/// @return return an integer greater than, equal to, or less than 0,
+/// according as the object 'a' is greater than, equal to, or less than object
+/// 'b'.
 int
 tinyrad_dict_value_cmp_obj_data(
          const void *                 a,
@@ -2121,6 +2154,13 @@ tinyrad_dict_value_cmp_obj_data(
 }
 
 
+/// Compares two value objects and sorts by attribute then name
+///
+/// @param[in]  a             pointer to first value reference
+/// @param[in]  b             pointer to second value reference
+/// @return return an integer greater than, equal to, or less than 0,
+/// according as the object 'a' is greater than, equal to, or less than object
+/// 'b'.
 int
 tinyrad_dict_value_cmp_obj_name(
          const void *                 a,
