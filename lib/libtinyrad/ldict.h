@@ -117,7 +117,7 @@ struct _tinyrad_dict_attr
    uint8_t                 data_type;
    uint8_t                 deprecated_type;
    uint16_t                flags;
-   uint32_t                vendor_type;
+   uint32_t                deprecated_vendor_type;
 };
 
 

@@ -968,10 +968,7 @@ tinyrad_dict_attr_alloc(
       if (attr->oid->oid_len < 3)
          break;
       if ((vendor = tinyrad_dict_vendor_get(dict, NULL, attr->oid->oid_val[1])) != NULL)
-      {
-         attr->vendor      = tinyrad_obj_retain(&vendor->obj);
-         attr->vendor_type = (attr->oid->oid_len > 2) ? attr->oid->oid_val[2] : 0;
-      };
+         attr->vendor = tinyrad_obj_retain(&vendor->obj);
       break;
 
       default:
