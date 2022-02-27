@@ -143,6 +143,11 @@ __attr_vendor_id(
          const TinyRadDictAttr *       attr );
 
 
+static uint32_t
+__attr_vendor_type(
+         const TinyRadDictAttr *       attr );
+
+
 TinyRadDictAttr *
 tinyrad_dict_attr_alloc(
          TinyRadDict *                 dict,
@@ -895,6 +900,15 @@ __attr_vendor_id(
 {
    assert(attr != NULL);
    return(__attr_oid_vendor_id(attr->oid));
+}
+
+
+static uint32_t
+__attr_vendor_type(
+         const TinyRadDictAttr *       attr )
+{
+   assert(attr != NULL);
+   return(__attr_oid_vendor_type(attr->oid));
 }
 
 
@@ -1883,7 +1897,7 @@ tinyrad_dict_print_attribute(
       datatype[pos] = ((str[pos] >= 'A')&&(str[pos] <= 'Z')) ? (str[pos] - 'A' + 'a') : str[pos];
    datatype[pos] = '\0';
 
-   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((__attr_vendor_id(attr))) ? attr->vendor_type : attr->type), datatype, flagstr);
+   printf("ATTRIBUTE     %-31s %-21" PRIu32 " %s%s\n", attr->name, (((__attr_vendor_id(attr))) ? __attr_vendor_type(attr) : attr->type), datatype, flagstr);
 
    if ((value_idx = tinyrad_dict_value_index(dict, NULL, attr->oid, 0, TRAD_YES)) < 0)
       return;
