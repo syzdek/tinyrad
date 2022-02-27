@@ -1150,6 +1150,12 @@ tinyrad_dict_attr_info(
          return(TRAD_ENOMEM);
       break;
 
+      case TRAD_DICT_OPT_OID:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_OID, outvalue )", __func__);
+      if ((*((TinyRadOID **)outvalue) = tinyrad_oid_dup(attr->oid)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
       case TRAD_DICT_OPT_REF_COUNT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
       uval = (unsigned)tinyrad_obj_retain_count(&attr->obj);
@@ -2303,6 +2309,12 @@ tinyrad_dict_value_info(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", value->name);
       if ( (*((char **)outvalue) = strdup(value->name)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
+      case TRAD_DICT_OPT_OID:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_OID, outvalue )", __func__);
+      if ((*((TinyRadOID **)outvalue) = tinyrad_oid_dup(value->attr->oid)) == NULL)
          return(TRAD_ENOMEM);
       break;
 
