@@ -98,12 +98,6 @@ tinyrad_oid_alloc(
          void );
 
 
-int
-tinyrad_oid_cmp(
-         const void *                 a,
-         const void *                 b );
-
-
 TinyRadOID *
 tinyrad_oid_dup(
          const TinyRadOID *            ptr );
