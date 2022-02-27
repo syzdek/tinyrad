@@ -115,7 +115,7 @@ struct _tinyrad_dict_attr
    TinyRadOID *            oid;
 
    uint8_t                 data_type;
-   uint8_t                 type;
+   uint8_t                 deprecated_type;
    uint16_t                flags;
    uint32_t                vendor_type;
 };

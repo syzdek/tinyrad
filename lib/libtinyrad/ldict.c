@@ -959,7 +959,6 @@ tinyrad_dict_attr_alloc(
 
    dict->obj_count++;
    attr->order       = dict->obj_count;
-   attr->type        = attr->oid->oid_val[0];
    attr->data_type   = data_type;
    attr->flags       = flags;
 
