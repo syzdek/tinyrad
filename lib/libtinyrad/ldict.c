@@ -2028,7 +2028,7 @@ __value_type(
 {
    assert(value       != NULL);
    assert(value->attr != NULL);
-   return( value->attr->type );
+   return( __attr_type(value->attr));
 }
 
 
