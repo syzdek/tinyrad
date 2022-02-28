@@ -42,14 +42,7 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/types.h>
-#include <sys/uio.h>
-#include <time.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <assert.h>
 
 
