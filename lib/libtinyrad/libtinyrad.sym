@@ -79,8 +79,10 @@ tinyrad_binval_realloc
 tinyrad_free
 tinyrad_get_option
 tinyrad_initialize
-tinyrad_oid_cmp
 tinyrad_set_option
+#
+# OID functions
+tinyrad_oid_cmp
 #
 # protocol functions
 tinyrad_avplist_initialize

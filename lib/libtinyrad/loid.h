@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_LMEMORY_H
-#define _LIB_LIBTINYRAD_LMEMORY_H 1
+#ifndef _LIB_LIBTINYRAD_LOID_H
+#define _LIB_LIBTINYRAD_LOID_H 1
 
 
 ///////////////
@@ -57,76 +57,78 @@
 
 //////////////////
 //              //
+//  Data Types  //
+//              //
+//////////////////
+#pragma mark - Data Types
+
+// According to RFC 6929 Section 2.3.1, "nesting [TLV] depths of more than 4
+// are NOT RECOMMENDED."  Using the RFC recommendation, an OID for a TLV value
+// within a Vendor-Specific attribute would have at most 6 values (Attribute
+// Type, Vendor-ID, and up to 4 TLV-Types). Attributes of the Extended-Type
+// and Long-Extended-Type have an additional value for "Extended-Type".
+// TinyRad uses a max OID length of 7 to allow a depth of 4 TLV values in
+// Extended-Type and Long-Extended-Type attributes and to prevent struct
+// padding by having an odd number of uint32_t values.
+#define TRAD_OID_MAX_LEN   7 // use odd value to avoid struct padding
+struct _tinyrad_oid
+{
+    uint32_t            oid_len;
+    uint32_t            oid_val[TRAD_OID_MAX_LEN];
+};
+
+
+//////////////////
+//              //
 //  Prototypes  //
 //              //
 //////////////////
 #pragma mark - Prototypes
 
 //-------------------//
-// object prototypes //
+// memory prototypes //
 //-------------------//
-#pragma mark object prototypes
+#pragma mark memory prototypes
 
-void *
-tinyrad_obj_alloc(
-         size_t                        size,
-         void (*free_func)(void * ptr) );
-
-
-void
-tinyrad_obj_release(
-         TinyRadObj *                  obj );
+TinyRadOID *
+tinyrad_oid_alloc(
+         void );
 
 
-void *
-tinyrad_obj_retain(
-         TinyRadObj *                  obj );
+TinyRadOID *
+tinyrad_oid_dup(
+         const TinyRadOID *            ptr );
 
 
-intptr_t
-tinyrad_obj_retain_count(
-         TinyRadObj *                  obj );
-
-
-//-------------------//
-// string prototypes //
-//-------------------//
-#pragma mark string prototypes
-
-char *
-tinyrad_strdup(
-         const char *                  s1 );
-
-
-size_t
-tinyrad_strlcat(
-         char * restrict               dst,
-         const char * restrict         src,
-         size_t                        dstsize );
-
-
-size_t
-tinyrad_strlcpy(
-         char * restrict               dst,
-         const char * restrict         src,
-         size_t                        dstsize );
-
-
-char *
-tinyrad_strndup(
-         const char *                  s1,
-         size_t                        n );
+uint32_t
+tinyrad_oid_pop(
+         TinyRadOID *                  oid );
 
 
 int
-tinyrad_strsadd(
-         char ***                      strsp,
-         const char *                  str );
+tinyrad_oid_push(
+         TinyRadOID *                  oid,
+         uint32_t                      val );
 
 
-size_t
-tinyrad_strscount(
-         char **                       strs );
+//------------------//
+// query prototypes //
+//------------------//
+#pragma mark query prototypes
+
+uint32_t
+tinyrad_oid_type(
+         const TinyRadOID *            oid );
+
+
+uint32_t
+tinyrad_oid_vendor_id(
+         const TinyRadOID *            oid );
+
+
+uint32_t
+tinyrad_oid_vendor_type(
+         const TinyRadOID *            oid );
 
 
 #endif /* end of header */

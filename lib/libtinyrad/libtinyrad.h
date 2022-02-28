@@ -110,22 +110,6 @@ struct _tinyrad_obj
 };
 
 
-// According to RFC 6929 Section 2.3.1, "nesting [TLV] depths of more than 4
-// are NOT RECOMMENDED."  Using the RFC recommendation, an OID for a TLV value
-// within a Vendor-Specific attribute would have at most 6 values (Attribute
-// Type, Vendor-ID, and up to 4 TLV-Types). Attributes of the Extended-Type
-// and Long-Extended-Type have an additional value for "Extended-Type".
-// TinyRad uses a max OID length of 7 to allow a depth of 4 TLV values in
-// Extended-Type and Long-Extended-Type attributes and to prevent struct
-// padding by having an odd number of uint32_t values.
-#define TRAD_OID_MAX_LEN   7 // use odd value to avoid struct padding
-struct _tinyrad_oid
-{
-    uint32_t            oid_len;
-    uint32_t            oid_val[TRAD_OID_MAX_LEN];
-};
-
-
 struct _tinyrad
 {
    TinyRadObj            obj;

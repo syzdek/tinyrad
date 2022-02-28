@@ -673,16 +673,21 @@ tinyrad_initialize(
 
 
 _TINYRAD_F int
-tinyrad_oid_cmp(
-         const void *                 a,
-         const void *                 b );
-
-
-_TINYRAD_F int
 tinyrad_set_option(
          TinyRad *                     tr,
          int                           option,
          const void *                  invalue );
+
+
+//----------------//
+// OID prototypes //
+//----------------//
+#pragma mark OID prototypes
+
+_TINYRAD_F int
+tinyrad_oid_cmp(
+         const void *                 a,
+         const void *                 b );
 
 
 //---------------------//
