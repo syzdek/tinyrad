@@ -1948,7 +1948,7 @@ __value_vendor_id(
 {
    assert(value       != NULL);
    assert(value->attr != NULL);
-   return( ((value->attr->vendor)) ? value->attr->vendor->id : 0);
+   return( __attr_vendor_id(value->attr) );
 }
 
 
