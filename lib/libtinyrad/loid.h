@@ -136,6 +136,12 @@ tinyrad_oid_vendor_type(
 //-------------------//
 #pragma mark string prototypes
 
+char *
+tinyrad_oid2str(
+         const TinyRadOID *            oid,
+         unsigned                      opts );
+
+
 TinyRadOID *
 tinyrad_str2oid(
          const char *                  str );

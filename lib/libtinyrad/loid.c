@@ -250,6 +250,41 @@ tinyrad_oid_vendor_type(
 //------------------//
 #pragma mark string functions
 
+char *
+tinyrad_oid2str(
+         const TinyRadOID *            oid,
+         unsigned                      opts )
+{
+   char              str[(TRAD_OID_MAX_LEN*12)+7];
+   char              num[12];
+   uint32_t          cursor;
+
+   assert(oid != NULL);
+   assert(oid->oid_len <= TRAD_OID_MAX_LEN);
+
+   // add prefix
+   if (opts & TRAD_OID_OPT_ATTRIBUTE)
+      tinyrad_strlcpy(str, "Attr-", sizeof(str));
+   else if (opts & TRAD_OID_OPT_VALUE)
+      tinyrad_strlcpy(str, "Value-", sizeof(str));
+   else if (opts & TRAD_OID_OPT_VENDOR)
+      tinyrad_strlcpy(str, "Vend-", sizeof(str));
+   else
+      str[0] = '\0';
+
+   // append numeric values
+   for(cursor = 0; (cursor < oid->oid_len); cursor++)
+   {
+      if ((cursor))
+         tinyrad_strlcat(str, ".", sizeof(str));
+      snprintf(num, sizeof(num), "%"PRIu32, oid->oid_val[cursor]);
+      tinyrad_strlcat(str, num, sizeof(str));
+   }
+
+   return(tinyrad_strdup(str));
+}
+
+
 TinyRadOID *
 tinyrad_str2oid(
          const char *                  str )

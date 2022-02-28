@@ -230,6 +230,10 @@
 #define TRAD_DICT_OPT_ATTR_NAME          11  // used by TinyRadDictAttr and TinyRadDictValue
 #define TRAD_DICT_OPT_OID                12  // used by TinyRadDictAttr and TinyRadDictValue
 
+#define TRAD_OID_OPT_ATTRIBUTE            1
+#define TRAD_OID_OPT_VALUE                2
+#define TRAD_OID_OPT_VENDOR               3
+
 // library debug levels
 #define TRAD_DEBUG_NONE             0
 #define TRAD_DEBUG_TRACE            0x0000001
