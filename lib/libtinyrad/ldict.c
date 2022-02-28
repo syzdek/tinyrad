@@ -118,11 +118,6 @@ __attr_len_octs(
          const TinyRadDictAttr *       attr );
 
 
-static uint8_t
-__attr_oid_type(
-         const TinyRadOID *            oid );
-
-
 static uint32_t
 __attr_oid_vendor_type(
          const TinyRadOID *            oid );
@@ -814,15 +809,6 @@ __attr_len_octs(
 }
 
 
-static uint8_t
-__attr_oid_type(
-         const TinyRadOID *            oid )
-{
-   assert(oid != NULL);
-   return(oid->oid_val[0]);
-}
-
-
 static uint32_t
 __attr_oid_vendor_type(
          const TinyRadOID *            oid )
@@ -859,7 +845,7 @@ __attr_type(
          const TinyRadDictAttr *       attr )
 {
    assert(attr != NULL);
-   return(__attr_oid_type(attr->oid));
+   return(tinyrad_oid_type(attr->oid));
 }
 
 
@@ -1189,8 +1175,8 @@ tinyrad_dict_attr_info(
 
       case TRAD_DICT_OPT_TYPE:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_TYPE, outvalue )", __func__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", __attr_oid_type(attr->oid));
-      *((uint8_t *)outvalue) = __attr_oid_type(attr->oid);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu8 "\"", tinyrad_oid_type(attr->oid));
+      *((uint8_t *)outvalue) = tinyrad_oid_type(attr->oid);
       break;
 
       case TRAD_DICT_OPT_TYPE_OCTS:
