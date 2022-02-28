@@ -124,11 +124,6 @@ __attr_oid_type(
 
 
 static uint32_t
-__attr_oid_vendor_id(
-         const TinyRadOID *            oid );
-
-
-static uint32_t
 __attr_oid_vendor_type(
          const TinyRadOID *            oid );
 
@@ -829,37 +824,6 @@ __attr_oid_type(
 
 
 static uint32_t
-__attr_oid_vendor_id(
-         const TinyRadOID *            oid )
-{
-   assert(oid != NULL);
-   switch(oid->oid_val[0])
-   {
-      case TRAD_ATTR_VENDOR_SPECIFIC:
-      if (oid->oid_len < 2)
-         return(0);
-      return(oid->oid_val[1]);
-
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_1:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_2:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_3:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_4:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_5:
-      case TRAD_ATTR_EXTENDED_ATTRIBUTE_6:
-      if (oid->oid_len < 3)
-         return(0);
-      if (oid->oid_val[1] != 26)
-         return(0);
-      return(oid->oid_val[2]);
-
-      default:
-      break;
-   };
-   return(0);
-}
-
-
-static uint32_t
 __attr_oid_vendor_type(
          const TinyRadOID *            oid )
 {
@@ -913,7 +877,7 @@ __attr_vendor_id(
          const TinyRadDictAttr *       attr )
 {
    assert(attr != NULL);
-   return(__attr_oid_vendor_id(attr->oid));
+   return(tinyrad_oid_vendor_id(attr->oid));
 }
 
 
@@ -999,8 +963,8 @@ tinyrad_dict_attr_cmp_key_type(
    const TinyRadOID *                  dat = key;
    int                                 rc;
 
-   if (__attr_vendor_id(*obj) != __attr_oid_vendor_id(dat))
-      return( (__attr_vendor_id(*obj) < __attr_oid_vendor_id(dat)) ? -1 : 1 );
+   if (__attr_vendor_id(*obj) != tinyrad_oid_vendor_id(dat))
+      return( (__attr_vendor_id(*obj) < tinyrad_oid_vendor_id(dat)) ? -1 : 1 );
 
    if ((rc = tinyrad_oid_cmp(&(*obj)->oid, &dat)) != 0)
       return(rc);
@@ -1156,7 +1120,7 @@ tinyrad_dict_attr_index(
       opts     = TINYRAD_ARRAY_LASTDUP;
       compar   = &tinyrad_dict_attr_cmp_key_type;
    } else {
-      vendor_id = __attr_oid_vendor_id(oid);
+      vendor_id = tinyrad_oid_vendor_id(oid);
       key      = &vendor_id;
       len      = dict->attrs_type_len;
       list     = dict->attrs_type;

@@ -114,6 +114,11 @@ tinyrad_oid_push(
          uint32_t                      val );
 
 
+uint32_t
+tinyrad_oid_vendor_id(
+         const TinyRadOID *            oid );
+
+
 //-------------------//
 // string prototypes //
 //-------------------//
