@@ -858,7 +858,7 @@ tinyrad_oid_vendor_type(
    switch(oid->oid_val[0])
    {
       case TRAD_ATTR_VENDOR_SPECIFIC:
-      if (oid->oid_len < 2)
+      if (oid->oid_len < 3)
          return(0);
       return(oid->oid_val[2]);
 
