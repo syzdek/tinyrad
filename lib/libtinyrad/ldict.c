@@ -1958,7 +1958,7 @@ __value_vendor_type(
 {
    assert(value       != NULL);
    assert(value->attr != NULL);
-   return( ((value->attr->vendor)) ? tinyrad_oid_vendor_type(value->attr->oid) : 0);
+   return( __attr_vendor_type(value->attr) );
 }
 
 
