@@ -45,6 +45,8 @@
 #include <sys/types.h>
 #include <assert.h>
 
+#include "lmemory.h"
+
 
 ///////////////////
 //               //
@@ -240,6 +242,62 @@ tinyrad_oid_vendor_type(
       break;
    };
    return(0);
+}
+
+
+//------------------//
+// string functions //
+//------------------//
+#pragma mark string functions
+
+TinyRadOID *
+tinyrad_str2oid(
+         const char *                  str )
+{
+   char *            ptr;
+   TinyRadOID *      oid;
+   uint32_t          cursor;
+   uint32_t          value;
+
+   assert(str != NULL);
+
+   // allocate OID
+   if ((oid = tinyrad_oid_alloc()) == NULL)
+      return(NULL);
+
+   // initialize state
+   if ((ptr = strrchr(str, '-')) != NULL)
+      str = ptr;
+   cursor = 0;
+   ptr    = NULL;
+
+   // process nodes of OID
+   while ( ((str[0])) && (cursor < TRAD_OID_MAX_LEN) && (ptr != str) )
+   {
+      value = (uint32_t)strtoll(str, &ptr, 10);
+      if (ptr != str)
+      {
+         oid->oid_val[oid->oid_len] = value;
+         oid->oid_len++;
+      };
+      switch(ptr[0])
+      {
+         case '\0':
+         return(oid);
+
+         case '.':
+         str = &ptr[1];
+         break;
+
+         default:
+         tinyrad_free(oid);
+         return(NULL);
+      };
+   };
+
+   // invalid OID
+   tinyrad_free(oid);
+   return(NULL);
 }
 
 
