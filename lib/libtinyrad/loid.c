@@ -307,14 +307,16 @@ tinyrad_oid2str(
    assert(oid->oid_len <= TRAD_OID_MAX_LEN);
 
    // add prefix
-   if (type == TRAD_OID_TYPE_ATTRIBUTE)
+   if (type == TRAD_OID_TYPE_NONE)
+      str[0] = '\0';
+   else if (type == TRAD_OID_TYPE_ATTRIBUTE)
       tinyrad_strlcpy(str, "Attr-", sizeof(str));
    else if (type == TRAD_OID_TYPE_VALUE)
       tinyrad_strlcpy(str, "Value-", sizeof(str));
    else if (type == TRAD_OID_TYPE_VENDOR)
       tinyrad_strlcpy(str, "Vend-", sizeof(str));
    else
-      str[0] = '\0';
+      tinyrad_strlcpy(str, "Unknown-", sizeof(str));
 
    // append numeric values
    for(cursor = 0; (cursor < oid->oid_len); cursor++)
