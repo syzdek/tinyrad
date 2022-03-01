@@ -694,6 +694,12 @@ tinyrad_oid_cmp(
          const void *                 b );
 
 
+_TINYRAD_F TinyRadOID *
+tinyrad_oid_init(
+         uint32_t *     vals,
+         size_t         len );
+
+
 _TINYRAD_F int
 tinyrad_oid_values(
          const TinyRadOID *            oid,

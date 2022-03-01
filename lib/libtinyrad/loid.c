@@ -117,6 +117,25 @@ tinyrad_oid_dup(
 }
 
 
+TinyRadOID *
+tinyrad_oid_init(
+         uint32_t *     vals,
+         size_t         len )
+{
+   TinyRadOID *      oid;
+   size_t            pos;
+
+   if ((oid = tinyrad_oid_alloc()) == NULL)
+      return(oid);
+
+   for(pos = 0; ((pos < len) && (pos < TRAD_OID_MAX_LEN)); pos++)
+      oid->oid_val[pos] = vals[pos];
+   oid->oid_len = (uint32_t)len;
+
+   return(oid);
+}
+
+
 uint32_t
 tinyrad_oid_pop(
          TinyRadOID *                  oid )
