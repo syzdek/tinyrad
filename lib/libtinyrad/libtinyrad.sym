@@ -83,6 +83,7 @@ tinyrad_set_option
 #
 # OID functions
 tinyrad_oid2str
+tinyrad_str2oid
 tinyrad_oid_cmp
 tinyrad_oid_init
 tinyrad_oid_values

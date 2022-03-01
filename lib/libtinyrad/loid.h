@@ -131,14 +131,4 @@ tinyrad_oid_vendor_type(
          const TinyRadOID *            oid );
 
 
-//-------------------//
-// string prototypes //
-//-------------------//
-#pragma mark string prototypes
-
-TinyRadOID *
-tinyrad_str2oid(
-         const char *                  str );
-
-
 #endif /* end of header */

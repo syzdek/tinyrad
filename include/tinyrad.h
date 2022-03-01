@@ -694,6 +694,11 @@ tinyrad_oid2str(
          unsigned                      opts );
 
 
+_TINYRAD_F TinyRadOID *
+tinyrad_str2oid(
+         const char *                  str );
+
+
 _TINYRAD_F int
 tinyrad_oid_cmp(
          const void *                 a,
