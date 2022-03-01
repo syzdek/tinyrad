@@ -183,6 +183,31 @@ tinyrad_oid_type(
 }
 
 
+int
+tinyrad_oid_values(
+         const TinyRadOID *            oid,
+         uint32_t **                   valsp,
+         size_t *                      lenp )
+{
+   size_t         size;
+   uint32_t *     vals;
+
+   assert(oid   != NULL);
+   assert(valsp != NULL);
+   assert(lenp  != NULL);
+
+   size = sizeof(uint32_t) * TRAD_OID_MAX_LEN;
+   if ((vals = malloc(size)) == NULL)
+      return(TRAD_ENOMEM);
+   memcpy(vals, oid->oid_val, size);
+
+   *valsp = vals;
+   *lenp  = oid->oid_len;
+
+   return(TRAD_SUCCESS);
+}
+
+
 uint32_t
 tinyrad_oid_vendor_id(
          const TinyRadOID *            oid )

@@ -694,6 +694,13 @@ tinyrad_oid_cmp(
          const void *                 b );
 
 
+_TINYRAD_F int
+tinyrad_oid_values(
+         const TinyRadOID *            oid,
+         uint32_t **                   valsp,
+         size_t *                      lenp );
+
+
 //---------------------//
 // protocol prototypes //
 //---------------------//
