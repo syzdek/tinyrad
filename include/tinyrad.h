@@ -688,6 +688,12 @@ tinyrad_set_option(
 //----------------//
 #pragma mark OID prototypes
 
+_TINYRAD_F char *
+tinyrad_oid2str(
+         const TinyRadOID *            oid,
+         unsigned                      opts );
+
+
 _TINYRAD_F int
 tinyrad_oid_cmp(
          const void *                 a,
