@@ -346,7 +346,7 @@ tinyrad_str2oid(
 
    // initialize state
    if ((ptr = strrchr(str, '-')) != NULL)
-      str = ptr;
+      str = &ptr[1];
    cursor = 0;
    ptr    = NULL;
 
