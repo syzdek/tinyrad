@@ -297,7 +297,7 @@ tinyrad_oid_vendor_type(
 char *
 tinyrad_oid2str(
          const TinyRadOID *            oid,
-         unsigned                      opts )
+         unsigned                      type )
 {
    char              str[(TRAD_OID_MAX_LEN*12)+7];
    char              num[12];
@@ -307,11 +307,11 @@ tinyrad_oid2str(
    assert(oid->oid_len <= TRAD_OID_MAX_LEN);
 
    // add prefix
-   if (opts & TRAD_OID_OPT_ATTRIBUTE)
+   if (type == TRAD_OID_TYPE_ATTRIBUTE)
       tinyrad_strlcpy(str, "Attr-", sizeof(str));
-   else if (opts & TRAD_OID_OPT_VALUE)
+   else if (type == TRAD_OID_TYPE_VALUE)
       tinyrad_strlcpy(str, "Value-", sizeof(str));
-   else if (opts & TRAD_OID_OPT_VENDOR)
+   else if (type == TRAD_OID_TYPE_VENDOR)
       tinyrad_strlcpy(str, "Vend-", sizeof(str));
    else
       str[0] = '\0';

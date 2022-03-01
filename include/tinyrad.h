@@ -230,9 +230,9 @@
 #define TRAD_DICT_OPT_ATTR_NAME          11  // used by TinyRadDictAttr and TinyRadDictValue
 #define TRAD_DICT_OPT_OID                12  // used by TinyRadDictAttr and TinyRadDictValue
 
-#define TRAD_OID_OPT_ATTRIBUTE            1
-#define TRAD_OID_OPT_VALUE                2
-#define TRAD_OID_OPT_VENDOR               3
+#define TRAD_OID_TYPE_ATTRIBUTE           1
+#define TRAD_OID_TYPE_VALUE               2
+#define TRAD_OID_TYPE_VENDOR              3
 
 // library debug levels
 #define TRAD_DEBUG_NONE             0
@@ -691,7 +691,7 @@ tinyrad_set_option(
 _TINYRAD_F char *
 tinyrad_oid2str(
          const TinyRadOID *            oid,
-         unsigned                      opts );
+         unsigned                      type );
 
 
 _TINYRAD_F TinyRadOID *
