@@ -773,7 +773,7 @@ tinyrad_strlcat(
    for(pos = 0; ((dst[pos])); pos++);
    for(offset = 0; ((src[offset])); offset++)
       if ((pos + offset) < dstsize)
-         dst[pos+offset] = dst[offset];
+         dst[pos+offset] = src[offset];
    len = offset + pos;
    dst[((len < dstsize) ? len : (dstsize-1))] = '\0';
    return(len);
