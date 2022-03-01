@@ -94,6 +94,7 @@ EXTRA_PROGRAMS				= examples/socket-example \
 					  tests/test-dict-attrs \
 					  tests/test-dict-values \
 					  tests/test-dict-vendors \
+					  tests/test-oid-str \
 					  tests/test-options \
 					  tests/test-pckt-byte-order \
 					  tests/test-url-desc2str \
@@ -120,6 +121,7 @@ TESTS					= tests/test-array-sorted \
 					  tests/test-dict-defaults.sh \
 					  tests/test-dict-values \
 					  tests/test-dict-vendors \
+					  tests/test-oid-str \
 					  tests/test-options \
 					  tests/test-pckt-byte-order \
 					  tests/test-url-desc2str \
@@ -372,6 +374,14 @@ tests_test_dict_vendors_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  tests/common.c tests/common.h \
 					  tests/dict-data.c tests/dict-data.h \
 					  tests/test-dict-vendors.c
+
+
+# macros for tests/test-oid-str
+tests_test_oid_str_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_oid_str_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_oid_str_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
+					  tests/common.c tests/common.h \
+					  tests/test-oid-str.c
 
 
 # macros for tests/tinyrad-options
