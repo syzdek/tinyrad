@@ -56,34 +56,6 @@
 //////////////////
 #pragma mark - Prototypes
 
-//----------------//
-// AVP prototypes //
-//----------------//
-#pragma mark AVP prototypes
-
-void
-tinyrad_avp_free(
-         TinyRadAVP *                  avp );
-
-
-int
-tinyrad_avp_initialize(
-         TinyRadAVP **                 avpp,
-         TinyRadDictAttr *             attr,
-         uint8_t                       attr_type,
-         uint8_t                       data_type );
-
-
-//---------------------//
-// AVP list prototypes //
-//---------------------//
-#pragma mark AVP list prototypes
-
-void
-tinyrad_avplist_free(
-         TinyRadAVPList *              avplist );
-
-
 //------------------------//
 // pckt memory prototypes //
 //------------------------//
@@ -109,99 +81,6 @@ tinyrad_pckt_buff_realloc(
 //             //
 /////////////////
 #pragma mark - Functions
-
-//---------------//
-// AVP functions //
-//---------------//
-#pragma mark AVP functions
-
-void
-tinyrad_avp_free(
-         TinyRadAVP *                  avp )
-{
-   size_t      pos;
-
-   if (!(avp))
-      return;
-
-   if ((avp->attr))
-      tinyrad_obj_release(&avp->attr->obj);
-
-   if ((avp->values))
-      for(pos = 0; (pos < avp->values_len); pos++)
-         tinyrad_free(&avp->values[pos]);
-
-   memset(avp, 0, sizeof(TinyRadAVP));
-   free(avp);
-
-   return;
-}
-
-
-int
-tinyrad_avp_initialize(
-         TinyRadAVP **                 avpp,
-         TinyRadDictAttr *             attr,
-         uint8_t                       attr_type,
-         uint8_t                       data_type )
-{
-   TinyRadAVP *            avp;
-
-   TinyRadDebugTrace();
-
-   assert(avpp != NULL);
-
-   if ((avp = tinyrad_obj_alloc(sizeof(TinyRadAVP), (void(*)(void*))&tinyrad_avp_free)) == NULL)
-      return(TRAD_ENOMEM);
-
-   avp->attr_type = attr_type;
-   avp->data_type = data_type;
-
-   if ((attr))
-   {
-      avp->attr      = tinyrad_obj_retain(&attr->obj);
-      avp->attr_type = attr->type;
-      avp->data_type = attr->data_type;
-   };
-
-   *avpp = tinyrad_obj_retain(&avp->obj);
-
-   return(TRAD_SUCCESS);
-}
-
-
-//--------------------//
-// AVP list functions //
-//--------------------//
-#pragma mark AVP list functions
-
-void
-tinyrad_avplist_free(
-         TinyRadAVPList *              avplist )
-{
-   size_t pos;
-   if ((avplist->list))
-      for(pos = 0; (pos < avplist->list_len); pos++)
-         tinyrad_obj_release(&avplist->list[pos]->obj);
-   memset(avplist, 0, sizeof(TinyRadAVPList));
-   free(avplist);
-   return;
-}
-
-
-int
-tinyrad_avplist_initialize(
-         TinyRadAVPList **             avplistp )
-{
-   TinyRadAVPList * avplist;
-   TinyRadDebugTrace();
-   assert(avplistp != NULL);
-   if ((avplist = tinyrad_obj_alloc(sizeof(TinyRadAVPList), (void(*)(void*))&tinyrad_avplist_free)) == NULL)
-      return(TRAD_ENOMEM);
-   *avplistp = tinyrad_obj_retain(&avplist->obj);
-   return(TRAD_SUCCESS);
-}
-
 
 //-----------------------//
 // pckt memory functions //
