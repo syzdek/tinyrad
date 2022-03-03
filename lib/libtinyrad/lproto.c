@@ -56,6 +56,24 @@
 //////////////////
 #pragma mark - Prototypes
 
+//----------------------------//
+// attribute value prototypes //
+//----------------------------//
+#pragma mark attribute value prototypes
+
+TinyRadAttrValues *
+tinyrad_attr_vals_alloc(
+         const char *                  name,
+         const TinyRadOID *            oid,
+         uint8_t                       data_type,
+         uint32_t                      flags );
+
+
+void
+tinyrad_attr_vals_free(
+         TinyRadAttrValues *           av );
+
+
 //------------------------//
 // pckt memory prototypes //
 //------------------------//
@@ -81,6 +99,67 @@ tinyrad_pckt_buff_realloc(
 //             //
 /////////////////
 #pragma mark - Functions
+
+//---------------------------//
+// attribute value functions //
+//---------------------------//
+#pragma mark attribute value functions
+
+TinyRadAttrValues *
+tinyrad_attr_vals_alloc(
+         const char *                  name,
+         const TinyRadOID *            oid,
+         uint8_t                       data_type,
+         uint32_t                      flags )
+{
+   TinyRadAttrValues *     av;
+
+   assert(oid != NULL);
+
+   if ((av = tinyrad_obj_alloc(sizeof(TinyRadAttrValues), NULL)) == NULL)
+      return(NULL);
+   av->type_octs = 1;
+   av->len_octs  = 1;
+   av->flags     = flags;
+   av->data_type = ((data_type)) ? data_type : TRAD_DATATYPE_STRING;
+
+   av->name = ((name)) ? tinyrad_strdup(name) : tinyrad_oid2str(oid, TRAD_OID_TYPE_ATTRIBUTE);
+   if (av->name != NULL)
+   {
+      tinyrad_attr_vals_free(av);
+      return(NULL);
+   };
+
+   return(NULL);
+}
+
+
+void
+tinyrad_attr_vals_free(
+         TinyRadAttrValues *           av )
+{
+   uint32_t    pos;
+
+   if (!(av))
+      return;
+
+   if ((av->name))
+      free(av->name);
+   if ((av->oid))
+      free(av->oid);
+
+   if ((av->values))
+   {
+      for(pos = 0; (pos < av->values_len); pos++)
+         tinyrad_free(av->values[pos]);
+      free(av->values);
+   };
+
+   free(av);
+
+   return;
+}
+
 
 //-----------------------//
 // pckt memory functions //

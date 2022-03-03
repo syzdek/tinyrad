@@ -63,6 +63,21 @@
 typedef struct _tinyrad_pckt_buffer       TinyRadPcktBuff;
 
 
+typedef struct _tinyrad_attr_values
+{
+   TinyRadObj           obj;
+   TinyRadOID *         oid;
+   char *               name;
+   uint8_t              data_type;
+   uint8_t              type_octs;
+   uint8_t              len_octs;
+   uint8_t              pad8;
+   uint32_t             flags;
+   size_t               values_len;
+   TinyRadBinValue **   values;
+} TinyRadAttrValues;
+
+
 typedef struct tinyrad_packet
 {
    uint8_t              pckt_code;               // RFC 2865 Section 3. Packet Format: Code
