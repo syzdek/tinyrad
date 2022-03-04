@@ -53,6 +53,8 @@
 #include <netdb.h>
 #include <assert.h>
 
+#include "ldict.h"
+
 
 ///////////////////
 //               //
@@ -119,6 +121,9 @@ tinyrad_tiyrad_free(
    TinyRadDebugTrace();
 
    assert(tr != NULL);
+
+   if ((tr->dict))
+      tinyrad_obj_release(&tr->dict->obj);
 
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
@@ -268,6 +273,7 @@ tinyrad_get_option(
 int
 tinyrad_initialize(
          TinyRad **                    trp,
+         TinyRadDict *                 dict,
          const char *                  url,
          uint64_t                      opts )
 {
@@ -349,6 +355,27 @@ tinyrad_initialize(
    {
       tinyrad_tiyrad_free(tr);
       return(rc);
+   };
+
+   // duplicate or initialize dictionary
+   if ((dict))
+   {
+      if ((rc = tinyrad_dict_dup(&tr->dict, dict)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
+   } else {
+      if ((rc = tinyrad_dict_initialize(&tr->dict, 0)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
+      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, 0)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
    };
 
    *trp = tinyrad_obj_retain(&tr->obj);

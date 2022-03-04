@@ -215,7 +215,7 @@ int main(int argc, char * argv[])
       return(0);
    };
 
-   if ((tinyrad_initialize(&tr, url, 0)) != TRAD_SUCCESS)
+   if ((tinyrad_initialize(&tr, dict, url, 0)) != TRAD_SUCCESS)
    {
       tinyrad_free(dict);
       return(1);

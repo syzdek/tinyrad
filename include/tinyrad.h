@@ -682,6 +682,7 @@ tinyrad_get_option(
 _TINYRAD_F int
 tinyrad_initialize(
          TinyRad **                    trp,
+         TinyRadDict *                 dict,
          const char *                  url,
          uint64_t                      opts );
 

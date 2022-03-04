@@ -210,7 +210,7 @@ int main( int argc, char * argv[] )
       tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL,  &debug);
 
    // initialize tinyrad
-   if ((rc = tinyrad_initialize(&tr, "radius://localhost/secret", 0)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_initialize(&tr, NULL, "radius://localhost/secret", 0)) != TRAD_SUCCESS)
       return(our_error(opts, NULL, "tinyrad_initialize(tr, \"radius://localhost/secret\", 0): %s", tinyrad_strerror(rc)));
 
    // TRAD_OPT_DESC
