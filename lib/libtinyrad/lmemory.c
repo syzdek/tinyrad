@@ -716,6 +716,8 @@ tinyrad_free(
          void *                        ptr )
 {
    TinyRadDebugTrace();
+   if (!(ptr))
+      return;
    if (tinyrad_verify_is_obj(ptr) == TRAD_NO)
    {
       free(ptr);
