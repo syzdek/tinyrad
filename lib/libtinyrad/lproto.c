@@ -107,6 +107,13 @@ tinyrad_attr_vals_index(
          const TinyRadOID *            attr_oid );
 
 
+TinyRadAttrValues *
+tinyrad_attr_vals_lookup(
+         TinyRadAttrList *             list,
+         const char *                  attr_name,
+         const TinyRadOID *            attr_oid );
+
+
 //------------------------//
 // pckt memory prototypes //
 //------------------------//
@@ -299,6 +306,37 @@ tinyrad_attr_vals_index(
    compar      = (int(*)(const void *, const void *))&tinyrad_attr_vals_cmp_key;
 
    return(tinyrad_array_search(list_ptr, list_len, list_width, attr_oid, opts, NULL, compar));
+}
+
+
+TinyRadAttrValues *
+tinyrad_attr_vals_lookup(
+         TinyRadAttrList *             list,
+         const char *                  attr_name,
+         const TinyRadOID *            attr_oid )
+{
+   TinyRadOID *         oid;
+   ssize_t              idx;
+
+   TinyRadDebugTrace();
+
+   assert(list != NULL);
+   assert( (!(attr_name)) || (!(attr_oid)) );
+
+   // set OID
+   oid = NULL;
+   if (!(attr_oid))
+   {
+      if ((oid = tinyrad_str2oid(attr_name)) == NULL)
+         return(NULL);
+      attr_oid = oid;
+   };
+
+   // search for attribute value
+   idx = tinyrad_attr_vals_index(list, attr_oid);
+   tinyrad_free(oid);
+
+   return( (idx < 0) ? NULL : list->attrvals[idx] );
 }
 
 
