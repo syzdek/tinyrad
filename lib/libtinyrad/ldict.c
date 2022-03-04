@@ -677,6 +677,90 @@ tinyrad_dict_add_vendor(
 }
 
 
+int
+tinyrad_dict_dup(
+         TinyRadDict **                dstp,
+         TinyRadDict *                 src )
+{
+   TinyRadDict *     dict;
+   int               rc;
+
+   assert(dstp != NULL);
+   assert(src  != NULL);
+
+   // allocate new dictionary
+   if ((dict = tinyrad_obj_alloc(sizeof(TinyRadDict), (void(*)(void*))&tinyrad_dict_free)) == NULL)
+      return(TRAD_ENOMEM);
+   dict->opts      = src->opts;
+   dict->obj_count = src->obj_count;
+
+   // copies search paths
+   if ((rc = tinyrad_strsdup(&dict->paths, src->paths)) != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   // copies attributes by name
+   rc = tinyrad_obj_list_dup( (TinyRadObj***)&dict->attrs_name, &dict->attrs_name_len,
+                              (TinyRadObj**)src->attrs_name,    src->attrs_name_len );
+   if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   // copies attributes by type
+   rc = tinyrad_obj_list_dup( (TinyRadObj***)&dict->attrs_type, &dict->attrs_type_len,
+                              (TinyRadObj**)src->attrs_type,    src->attrs_type_len );
+   if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   // copies values by data
+   rc = tinyrad_obj_list_dup( (TinyRadObj***)&dict->values_data, &dict->values_data_len,
+                              (TinyRadObj**)src->values_data,    src->values_data_len );
+   if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   // copies values by name
+   rc = tinyrad_obj_list_dup( (TinyRadObj***)&dict->values_name, &dict->values_name_len,
+                              (TinyRadObj**)src->values_name,    src->values_name_len );
+   if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   // copies vendors by id
+   rc = tinyrad_obj_list_dup( (TinyRadObj***)&dict->vendors_id, &dict->vendors_id_len,
+                              (TinyRadObj**)src->vendors_id,    src->vendors_id_len );
+   if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   // copies vendors by name
+   rc = tinyrad_obj_list_dup( (TinyRadObj***)&dict->vendors_name, &dict->vendors_name_len,
+                              (TinyRadObj**)src->vendors_name,    src->vendors_name_len );
+   if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
+
+   *dstp = tinyrad_obj_retain(&dict->obj);
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// Initialize dicitionary file buffer
 ///
 /// @param[in]  dict          dictionary reference
