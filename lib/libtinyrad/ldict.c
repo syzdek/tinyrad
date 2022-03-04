@@ -538,8 +538,6 @@ tinyrad_dict_add_path(
          const char *                  path )
 {
    int             rc;
-   size_t          size;
-   char **         paths;
    struct stat     sb;
 
    TinyRadDebugTrace();
@@ -550,15 +548,8 @@ tinyrad_dict_add_path(
    if ((rc = tinyrad_stat(path, &sb, S_IFDIR)) != TRAD_SUCCESS)
       return(rc);
 
-   size = sizeof(char **) * (dict->paths_len + 2);
-   if ((paths = realloc(dict->paths, size)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->paths = paths;
-
-   if ((dict->paths[dict->paths_len] = strdup(path)) == NULL)
-      return(TRAD_ENOMEM);
-   dict->paths_len++;
-   dict->paths[dict->paths_len] = NULL;
+   if ((rc = tinyrad_strsadd(&dict->paths, path)) != TRAD_SUCCESS)
+      return(rc);
 
    return(TRAD_SUCCESS);
 }
