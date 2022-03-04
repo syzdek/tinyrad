@@ -177,6 +177,8 @@
 #define TRAD_ESCHEME                0x000c ///< invalid or mismatched URL scheme
 #define TRAD_EINVAL                 0x000d ///< invalid argument
 #define TRAD_EASSUMPTION            0x000e ///< invalid developer assumption
+#define TRAD_EATTRIBUTE             0x000f ///< invalid or unknown attribute
+#define TRAD_EATTRVAL               0x0010 ///< invalid or unknown attribute value
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFFU

@@ -89,6 +89,8 @@ tinyrad_error_map(
       case TRAD_ESCHEME:      return("invalid or mismatched URL scheme");
       case TRAD_EINVAL:       return("invalid argument");
       case TRAD_EASSUMPTION:  return("invalid developer assumption");
+      case TRAD_EATTRIBUTE:   return("invalid or unknown attribute");
+      case TRAD_EATTRVAL:     return("invalid or unknown attribute value");
       default:
       break;
    };
