@@ -101,6 +101,12 @@ tinyrad_attr_vals_free(
          TinyRadAttrValues *           av );
 
 
+ssize_t
+tinyrad_attr_vals_index(
+         TinyRadAttrList *             list,
+         TinyRadOID *                  oid );
+
+
 //------------------------//
 // pckt memory prototypes //
 //------------------------//
@@ -267,6 +273,32 @@ tinyrad_attr_vals_free(
    free(av);
 
    return;
+}
+
+
+ssize_t
+tinyrad_attr_vals_index(
+         TinyRadAttrList *             list,
+         TinyRadOID *                  oid )
+{
+   void *               list_ptr;
+   size_t               list_len;
+   size_t               list_width;
+   unsigned             opts;
+   int (*compar)(const void *, const void *);
+
+   TinyRadDebugTrace();
+
+   assert(list != NULL);
+   assert(oid  != NULL);
+
+   list_ptr    = list->attrvals;
+   list_len    = list->attrvals_len;
+   list_width  = sizeof(TinyRadAttrValues *);
+   opts        = TINYRAD_ARRAY_FIRSTDUP;
+   compar      = (int(*)(const void *, const void *))&tinyrad_attr_vals_cmp_key;
+
+   return(tinyrad_array_search(list_ptr, list_len, list_width, oid, opts, NULL, compar));
 }
 
 
