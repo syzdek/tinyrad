@@ -651,6 +651,16 @@ tinyrad_binval_dup(
          const TinyRadBinValue *       ptr );
 
 
+_TINYRAD_F size_t
+tinyrad_binval_list_count(
+         TinyRadBinValue **            list );
+
+
+_TINYRAD_F void
+tinyrad_binval_list_free(
+         TinyRadBinValue **            list );
+
+
 _TINYRAD_F TinyRadBinValue *
 tinyrad_binval_realloc(
          TinyRadBinValue *             ptr,

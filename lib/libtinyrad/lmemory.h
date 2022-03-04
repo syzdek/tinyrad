@@ -62,6 +62,17 @@
 //////////////////
 #pragma mark - Prototypes
 
+//--------------------------------//
+// TinyRadBinValue list functions //
+//--------------------------------//
+#pragma mark TinyRadBinValue list functions
+
+int
+tinyrad_binval_list_add(
+         TinyRadBinValue ***           listp,
+         const TinyRadBinValue *       val );
+
+
 //-------------------//
 // object prototypes //
 //-------------------//

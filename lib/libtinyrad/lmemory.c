@@ -625,6 +625,66 @@ tinyrad_binval_realloc(
 }
 
 
+//--------------------------------//
+// TinyRadBinValue list functions //
+//--------------------------------//
+#pragma mark TinyRadBinValue list functions
+
+int
+tinyrad_binval_list_add(
+         TinyRadBinValue ***           listp,
+         const TinyRadBinValue *       val )
+{
+   TinyRadBinValue **      list;
+   size_t                  len;
+   size_t                  size;
+
+   assert(listp != NULL);
+   assert(val   != NULL);
+
+   // calculate current length of list
+   len = tinyrad_binval_list_count(*listp);
+
+   // increase size of list
+   size = sizeof(TinyRadBinValue *) * (len+2);
+   if ((list = realloc(*listp, size)) == NULL)
+      return(TRAD_ENOMEM);
+   list[len + 1] = NULL;
+
+   // duplicate value
+   if ((list[len] = tinyrad_binval_dup(val)) == NULL)
+      return(TRAD_ENOMEM);
+
+   return(TRAD_SUCCESS);
+}
+
+
+size_t
+tinyrad_binval_list_count(
+         TinyRadBinValue **            list )
+{
+   size_t len;
+   if (!(list))
+      return(0);
+   for(len = 0; ((list[len])); len++);
+   return(len);
+}
+
+
+void
+tinyrad_binval_list_free(
+         TinyRadBinValue **            list )
+{
+   size_t pos;
+   if (!(list))
+      return;
+   for(pos = 0; ((list[pos])); pos++)
+      tinyrad_free(list[pos]);
+   free(list);
+   return;
+}
+
+
 //------------------//
 // object functions //
 //------------------//
