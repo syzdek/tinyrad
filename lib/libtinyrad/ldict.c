@@ -716,11 +716,7 @@ tinyrad_dict_free(
 
    // free paths
    if ((dict->paths))
-   {
-      for(pos = 0; (pos < dict->paths_len); pos++)
-         free(dict->paths[pos]);
-      free(dict->paths);
-   };
+      tinyrad_strsfree(dict->paths);
 
    // free values
    if ((dict->values_data))
