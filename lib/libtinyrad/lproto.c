@@ -116,7 +116,7 @@ tinyrad_attr_vals_alloc(
 
    assert(oid != NULL);
 
-   if ((av = tinyrad_obj_alloc(sizeof(TinyRadAttrValues), NULL)) == NULL)
+   if ((av = tinyrad_obj_alloc(sizeof(TinyRadAttrValues), (void(*)(void*))&tinyrad_attr_vals_free)) == NULL)
       return(NULL);
    av->type_octs = 1;
    av->len_octs  = 1;
