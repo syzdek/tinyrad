@@ -91,7 +91,7 @@ tinyrad_oid_init
 tinyrad_oid_values
 #
 # protocol functions
-tinyrad_avplist_initialize
+tinyrad_attr_list_initialize
 tinyrad_htonll
 tinyrad_ntohll
 #

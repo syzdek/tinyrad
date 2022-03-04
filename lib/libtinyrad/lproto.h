@@ -77,6 +77,15 @@ typedef struct _tinyrad_attr_values
 } TinyRadAttrValues;
 
 
+struct _tinyrad_attr_list
+{
+   TinyRadObj           obj;
+   TinyRadDict *        dict;
+   size_t               attrvals_len;
+   TinyRadAttrValues ** attrvals;
+};
+
+
 typedef struct tinyrad_packet
 {
    uint8_t              pckt_code;               // RFC 2865 Section 3. Packet Format: Code

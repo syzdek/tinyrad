@@ -56,6 +56,21 @@
 //////////////////
 #pragma mark - Prototypes
 
+//---------------------------//
+// attribute list prototypes //
+//---------------------------//
+#pragma mark attribute list prototypes
+
+TinyRadAttrList *
+tinyrad_attr_list_alloc(
+         TinyRadDict *                 dict );
+
+
+void
+tinyrad_attr_list_free(
+         TinyRadAttrList *             list );
+
+
 //----------------------------//
 // attribute value prototypes //
 //----------------------------//
@@ -99,6 +114,69 @@ tinyrad_pckt_buff_realloc(
 //             //
 /////////////////
 #pragma mark - Functions
+
+//--------------------------//
+// attribute list functions //
+//--------------------------//
+#pragma mark attribute list functions
+
+TinyRadAttrList *
+tinyrad_attr_list_alloc(
+         TinyRadDict *                 dict )
+{
+   TinyRadAttrList * list;
+   if ((list = tinyrad_obj_alloc(sizeof(TinyRadAttrList), (void(*)(void*))&tinyrad_attr_list_free)) == NULL)
+      return(NULL);
+   list->dict = ((dict)) ? tinyrad_obj_retain(&dict->obj) : NULL;
+   return(list);
+}
+
+
+void
+tinyrad_attr_list_free(
+         TinyRadAttrList *             list )
+{
+   size_t pos;
+
+   if (!(list))
+      return;
+
+   if ((list->dict))
+      tinyrad_obj_release(&list->dict->obj);
+
+   if ((list->attrvals))
+   {
+      for(pos = 0; (pos < list->attrvals_len); pos++)
+         tinyrad_free(list->attrvals[pos]);
+      free(list->attrvals);
+   };
+
+   free(list);
+
+   return;
+}
+
+
+int
+tinyrad_attr_list_initialize(
+         TinyRad *                     tr,
+         TinyRadAttrList **            listp )
+{
+   TinyRadAttrList *    list;
+
+   assert(tr    != NULL);
+   assert(listp != NULL);
+
+   if ((list = tinyrad_attr_list_alloc(tr->dict)) == NULL)
+      return(TRAD_ENOMEM);
+
+   list->dict = tinyrad_obj_retain(&tr->dict->obj);
+
+   *listp = tinyrad_obj_retain(&list->obj);
+
+   return(TRAD_SUCCESS);
+}
+
 
 //---------------------------//
 // attribute value functions //
