@@ -744,42 +744,6 @@ tinyrad_obj_alloc(
 }
 
 
-int
-tinyrad_obj_list_dup(
-         TinyRadObj ***                dstp,
-         size_t *                      dst_lenp,
-         TinyRadObj **                 src,
-         size_t                        src_len )
-{
-   TinyRadObj **     dst;
-   size_t            size;
-   size_t            pos;
-
-   assert(dstp     != NULL);
-   assert(dst_lenp != NULL);
-
-   if ( (!(src)) || (!(src_len)) )
-   {
-      *dstp     = NULL;
-      *dst_lenp = 0;
-      return(TRAD_SUCCESS);
-   };
-
-   size = sizeof(TinyRadObj *) * (src_len+1);
-   if ((dst = malloc(size)) == NULL)
-      return(TRAD_ENOMEM);
-
-   for(pos = 0; (pos < src_len); pos++)
-      dst[pos] = tinyrad_obj_retain(src[pos]);
-   dst[pos] = NULL;
-
-   *dstp     = dst;
-   *dst_lenp = src_len;
-
-   return(TRAD_SUCCESS);
-}
-
-
 void
 tinyrad_obj_list_free(
          TinyRadObj **                 list,
