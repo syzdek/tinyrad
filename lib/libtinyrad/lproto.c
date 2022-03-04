@@ -104,7 +104,7 @@ tinyrad_attr_vals_free(
 ssize_t
 tinyrad_attr_vals_index(
          TinyRadAttrList *             list,
-         TinyRadOID *                  oid );
+         const TinyRadOID *            attr_oid );
 
 
 //------------------------//
@@ -279,7 +279,7 @@ tinyrad_attr_vals_free(
 ssize_t
 tinyrad_attr_vals_index(
          TinyRadAttrList *             list,
-         TinyRadOID *                  oid )
+         const TinyRadOID *            attr_oid )
 {
    void *               list_ptr;
    size_t               list_len;
@@ -289,16 +289,16 @@ tinyrad_attr_vals_index(
 
    TinyRadDebugTrace();
 
-   assert(list != NULL);
-   assert(oid  != NULL);
+   assert(list     != NULL);
+   assert(attr_oid != NULL);
 
    list_ptr    = list->attrvals;
    list_len    = list->attrvals_len;
    list_width  = sizeof(TinyRadAttrValues *);
-   opts        = TINYRAD_ARRAY_FIRSTDUP;
+   opts        = TINYRAD_ARRAY_LASTDUP;
    compar      = (int(*)(const void *, const void *))&tinyrad_attr_vals_cmp_key;
 
-   return(tinyrad_array_search(list_ptr, list_len, list_width, oid, opts, NULL, compar));
+   return(tinyrad_array_search(list_ptr, list_len, list_width, attr_oid, opts, NULL, compar));
 }
 
 
