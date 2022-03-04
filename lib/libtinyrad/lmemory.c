@@ -724,6 +724,21 @@ tinyrad_obj_alloc(
 
 
 void
+tinurad_obj_list_free(
+         TinyRadObj **                 list,
+         size_t                        list_len )
+{
+   size_t pos;
+   if (!(list))
+      return;
+   for(pos = 0; (pos < list_len); pos++)
+      tinyrad_obj_release(list[pos]);
+   free(list);
+   return;
+}
+
+
+void
 tinyrad_obj_release(
          TinyRadObj *                  obj )
 {

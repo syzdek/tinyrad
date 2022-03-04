@@ -85,6 +85,12 @@ tinyrad_obj_alloc(
 
 
 void
+tinurad_obj_list_free(
+         TinyRadObj **                 list,
+         size_t                        list_len );
+
+
+void
 tinyrad_obj_release(
          TinyRadObj *                  obj );
 
