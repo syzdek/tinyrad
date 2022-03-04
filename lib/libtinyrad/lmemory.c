@@ -760,7 +760,7 @@ tinyrad_obj_list_dup(
 
 
 void
-tinurad_obj_list_free(
+tinyrad_obj_list_free(
          TinyRadObj **                 list,
          size_t                        list_len )
 {
