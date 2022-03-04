@@ -84,6 +84,14 @@ tinyrad_obj_alloc(
          void (*free_func)(void * ptr) );
 
 
+int
+tinurad_obj_list_dup(
+         TinyRadObj ***                dstp,
+         size_t *                      dst_lenp,
+         TinyRadObj **                 src,
+         size_t                        src_len );
+
+
 void
 tinurad_obj_list_free(
          TinyRadObj **                 list,
