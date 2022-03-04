@@ -84,6 +84,12 @@ tinyrad_attr_vals_alloc(
          uint32_t                      flags );
 
 
+int
+tinyrad_attr_vals_cmp_obj(
+         const TinyRadAttrValues **    a,
+         const TinyRadAttrValues **    b );
+
+
 void
 tinyrad_attr_vals_free(
          TinyRadAttrValues *           av );
@@ -209,6 +215,18 @@ tinyrad_attr_vals_alloc(
    };
 
    return(NULL);
+}
+
+
+int
+tinyrad_attr_vals_cmp_obj(
+         const TinyRadAttrValues **    a,
+         const TinyRadAttrValues **    b )
+{
+   int   rc;
+   if ((rc = tinyrad_oid_cmp(&(*a)->oid, &(*b)->oid)) != 0)
+      return(rc);
+   return(0);
 }
 
 
