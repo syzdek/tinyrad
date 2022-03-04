@@ -85,6 +85,12 @@ tinyrad_attr_vals_alloc(
 
 
 int
+tinyrad_attr_vals_cmp_key(
+         const TinyRadAttrValues **    obj,
+         const TinyRadObj *            oid );
+
+
+int
 tinyrad_attr_vals_cmp_obj(
          const TinyRadAttrValues **    a,
          const TinyRadAttrValues **    b );
@@ -215,6 +221,18 @@ tinyrad_attr_vals_alloc(
    };
 
    return(NULL);
+}
+
+
+int
+tinyrad_attr_vals_cmp_key(
+         const TinyRadAttrValues **    obj,
+         const TinyRadObj *            oid )
+{
+   int   rc;
+   if ((rc = tinyrad_oid_cmp(&(*obj)->oid, &oid)) != 0)
+      return(rc);
+   return(0);
 }
 
 
