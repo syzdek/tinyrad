@@ -149,12 +149,6 @@ tinyrad_dict_attr_oidname(
          const TinyRadOID *            oid );
 
 
-int
-tinyrad_dict_dup(
-         TinyRadDict **                dstp,
-         TinyRadDict *                 src );
-
-
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
          TinyRadDict *                 dict,
