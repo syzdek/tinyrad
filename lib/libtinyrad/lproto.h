@@ -73,7 +73,6 @@ typedef struct _tinyrad_attr_values
    uint8_t              len_octs;
    uint8_t              pad8;
    uint32_t             flags;
-   size_t               values_len;
    TinyRadBinValue **   values;
 } TinyRadAttrValues;
 

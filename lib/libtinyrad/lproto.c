@@ -138,22 +138,17 @@ void
 tinyrad_attr_vals_free(
          TinyRadAttrValues *           av )
 {
-   uint32_t    pos;
-
    if (!(av))
       return;
 
    if ((av->name))
       free(av->name);
+
    if ((av->oid))
       free(av->oid);
 
    if ((av->values))
-   {
-      for(pos = 0; (pos < av->values_len); pos++)
-         tinyrad_free(av->values[pos]);
-      free(av->values);
-   };
+      tinyrad_binval_list_free(av->values);
 
    free(av);
 
