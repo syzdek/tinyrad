@@ -323,6 +323,21 @@ tinyrad_initialize(
    tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
    tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
 
+   // retain existing or initialize new dictionary
+   if ((tr->dict = tinyrad_obj_retain(&dict->obj)) == NULL)
+   {
+      if ((rc = tinyrad_dict_initialize(&tr->dict, 0)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
+      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, 0)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
+   };
+
    // generates initial authenticator
    if ((fd = open("/dev/urandom", O_RDONLY)) != -1)
    {
@@ -355,27 +370,6 @@ tinyrad_initialize(
    {
       tinyrad_tiyrad_free(tr);
       return(rc);
-   };
-
-   // duplicate or initialize dictionary
-   if ((dict))
-   {
-      if ((rc = tinyrad_dict_dup(&tr->dict, dict)) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
-   } else {
-      if ((rc = tinyrad_dict_initialize(&tr->dict, 0)) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
-      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, 0)) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
    };
 
    *trp = tinyrad_obj_retain(&tr->obj);
