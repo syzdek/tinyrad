@@ -140,4 +140,10 @@ tinyrad_strscount(
          char **                       strs );
 
 
+int
+tinyrad_strsdup(
+         char ***                      dstp,
+         char **                       src );
+
+
 #endif /* end of header */

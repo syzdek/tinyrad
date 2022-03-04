@@ -914,6 +914,43 @@ tinyrad_strscount(
 }
 
 
+int
+tinyrad_strsdup(
+         char ***                      dstp,
+         char **                       src )
+{
+   size_t      len;
+   size_t      size;
+   size_t      pos;
+   char **     dst;
+
+   TinyRadDebugTrace();
+
+   assert(dstp != NULL);
+   assert(src   != NULL);
+
+   len  = tinyrad_strscount(src);
+   size = sizeof(char *) * (len+1);
+
+   if ((dst = malloc(size)) == NULL)
+      return(TRAD_ENOMEM);
+
+   for(pos = 0; (pos < len); pos++)
+   {
+      if ((dst[pos] = tinyrad_strdup(src[pos])) == NULL)
+      {
+         tinyrad_strsfree(dst);
+         return(TRAD_ENOMEM);
+      };
+   };
+   dst[pos] = NULL;
+
+   *dstp = dst;
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// frees NULL terminated array of strings
 ///
 /// @param[in]  strs          pointer to string array
