@@ -85,7 +85,7 @@ tinyrad_obj_alloc(
 
 
 int
-tinurad_obj_list_dup(
+tinyrad_obj_list_dup(
          TinyRadObj ***                dstp,
          size_t *                      dst_lenp,
          TinyRadObj **                 src,
