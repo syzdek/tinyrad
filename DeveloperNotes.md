@@ -13,9 +13,9 @@ TinyRad (Tiny RADIUS Client Library) uses manual reference counters internally
 to manage memory of nested data structures.  TinyRad data structures utilizing
 reference counters must be declared with the first member of the type
 `TinyRadObj` (`struct _tinyrad_obj`).  `TinyRadObj` contains a magic number, a
-counter with an atomic data type, and a pointer to the function used to free the
-memory and resources used by the data structure.  All data structures using
-reference counters should be allocated using `tinyrad_obj_alloc()`.
+counter with an atomic data type, and a pointer to the function used to free
+the memory and resources used by the data structure.  All data structures
+using reference counters should be allocated using `tinyrad_obj_alloc()`.
 
 The TinyRad library uses the following functions to manage data structures
 utilizing reference counters:
@@ -36,22 +36,24 @@ utilizing reference counters:
      referenced in the TinyRadObj member will be called to free the memory and
      resources.
 
-   * `tinyrad_verify_is_obj()` returns `TRAD_YES` if the referenced memory uses
-     reference counters and returns `TRAD_NO` if the referenced memory does not
-     use reference counters.  `tinyrad_verify_is_obj` is primarily used by
-     `tinyrad_free()` to distinguish between managed memory and unmanaged
-     memory.
+   * `tinyrad_verify_is_obj()` returns `TRAD_YES` if the referenced memory
+     uses reference counters and returns `TRAD_NO` if the referenced memory
+     does not use reference counters.  `tinyrad_verify_is_obj` is primarily
+     used by `tinyrad_free()` to distinguish between managed memory and
+     unmanaged memory.
 
-   * `tinyrad_free()` is a public function which uses `tinyrad_verify_is_obj()`
-     to determine if a pointer references managed memory or unmanaged memory. If
-     the memory is unmanaged, `tinyrad_free()` will call the equivalent of
-     `fre()` to free the referenced memory. If the memory is managed, the
-     `tinyrad_obj_release()` will be called.
+   * `tinyrad_free()` is a public function which uses the function
+     `tinyrad_verify_is_obj()` to determine if a pointer references managed
+     memory or unmanaged memory.  If the memory is unmanaged, `tinyrad_free()`
+     will call the equivalent of `free()` to free the referenced memory. If
+     the memory is managed, then the function `tinyrad_obj_release()` will be
+     called.
 
-Programs and libraries external to the TinyRad library must use `tinyrad_free()`
-to free data structures and memory allocated by the TinyRad library.  A process
-which calls either `tinyrad_free()` or `tinyrad_obj_release()` on managed memory
-should consider the referenced memory unallocated.
+Unless otherwise specified in the TinyRad documentation, programs and
+libraries external to the TinyRad library must use the `tinyrad_free()`
+function to free data structures and memory allocated by the TinyRad library.
+A process which calls either `tinyrad_free()` or `tinyrad_obj_release()` on
+managed memory should consider the referenced memory unallocated.
 
 
 Dictionary
