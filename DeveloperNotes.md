@@ -3,19 +3,35 @@ Tiny RADIUS Client Library
 ==========================
 
 This file contains miscellaneous notes from the developer regarding the
-project design, system/compiler assumptions, and code style.  Please review
-these notes before submitting patches to the developer.
+project design, system/compiler assumptions, and code style of TinyRad (Tiny
+RADIUS Client Library).  Please review these notes before submitting patches
+to the developer.
+
+Table of Contents
+-----------------
+
+   * Coding Style and Guidelines
+   * Memory Management
+   * Tiny RADIUS OID
+   * Tiny RADIUS Dictionary
+
+
+Coding Style and Guidelines
+===========================
+
+To be written.
+
 
 Memory Management
 =================
 
-TinyRad (Tiny RADIUS Client Library) uses manual reference counters internally
-to manage memory of nested data structures.  TinyRad data structures utilizing
-reference counters must be declared with the first member of the type
-`TinyRadObj` (`struct _tinyrad_obj`).  `TinyRadObj` contains a magic number, a
-counter with an atomic data type, and a pointer to the function used to free
-the memory and resources used by the data structure.  All data structures
-using reference counters should be allocated using `tinyrad_obj_alloc()`.
+TinyRad uses manual reference counters internally to manage memory of nested
+data structures.  TinyRad data structures utilizing reference counters must be
+declared with the first member of the type `TinyRadObj`
+(`struct _tinyrad_obj`).  `TinyRadObj` contains a magic number, a counter with
+an atomic data type, and a pointer to the function used to free the memory and
+resources used by the data structure.  All data structures using reference
+counters should be allocated using `tinyrad_obj_alloc()`.
 
 The TinyRad library uses the following functions to manage data structures
 utilizing reference counters:
@@ -56,8 +72,14 @@ A process which calls either `tinyrad_free()` or `tinyrad_obj_release()` on
 managed memory should consider the referenced memory unallocated.
 
 
-Dictionary
-==========
+Tiny RADIUS OID
+===============
+
+To be written.
+
+
+Tiny RADIUS Dictionary
+======================
 
 Object sort orders:
 
