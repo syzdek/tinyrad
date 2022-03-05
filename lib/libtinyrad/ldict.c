@@ -341,7 +341,7 @@ tinyrad_dict_value_index(
          TinyRadDict *                 dict,
          const char *                  name,
          TinyRadOID *                  oid,
-         uint64_t                      value_data,
+         uint64_t                      data,
          int                           by_attr );
 
 
@@ -2201,7 +2201,7 @@ tinyrad_dict_value_index(
          TinyRadDict *                 dict,
          const char *                  name,
          TinyRadOID *                  oid,
-         uint64_t                      value_data,
+         uint64_t                      data,
          int                           by_attr )
 {
    size_t               width;
@@ -2221,7 +2221,7 @@ tinyrad_dict_value_index(
    memset(&key, 0, sizeof(key));
    key.str           = name;
    key.oid           = oid;
-   key.data          = value_data;
+   key.data          = data;
 
    if ((name))
    {
