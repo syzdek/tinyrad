@@ -2022,8 +2022,8 @@ tinyrad_dict_value_cmp_key_data(
    if ((rc = tinyrad_dict_value_cmp_key_attr(ptr, key)) != 0)
       return(rc);
 
-   if ((*obj)->data != dat->value_data)
-      return( ((*obj)->data < dat->value_data) ? -1 : 1 );
+   if ((*obj)->data != dat->data)
+      return( ((*obj)->data < dat->data) ? -1 : 1 );
 
    return(0);
 }
@@ -2221,7 +2221,7 @@ tinyrad_dict_value_index(
    memset(&key, 0, sizeof(key));
    key.str           = name;
    key.oid           = oid;
-   key.value_data    = value_data;
+   key.data          = value_data;
 
    if ((name))
    {
@@ -2345,7 +2345,7 @@ tinyrad_dict_value_lookup(
    memset(&key, 0, sizeof(key));
    key.str           = name;
    key.oid           = attr->oid;
-   key.value_data    = data;
+   key.data          = data;
 
    if ((name))
    {
