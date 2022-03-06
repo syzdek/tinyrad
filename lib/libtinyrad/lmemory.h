@@ -143,7 +143,7 @@ tinyrad_strscount(
 int
 tinyrad_strsdup(
          char ***                      dstp,
-         char **                       src );
+         char * const *                src );
 
 
 #endif /* end of header */

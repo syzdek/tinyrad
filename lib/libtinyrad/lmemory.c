@@ -940,7 +940,7 @@ tinyrad_strscount(
 int
 tinyrad_strsdup(
          char ***                      dstp,
-         char **                       src )
+         char * const *                src )
 {
    size_t      len;
    size_t      size;
