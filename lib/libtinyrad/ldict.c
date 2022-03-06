@@ -822,6 +822,41 @@ tinyrad_dict_initialize(
 }
 
 
+int
+tinyrad_dict_set_option(
+         TinyRadDict *                 dict,
+         int                           option,
+         const void *                  invalue )
+{
+   int                  rc;
+   char **              strs;
+
+   TinyRadDebugTrace();
+
+   assert(dict    != NULL);
+   assert(invalue != NULL);
+
+   // set instance options
+   switch(option)
+   {
+      case TRAD_DICT_OPT_PATHS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_PATHS, invalue )", __func__);
+      if ((rc = tinyrad_strsdup(&strs, (char * const *)invalue)) != TRAD_SUCCESS)
+         return(rc);
+      tinyrad_strsfree(dict->paths);
+      dict->paths = strs;
+      break;
+
+      default:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, %i, invalue )", __func__, option);
+      return(TRAD_EOPTERR);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
+
 //--------------------------------//
 // dictionary attribute functions //
 //--------------------------------//

@@ -598,6 +598,13 @@ tinyrad_dict_print(
          uint32_t                      opts );
 
 
+_TINYRAD_F int
+tinyrad_dict_set_option(
+         TinyRadDict *                 dict,
+         int                           option,
+         const void *                  invalue );
+
+
 _TINYRAD_F TinyRadDictValue *
 tinyrad_dict_value_get(
          TinyRadDict *                 dict,
