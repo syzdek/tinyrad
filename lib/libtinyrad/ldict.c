@@ -751,6 +751,7 @@ tinyrad_dict_get_option(
          void *                        outvalue )
 {
    unsigned    uval;
+   int         rc;
 
    TinyRadDebugTrace();
 
@@ -764,6 +765,12 @@ tinyrad_dict_get_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_FLAGS, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", dict->opts);
       *((uint32_t *)outvalue) = dict->opts;
+      break;
+
+      case TRAD_DICT_OPT_PATHS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_PATHS, outvalue )", __func__);
+      if ((rc = tinyrad_strsdup(outvalue, dict->paths)) != TRAD_SUCCESS)
+         return(rc);
       break;
 
       case TRAD_DICT_OPT_REF_COUNT:
