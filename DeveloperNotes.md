@@ -12,8 +12,9 @@ Table of Contents
 
    * Coding Style and Guidelines
    * Memory Management
-   * Tiny RADIUS OID
    * Tiny RADIUS Dictionary
+     - Dictionary OID
+     - Dictionary Thread Safety
 
 
 Coding Style and Guidelines
@@ -72,14 +73,18 @@ A process which calls either `tinyrad_free()` or `tinyrad_obj_release()` on
 managed memory should consider the referenced memory unallocated.
 
 
-Tiny RADIUS OID
-===============
-
-To be written.
-
-
 Tiny RADIUS Dictionary
 ======================
+
+The TinyRad dictionary containes three types of entities.  The first entity,
+is the `TinyRadDictAttr`. `TinyRadDictAttr` is the primary entity and
+represents a RADIUS attribute definition.  A `TinyRadDictAttr` may reference a
+`TinyRadDictVendor` which contains a vendor definition of one or more
+attributes. A `TinyRadDictVendor` will contain the vendor's common
+specifications for its attributes such as "length octets" and "type octets".
+Some attributes have enumerated values, these are defined in
+`TinyRadDictValue`.  Each `TinyRadDictValue` references the associated
+`TinyRadDictAttr`.
 
 Object sort orders:
 
@@ -106,4 +111,72 @@ Object sort orders:
        - Attribute OID
        - Value Data
        - Order of Creation
+
+
+Dictionary OID
+--------------
+
+Internally, individual `TinyRadDictAttr` and `TinyRadDictValue` are uniquely
+identified using a numeric OID (`TinyRadOID`). The first element of the OID
+always identifies the RADIUS attribute defined by an RFC.  The elements of an
+OID contain an attribute type, optional sub-types, and an optional vendor ID.
+
+The simplest OID consists of just an attribute type such as :
+
+    2
+
+Where:
+
+   * `2` is the type of the *User-Password* attribute (RFC 2865 Section 5.2)
+
+An example of an OID for a Vendor-Specific attribute may be:
+
+    26.32473.57
+
+Where:
+
+   * `26` is the type of the *Vendor-Specific* attribute (RFC 2865 Section 5.26)
+   * `32473` is the Vendor-Id (example Enterprise Number defined in RFC 5612)
+   * `57` is the vendor type
+
+An example of an OID for an attribute of the EVS (Extended-Vendor-Specific)
+data type which contains two TLV (Type-Length-Value) data subtypes may be:
+
+    243.26.32473.122.54.231
+
+Where:
+
+   * `243` is the type of the *Extended-Type-3* attribute (RFC 6929 Section 3.3)
+   * `26` is the Extended-Type for Vendor sub-types (RFC 6929 Section 4.3)
+   * `32473` is the Vendor-Id (example Enterprise Number defined in RFC 5612)
+   * `122` is the vendor sub-type
+   * `54` is the TLV sub-type of `243.26.32473.122`
+   * `231` is the TLB sub-type of `243.26.32473.122.54`
+
+
+Dictionary Thread Safety
+------------------------
+
+The dictionary reference is not thread safe for read-write operations due to
+the lack of internal locks, however a dictionary reference can be safely used
+for read-only operations by multiple threads simultaneously.  Multiple TinyRad
+functions retain references and share references to the dictionary, so
+external locks are unable to ensure thread-saftey across mutiple threads for
+read-write access to the dictionary.
+
+A dictionary reference can be marked as read-only to ensure that it is not
+modified in a multi-threaded application after the definitions have been
+imported or loaded from defaults.  The following example snippet demonstrates
+how to make the dictionary read-only:
+
+    int opt = TRAD_YES;
+    tinyrad_dict_set_option(dict, TRAD_DICT_OPT_READONLY, &opt);
+
+Setting the dictionary to read-only disables the following functions for the
+specific dictionary reference:
+
+   * `tinyrad_dict_defaults()`
+   * `tinyrad_dict_import()`
+   * `tinyrad_dict_parse()`
+   * `tinyrad_dict_set_option()`
 
