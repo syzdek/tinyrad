@@ -179,6 +179,7 @@
 #define TRAD_EASSUMPTION            0x000e ///< invalid developer assumption
 #define TRAD_EATTRIBUTE             0x000f ///< invalid or unknown attribute
 #define TRAD_EATTRVAL               0x0010 ///< invalid or unknown attribute value
+#define TRAD_EDICTRO                0x0011 ///< dictionary is read-only
 
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFFU

@@ -91,6 +91,7 @@ tinyrad_error_map(
       case TRAD_EASSUMPTION:  return("invalid developer assumption");
       case TRAD_EATTRIBUTE:   return("invalid or unknown attribute");
       case TRAD_EATTRVAL:     return("invalid or unknown attribute value");
+      case TRAD_EDICTRO:      return("dictionary is read-only");
       default:
       break;
    };
