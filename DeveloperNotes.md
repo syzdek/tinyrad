@@ -13,6 +13,9 @@ Table of Contents
    * Coding Style and Guidelines
    * Memory Management
    * Tiny RADIUS Dictionary
+     - Dictionary Vendor
+     - Dictionary Attribute
+     - Dictionary Value
      - Dictionary OID
      - Dictionary Thread Safety
 
@@ -76,7 +79,11 @@ managed memory should consider the referenced memory unallocated.
 Tiny RADIUS Dictionary
 ======================
 
-The TinyRad dictionary containes three types of entities.  The first entity,
+The TinyRad dictionary containes definitions for vendors (`TinyRadDictVendor`),
+attributes (`TinyRadDictAttr`), and values (`TinyRadDictValue`).  These three
+entity types are used to convert between user friendly names and binary data.
+
+  The first entity,
 is the `TinyRadDictAttr`. `TinyRadDictAttr` is the primary entity and
 represents a RADIUS attribute definition.  A `TinyRadDictAttr` may reference a
 `TinyRadDictVendor` which contains a vendor definition of one or more
@@ -86,31 +93,80 @@ Some attributes have enumerated values, these are defined in
 `TinyRadDictValue`.  Each `TinyRadDictValue` references the associated
 `TinyRadDictAttr`.
 
-Object sort orders:
 
-   * Vendors
-     * Vendors By ID
-       - Vendor ID
-       - Order of Creation
-     * Vendor By Name
-       - Vendor Name
+Dictionary Vendor
+-----------------
 
-   * Attributes
-     * Attributes by Name
-       - Attribute Name
-     * Attributes by Type
-       - Vendor ID
-       - Attribute OID
-       - Attribute Order of Creation
+`TinyRadDictVendor` represents a RADIUS vendor. A `TinyRadDictVendor` will
+define the number of octets used to specify the vendor's attribute length
+(`len_octets`) and define the number of octets used to specify the vendor's
+attribute type (`type_octets`). If an unknown vendor ID is encountered, the
+library will assume the vendor uses a 1 byte "vendor length" and a 1 byte
+"vendor type" as illustrated by the example in section 5.26 of RFC 2865. The
+dictionary reference maintains the definitions of `TinyRadDictVendor` in an
+array sorted by name and in an array nominally sorted by Vendor-Id.
 
-   * Values
-     * Values by Name
-       - Attribute OID
-       - Value Name
-     * Values by Data
-       - Attribute OID
-       - Value Data
-       - Order of Creation
+The array sorted by name must not contain duplicate names and sorts using the
+following criteria:
+
+   * Vendor Name
+
+The array sorted nominally by Vendor-Id may contain duplicate Vendor-ID
+values if the Vendor-Id, `type_octets` and `len_octets` are identical among
+the vendors with duplicate Vendor-Id.  The array sorted nominally by Vendor-Id
+uses the following sort criteria:
+
+   * Vendor-Id
+   * Order of Creation
+
+
+Dictionary Attribute
+--------------------
+
+`TinyRadDictAttr` represents a RADIUS attribute definition.  If the attribute
+is specific to a vendor, then the `TinyRadDictAttr` will reference a
+`TinyRadDictVendor`.  The dictionary reference maintains the definitions of
+`TinyRadDictAttr` in an array sorted by name and in an array nominally sorted
+by OID.
+
+The array sorted by name must not contain duplicate names and sorts using the
+following criteria:
+
+   * Attribute Name
+
+The array sorted nominally by OID may contain duplicate OID values if the OID,
+vendor, data type, and flags are identical among the attributes with duplicate
+OID.  Allowing duplicate OID allow an attribute to be referenced by multiple
+names (i.e. if a later RFC updates the name of an attribute defined in a
+previous RFC). The array sorted nominally by OID uses the following
+sort criteria:
+
+   * Vendor-Id
+   * Attribute OID
+   * Order of Creation
+
+
+Dictionary Value
+----------------
+
+`TinyRadDictValue` represents an enumerated value of a RADIUS attribute of
+data types enum, integer, integer64, byte, short, and signed.  The dictionary
+reference maintains the definitions of `TinyRadDictValue` in an array
+nominally sorted by name and in an array nominally sorted by OID.
+
+The array sorted nominally by name must not contain duplicate value names for
+same attribute. Value names may be duplicated in different attributes. The
+array nominally sorted by name uses the following criteria:
+
+   * OID of Associated Attribute
+   * Value Name
+
+The array sorted nominally by name may contain duplicate values for the same
+attribute. The array sorted nominally by OID uses the following sort criteria:
+
+   * OID of Associated Attribute
+   * Value (i.e. integer data)
+   * Order of Creation
 
 
 Dictionary OID
