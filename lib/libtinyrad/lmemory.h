@@ -137,7 +137,7 @@ tinyrad_strsadd(
 
 size_t
 tinyrad_strscount(
-         char **                       strs );
+         char * const *                strs );
 
 
 int

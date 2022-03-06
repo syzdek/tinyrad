@@ -926,7 +926,7 @@ tinyrad_strsadd(
 /// @return number of strings in array
 size_t
 tinyrad_strscount(
-         char **                       strs )
+         char * const *                strs )
 {
    size_t count;
    TinyRadDebugTrace();
