@@ -744,6 +744,43 @@ tinyrad_dict_free(
 }
 
 
+int
+tinyrad_dict_get_option(
+         TinyRadDict *                 dict,
+         int                           option,
+         void *                        outvalue )
+{
+   unsigned    uval;
+
+   TinyRadDebugTrace();
+
+   assert(dict     != NULL);
+   assert(outvalue != NULL);
+
+   // get instance options
+   switch(option)
+   {
+      case TRAD_DICT_OPT_FLAGS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_FLAGS, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"" PRIu32 "\"", dict->opts);
+      *((uint32_t *)outvalue) = dict->opts;
+      break;
+
+      case TRAD_DICT_OPT_REF_COUNT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_REF_COUNT, outvalue )", __func__);
+      uval = (unsigned)tinyrad_obj_retain_count(&dict->obj);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", uval);
+      *((unsigned *)outvalue) = uval;
+      break;
+
+      default:
+      return(TRAD_EOPTERR);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// Initializes dictionary
 ///
 /// @param[out] dictp         pointer to dictionary reference

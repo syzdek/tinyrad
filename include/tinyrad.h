@@ -219,7 +219,7 @@
 #define TRAD_OPT_SCHEME                12
 
 // dictionary get options
-#define TRAD_DICT_OPT_REF_COUNT           1  // used by TinyRadDictVendor and TinyRadDictAttr
+#define TRAD_DICT_OPT_REF_COUNT           1  // used by TinyRadDict, TinyRadDictVendor and TinyRadDictAttr
 #define TRAD_DICT_OPT_NAME                2  // used by TinyRadDictVendor, TinyRadDictAttr, and TinyRadDictValue
 #define TRAD_DICT_OPT_TYPE                3  // used by TinyRadDictAttr and TinyRadDictValue
 #define TRAD_DICT_OPT_VEND_ID             4  // used by TinyRadDictVendor, TinyRadDictAttr, and TinyRadDictValue
@@ -227,7 +227,7 @@
 #define TRAD_DICT_OPT_TYPE_OCTS           6  // used by TinyRadDictVendor and TinyRadDictAttr
 #define TRAD_DICT_OPT_LEN_OCTS            7  // used by TinyRadDictVendor and TinyRadDictAttr
 #define TRAD_DICT_OPT_DATA_TYPE           8  // used by TinyRadDictAttr
-#define TRAD_DICT_OPT_FLAGS               9  // used by TinyRadDictAttr
+#define TRAD_DICT_OPT_FLAGS               9  // used by TinyRadDict and TinyRadDictAttr
 #define TRAD_DICT_OPT_DATA               10  // used by TinyRadDictValue
 #define TRAD_DICT_OPT_ATTR_NAME          11  // used by TinyRadDictAttr and TinyRadDictValue
 #define TRAD_DICT_OPT_OID                12  // used by TinyRadDictAttr and TinyRadDictValue
@@ -558,6 +558,13 @@ tinyrad_dict_defaults(
          TinyRadDict *                 dict,
          char ***                      msgsp,
          uint32_t                      opts );
+
+
+_TINYRAD_F int
+tinyrad_dict_get_option(
+         TinyRadDict *                 dict,
+         int                           option,
+         void *                        outvalue );
 
 
 _TINYRAD_F int
