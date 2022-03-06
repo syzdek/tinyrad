@@ -759,6 +759,7 @@ tinyrad_dict_get_option(
          void *                        outvalue )
 {
    unsigned    uval;
+   int         i;
    int         rc;
 
    TinyRadDebugTrace();
@@ -779,6 +780,13 @@ tinyrad_dict_get_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_PATHS, outvalue )", __func__);
       if ((rc = tinyrad_strsdup(outvalue, dict->paths)) != TRAD_SUCCESS)
          return(rc);
+      break;
+
+      case TRAD_DICT_OPT_READONLY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_READONLY, outvalue )", __func__);
+      i = tinyrad_dict_is_readonly(dict);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %u", ((i == TRAD_NO) ? "TRAD_NO" : "TRAD_YES"));
+      *((int *)outvalue) = i;
       break;
 
       case TRAD_DICT_OPT_REF_COUNT:
@@ -868,6 +876,12 @@ tinyrad_dict_set_option(
          return(rc);
       tinyrad_strsfree(dict->paths);
       dict->paths = strs;
+      break;
+
+      case TRAD_DICT_OPT_READONLY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( dict, TRAD_DICT_OPT_READONLY, %s )", __func__, ( (*((const int*)invalue) != TRAD_NO) ? "TRAD_YES" : "TRAD_NO" ) );
+      if (*((const int*)invalue) != TRAD_NO)
+         atomic_fetch_add(&dict->readonly, TRAD_YES);
       break;
 
       default:

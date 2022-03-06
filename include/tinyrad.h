@@ -233,6 +233,7 @@
 #define TRAD_DICT_OPT_ATTR_NAME          11  // used by TinyRadDictAttr and TinyRadDictValue
 #define TRAD_DICT_OPT_OID                12  // used by TinyRadDictAttr and TinyRadDictValue
 #define TRAD_DICT_OPT_PATHS              13  // used by TinyRadDict
+#define TRAD_DICT_OPT_READONLY           14  // used by TinyRadDict
 
 #define TRAD_OID_TYPE_NONE                0
 #define TRAD_OID_TYPE_ATTRIBUTE           1
