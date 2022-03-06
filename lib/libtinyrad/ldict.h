@@ -71,7 +71,7 @@ struct _tinyrad_dict
 {
    TinyRadObj              obj;
    uint32_t                opts;
-   uint32_t                pad32;
+   atomic_int_least32_t    readonly;
    uintptr_t               order_count;
    size_t                  attrs_name_len;
    size_t                  attrs_type_len;

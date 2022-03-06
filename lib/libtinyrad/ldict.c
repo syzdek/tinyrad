@@ -109,6 +109,11 @@ tinyrad_dict_free(
          TinyRadDict *                dict );
 
 
+int
+tinyrad_dict_is_readonly(
+         TinyRadDict *                dict );
+
+
 //---------------------------------//
 // dictionary attribute prototypes //
 //---------------------------------//
@@ -545,6 +550,9 @@ tinyrad_dict_add_path(
    assert(dict != NULL);
    assert(path != NULL);
 
+   if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
+      return(TRAD_EDICTRO);
+
    if ((rc = tinyrad_stat(path, &sb, S_IFDIR)) != TRAD_SUCCESS)
       return(rc);
 
@@ -808,6 +816,9 @@ tinyrad_dict_initialize(
       return(TRAD_ENOMEM);
    dict->opts = opts;
 
+   // initializes read-only flag
+   atomic_init(&dict->readonly, TRAD_NO);
+
    // initializes paths
    if ((dict->paths = malloc(sizeof(char *))) == NULL)
    {
@@ -819,6 +830,15 @@ tinyrad_dict_initialize(
    *dictp = tinyrad_obj_retain(&dict->obj);
 
    return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_dict_is_readonly(
+         TinyRadDict *                dict )
+{
+   assert(dict != NULL);
+   return((atomic_fetch_add(&dict->readonly, 0) == TRAD_NO) ? TRAD_NO : TRAD_YES);
 }
 
 
@@ -835,6 +855,9 @@ tinyrad_dict_set_option(
 
    assert(dict    != NULL);
    assert(invalue != NULL);
+
+   if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
+      return(TRAD_EDICTRO);
 
    // set instance options
    switch(option)
@@ -1315,6 +1338,8 @@ tinyrad_dict_defaults(
    TinyRadDebugTrace();
    assert(dict != NULL);
    assert(opts == 0);
+   if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
+      return(TRAD_EDICTRO);
    return(tinyrad_dict_import(dict, tinyrad_dict_default_vendors, tinyrad_dict_default_attrs, tinyrad_dict_default_values, msgsp, opts));
 }
 
@@ -1352,6 +1377,9 @@ tinyrad_dict_import(
 
    if ((msgsp))
       *msgsp = NULL;
+
+   if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
+      return(TRAD_EDICTRO);
 
    if ((vendor_defs))
    {
@@ -1452,6 +1480,9 @@ tinyrad_dict_parse(
       *msgsp = NULL;
 
    vendor = NULL;
+
+   if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
+      return(TRAD_EDICTRO);
 
    // initialize file buffer
    if ((rc = tinyrad_file_init(&file, path, dict->paths, NULL)) != TRAD_SUCCESS)
