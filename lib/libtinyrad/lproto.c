@@ -45,6 +45,7 @@
 #include <arpa/inet.h>
 #include <assert.h>
 
+#include "larray.h"
 #include "ldict.h"
 #include "lmemory.h"
 
@@ -75,6 +76,12 @@ tinyrad_attr_list_free(
 // attribute value prototypes //
 //----------------------------//
 #pragma mark attribute value prototypes
+
+int
+tinyrad_attr_vals_add(
+         TinyRadAttrList *             list,
+         TinyRadAttrValues *           av );
+
 
 TinyRadAttrValues *
 tinyrad_attr_vals_alloc(
@@ -207,6 +214,50 @@ tinyrad_attr_list_initialize(
 // attribute value functions //
 //---------------------------//
 #pragma mark attribute value functions
+
+int
+tinyrad_attr_vals_add(
+         TinyRadAttrList *             list,
+         TinyRadAttrValues *           av )
+{
+   size_t         size;
+   void *         ptr;
+   ssize_t        rc;
+   void **        listp;
+   size_t *       lenp;
+   size_t         width;
+   unsigned       opts;
+   int            (*compar)(const void *, const void *);
+   void           (*freeobj)(void *);
+   void *         (*reallocbase)(void *, size_t);
+
+   assert(list != NULL);
+   assert(av   != NULL);
+
+   // increase size of array
+   size = sizeof(TinyRadAttrValues *) * (list->attrvals_len+2);
+   if ((ptr = realloc(list->attrvals, size)) == NULL)
+      return(TRAD_ENOMEM);
+   list->attrvals[list->attrvals_len+0] = NULL;
+   list->attrvals[list->attrvals_len+1] = NULL;
+
+   // parameters for inserting data into array
+   listp       = (void **)&list->attrvals;
+   lenp        = &list->attrvals_len;
+   width       = sizeof(TinyRadAttrValues *);
+   opts        = TINYRAD_ARRAY_INSERT;
+   compar      = (int(*)(const void*, const void*)) &tinyrad_attr_vals_cmp_obj;
+   freeobj     = NULL;
+   reallocbase = NULL;
+
+   // save value to list
+   if ((rc = tinyrad_array_add(listp, lenp, width, &av, opts, compar, freeobj, reallocbase)) < 0)
+      return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   tinyrad_obj_retain(&av->obj);
+
+   return(TRAD_SUCCESS);
+}
+
 
 TinyRadAttrValues *
 tinyrad_attr_vals_alloc(
