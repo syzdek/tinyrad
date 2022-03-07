@@ -302,21 +302,21 @@ tinyrad_oid2str(
    char              str[(TRAD_OID_MAX_LEN*12)+7];
    char              num[12];
    uint32_t          cursor;
+   size_t            size;
 
    assert(oid != NULL);
    assert(oid->oid_len <= TRAD_OID_MAX_LEN);
 
    // add prefix
-   if (type == TRAD_OID_TYPE_NONE)
-      str[0] = '\0';
-   else if (type == TRAD_OID_TYPE_ATTRIBUTE)
-      tinyrad_strlcpy(str, "Attr-", sizeof(str));
-   else if (type == TRAD_OID_TYPE_VALUE)
-      tinyrad_strlcpy(str, "Value-", sizeof(str));
-   else if (type == TRAD_OID_TYPE_VENDOR)
-      tinyrad_strlcpy(str, "Vend-", sizeof(str));
-   else
-      tinyrad_strlcpy(str, "Unknown-", sizeof(str));
+   size = sizeof(str);
+   switch(type)
+   {
+      case TRAD_OID_TYPE_NONE:      str[0] = '\0';                          break;
+      case TRAD_OID_TYPE_ATTRIBUTE: tinyrad_strlcpy(str, "Attr-",    size); break;
+      case TRAD_OID_TYPE_VALUE:     tinyrad_strlcpy(str, "Value-",   size); break;
+      case TRAD_OID_TYPE_VENDOR:    tinyrad_strlcpy(str, "Vend-",    size); break;
+      default:                      tinyrad_strlcpy(str, "Unknown-", size); break;
+   };
 
    // append numeric values
    for(cursor = 0; (cursor < oid->oid_len); cursor++)
