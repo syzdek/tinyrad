@@ -206,10 +206,13 @@ attribute. The array sorted nominally by OID uses the following sort criteria:
 Dictionary OID
 --------------
 
-Internally, individual `TinyRadDictAttr` and `TinyRadDictValue` are uniquely
-identified using a numeric OID (`TinyRadOID`). The first element of the OID
-always identifies the RADIUS attribute defined by an RFC.  The elements of an
-OID contain an attribute type, optional sub-types, and an optional vendor ID.
+Internally, individual `TinyRadDictAttr` are uniquely identified using a
+numeric OID (`TinyRadOID`).  `TinyRadDictVendor` are indirectly identified
+in `TinyRadDictAttr` and `TinyRadDictValue` using a numeric OID. The first
+element of the OID always identifies a RADIUS attribute type defined by an
+RFC. The value of each subsequent element of an OID is dependent upon the
+attribute type and contains either an optional attribute sub-type or an
+optional Vendor-ID.
 
 The simplest OID consists of just an attribute type such as :
 
