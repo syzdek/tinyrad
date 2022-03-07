@@ -48,6 +48,7 @@
 #include "larray.h"
 #include "ldict.h"
 #include "lmemory.h"
+#include "loid.h"
 
 
 //////////////////
@@ -277,14 +278,20 @@ tinyrad_attr_vals_alloc(
    av->flags     = flags;
    av->data_type = ((data_type)) ? data_type : TRAD_DATATYPE_STRING;
 
-   av->name = ((name)) ? tinyrad_strdup(name) : tinyrad_oid2str(oid, TRAD_OID_TYPE_ATTRIBUTE);
-   if (av->name != NULL)
+   if ((av->oid = tinyrad_oid_dup(oid)) == NULL)
    {
       tinyrad_attr_vals_free(av);
       return(NULL);
    };
 
-   return(NULL);
+   av->name = ((name)) ? tinyrad_strdup(name) : tinyrad_oid2str(oid, TRAD_OID_TYPE_ATTRIBUTE);
+   if (av->name == NULL)
+   {
+      tinyrad_attr_vals_free(av);
+      return(NULL);
+   };
+
+   return(av);
 }
 
 
