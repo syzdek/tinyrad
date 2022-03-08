@@ -339,16 +339,39 @@ tinyrad_str2oid(
    TinyRadOID *      oid;
    uint32_t          cursor;
    uint32_t          value;
+   size_t            pos;
+   const char *      adjstr;
+   const char *      prefix;
+
+   const char *      prefixes[] =
+   {
+      "Attr-",
+      "Value-",
+      "Vend-",
+      "Unknown-",
+      NULL
+   };
 
    assert(str != NULL);
+
+   // adjust string to beginning of OID
+   adjstr = NULL;
+   for(pos = 0; ( (!(adjstr)) && ((prefixes[pos])) ); pos++)
+   {
+      prefix = prefixes[pos];
+      if ((strncasecmp(str, prefix, strlen(prefix))))
+         continue;
+      adjstr = &str[strlen(prefix)];
+   };
+   str = ((adjstr)) ? adjstr : str;
+   if (strrchr(str, '-') != NULL)
+      return(NULL);
 
    // allocate OID
    if ((oid = tinyrad_oid_alloc()) == NULL)
       return(NULL);
 
    // initialize state
-   if ((ptr = strrchr(str, '-')) != NULL)
-      str = &ptr[1];
    cursor = 0;
    ptr    = NULL;
 
