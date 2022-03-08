@@ -755,6 +755,13 @@ tinyrad_oid_values(
 #pragma mark protocol prototypes
 
 int
+tinyrad_attr_list_add(
+         TinyRadAttrList *             list,
+         const char *                  attr_name,
+         TinyRadBinValue *             attr_value );
+
+
+int
 tinyrad_attr_list_initialize(
          TinyRad *                     tr,
          TinyRadAttrList **            listp );

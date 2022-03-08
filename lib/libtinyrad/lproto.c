@@ -161,6 +161,37 @@ tinyrad_pckt_buff_realloc(
 #pragma mark attribute list functions
 
 int
+tinyrad_attr_list_add(
+         TinyRadAttrList *             list,
+         const char *                  attr_name,
+         TinyRadBinValue *             attr_value )
+{
+   TinyRadDictAttr *    attr;
+   TinyRadAttrValues *  attrvals;
+   int                  rc;
+
+   assert(list       != NULL);
+   assert(attr_name  != NULL);
+   assert(attr_value != NULL);
+
+   // lookup attribute
+   if ((attr = tinyrad_dict_attr_lookup(list->dict, attr_name, NULL)) == NULL)
+      return(TRAD_EATTRIBUTE);
+
+   // lookup existing or create new attribute value
+   if ((attrvals = tinyrad_attr_vals_lookup(list, NULL, attr->oid)) == NULL)
+      if ((rc = tinyrad_attr_list_add_vals(list, &attrvals, attr->oid)) != TRAD_SUCCESS)
+         return(rc);
+
+   // add binval to attrvals
+   if ((rc = tinyrad_attr_vals_add_binval(attrvals, attr_value)) != TRAD_SUCCESS)
+      return(rc);
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
 tinyrad_attr_list_add_vals(
          TinyRadAttrList *             list,
          TinyRadAttrValues **          avp,
