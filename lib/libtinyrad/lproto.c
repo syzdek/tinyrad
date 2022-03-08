@@ -66,7 +66,8 @@
 int
 tinyrad_attr_list_add_vals(
          TinyRadAttrList *             list,
-         TinyRadAttrValues *           av );
+         TinyRadAttrValues **          avp,
+         const TinyRadOID *            attr_oid );
 
 
 TinyRadAttrList *
@@ -156,28 +157,53 @@ tinyrad_pckt_buff_realloc(
 int
 tinyrad_attr_list_add_vals(
          TinyRadAttrList *             list,
-         TinyRadAttrValues *           av )
+         TinyRadAttrValues **          avp,
+         const TinyRadOID *            attr_oid )
 {
-   size_t         size;
-   void *         ptr;
-   ssize_t        rc;
-   void **        listp;
-   size_t *       lenp;
-   size_t         width;
-   unsigned       opts;
-   int            (*compar)(const void *, const void *);
-   void           (*freeobj)(void *);
-   void *         (*reallocbase)(void *, size_t);
+   void *               ptr;
+   ssize_t              rc;
+   size_t               width;
+   uint8_t              attr_data_type;
+   uint32_t             attr_flags;
+   unsigned             opts;
+   void **              listp;
+   size_t *             lenp;
+   const char *         attr_name;
+   TinyRadDictAttr *    attr;
+   TinyRadAttrValues *  av;
+   int                  (*compar)(const void *, const void *);
 
-   assert(list != NULL);
-   assert(av   != NULL);
+   assert(list       != NULL);
+   assert(attr_oid   != NULL);
 
    // increase size of array
-   size = sizeof(TinyRadAttrValues *) * (list->attrvals_len+2);
-   if ((ptr = realloc(list->attrvals, size)) == NULL)
+   if ((ptr = realloc(list->attrvals, (sizeof(TinyRadAttrValues *) * (list->attrvals_len+2)))) == NULL)
       return(TRAD_ENOMEM);
    list->attrvals[list->attrvals_len+0] = NULL;
    list->attrvals[list->attrvals_len+1] = NULL;
+
+   // look up attribute name
+   attr_name      = NULL;
+   attr_flags     = 0;
+   attr_data_type = 0;
+   if ((attr = tinyrad_dict_attr_lookup(list->dict, NULL, attr_oid)) != NULL)
+   {
+      attr_name      = attr->name;
+      attr_flags     = attr->flags;
+      attr_data_type = attr->data_type;
+   };
+
+   // allocate new attribute value
+   av = tinyrad_attr_vals_alloc(attr_name, attr_oid, attr_data_type, attr_flags);
+   if (av == NULL)
+      return(TRAD_ENOMEM);
+
+   // copy attribute information
+   if ( ((attr)) && ((attr->vendor)) )
+   {
+      av->type_octs = attr->vendor->type_octs;
+      av->len_octs  = attr->vendor->len_octs;
+   };
 
    // parameters for inserting data into array
    listp       = (void **)&list->attrvals;
@@ -185,13 +211,17 @@ tinyrad_attr_list_add_vals(
    width       = sizeof(TinyRadAttrValues *);
    opts        = TINYRAD_ARRAY_INSERT;
    compar      = (int(*)(const void*, const void*)) &tinyrad_attr_vals_cmp_obj;
-   freeobj     = NULL;
-   reallocbase = NULL;
 
    // save value to list
-   if ((rc = tinyrad_array_add(listp, lenp, width, &av, opts, compar, freeobj, reallocbase)) < 0)
+   if ((rc = tinyrad_array_add(listp, lenp, width, &av, opts, compar, NULL, NULL)) < 0)
+   {
+      tinyrad_obj_release(&av->obj);
       return( (rc == -2) ? TRAD_ENOMEM : TRAD_EEXISTS);
+   };
    tinyrad_obj_retain(&av->obj);
+
+   if ((avp))
+      *avp = av;
 
    return(TRAD_SUCCESS);
 }
