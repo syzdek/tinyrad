@@ -1277,7 +1277,7 @@ TinyRadDictAttr *
 tinyrad_dict_attr_lookup(
          TinyRadDict *                 dict,
          const char *                  name,
-         TinyRadOID *                  oid )
+         const TinyRadOID *            oid )
 {
    size_t               width;
    size_t               len;
