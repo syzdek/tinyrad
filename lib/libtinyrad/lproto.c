@@ -373,21 +373,28 @@ tinyrad_attr_vals_lookup(
          const char *                  attr_name,
          const TinyRadOID *            attr_oid )
 {
+   TinyRadDictAttr *    attr;
    TinyRadOID *         oid;
    ssize_t              idx;
 
    TinyRadDebugTrace();
 
    assert(list != NULL);
+   assert( ((attr_name))  || ((attr_oid))  );
    assert( (!(attr_name)) || (!(attr_oid)) );
 
    // set OID
    oid = NULL;
    if (!(attr_oid))
    {
-      if ((oid = tinyrad_str2oid(attr_name)) == NULL)
-         return(NULL);
-      attr_oid = oid;
+      if ((attr = tinyrad_dict_attr_lookup(list->dict, attr_name, NULL)) != NULL)
+         attr_oid = attr->oid;
+      if (!(attr))
+      {
+         if ((oid = tinyrad_str2oid(attr_name)) == NULL)
+            return(NULL);
+         attr_oid = oid;
+      };
    };
 
    // search for attribute value
