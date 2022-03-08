@@ -85,6 +85,12 @@ tinyrad_attr_list_free(
 //----------------------------//
 #pragma mark attribute value prototypes
 
+int
+tinyrad_attr_vals_add_binval(
+         TinyRadAttrValues *           av,
+         const TinyRadBinValue *       binval );
+
+
 TinyRadAttrValues *
 tinyrad_attr_vals_alloc(
          const char *                  name,
@@ -289,6 +295,34 @@ tinyrad_attr_list_initialize(
 // attribute value functions //
 //---------------------------//
 #pragma mark attribute value functions
+
+int
+tinyrad_attr_vals_add_binval(
+         TinyRadAttrValues *           av,
+         const TinyRadBinValue *       binval )
+{
+   size_t         size;
+   size_t         len;
+   void *         ptr;
+
+   assert(av     != NULL);
+   assert(binval != NULL);
+
+   // increase size of array
+   len  = tinyrad_binval_list_count(av->values);
+   size = sizeof(TinyRadBinValue *) * (len+2);
+   if ((ptr = realloc(av->values, size)) == NULL)
+      return(TRAD_ENOMEM);
+   av->values        = ptr;
+   av->values[len+1] = NULL;
+
+   // duplicate value
+   if ((av->values[len] = tinyrad_binval_dup(binval)) == NULL)
+      return(TRAD_ENOMEM);
+
+   return(TRAD_SUCCESS);
+}
+
 
 TinyRadAttrValues *
 tinyrad_attr_vals_alloc(
