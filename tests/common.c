@@ -602,13 +602,4 @@ char * our_random_str(size_t min, size_t max)
 }
 
 
-void
-our_version(
-         const char *                  program_name )
-{
-   printf("%s (%s) %s\n", program_name, PACKAGE_NAME, PACKAGE_VERSION);
-   printf("%s (%s) %s\n", tinyrad_lib_name(), tinyrad_pkg_name(), tinyrad_pkg_version(NULL, NULL, NULL, NULL));
-   return;
-}
-
 /* end of source */
