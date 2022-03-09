@@ -111,12 +111,6 @@ my_file_close(
          MyFile *                      fb );
 
 
-int
-my_file_readline(
-         unsigned                      opts,
-         MyFile *                      fb );
-
-
 void
 my_usage( void );
 
@@ -301,61 +295,6 @@ my_file_close(
    free(fb);
 
    return;
-}
-
-
-int
-my_file_readline(
-         unsigned                      opts,
-         MyFile *                      fb )
-{
-   size_t      offset;
-   size_t      pos;
-   size_t      size;
-   ssize_t     rc;
-
-   assert(fb != 0);
-
-   // adjusts beginning of line
-   fb->bol = ((fb->eol)) ? &fb->eol[1] : fb->buff;
-
-   // look for end line
-   if ((fb->eol = strchr(fb->bol, '\n')) != NULL)
-   {
-      fb->eol[0] = '\0';
-      return(1);
-   };
-
-   // shift buffer
-   offset = (size_t)(fb->bol = fb->buff);
-   for(pos = 0; ((pos+offset) < fb->len); pos++)
-      fb->buff[pos] = fb->buff[pos+offset];
-   fb->buff[pos]  = '\0';
-   fb->len       -= offset;
-
-   // attempt to fill buffer
-   size = sizeof(fb->buff) - fb->len - 1;
-   if ((rc = read(fb->fd, &fb->buff[fb->len], size)) == -1)
-   {
-      trutils_error(opts, NULL, "%s: %s", fb->filename, strerror(errno));
-      return(-1);
-   };
-   fb->len           += (size_t)rc;
-   fb->buff[fb->len]  = '\0';
-   fb->bol            = fb->buff;
-   if (!(fb->len))
-      return(0);
-
-   // look for end line
-   if ((fb->eol = strchr(fb->bol, '\n')) != NULL)
-   {
-      fb->eol[0] = '\0';
-      return(1);
-   };
-
-   fb->eol = &fb->bol[strlen(fb->bol)];
-
-   return(0);
 }
 
 
