@@ -120,7 +120,7 @@ main(
       { NULL, 0, NULL, 0 }
    };
 
-   our_initialize(PROGRAM_NAME);
+   trutils_initialize(PROGRAM_NAME);
 
    opts  = TRAD_TEST_DFLT_DICT;
 

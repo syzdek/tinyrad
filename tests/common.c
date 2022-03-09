@@ -63,10 +63,6 @@
 /////////////////
 #pragma mark - Variables
 
-#pragma mark prog_name
-const char * prog_name = "tinyrad-test";
-
-
 #pragma mark test_urldesc_strs_bad[]
 const char * test_urldesc_strs_bad[] =
 {
@@ -505,9 +501,9 @@ int our_error(unsigned opts, char ** errs, const char * fmt, ...)
 
    if ((errs))
       for(pos = 0; ((errs[pos])); pos++)
-         fprintf(stderr, "%s: %s\n", prog_name, errs[pos]);
+         fprintf(stderr, "%s: %s\n", program_name, errs[pos]);
 
-   fprintf(stderr, "%s: ", prog_name);
+   fprintf(stderr, "%s: ", program_name);
    va_start(args, fmt);
    vfprintf(stderr, fmt, args);
    va_end(args);
@@ -522,7 +518,7 @@ void our_print(unsigned opts, const char * fmt, ...)
    va_list args;
    if ((opts & TRAD_TEST_QUIET))
       return;
-   printf("%s: ", prog_name);
+   printf("%s: ", program_name);
    va_start(args, fmt);
    vprintf(fmt, args);
    va_end(args);
@@ -536,7 +532,7 @@ void our_verbose(unsigned opts, const char * fmt, ...)
    va_list args;
    if (!(opts & TRAD_TEST_VERBOSE))
       return;
-   printf("%s: ", prog_name);
+   printf("%s: ", program_name);
    va_start(args, fmt);
    vprintf(fmt, args);
    va_end(args);
@@ -549,29 +545,6 @@ void our_verbose(unsigned opts, const char * fmt, ...)
 // misc functions //
 //----------------//
 #pragma mark misc functions
-
-void our_initialize(const char * program_name)
-{
-   int                  opt;
-   struct timespec      ts;
-
-   assert(program_name != NULL);
-
-   // initialize program_name
-   prog_name = program_name;
-
-   // initialize library debug
-   opt = TRAD_OFF;
-   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
-   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, program_name);
-
-   // seed random()
-   clock_gettime(CLOCK_MONOTONIC, &ts);
-   srandom((unsigned)(ts.tv_sec + ts.tv_sec));
-
-   return;
-}
-
 
 char * our_random_str(size_t min, size_t max)
 {

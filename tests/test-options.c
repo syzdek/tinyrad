@@ -104,7 +104,7 @@ int main( int argc, char * argv[] )
       { NULL, 0, NULL, 0 }
    };
 
-   our_initialize(PROGRAM_NAME);
+   trutils_initialize(PROGRAM_NAME);
 
    debug = 0;
    opts  = 0;

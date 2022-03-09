@@ -84,6 +84,16 @@
 #pragma mark - Data Types
 
 
+/////////////////
+//             //
+//  Variables  //
+//             //
+/////////////////
+#pragma mark - Variables
+
+extern const char * program_name;
+
+
 //////////////////
 //              //
 //  Prototypes  //
@@ -95,6 +105,11 @@
 // verbose prototypes //
 //--------------------//
 #pragma mark verbose prototypes
+
+_TINYRAD_F void
+trutils_initialize(
+         const char *                  prog_name );
+
 
 _TINYRAD_F void
 trutils_version(

@@ -38,6 +38,7 @@
 ///////////////
 #pragma mark - Headers
 
+#include <time.h>
 #include <assert.h>
 
 
@@ -48,6 +49,17 @@
 //               //
 ///////////////////
 #pragma mark - Definitions
+
+
+/////////////////
+//             //
+//  Variables  //
+//             //
+/////////////////
+#pragma mark - Variables
+
+#pragma mark program_name
+const char * program_name = "tinyrad-prog";
 
 
 //////////////////
@@ -64,6 +76,32 @@
 //             //
 /////////////////
 #pragma mark - Functions
+
+
+void
+trutils_initialize(
+         const char *                  prog_name )
+{
+   int                  opt;
+   struct timespec      ts;
+
+   assert(prog_name != NULL);
+
+   // initialize program_name
+   program_name = prog_name;
+
+   // initialize library debug
+   opt = TRAD_OFF;
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_SYSLOG, &opt);
+   tinyrad_set_option(NULL, TRAD_OPT_DEBUG_IDENT, program_name);
+
+   // seed random()
+   clock_gettime(CLOCK_MONOTONIC, &ts);
+   srandom((unsigned)(ts.tv_sec + ts.tv_sec));
+
+   return;
+}
+
 
 void
 trutils_version(

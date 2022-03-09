@@ -73,7 +73,6 @@
 /////////////////
 #pragma mark - Variables
 
-extern const char * prog_name;
 extern const char * test_urldesc_strs_bad[];
 extern const char * test_urldesc_strs_desc2str[];
 extern const char * test_urldesc_strs_good[];
@@ -111,11 +110,6 @@ void our_verbose(unsigned opts, const char * fmt, ...);
 // misc functions //
 //----------------//
 #pragma mark misc functions
-
-void
-our_initialize(
-         const char *                  program_name );
-
 
 char *
 our_random_str(
