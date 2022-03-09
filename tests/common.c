@@ -513,20 +513,6 @@ int our_error(unsigned opts, char ** errs, const char * fmt, ...)
 }
 
 
-void our_print(unsigned opts, const char * fmt, ...)
-{
-   va_list args;
-   if ((opts & TRUTILS_OPT_QUIET))
-      return;
-   printf("%s: ", program_name);
-   va_start(args, fmt);
-   vprintf(fmt, args);
-   va_end(args);
-   printf("\n");
-   return;
-}
-
-
 void our_verbose(unsigned opts, const char * fmt, ...)
 {
    va_list args;

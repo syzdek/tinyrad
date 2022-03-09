@@ -100,7 +100,6 @@ int our_urldesc_test_good(const char * url, unsigned opts);
 #pragma mark log functions
 
 int  our_error(unsigned opts, char ** errs, const char * fmt, ...);
-void our_print(unsigned opts, const char * fmt, ...);
 void our_verbose(unsigned opts, const char * fmt, ...);
 
 
