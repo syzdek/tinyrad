@@ -36,6 +36,7 @@ Table of Contents
 
    * Overview
    * Coding Style and Guidelines
+   * Tiny RADIUS Libraries
    * Memory Management
    * Tiny RADIUS Dictionary
      - Dictionary Vendor
@@ -58,6 +59,28 @@ Coding Style and Guidelines
 ===========================
 
 To be written.
+
+
+Tiny RADIUS Libraries
+=====================
+
+TinyRad contains the libraries *libutils* and *libtinyrad*.  *libutils*
+is a static library which contains functions, macros, and definitions which
+are used by one or more TinyRad utilities or tests.  *libutils* is intended to
+be used only when builing the package and should not be installed into the
+system.  *libtinyrad* contains both a public API for use by client
+applications and an internal API used by TinyRad utilities and tests.  Client
+applications should only use functions, macros, and definitions defined in
+`tinyrad.h`.  The API defined in `tinyrad_internal.h` and `tinyrad_utils.h`
+are subject to change without notice and should not be used for applications
+external to the project nor should they be installed into the system.
+
+   * `tinyrad.h` is the public API
+   * `tinyrad_compat.h` sets standards compatibility information.
+   * `tinyrad_internal.h` contains API used by both TinyRad utilities, tests,
+     and *libtinyrad* itself.
+   * `tinyrad_utils.h` is the internal API for common functions used by
+     TinyRad utilities and tests.
 
 
 Memory Management
