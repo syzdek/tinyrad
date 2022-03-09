@@ -38,7 +38,7 @@
 ///////////////
 #pragma mark - Headers
 
-#include "common.h"
+#include <tinyrad_utils.h>
 
 #include <stdio.h>
 #include <stdarg.h>

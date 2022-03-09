@@ -296,8 +296,6 @@ src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= include/tinyrad.h \
 					  include/tinyrad_compat.h \
-					  src/common.c \
-					  src/common.h \
 					  src/tinyrad.c
 
 
@@ -306,8 +304,6 @@ src_tinyrad_dict_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_SOURCES		= include/tinyrad.h \
 					  include/tinyrad_compat.h \
-					  src/common.c \
-					  src/common.h \
 					  src/tinyrad-dict.c
 
 
@@ -316,8 +312,6 @@ src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_SOURCES			= include/tinyrad.h \
 					  include/tinyrad_compat.h \
-					  src/common.c \
-					  src/common.h \
 					  src/tinyrad-url.c
 
 
@@ -331,8 +325,6 @@ src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
 					  $(noinst_LIBRARIES)
 src_tinyradproxy_SOURCES		= include/tinyrad.h \
 					  include/tinyrad_compat.h \
-					  src/common.c \
-					  src/common.h \
 					  src/tinyradproxy.c
 
 
