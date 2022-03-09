@@ -56,6 +56,7 @@
 #include "lmemory.h"
 #include "lmap.h"
 #include "loid.h"
+#include "lstrings.h"
 
 
 ///////////////////

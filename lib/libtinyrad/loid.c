@@ -46,6 +46,7 @@
 #include <assert.h>
 
 #include "lmemory.h"
+#include "lstrings.h"
 
 
 ///////////////////

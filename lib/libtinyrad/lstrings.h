@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTINYRAD_LMEMORY_H
-#define _LIB_LIBTINYRAD_LMEMORY_H 1
+#ifndef _LIB_LIBTINYRAD_LSTRINGS_H
+#define _LIB_LIBTINYRAD_LSTRINGS_H 1
 
 
 ///////////////
@@ -62,41 +62,46 @@
 //////////////////
 #pragma mark - Prototypes
 
-//--------------------------------//
-// TinyRadBinValue list functions //
-//--------------------------------//
-#pragma mark TinyRadBinValue list functions
+char *
+tinyrad_strdup(
+         const char *                  s1 );
+
+
+size_t
+tinyrad_strlcat(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize );
+
+
+size_t
+tinyrad_strlcpy(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize );
+
+
+char *
+tinyrad_strndup(
+         const char *                  s1,
+         size_t                        n );
+
 
 int
-tinyrad_binval_list_add(
-         TinyRadBinValue ***           listp,
-         const TinyRadBinValue *       val );
+tinyrad_strsadd(
+         char ***                      strsp,
+         const char *                  str );
 
 
-//-------------------//
-// object prototypes //
-//-------------------//
-#pragma mark object prototypes
-
-void *
-tinyrad_obj_alloc(
-         size_t                        size,
-         void (*free_func)(void * ptr) );
+size_t
+tinyrad_strscount(
+         char * const *                strs );
 
 
-void
-tinyrad_obj_release(
-         TinyRadObj *                  obj );
-
-
-void *
-tinyrad_obj_retain(
-         TinyRadObj *                  obj );
-
-
-intptr_t
-tinyrad_obj_retain_count(
-         TinyRadObj *                  obj );
+int
+tinyrad_strsdup(
+         char ***                      dstp,
+         char * const *                src );
 
 
 #endif /* end of header */

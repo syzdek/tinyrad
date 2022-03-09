@@ -48,6 +48,7 @@
 #include "larray.h"
 #include "ldict.h"
 #include "lmemory.h"
+#include "lstrings.h"
 #include "loid.h"
 
 

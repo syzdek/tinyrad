@@ -53,6 +53,7 @@
 
 #include "lmemory.h"
 #include "lerror.h"
+#include "lstrings.h"
 
 
 //////////////////
