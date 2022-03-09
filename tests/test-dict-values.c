@@ -51,7 +51,7 @@
 
 #include <tinyrad.h>
 
-#include "dict-data.h"
+#include "common-dict.h"
 
 
 ///////////////////

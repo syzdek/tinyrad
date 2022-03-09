@@ -365,7 +365,7 @@ tests_test_dict_attrs_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_attrs_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_attrs_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  tests/common.c tests/common.h \
-					  tests/dict-data.c tests/dict-data.h \
+					  tests/common-dict.c tests/common-dict.h \
 					  tests/test-dict-attrs.c
 
 
@@ -374,7 +374,7 @@ tests_test_dict_values_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_values_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_values_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  tests/common.c tests/common.h \
-					  tests/dict-data.c tests/dict-data.h \
+					  tests/common-dict.c tests/common-dict.h \
 					  tests/test-dict-values.c
 
 
@@ -383,7 +383,7 @@ tests_test_dict_vendors_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_vendors_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_vendors_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  tests/common.c tests/common.h \
-					  tests/dict-data.c tests/dict-data.h \
+					  tests/common-dict.c tests/common-dict.h \
 					  tests/test-dict-vendors.c
 
 

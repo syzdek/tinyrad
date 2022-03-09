@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _TESTS_DICT_DATA_C 1
-#include "dict-data.h"
+#define _TESTS_COMMON_DICT_C 1
+#include "common-dict.h"
 
 
 ///////////////
