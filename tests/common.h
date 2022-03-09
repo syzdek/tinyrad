@@ -57,20 +57,6 @@
 ///////////////////
 #pragma mark - Definitions
 
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "unknown"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT "unknown"
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME "Tiny RADIUS Client Library"
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION "unknown"
-#endif
-
-
 #define TRAD_TEST_VERBOSE     0x0001UL
 #define TRAD_TEST_RESOLVE     0x0002UL
 #define TRAD_TEST_DESC2STR    0x0004UL

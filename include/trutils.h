@@ -62,6 +62,20 @@
 #pragma mark - Definitions
 
 
+#ifndef PACKAGE_BUGREPORT
+#   define PACKAGE_BUGREPORT "unknown"
+#endif
+#ifndef PACKAGE_COPYRIGHT
+#   define PACKAGE_COPYRIGHT "unknown"
+#endif
+#ifndef PACKAGE_NAME
+#   define PACKAGE_NAME "Tiny RADIUS Client Library"
+#endif
+#ifndef PACKAGE_VERSION
+#   define PACKAGE_VERSION "unknown"
+#endif
+
+
 //////////////////
 //              //
 //  Data Types  //
