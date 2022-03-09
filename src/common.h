@@ -47,6 +47,7 @@
 
 #include <tinyrad.h>
 #include <tinyrad_internal.h>
+#include <trutils.h>
 
 
 ///////////////////
@@ -99,11 +100,6 @@ our_strings_append(
 void
 our_strings_free(
          char **                       strs );
-
-
-void
-our_version(
-         const char *                  prog_name );
 
 
 #endif /* end of header */

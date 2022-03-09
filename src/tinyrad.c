@@ -226,7 +226,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'V':
-         our_version(PROGRAM_NAME);
+         trutils_version(PROGRAM_NAME);
          return(0);
 
          case 'v':
