@@ -113,11 +113,13 @@ my_file_close(
 
 MyFile *
 my_file_open(
+         unsigned                      opts,
          const char *                  filename );
 
 
 int
 my_file_readline(
+         unsigned                      opts,
          MyFile *                      fb );
 
 
@@ -189,7 +191,7 @@ int main(int argc, char * argv[])
          case 2:
          if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
          {
-            our_error(PROGRAM_NAME, errs, NULL);
+            trutils_error(opts, errs, NULL);
             tinyrad_free(dict);
             return(1);
          };
@@ -200,7 +202,7 @@ int main(int argc, char * argv[])
          if (tinyrad_dict_parse(dict, optarg, &errs, 0) != TRAD_SUCCESS)
          {
             tinyrad_free(dict);
-            our_error(PROGRAM_NAME, errs, NULL);
+            trutils_error(opts, errs, NULL);
             tinyrad_strsfree(errs);
             return(1);
          };
@@ -220,7 +222,7 @@ int main(int argc, char * argv[])
          if ((rc = tinyrad_dict_add_path(dict, optarg)) != TRAD_SUCCESS)
          {
             tinyrad_free(dict);
-            our_error(PROGRAM_NAME, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
+            trutils_error(opts, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
             return(1);
          };
          break;
@@ -263,7 +265,7 @@ int main(int argc, char * argv[])
    {
       if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
       {
-         our_error(PROGRAM_NAME, errs, NULL);
+         trutils_error(opts, errs, NULL);
          tinyrad_free(dict);
          return(1);
       };
@@ -310,6 +312,7 @@ my_file_close(
 
 MyFile *
 my_file_open(
+         unsigned                      opts,
          const char *                  filename )
 {
    MyFile *       fb;
@@ -321,19 +324,19 @@ my_file_open(
    // verify file exists
    if ((rc = stat(filename, &sb)) == -1)
    {
-      our_error(PROGRAM_NAME,  NULL, "%s: %s", filename, strerror(errno));
+      trutils_error(opts,  NULL, "%s: %s", filename, strerror(errno));
       return(NULL);
    };
    if ((sb.st_mode & S_IFMT) != S_IFREG)
    {
-      our_error(PROGRAM_NAME,  NULL, "%s: is not a file", filename);
+      trutils_error(opts,  NULL, "%s: is not a file", filename);
       return(NULL);
    };
 
    // allocate initial
    if ((fb = malloc(sizeof(MyFile))) == NULL)
    {
-      our_error(PROGRAM_NAME,  NULL, "out of virtual memory");
+      trutils_error(opts,  NULL, "out of virtual memory");
       return(NULL);
    };
    memset(fb, 0, sizeof(MyFile));
@@ -342,7 +345,7 @@ my_file_open(
    // copy filename
    if ((fb->filename = strdup(filename)) == NULL)
    {
-      our_error(PROGRAM_NAME,  NULL, "out of virtual memory");
+      trutils_error(opts,  NULL, "out of virtual memory");
       my_file_close(fb);
       return(NULL);
    };
@@ -350,7 +353,7 @@ my_file_open(
    // open file
    if ((fb->fd = open(filename, O_RDONLY)) == -1)
    {
-      our_error(PROGRAM_NAME,  NULL, "%s: %s", filename, strerror(errno));
+      trutils_error(opts,  NULL, "%s: %s", filename, strerror(errno));
       my_file_close(fb);
       return(NULL);
    };
@@ -361,6 +364,7 @@ my_file_open(
 
 int
 my_file_readline(
+         unsigned                      opts,
          MyFile *                      fb )
 {
    size_t      offset;
@@ -391,7 +395,7 @@ my_file_readline(
    size = sizeof(fb->buff) - fb->len - 1;
    if ((rc = read(fb->fd, &fb->buff[fb->len], size)) == -1)
    {
-      our_error(PROGRAM_NAME, NULL, "%s: %s", fb->filename, strerror(errno));
+      trutils_error(opts, NULL, "%s: %s", fb->filename, strerror(errno));
       return(-1);
    };
    fb->len           += (size_t)rc;
