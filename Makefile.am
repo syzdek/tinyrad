@@ -75,9 +75,10 @@ lib_LIBRARIES				=
 man_MANS				=
 info_TEXINFOS				=
 noinst_LTLIBRARIES			=
-noinst_LIBRARIES			=
+noinst_LIBRARIES			= lib/libtrutils.a
 noinst_HEADERS				= include/tinyrad_compat.h \
-					  include/tinyrad_internal.h
+					  include/tinyrad_internal.h \
+					  include/trutils.h
 noinst_PROGRAMS				=
 bin_PROGRAMS				=
 bin_SCRIPTS				=
@@ -265,6 +266,21 @@ lib_libtinyrad_la_LDFLAGS		= -rpath'$(libdir)' \
 					  $(AM_LDFLAGS) \
 					  -export-symbols $(srcdir)/lib/libtinyrad/libtinyrad.sym
 lib_libtinyrad_la_SOURCES		= $(lib_libtinyrad_a_SOURCES)
+
+
+# macros for lib/libtrutils.a
+lib_libtrutils_a_DEPENDENCIES		= Makefile \
+					  config.h
+lib_libtrutils_a_CPPFLAGS		= $(AM_CPPFLAGS) \
+					  -I$(srcdir)/lib/libtinyrad
+lib_libtrutils_a_CFLAGS			= $(AM_CFLAGS)
+lib_libtrutils_a_SOURCES		= include/tinyrad.h \
+					  include/tinyrad_internal.h \
+					  include/tinyrad_compat.h \
+					  include/trutils.h \
+					  lib/libtrutils/libtrutils.h \
+					  lib/libtrutils/lverbose.c \
+					  lib/libtrutils/lverbose.h
 
 
 # macros for src/tinyrad
