@@ -88,9 +88,8 @@ int main(int argc, char * argv[])
    int                        rc;
    int                        pos;
    int                        opt_index;
-   int                        quiet;
    int                        resolve;
-   int                        verbose;
+   unsigned                   opts;
    uint32_t                   tr_opts;
    TinyRadURLDesc *           trudp;
    TinyRadURLDesc **          trudpp;
@@ -112,10 +111,9 @@ int main(int argc, char * argv[])
 
    trutils_initialize(PROGRAM_NAME);
 
+   opts        = 0;
    tr_opts     = 0;
-   quiet       = 0;
    resolve     = 0;
-   verbose     = 0;
    trudp       = NULL;
    trudp_next  = NULL;
 
@@ -145,7 +143,8 @@ int main(int argc, char * argv[])
          return(0);
 
          case 'q':
-         quiet = 1;
+         opts |=  TRUTILS_OPT_QUIET;
+         opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'r':
@@ -157,7 +156,8 @@ int main(int argc, char * argv[])
          return(0);
 
          case 'v':
-         verbose++;
+         opts |=  TRUTILS_OPT_VERBOSE;
+         opts &= ~TRUTILS_OPT_QUIET;
          break;
 
          case '?':
@@ -178,12 +178,6 @@ int main(int argc, char * argv[])
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
-   if ( ((quiet)) && ((verbose)) )
-   {
-      fprintf(stderr, "%s: incompatible options `--silent' and `--verbose'\n", PROGRAM_NAME);
-      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      return(1);
-   };
 
    // parse and resolve URLs
    trudpp = &trudp;
@@ -191,7 +185,7 @@ int main(int argc, char * argv[])
    {
       if ((rc = tinyrad_urldesc_parse(argv[pos], trudpp)) != TRAD_SUCCESS)
       {
-         if (!(quiet))
+         if (!(opts & TRUTILS_OPT_QUIET))
          {
             fprintf(stderr, "%s: %s: %s\n", PROGRAM_NAME, argv[pos], tinyrad_strerror(rc));
             fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
@@ -202,7 +196,7 @@ int main(int argc, char * argv[])
       {
          if ((rc = tinyrad_urldesc_resolve(*trudpp, tr_opts)) != TRAD_SUCCESS)
          {
-            if (!(quiet))
+            if (!(opts & TRUTILS_OPT_QUIET))
             {
                fprintf(stderr, "%s: %s: %s\n", PROGRAM_NAME, argv[pos], tinyrad_strerror(rc));
                fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
@@ -214,7 +208,7 @@ int main(int argc, char * argv[])
    };
 
    // exit if not displaying output
-   if (!(verbose))
+   if (!(opts & TRUTILS_OPT_VERBOSE))
    {
       tinyrad_urldesc_free(trudp);
       return(0);
