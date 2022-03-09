@@ -167,7 +167,7 @@
 #define TRAD_ENOMEM                 0x0002 ///< out of virtual memory
 #define TRAD_EACCES                 0x0003 ///< permission denied
 #define TRAD_ENOENT                 0x0004 ///< no such file or directory
-#define TRAD_ESYNTAX                0x0005 ///< dictionary syntax error
+#define TRAD_ESYNTAX                0x0005 ///< invalid or unrecognized syntax
 #define TRAD_ENOBUFS                0x0006 ///< no buffer space available
 #define TRAD_EEXISTS                0x0007 ///< dictionary object exists
 #define TRAD_EURL                   0x0008 ///< invalid RADIUS URL
