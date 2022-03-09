@@ -970,7 +970,7 @@ tinyrad_dict_attr_alloc(
       return(NULL);
    };
 
-   if ((attr->name = strdup(name)) == NULL)
+   if ((attr->name = tinyrad_strdup(name)) == NULL)
    {
       tinyrad_dict_attr_free(attr);
       return(NULL);
@@ -1225,7 +1225,7 @@ tinyrad_dict_attr_info(
       case TRAD_DICT_OPT_NAME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", attr->name);
-      if ( (*((char **)outvalue) = strdup(attr->name)) == NULL)
+      if ( (*((char **)outvalue) = tinyrad_strdup(attr->name)) == NULL)
          return(TRAD_ENOMEM);
       break;
 
@@ -2091,7 +2091,7 @@ tinyrad_dict_value_alloc(
    if ((value = tinyrad_obj_alloc(sizeof(TinyRadDictValue), (void(*)(void*))&tinyrad_dict_value_free)) == NULL)
       return(NULL);
 
-   if ((value->name = strdup(name)) == NULL)
+   if ((value->name = tinyrad_strdup(name)) == NULL)
    {
       tinyrad_dict_value_free(value);
       return(NULL);
@@ -2388,14 +2388,14 @@ tinyrad_dict_value_info(
       case TRAD_DICT_OPT_ATTR_NAME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_ATTR_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", value->attr->name);
-      if ( (*((char **)outvalue) = strdup(value->attr->name)) == NULL)
+      if ( (*((char **)outvalue) = tinyrad_strdup(value->attr->name)) == NULL)
          return(TRAD_ENOMEM);
       break;
 
       case TRAD_DICT_OPT_NAME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", value->name);
-      if ( (*((char **)outvalue) = strdup(value->name)) == NULL)
+      if ( (*((char **)outvalue) = tinyrad_strdup(value->name)) == NULL)
          return(TRAD_ENOMEM);
       break;
 
@@ -2509,7 +2509,7 @@ tinyrad_dict_vendor_alloc(
    if ((vendor = tinyrad_obj_alloc(sizeof(TinyRadDictVendor), (void(*)(void*))&tinyrad_dict_vendor_free)) == NULL)
       return(NULL);
 
-   if ((vendor->name = strdup(name)) == NULL)
+   if ((vendor->name = tinyrad_strdup(name)) == NULL)
    {
       tinyrad_dict_vendor_free(vendor);
       return(NULL);
@@ -2643,7 +2643,7 @@ tinyrad_dict_vendor_info(
       case TRAD_DICT_OPT_NAME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( attr, TRAD_DICT_OPT_NAME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: \"%s\"", vendor->name);
-      if ( (*((char **)outvalue) = strdup(vendor->name)) == NULL)
+      if ( (*((char **)outvalue) = tinyrad_strdup(vendor->name)) == NULL)
          return(TRAD_ENOMEM);
       break;
 

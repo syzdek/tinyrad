@@ -189,7 +189,7 @@ tinyrad_strsadd(
    *strsp        = strs;
 
    // copy string
-   if ((strs[count] = strdup(str)) == NULL)
+   if ((strs[count] = tinyrad_strdup(str)) == NULL)
       return(TRAD_ENOMEM);
 
    // terminate array

@@ -208,7 +208,7 @@ tinyrad_urldesc2str(
       trudp = trudp->trud_next;
    };
 
-   return(strdup(buff));
+   return(tinyrad_strdup(buff));
 }
 
 
@@ -486,13 +486,13 @@ tinyrad_urldesc_parser(
    trudp->trud_port       = trud_port;
    trudp->trud_opts       = trud_opts;
 
-   if ((trudp->trud_host = strdup(trud_host)) == NULL)
+   if ((trudp->trud_host = tinyrad_strdup(trud_host)) == NULL)
    {
       tinyrad_urldesc_free(trudp);
       return(TRAD_ENOMEM);
    };
 
-   if ((trudp->trud_secret = strdup(trud_secret)) == NULL)
+   if ((trudp->trud_secret = tinyrad_strdup(trud_secret)) == NULL)
    {
       tinyrad_urldesc_free(trudp);
       return(TRAD_ENOMEM);

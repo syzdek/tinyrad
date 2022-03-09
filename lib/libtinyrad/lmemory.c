@@ -171,7 +171,7 @@ tinyrad_get_option(
       case TRAD_OPT_DEBUG_IDENT:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DEBUG_IDENT, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", tinyrad_debug_ident);
-      if ((*((char **)outvalue) = strdup(tinyrad_debug_ident)) == NULL)
+      if ((*((char **)outvalue) = tinyrad_strdup(tinyrad_debug_ident)) == NULL)
          return(TRAD_ENOMEM);
       return(TRAD_SUCCESS);
 
@@ -204,7 +204,7 @@ tinyrad_get_option(
       case TRAD_OPT_DIAGNOSTIC_MESSAGE:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "unknown");
-      if ((*((char **)outvalue) = strdup("unknown")) == NULL)
+      if ((*((char **)outvalue) = tinyrad_strdup("unknown")) == NULL)
          return(TRAD_ENOMEM);
       break;
 
@@ -244,7 +244,7 @@ tinyrad_get_option(
       inet_ntop(AF_INET, &tr->bind_sa->sin_addr, bind_buff, sizeof(struct sockaddr_in));
       strncat(bind_buff, " ", (sizeof(bind_buff)-strlen(bind_buff)-1));
       inet_ntop(AF_INET6, &tr->bind_sa6->sin6_addr, &bind_buff[strlen(bind_buff)], sizeof(struct sockaddr_in6));
-      if ((*((char **)outvalue) = strdup(bind_buff)) == NULL)
+      if ((*((char **)outvalue) = tinyrad_strdup(bind_buff)) == NULL)
          return(TRAD_ENOMEM);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", bind_buff);
       break;

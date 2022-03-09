@@ -198,7 +198,7 @@ int tinyrad_file_init(
    memset(file, 0, sizeof(TinyRadFile));
 
    // store dictionary file name
-   if ((file->path = strdup(path)) == NULL)
+   if ((file->path = tinyrad_strdup(path)) == NULL)
    {
       tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
       return(TRAD_ENOMEM);
@@ -229,7 +229,7 @@ int tinyrad_file_init(
    };
 
    // store dictionary file name
-   if ((file->fullpath = strdup(fullpath)) == NULL)
+   if ((file->fullpath = tinyrad_strdup(fullpath)) == NULL)
       return(TRAD_ENOMEM);
 
    // open dictionary for reading
