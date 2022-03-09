@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _TESTS_COMMON_C 1
-#include "common.h"
+#define _TESTS_COMMON_URL_C 1
+#include "common-url.h"
 
 
 ///////////////

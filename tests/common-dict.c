@@ -43,8 +43,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "common.h"
-
 
 ///////////////////
 //               //
@@ -324,7 +322,7 @@ our_dict_initialize(
    };
 
    // load builtin/default dictionary objects
-   if ((opts & TRAD_TEST_DFLT_DICT))
+   if ((opts & TEST_OPT_DFLT_DICT))
    {
       trutils_verbose(opts, "loading default dictionary ...");
       if ((rc = tinyrad_dict_defaults(*dictp, &errs, 0)) != TRAD_SUCCESS)

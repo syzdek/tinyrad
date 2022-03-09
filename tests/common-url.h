@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _TESTS_COMMON_H
-#define _TESTS_COMMON_H 1
+#ifndef _TESTS_COMMON_URL_H
+#define _TESTS_COMMON_URL_H 1
 
 
 ///////////////
@@ -39,14 +39,6 @@
 ///////////////
 #pragma mark - Headers
 
-#include <tinyrad_compat.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <tinyrad.h>
-#include <tinyrad_internal.h>
 #include <tinyrad_utils.h>
 
 

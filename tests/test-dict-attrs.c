@@ -38,7 +38,7 @@
 ///////////////
 #pragma mark - Headers
 
-#include "common.h"
+#include <tinyrad_utils.h>
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -120,7 +120,7 @@ main(
 
    trutils_initialize(PROGRAM_NAME);
 
-   opts  = TRAD_TEST_DFLT_DICT;
+   opts  = TEST_OPT_DFLT_DICT;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {

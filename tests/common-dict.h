@@ -49,6 +49,8 @@
 ///////////////////
 #pragma mark - Definitions
 
+#define TEST_OPT_DFLT_DICT   0x0040UL
+
 
 /////////////////
 //             //

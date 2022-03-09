@@ -40,7 +40,7 @@
 
 #undef NDEBUG
 
-#include "common.h"
+#include <tinyrad_utils.h>
 
 #include <stdio.h>
 #include <getopt.h>

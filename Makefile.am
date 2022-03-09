@@ -332,7 +332,6 @@ src_tinyradproxy_SOURCES		= include/tinyrad.h \
 tests_test_array_sorted_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_sorted_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_sorted_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-array-sorted.c
 
 
@@ -340,7 +339,6 @@ tests_test_array_sorted_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_array_stack_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_stack_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_stack_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-array-stack.c
 
 
@@ -348,7 +346,6 @@ tests_test_array_stack_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_array_queue_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_queue_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_array_queue_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-array-queue.c
 
 
@@ -356,7 +353,6 @@ tests_test_array_queue_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_assertions_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_assertions_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_assertions_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-assertions.c
 
 
@@ -364,7 +360,6 @@ tests_test_assertions_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_dict_attrs_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_attrs_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_attrs_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/common-dict.c tests/common-dict.h \
 					  tests/test-dict-attrs.c
 
@@ -373,7 +368,6 @@ tests_test_dict_attrs_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_dict_values_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_values_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_values_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/common-dict.c tests/common-dict.h \
 					  tests/test-dict-values.c
 
@@ -382,7 +376,6 @@ tests_test_dict_values_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_dict_vendors_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_vendors_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_dict_vendors_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/common-dict.c tests/common-dict.h \
 					  tests/test-dict-vendors.c
 
@@ -391,7 +384,6 @@ tests_test_dict_vendors_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_oid_str_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_oid_str_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_oid_str_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-oid-str.c
 
 
@@ -399,7 +391,6 @@ tests_test_oid_str_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_options_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_options_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_options_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-options.c
 
 
@@ -407,7 +398,6 @@ tests_test_options_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_pckt_byte_order_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_pckt_byte_order_LDADD	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_pckt_byte_order_SOURCES	= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
 					  tests/test-pckt-byte-order.c
 
 
@@ -415,7 +405,7 @@ tests_test_pckt_byte_order_SOURCES	= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_url_desc2str_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_desc2str_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_desc2str_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
+					  tests/common-url.c tests/common-url.h \
 					  tests/test-url-desc2str.c
 
 
@@ -423,7 +413,7 @@ tests_test_url_desc2str_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_url_parse_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_parse_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_parse_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
+					  tests/common-url.c tests/common-url.h \
 					  tests/test-url-parse.c
 
 
@@ -431,7 +421,7 @@ tests_test_url_parse_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 tests_test_url_resolve_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_resolve_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_url_resolve_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  tests/common.c tests/common.h \
+					  tests/common-url.c tests/common-url.h \
 					  tests/test-url-resolve.c
 
 
