@@ -200,7 +200,7 @@ int main(int argc, char * argv[])
    {
       if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
       {
-         our_error(PROGRAM_NAME, errs, NULL);
+         trutils_error(opts, errs, NULL);
          our_strings_free(files);
          our_strings_free(paths);
          tinyrad_free(dict);
@@ -216,7 +216,7 @@ int main(int argc, char * argv[])
          our_strings_free(paths);
          our_strings_free(files);
          tinyrad_free(dict);
-         our_error(PROGRAM_NAME, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
+         trutils_error(opts, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
          return(our_exit_code(rc));
       };
    };
@@ -226,7 +226,7 @@ int main(int argc, char * argv[])
    {
       if ((rc = tinyrad_dict_parse(dict, files[pos], &errs, 0)) != TRAD_SUCCESS)
       {
-         our_error(PROGRAM_NAME, errs, NULL);
+         trutils_error(opts, errs, NULL);
          tinyrad_strsfree(errs);
          our_strings_free(paths);
          our_strings_free(files);
