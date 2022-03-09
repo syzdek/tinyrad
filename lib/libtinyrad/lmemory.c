@@ -208,6 +208,11 @@ tinyrad_get_option(
          return(TRAD_ENOMEM);
       break;
 
+      case TRAD_OPT_DICTIONARY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DICTIONARY, outvalue )", __func__);
+      *((TinyRadDict **)outvalue) = tinyrad_obj_retain(&tr->dict->obj);
+      break;
+
       case TRAD_OPT_IPV4:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_IPV4, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", ((tr->opts & TRAD_IPV4)) ? TRAD_ON : TRAD_OFF);
@@ -434,6 +439,10 @@ tinyrad_set_option(
 
       case TRAD_OPT_DIAGNOSTIC_MESSAGE:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DIAGNOSTIC_MESSAGE, invalue )", __func__);
+      return(TRAD_EOPTERR);
+
+      case TRAD_OPT_DICTIONARY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_DICTIONARY, invalue )", __func__);
       return(TRAD_EOPTERR);
 
       case TRAD_OPT_IPV4:

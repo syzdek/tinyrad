@@ -218,6 +218,7 @@
 #define TRAD_OPT_DEBUG_IDENT           10
 #define TRAD_OPT_DEBUG_SYSLOG          11
 #define TRAD_OPT_SCHEME                12
+#define TRAD_OPT_DICTIONARY            13
 
 // dictionary get options
 #define TRAD_DICT_OPT_REF_COUNT           1  // used by TinyRadDict, TinyRadDictVendor and TinyRadDictAttr
