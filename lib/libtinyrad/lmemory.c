@@ -683,6 +683,7 @@ tinyrad_binval_list_add(
    size = sizeof(TinyRadBinValue *) * (len+2);
    if ((list = realloc(*listp, size)) == NULL)
       return(TRAD_ENOMEM);
+   *listp        = list;
    list[len + 1] = NULL;
 
    // duplicate value
