@@ -66,6 +66,9 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad"
 
+#define MY_OPT_DICT_DUMP      0x0001UL
+#define MY_OPT_DICT_LOADED    0x0002UL
+
 
 //////////////////
 //              //
@@ -116,8 +119,6 @@ int main(int argc, char * argv[])
    const char *   url;
    char **        errs;
    unsigned       opts;
-   uint8_t        dictdump;
-   uint8_t        dictloaded;
 
    // getopt options
    static char          short_opt[] = "D:d:f:hI:qVv";
@@ -138,8 +139,6 @@ int main(int argc, char * argv[])
    trutils_initialize(PROGRAM_NAME);
 
    opts       = 0;
-   dictdump   = 0;
-   dictloaded = 0;
 
    if (tinyrad_dict_initialize(&dict, 0) != TRAD_SUCCESS)
    {
@@ -156,7 +155,7 @@ int main(int argc, char * argv[])
          break;
 
          case 1:
-         dictdump++;
+         opts |= MY_OPT_DICT_DUMP;
          break;
 
          case 2:
@@ -166,7 +165,7 @@ int main(int argc, char * argv[])
             tinyrad_free(dict);
             return(1);
          };
-         dictloaded++;
+         opts |= MY_OPT_DICT_LOADED;
          break;
 
          case 'D':
@@ -177,7 +176,7 @@ int main(int argc, char * argv[])
             tinyrad_strsfree(errs);
             return(1);
          };
-         dictloaded++;
+         opts |= MY_OPT_DICT_LOADED;
          break;
 
          case 'd':
@@ -232,7 +231,7 @@ int main(int argc, char * argv[])
    url = argv[optind];
    optind++;
 
-   if (!(dictloaded))
+   if (!(opts & MY_OPT_DICT_LOADED))
    {
       if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
       {
@@ -242,7 +241,7 @@ int main(int argc, char * argv[])
       };
    };
 
-   if ((dictdump))
+   if ((opts & MY_OPT_DICT_DUMP))
    {
       tinyrad_dict_print(dict, 0xffff);
       tinyrad_free(dict);
