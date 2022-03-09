@@ -74,18 +74,6 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct my_file_buffer
-{
-   int         fd;         // file descriptor
-   int         padint;
-   char *      eol;        // end of current line
-   char *      bol;        // beginning of current line
-   size_t      len;        // length of current buffer
-   char        buff[256];  // raw buffer
-   char *      filename;
-} MyFile;
-
-
 typedef struct my_request_av
 {
    char * attr_name;
@@ -104,11 +92,6 @@ int
 main(
          int                           argc,
          char *                        argv[] );
-
-
-void
-my_file_close(
-         MyFile *                      fb );
 
 
 void
@@ -276,25 +259,6 @@ int main(int argc, char * argv[])
    tinyrad_free(dict);
 
    return(0);
-}
-
-
-void
-my_file_close(
-         MyFile *                      fb )
-{
-   if (!(fb))
-      return;
-
-   if (fb->fd != -1)
-      close(fb->fd);
-
-   if ((fb->filename))
-      free(fb->filename);
-
-   free(fb);
-
-   return;
 }
 
 
