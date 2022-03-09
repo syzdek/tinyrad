@@ -125,15 +125,14 @@ AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 
 # check for required functions
-AC_CHECK_FUNCS([bzero])
 AC_CHECK_FUNCS([clock_gettime],  [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([memset],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([socket],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strcasecmp],     [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strchr],         [], [AC_MSG_ERROR([missing required functions])])
-AC_CHECK_FUNCS([strdup],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strerror],       [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strncasecmp],    [], [AC_MSG_ERROR([missing required functions])])
+AC_CHECK_FUNCS([strrchr],        [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strtol],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strtoul],        [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strtoull],       [], [AC_MSG_ERROR([missing required functions])])
