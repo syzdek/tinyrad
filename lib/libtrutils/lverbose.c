@@ -104,10 +104,9 @@ trutils_initialize(
 
 
 void
-trutils_version(
-         const char *                  prog_name )
+trutils_version( void )
 {
-   printf("%s (%s) %s\n", prog_name, PACKAGE_NAME, PACKAGE_VERSION);
+   printf("%s (%s) %s\n", program_name, PACKAGE_NAME, PACKAGE_VERSION);
    printf("%s (%s) %s\n", tinyrad_lib_name(), tinyrad_pkg_name(), tinyrad_pkg_version(NULL, NULL, NULL, NULL));
    return;
 }

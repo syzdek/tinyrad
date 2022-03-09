@@ -112,8 +112,7 @@ trutils_initialize(
 
 
 _TINYRAD_F void
-trutils_version(
-         const char *                  prog_name );
+trutils_version( void );
 
 
 #endif /* end of header */

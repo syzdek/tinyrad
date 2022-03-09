@@ -134,7 +134,7 @@ main(
          break;
 
          case 'V':
-         trutils_version(PROGRAM_NAME);
+         trutils_version();
          return(0);
 
          case 'v':
