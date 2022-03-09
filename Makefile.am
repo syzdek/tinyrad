@@ -274,11 +274,10 @@ lib_libtrutils_a_DEPENDENCIES		= Makefile \
 lib_libtrutils_a_CPPFLAGS		= $(AM_CPPFLAGS) \
 					  -I$(srcdir)/lib/libtinyrad
 lib_libtrutils_a_CFLAGS			= $(AM_CFLAGS)
-lib_libtrutils_a_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_internal.h \
-					  include/tinyrad_compat.h \
-					  include/trutils.h \
+lib_libtrutils_a_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  lib/libtrutils/libtrutils.h \
+					  lib/libtrutils/lfile.c \
+					  lib/libtrutils/lfile.h \
 					  lib/libtrutils/llogging.c \
 					  lib/libtrutils/llogging.h
 

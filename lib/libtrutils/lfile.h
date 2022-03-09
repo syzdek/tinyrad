@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef __TRUTILS_H
-#define __TRUTILS_H 1
+#ifndef _LIB_LIBTRUTILS_LFILE_H
+#define _LIB_LIBTRUTILS_LFILE_H 1
 
 
 ///////////////
@@ -39,19 +39,12 @@
 ///////////////
 #pragma mark - Headers
 
-#include <stddef.h>
-#include <inttypes.h>
-#include <sys/types.h>
+#include "libtrutils.h"
 
-#include <tinyrad.h>
-
-
-//////////////
-//          //
-//  Macros  //
-//          //
-//////////////
-#pragma mark - Macros
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 
 
 ///////////////////
@@ -62,24 +55,6 @@
 #pragma mark - Definitions
 
 
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "unknown"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT "unknown"
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME "Tiny RADIUS Client Library"
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION "unknown"
-#endif
-
-
-#define TRUTILS_OPT_VERBOSE   0x00010000UL
-#define TRUTILS_OPT_QUIET     0x00020000UL
-
-
 //////////////////
 //              //
 //  Data Types  //
@@ -87,17 +62,16 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct _trutils_file_buffer TRUtilsFile;
-
-
-/////////////////
-//             //
-//  Variables  //
-//             //
-/////////////////
-#pragma mark - Variables
-
-extern const char * program_name;
+struct _trutils_file_buffer
+{
+   int         fd;         // file descriptor
+   int         padint;
+   char *      eol;        // end of current line
+   char *      bol;        // beginning of current line
+   size_t      len;        // length of current buffer
+   char        buff[256];  // raw buffer
+   char *      filename;
+};
 
 
 //////////////////
@@ -107,61 +81,5 @@ extern const char * program_name;
 //////////////////
 #pragma mark - Prototypes
 
-//-----------------//
-// file prototypes //
-//-----------------//
-#pragma mark file prototypes
-
-void
-trutils_close(
-         TRUtilsFile *                 fb );
-
-
-TRUtilsFile *
-trutils_open(
-         unsigned                      opts,
-         const char *                  filename );
-
-
-int
-trutils_readline(
-         unsigned                      opts,
-         TRUtilsFile *                 fb );
-
-
-//--------------------//
-// logging prototypes //
-//--------------------//
-#pragma mark logging prototypes
-
-_TINYRAD_F int
-trutils_error(
-         unsigned                      opts,
-         char **                       errs,
-         const char *                  fmt,
-         ... );
-
-
-_TINYRAD_F void
-trutils_initialize(
-         const char *                  prog_name );
-
-
-_TINYRAD_F void
-trutils_print(
-         unsigned                      opts,
-         const char *                  fmt,
-         ... );
-
-
-_TINYRAD_F void
-trutils_verbose(
-         unsigned                      opts,
-         const char *                  fmt,
-         ... );
-
-
-_TINYRAD_F void
-trutils_version( void );
 
 #endif /* end of header */
