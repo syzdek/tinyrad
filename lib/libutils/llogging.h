@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef _LIB_LIBTRUTILS_H
-#define _LIB_LIBTRUTILS_H 1
+#ifndef _LIB_LIBTRUTILS_LLOGGING_H
+#define _LIB_LIBTRUTILS_LLOGGING_H 1
 
 
 ///////////////
@@ -39,35 +39,12 @@
 ///////////////
 #pragma mark - Headers
 
-#include <tinyrad_utils.h>
+#include "libutils.h"
 
-#include <stddef.h>
-#include <stdint.h>
-#include <stdatomic.h>
 #include <stdio.h>
-#include <stdarg.h>
-
-
-
-//////////////
-//          //
-//  Macros  //
-//          //
-//////////////
-#pragma mark - Macros
-
-#ifndef PACKAGE_BUGREPORT
-#   define PACKAGE_BUGREPORT "unknown"
-#endif
-#ifndef PACKAGE_COPYRIGHT
-#   define PACKAGE_COPYRIGHT "unknown"
-#endif
-#ifndef PACKAGE_NAME
-#   define PACKAGE_NAME "Tiny RADIUS Client Library"
-#endif
-#ifndef PACKAGE_VERSION
-#   define PACKAGE_VERSION "unknown"
-#endif
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 
 
 ///////////////////
@@ -84,14 +61,6 @@
 //              //
 //////////////////
 #pragma mark - Data Types
-
-
-/////////////////
-//             //
-//  Variables  //
-//             //
-/////////////////
-#pragma mark - Variables
 
 
 //////////////////

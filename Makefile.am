@@ -75,7 +75,7 @@ lib_LIBRARIES				=
 man_MANS				=
 info_TEXINFOS				=
 noinst_LTLIBRARIES			=
-noinst_LIBRARIES			= lib/libtrutils.a
+noinst_LIBRARIES			= lib/libutils.a
 noinst_HEADERS				= include/tinyrad_compat.h \
 					  include/tinyrad_internal.h \
 					  include/tinyrad_utils.h
@@ -270,20 +270,20 @@ lib_libtinyrad_la_LDFLAGS		= -rpath'$(libdir)' \
 lib_libtinyrad_la_SOURCES		= $(lib_libtinyrad_a_SOURCES)
 
 
-# macros for lib/libtrutils.a
-lib_libtrutils_a_DEPENDENCIES		= Makefile \
+# macros for lib/libutils.a
+lib_libutils_a_DEPENDENCIES		= Makefile \
 					  config.h
-lib_libtrutils_a_CPPFLAGS		= $(AM_CPPFLAGS) \
+lib_libutils_a_CPPFLAGS			= $(AM_CPPFLAGS) \
 					  -I$(srcdir)/lib/libtinyrad
-lib_libtrutils_a_CFLAGS			= $(AM_CFLAGS)
-lib_libtrutils_a_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  lib/libtrutils/libtrutils.h \
-					  lib/libtrutils/lfile.c \
-					  lib/libtrutils/lfile.h \
-					  lib/libtrutils/llogging.c \
-					  lib/libtrutils/llogging.h \
-					  lib/libtrutils/lmisc.c \
-					  lib/libtrutils/lmisc.h
+lib_libutils_a_CFLAGS			= $(AM_CFLAGS)
+lib_libutils_a_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
+					  lib/libutils/libutils.h \
+					  lib/libutils/lfile.c \
+					  lib/libutils/lfile.h \
+					  lib/libutils/llogging.c \
+					  lib/libutils/llogging.h \
+					  lib/libutils/lmisc.c \
+					  lib/libutils/lmisc.h
 
 
 # macros for src/tinyrad
