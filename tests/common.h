@@ -94,15 +94,4 @@ int our_urldesc_test_bad(const char * url, unsigned opts);
 int our_urldesc_test_good(const char * url, unsigned opts);
 
 
-//----------------//
-// misc functions //
-//----------------//
-#pragma mark misc functions
-
-char *
-our_random_str(
-         size_t                        min,
-         size_t                        max );
-
-
 #endif /* end of header */

@@ -217,7 +217,7 @@ int main( int argc, char * argv[] )
    {
       data[pos].value = (int)(~pos);
       data[pos].opts  = (int)pos;
-      data[pos].name  = (pos < len) ? strdup(test_strs[pos]) : our_random_str(8, 8);
+      data[pos].name  = (pos < len) ? strdup(test_strs[pos]) : trutils_strrand(8, 8);
       if (!(data[pos].name))
       {
          for(; (pos > 0); pos--)
