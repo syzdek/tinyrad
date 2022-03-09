@@ -96,6 +96,8 @@ int main(int argc, char * argv[])
       { NULL, 0, NULL, 0 }
    };
 
+   trutils_initialize(PROGRAM_NAME);
+
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
       switch(c)
