@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#ifndef __TRUTILS_H
-#define __TRUTILS_H 1
+#ifndef __TINYRAD_UTILS_H
+#define __TINYRAD_UTILS_H 1
 
 
 ///////////////

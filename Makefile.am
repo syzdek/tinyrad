@@ -78,7 +78,7 @@ noinst_LTLIBRARIES			=
 noinst_LIBRARIES			= lib/libtrutils.a
 noinst_HEADERS				= include/tinyrad_compat.h \
 					  include/tinyrad_internal.h \
-					  include/trutils.h
+					  include/tinyrad_utils.h
 noinst_PROGRAMS				=
 bin_PROGRAMS				=
 bin_SCRIPTS				=

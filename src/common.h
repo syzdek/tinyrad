@@ -47,7 +47,7 @@
 
 #include <tinyrad.h>
 #include <tinyrad_internal.h>
-#include <trutils.h>
+#include <tinyrad_utils.h>
 
 
 ///////////////////
