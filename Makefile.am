@@ -279,8 +279,8 @@ lib_libtrutils_a_SOURCES		= include/tinyrad.h \
 					  include/tinyrad_compat.h \
 					  include/trutils.h \
 					  lib/libtrutils/libtrutils.h \
-					  lib/libtrutils/lverbose.c \
-					  lib/libtrutils/lverbose.h
+					  lib/libtrutils/llogging.c \
+					  lib/libtrutils/llogging.h
 
 
 # macros for src/tinyrad

@@ -28,8 +28,8 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _LIB_LIBTRUTILS_LVERBOSE_C 1
-#include "lverbose.h"
+#define _LIB_LIBTRUTILS_LLOGGING_C 1
+#include "llogging.h"
 
 ///////////////
 //           //

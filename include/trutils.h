@@ -106,9 +106,9 @@ extern const char * program_name;
 #pragma mark - Prototypes
 
 //--------------------//
-// verbose prototypes //
+// logging prototypes //
 //--------------------//
-#pragma mark verbose prototypes
+#pragma mark logging prototypes
 
 _TINYRAD_F int
 trutils_error(
