@@ -89,12 +89,11 @@ trutils_open(
 {
    TRUtilsFile *  fb;
    struct stat    sb;
-   int            rc;
 
    assert(filename != NULL);
 
    // verify file exists
-   if ((rc = stat(filename, &sb)) == -1)
+   if (stat(filename, &sb) == -1)
    {
       trutils_error(opts,  NULL, "%s: %s", filename, strerror(errno));
       return(NULL);
