@@ -59,7 +59,6 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad"
 
-#define MY_OPT_VERBOSE        0x0001
 #define MY_OPT_BUILTIN        0x0002
 #define MY_OPT_DUMP           0x0004
 
@@ -166,8 +165,14 @@ int main(int argc, char * argv[])
          trutils_version();
          return(0);
 
+         case 'q':
+         opts |=  TRUTILS_OPT_QUIET;
+         opts &= ~TRUTILS_OPT_VERBOSE;
+         break;
+
          case 'v':
-         opts |= MY_OPT_VERBOSE;
+         opts |=  TRUTILS_OPT_VERBOSE;
+         opts &= ~TRUTILS_OPT_QUIET;
          break;
 
          case '?':
