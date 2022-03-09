@@ -102,6 +102,8 @@ main(
       { NULL, 0, NULL, 0 }
    };
 
+   trutils_initialize(PROGRAM_NAME);
+
    opts  = 0;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
