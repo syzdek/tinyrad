@@ -76,6 +76,10 @@
 #endif
 
 
+#define TRUTILS_OPT_VERBOSE   0x00010000UL
+#define TRUTILS_OPT_QUIET     0x00020000UL
+
+
 //////////////////
 //              //
 //  Data Types  //
@@ -106,6 +110,13 @@ extern const char * program_name;
 //--------------------//
 #pragma mark verbose prototypes
 
+_TINYRAD_F int
+trutils_error(
+         unsigned                      opts,
+         char **                       errs,
+         const char *                  fmt,
+         ... );
+
 _TINYRAD_F void
 trutils_initialize(
          const char *                  prog_name );
@@ -113,6 +124,9 @@ trutils_initialize(
 
 _TINYRAD_F void
 trutils_version( void );
+
+void our_print(unsigned opts, const char * fmt, ...);
+void our_verbose(unsigned opts, const char * fmt, ...);
 
 
 #endif /* end of header */

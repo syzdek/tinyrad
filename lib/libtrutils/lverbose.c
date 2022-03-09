@@ -77,6 +77,32 @@ const char * program_name = "tinyrad-prog";
 /////////////////
 #pragma mark - Functions
 
+int
+trutils_error(
+         unsigned                      opts,
+         char **                       errs,
+         const char *                  fmt,
+         ... )
+{
+   int     pos;
+   va_list args;
+
+   if ((opts & TRUTILS_OPT_QUIET))
+      return(1);
+
+   if ((errs))
+      for(pos = 0; ((errs[pos])); pos++)
+         fprintf(stderr, "%s: %s\n", program_name, errs[pos]);
+
+   fprintf(stderr, "%s: ", program_name);
+   va_start(args, fmt);
+   vfprintf(stderr, fmt, args);
+   va_end(args);
+   fprintf(stderr, "\n");
+
+   return(1);
+}
+
 
 void
 trutils_initialize(
