@@ -39,11 +39,14 @@
 ///////////////
 #pragma mark - Headers
 
-#include <stddef.h>
-#include <inttypes.h>
-#include <sys/types.h>
+#include <tinyrad_compat.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <tinyrad.h>
+#include <tinyrad_internal.h>
 
 
 //////////////
