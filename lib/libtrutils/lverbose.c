@@ -130,6 +130,24 @@ trutils_initialize(
 
 
 void
+trutils_print(
+         unsigned                      opts,
+         const char *                  fmt,
+         ... )
+{
+   va_list args;
+   if ((opts & TRUTILS_OPT_QUIET))
+      return;
+   printf("%s: ", program_name);
+   va_start(args, fmt);
+   vprintf(fmt, args);
+   va_end(args);
+   printf("\n");
+   return;
+}
+
+
+void
 trutils_version( void )
 {
    printf("%s (%s) %s\n", program_name, PACKAGE_NAME, PACKAGE_VERSION);

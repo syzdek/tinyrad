@@ -117,15 +117,22 @@ trutils_error(
          const char *                  fmt,
          ... );
 
+
 _TINYRAD_F void
 trutils_initialize(
          const char *                  prog_name );
 
 
 _TINYRAD_F void
+trutils_print(
+         unsigned                      opts,
+         const char *                  fmt,
+         ... );
+
+
+_TINYRAD_F void
 trutils_version( void );
 
-void our_print(unsigned opts, const char * fmt, ...);
 void our_verbose(unsigned opts, const char * fmt, ...);
 
 
