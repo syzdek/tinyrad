@@ -138,7 +138,7 @@ int main(int argc, char * argv[])
             fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
             our_strings_free(files);
             our_strings_free(paths);
-            return(our_exit_code(TRAD_ENOMEM));
+            return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
 
@@ -157,7 +157,7 @@ int main(int argc, char * argv[])
             fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
             our_strings_free(files);
             our_strings_free(paths);
-            return(our_exit_code(TRAD_ENOMEM));
+            return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
 
@@ -177,12 +177,12 @@ int main(int argc, char * argv[])
 
          case '?':
          fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-         return(our_exit_code(TRAD_EUNKNOWN));
+         return(trutils_exit_code(TRAD_EUNKNOWN));
 
          default:
          fprintf(stderr, "%s: unrecognized option `--%c'\n", PROGRAM_NAME, c);
          fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-         return(our_exit_code(TRAD_EUNKNOWN));
+         return(trutils_exit_code(TRAD_EUNKNOWN));
       };
    };
 
@@ -192,7 +192,7 @@ int main(int argc, char * argv[])
       our_strings_free(files);
       our_strings_free(paths);
       fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
-      return(our_exit_code(rc));
+      return(trutils_exit_code(rc));
    };
 
    // load builtin/default dictionary objects
@@ -204,7 +204,7 @@ int main(int argc, char * argv[])
          our_strings_free(files);
          our_strings_free(paths);
          tinyrad_free(dict);
-         return(our_exit_code(rc));
+         return(trutils_exit_code(rc));
       };
    };
 
@@ -217,7 +217,7 @@ int main(int argc, char * argv[])
          our_strings_free(files);
          tinyrad_free(dict);
          trutils_error(opts, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
-         return(our_exit_code(rc));
+         return(trutils_exit_code(rc));
       };
    };
 
@@ -231,7 +231,7 @@ int main(int argc, char * argv[])
          our_strings_free(paths);
          our_strings_free(files);
          tinyrad_free(dict);
-         return(our_exit_code(rc));
+         return(trutils_exit_code(rc));
       };
    };
 

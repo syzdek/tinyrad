@@ -71,31 +71,6 @@
 #pragma mark - Functions
 
 int
-our_exit_code(
-         int                           rc )
-{
-   switch(rc)
-   {
-      case TRAD_SUCCESS:
-      return(0);
-
-      // configuration error
-      case TRAD_EURL:
-      case TRAD_ESYNTAX:
-      return(2);
-
-      // network error
-      case TRAD_ERESOLVE:
-      return(3);
-
-      default:
-      break;
-   };
-   return(1);
-}
-
-
-int
 our_strings_append(
          char ***                      strsp,
          const char *                  str )

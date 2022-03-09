@@ -66,11 +66,6 @@
 #pragma mark - Prototypes
 
 int
-our_exit_code(
-         int                           rc );
-
-
-int
 our_strings_append(
          char ***                      strsp,
          const char *                  str );
