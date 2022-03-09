@@ -217,6 +217,7 @@ tinyrad_attr_list_add_vals(
    // increase size of array
    if ((ptr = realloc(list->attrvals, (sizeof(TinyRadAttrValues *) * (list->attrvals_len+2)))) == NULL)
       return(TRAD_ENOMEM);
+   list->attrvals                       = ptr;
    list->attrvals[list->attrvals_len+0] = NULL;
    list->attrvals[list->attrvals_len+1] = NULL;
 
