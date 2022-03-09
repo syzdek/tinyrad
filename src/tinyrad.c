@@ -142,6 +142,7 @@ int main(int argc, char * argv[])
    TinyRad *      tr;
    const char *   url;
    char **        errs;
+   unsigned       opts;
    uint8_t        dictdump;
    uint8_t        dictloaded;
 
@@ -163,6 +164,7 @@ int main(int argc, char * argv[])
 
    trutils_initialize(PROGRAM_NAME);
 
+   opts       = 0;
    dictdump   = 0;
    dictloaded = 0;
 
@@ -223,11 +225,18 @@ int main(int argc, char * argv[])
          };
          break;
 
+         case 'q':
+         opts |=  TRUTILS_OPT_QUIET;
+         opts &= ~TRUTILS_OPT_VERBOSE;
+         break;
+
          case 'V':
          trutils_version();
          return(0);
 
          case 'v':
+         opts |=  TRUTILS_OPT_VERBOSE;
+         opts &= ~TRUTILS_OPT_QUIET;
          break;
 
          case '?':
