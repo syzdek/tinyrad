@@ -51,6 +51,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <ctype.h>
 #include <assert.h>
 
 #include "ldict.h"
@@ -272,6 +273,89 @@ tinyrad_strsfree(
    free(strs);
    return;
 }
+
+
+int
+tinyrad_strtoargs(
+         char *                        str,
+         char ***                      argvp,
+         int *                         argcp )
+{
+   char           quote;
+   char *         bol;
+   char **        argv;
+   size_t         pos;
+   int            rc;
+
+   assert(str != NULL);
+
+   argv = NULL;
+
+   for(pos = 0; ((str[pos])); pos++)
+   {
+      switch(str[pos])
+      {
+         // skip white space
+         case ' ':
+         case '\t':
+         break;
+
+         // parse quoted argument
+         case '"':
+         case '\'':
+         quote = str[pos];
+         bol   = &str[pos+1];
+         for( pos += 1; ((bol[pos] != '\0') && (bol[pos] != quote)); pos++);
+         if (bol[pos] != quote)
+         {
+            tinyrad_strsfree(argv);
+            return(TRAD_ESYNTAX);
+         };
+         bol[pos] = '\0';
+         pos++;
+         if ( (bol[pos] != ' ') && (bol[pos] != '\t') && (bol[pos] != '\0') )
+         {
+            tinyrad_strsfree(argv);
+            return(TRAD_ESYNTAX);
+         };
+         if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+         {
+            tinyrad_strsfree(argv);
+            return(rc);
+         };
+         break;
+
+         // parse unquoted argument
+         default:
+         bol = &str[pos];
+         for(pos = 0; ((bol[pos] != ' ')&&(bol[pos] != '\t')&&(bol[pos] != '\0')); pos++)
+         {
+            if ( (!(isalnum(bol[pos]))) && (bol[pos] != '.') && (bol[pos] != '-') && (bol[pos] != '_') )
+            {
+               tinyrad_strsfree(argv);
+               return(TRAD_ESYNTAX);
+            };
+         };
+         bol[pos] = '\0';
+         if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+         {
+            tinyrad_strsfree(argv);
+            return(rc);
+         };
+         break;
+      };
+   };
+
+   if ((argcp))
+      *argcp = (int)tinyrad_strscount(argv);
+   if ((argvp))
+      *argvp = argv;
+   if (!(argvp))
+      tinyrad_strsfree(argv);
+
+   return(TRAD_SUCCESS);
+}
+
 
 
 /* end of source */

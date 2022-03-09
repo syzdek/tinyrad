@@ -237,4 +237,11 @@ tinyrad_strsdup(
          char * const *                src );
 
 
+_TINYRAD_F int
+tinyrad_strtoargs(
+         char *                        str,
+         char ***                      argvp,
+         int *                         argcp );
+
+
 #endif /* end of header */

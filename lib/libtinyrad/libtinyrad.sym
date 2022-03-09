@@ -107,6 +107,7 @@ tinyrad_strsadd
 tinyrad_strscount
 tinyrad_strsdup
 tinyrad_strsfree
+tinyrad_strtoargs
 #
 # URL functions
 tinyrad_is_radius_url
