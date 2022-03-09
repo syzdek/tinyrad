@@ -287,44 +287,30 @@ lib_libutils_a_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 
 
 # macros for src/tinyrad
-src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) \
-					  $(noinst_LIBRARIES)
-src_tinyrad_CFLAGS			= $(AM_CFLAGS)
-src_tinyrad_CPPFLAGS			= $(AM_CPPFLAGS)
-src_tinyrad_LDFLAGS			= $(AM_LDFLAGS)
-src_tinyrad_LDADD			= $(lib_LTLIBRARIES) \
-					  $(noinst_LIBRARIES)
-src_tinyrad_SOURCES			= include/tinyrad.h \
-					  include/tinyrad_compat.h \
+src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tinyrad.c
 
 
 # macros for src/tinyrad-dict
 src_tinyrad_dict_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_dict_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_dict_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_compat.h \
+src_tinyrad_dict_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tinyrad-dict.c
 
 
 # macros for src/tinyrad-url
 src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_url_SOURCES			= include/tinyrad.h \
-					  include/tinyrad_compat.h \
+src_tinyrad_url_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tinyrad-url.c
 
 
 # macros for src/tinyradproxy
-src_tinyradproxy_DEPENDENCIES		= $(lib_LTLIBRARIES) \
-					  $(noinst_LIBRARIES)
-src_tinyradproxy_CFLAGS			= $(AM_CFLAGS)
-src_tinyradproxy_CPPFLAGS		= $(AM_CPPFLAGS)
-src_tinyradproxy_LDFLAGS		= $(AM_LDFLAGS)
-src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) \
-					  $(noinst_LIBRARIES)
-src_tinyradproxy_SOURCES		= include/tinyrad.h \
-					  include/tinyrad_compat.h \
+src_tinyradproxy_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyradproxy_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+src_tinyradproxy_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tinyradproxy.c
 
 
