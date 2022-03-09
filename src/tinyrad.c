@@ -111,12 +111,6 @@ my_file_close(
          MyFile *                      fb );
 
 
-MyFile *
-my_file_open(
-         unsigned                      opts,
-         const char *                  filename );
-
-
 int
 my_file_readline(
          unsigned                      opts,
@@ -307,58 +301,6 @@ my_file_close(
    free(fb);
 
    return;
-}
-
-
-MyFile *
-my_file_open(
-         unsigned                      opts,
-         const char *                  filename )
-{
-   MyFile *       fb;
-   struct stat    sb;
-   int            rc;
-
-   assert(filename != NULL);
-
-   // verify file exists
-   if ((rc = stat(filename, &sb)) == -1)
-   {
-      trutils_error(opts,  NULL, "%s: %s", filename, strerror(errno));
-      return(NULL);
-   };
-   if ((sb.st_mode & S_IFMT) != S_IFREG)
-   {
-      trutils_error(opts,  NULL, "%s: is not a file", filename);
-      return(NULL);
-   };
-
-   // allocate initial
-   if ((fb = malloc(sizeof(MyFile))) == NULL)
-   {
-      trutils_error(opts,  NULL, "out of virtual memory");
-      return(NULL);
-   };
-   memset(fb, 0, sizeof(MyFile));
-   fb->fd = -1;
-
-   // copy filename
-   if ((fb->filename = strdup(filename)) == NULL)
-   {
-      trutils_error(opts,  NULL, "out of virtual memory");
-      my_file_close(fb);
-      return(NULL);
-   };
-
-   // open file
-   if ((fb->fd = open(filename, O_RDONLY)) == -1)
-   {
-      trutils_error(opts,  NULL, "%s: %s", filename, strerror(errno));
-      my_file_close(fb);
-      return(NULL);
-   };
-
-   return(fb);
 }
 
 
