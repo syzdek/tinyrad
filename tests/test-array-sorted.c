@@ -292,7 +292,7 @@ int main( int argc, char * argv[] )
       {
          for(; (pos > 0); pos--)
             free(data[pos-1].name);
-         return(our_error(opts, NULL, "out of virtual memory"));
+         return(trutils_error(opts, NULL, "out of virtual memory"));
       };
    };
 
@@ -335,7 +335,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -350,7 +350,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -373,7 +373,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -396,7 +396,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -419,7 +419,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -447,7 +447,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -470,7 +470,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
 
@@ -493,7 +493,7 @@ int main( int argc, char * argv[] )
    if ((my_test_remove(opts, list, &list_len, src, test, MY_LIST_LEN, merge)))
       return(1);
    if ((list_len))
-      return(our_error(opts, NULL, "list still has elements"));
+      return(trutils_error(opts, NULL, "list still has elements"));
    free(list);
 
    return(0);
@@ -616,7 +616,7 @@ my_test_insert(
       case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
       case 0:                     action_name = "DEFAULT"; break;
       default:
-      return(our_error(opts, NULL, "unknown insert action"));
+      return(trutils_error(opts, NULL, "unknown insert action"));
    };
    switch(mergeopt)
    {
@@ -625,19 +625,19 @@ my_test_insert(
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       case 0:                       merge_type = "DEFAULT"; break;
       default:
-      return(our_error(opts, NULL, "unknown dup action"));
+      return(trutils_error(opts, NULL, "unknown dup action"));
    };
 
    trutils_verbose(opts, "testing   tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < dat_len); x++)
    {
       if (tinyrad_array_add((void **)listp, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL, &realloc) == -1)
-         return(our_error(opts, NULL, "tinyrad_array_add(%s): returned error", action_name));
+         return(trutils_error(opts, NULL, "tinyrad_array_add(%s): returned error", action_name));
       len = (iteration*dat_len) + x + 1;
       if ( ((iteration)) && (!(arrayopt & TINYRAD_ARRAY_MERGE)) )
          len = dat_len;
       if (*list_lenp != len)
-         return(our_error(opts, NULL, "tinyrad_array_add(%s): did not increment length", action_name));
+         return(trutils_error(opts, NULL, "tinyrad_array_add(%s): did not increment length", action_name));
    };
 
    list = *listp;
@@ -651,19 +651,19 @@ my_test_insert(
    {
       pos = x/iteration;
       if ((strcasecmp(test[pos]->name, list[x]->name)))
-         return(our_error(opts, NULL, "tinyrad_array_add(%s): misordered the list", action_name));
+         return(trutils_error(opts, NULL, "tinyrad_array_add(%s): misordered the list", action_name));
       switch(mergeopt)
       {
          case TINYRAD_ARRAY_LASTDUP:
          if ( (x < ((dat_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
             if (!(strcasecmp(list[x]->name, list[x+1]->name)))
-               return(our_error(opts, NULL, "tinyrad_array_add(%s): first match not returned", action_name));
+               return(trutils_error(opts, NULL, "tinyrad_array_add(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_FIRSTDUP:
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
-               return(our_error(opts, NULL, "tinyrad_array_add(%s): first match not returned", action_name));
+               return(trutils_error(opts, NULL, "tinyrad_array_add(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_ANYDUP:
@@ -712,7 +712,7 @@ my_test_remove(
       case TINYRAD_ARRAY_REPLACE: action_name = "REPLACE"; break;
       case 0:                     action_name = "DEFAULT"; break;
       default:
-      return(our_error(opts, NULL, "unknown insert action"));
+      return(trutils_error(opts, NULL, "unknown insert action"));
    };
    switch(mergeopt)
    {
@@ -721,19 +721,19 @@ my_test_remove(
       case TINYRAD_ARRAY_ANYDUP:    merge_type = "ANY"; break;
       case 0:                       merge_type = "DEFAULT"; break;
       default:
-      return(our_error(opts, NULL, "unknown dup action"));
+      return(trutils_error(opts, NULL, "unknown dup action"));
    };
 
    trutils_verbose(opts, "testing   tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < dat_len); x++)
    {
       if (tinyrad_array_remove(list, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL) == -1)
-         return(our_error(opts, NULL, "tinyrad_array_remove(%s): returned error", action_name));
+         return(trutils_error(opts, NULL, "tinyrad_array_remove(%s): returned error", action_name));
       len = ((iteration+1)*dat_len) - x - 1;
       if ( ((iteration)) && (!(arrayopt & TINYRAD_ARRAY_MERGE)) )
          len = dat_len;
       if (*list_lenp != len)
-         return(our_error(opts, NULL, "tinyrad_array_remove(%s): did not decrement length", action_name));
+         return(trutils_error(opts, NULL, "tinyrad_array_remove(%s): did not decrement length", action_name));
    };
 
    if (!(arrayopt & TINYRAD_ARRAY_MERGE))
@@ -744,19 +744,19 @@ my_test_remove(
    {
       pos = x/iteration;
       if ((strcasecmp(test[pos]->name, list[x]->name)))
-         return(our_error(opts, NULL, "tinyrad_array_remove(%s): misordered the list", action_name));
+         return(trutils_error(opts, NULL, "tinyrad_array_remove(%s): misordered the list", action_name));
       switch(mergeopt)
       {
          case TINYRAD_ARRAY_LASTDUP:
          if ( (x < ((dat_len*iteration)-1)) && ((x % iteration) == (iteration-1)) )
             if (!(strcasecmp(list[x]->name, list[x+1]->name)))
-               return(our_error(opts, NULL, "tinyrad_array_remove(%s): first match not returned", action_name));
+               return(trutils_error(opts, NULL, "tinyrad_array_remove(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_FIRSTDUP:
          if ( (x > 0) && (!(x % iteration)) )
             if (!(strcasecmp(list[x]->name, list[x-1]->name)))
-               return(our_error(opts, NULL, "tinyrad_array_remove(%s): first match not returned", action_name));
+               return(trutils_error(opts, NULL, "tinyrad_array_remove(%s): first match not returned", action_name));
          break;
 
          case TINYRAD_ARRAY_ANYDUP:
@@ -799,12 +799,12 @@ my_test_search(
             case MY_KEY_NAME:  ptr = list[y]->name;   break;
             case MY_KEY_VALUE: ptr = &list[y]->value; break;
             default:
-            return(our_error(opts, NULL, "unknown key"));
+            return(trutils_error(opts, NULL, "unknown key"));
          };
          if ((idx = tinyrad_array_search(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRSTDUP, NULL, compar)) == -1)
-            return(our_error(opts, NULL, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
+            return(trutils_error(opts, NULL, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((size_t)idx != y)
-            return(our_error(opts, NULL, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; index mismatch", x, compar_name, y));
+            return(trutils_error(opts, NULL, "tinyrad_array_search(); size: %zu; func: %s; idx: %zu; index mismatch", x, compar_name, y));
       };
    };
 
@@ -820,14 +820,14 @@ my_test_search(
             case MY_KEY_NAME:  ptr = list[y]->name;   break;
             case MY_KEY_VALUE: ptr = &list[y]->value; break;
             default:
-            return(our_error(opts, NULL, "unknown key"));
+            return(trutils_error(opts, NULL, "unknown key"));
          };
          if ((res = tinyrad_array_get(list, x, sizeof(MyData *), ptr, TINYRAD_ARRAY_FIRSTDUP, compar)) == NULL)
-            return(our_error(opts, NULL, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
+            return(trutils_error(opts, NULL, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; search error", x, compar_name, y));
          if ((strcasecmp((*res)->name, list[y]->name)))
-            return(our_error(opts, NULL, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result name does not match", x, compar_name, y));
+            return(trutils_error(opts, NULL, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result name does not match", x, compar_name, y));
          if ((*res)->value != list[y]->value)
-            return(our_error(opts, NULL, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result value does not match", x, compar_name, y));
+            return(trutils_error(opts, NULL, "tinyrad_array_get(); size: %zu; func: %s; idx: %zu; result value does not match", x, compar_name, y));
       };
    };
 

@@ -486,33 +486,6 @@ int our_urldesc_test_good(const char * url, unsigned opts)
 }
 
 
-//---------------//
-// log functions //
-//---------------//
-#pragma mark log functions
-
-int our_error(unsigned opts, char ** errs, const char * fmt, ...)
-{
-   int     pos;
-   va_list args;
-
-   if ( ((opts & TRUTILS_OPT_QUIET)) && ((opts & TRUTILS_OPT_VERBOSE)) )
-      return(1);
-
-   if ((errs))
-      for(pos = 0; ((errs[pos])); pos++)
-         fprintf(stderr, "%s: %s\n", program_name, errs[pos]);
-
-   fprintf(stderr, "%s: ", program_name);
-   va_start(args, fmt);
-   vfprintf(stderr, fmt, args);
-   va_end(args);
-   fprintf(stderr, "\n");
-
-   return(1);
-}
-
-
 //----------------//
 // misc functions //
 //----------------//

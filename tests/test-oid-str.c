@@ -215,7 +215,7 @@ int main(int argc, char * argv[])
          trutils_verbose(opts, "   Initializing OID from values ...");
          if ((oid = tinyrad_oid_init(test_vals[x].vals, y)) == NULL)
          {
-            our_error(opts, NULL, "out of virtual memory");
+            trutils_error(opts, NULL, "out of virtual memory");
             errs++;
             continue;
          };
@@ -223,14 +223,14 @@ int main(int argc, char * argv[])
          trutils_verbose(opts, "   Testing values of OID ...");
          if ((rc = tinyrad_oid_values(oid, &vals, &len)) != TRAD_SUCCESS)
          {
-            our_error(opts, NULL, "tinyrad_oid_values(): %s", tinyrad_strerror(rc));
+            trutils_error(opts, NULL, "tinyrad_oid_values(): %s", tinyrad_strerror(rc));
             errs++;
             tinyrad_free(oid);
             continue;
          };
          if (len != y)
          {
-            our_error(opts, NULL, "OID length does not match reference");
+            trutils_error(opts, NULL, "OID length does not match reference");
             errs++;
             tinyrad_free(oid);
             continue;
@@ -239,7 +239,7 @@ int main(int argc, char * argv[])
          {
             if (test_vals[x].vals[pos] != vals[pos])
             {
-               our_error(opts, NULL, "OID values do not match reference");
+               trutils_error(opts, NULL, "OID values do not match reference");
                errs++;
                pos = y;
             };
@@ -311,7 +311,7 @@ my_oid_test(
    trutils_verbose(opts, "   Generating %s ...", title);
    if ((str = tinyrad_oid2str(oldoid, type)) == NULL)
    {
-      our_error(opts, NULL, "out of virtual memory");
+      trutils_error(opts, NULL, "out of virtual memory");
       return(1);
    };
    trutils_verbose(opts, "      %s:  %s", title, str);
@@ -319,7 +319,7 @@ my_oid_test(
    trutils_verbose(opts, "      Generating OID from %s ...", title);
    if ((newoid = tinyrad_str2oid(str)) == NULL)
    {
-      our_error(opts, NULL, "error generating OID from %s", title);
+      trutils_error(opts, NULL, "error generating OID from %s", title);
       tinyrad_free(str);
       return(1);
    };
@@ -331,7 +331,7 @@ my_oid_test(
    trutils_verbose(opts, "      Generated OID: %s", my_oidstr(newvals, newlen));
    if (newlen != oldlen)
    {
-      our_error(opts, NULL, "old and new OID lengths do not match");
+      trutils_error(opts, NULL, "old and new OID lengths do not match");
       tinyrad_free(newoid);
       tinyrad_free(newvals);
       tinyrad_free(oldvals);
@@ -341,7 +341,7 @@ my_oid_test(
    {
       if (newvals[pos] != oldvals[pos])
       {
-         our_error(opts, NULL, "old and new OID values do not match");
+         trutils_error(opts, NULL, "old and new OID values do not match");
          tinyrad_free(newoid);
          tinyrad_free(newvals);
          tinyrad_free(oldvals);
@@ -353,7 +353,7 @@ my_oid_test(
    if ((tinyrad_oid_cmp(&oldoid, &newoid)))
    {
       tinyrad_free(newoid);
-      our_error(opts, NULL, "old OID does not match new OID");
+      trutils_error(opts, NULL, "old OID does not match new OID");
       return(1);
    };
 

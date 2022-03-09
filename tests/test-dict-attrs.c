@@ -283,7 +283,7 @@ my_verify_attr(
    if (!(attr))
    {
       our_dict_diag_attr(opts, attr_def, attr);
-      return(our_error(opts, NULL, "attribute was not found"));
+      return(trutils_error(opts, NULL, "attribute was not found"));
    };
 
    // compare data types
@@ -291,7 +291,7 @@ my_verify_attr(
    if (attr_def->data_type != u32)
    {
       our_dict_diag_attr(opts, attr_def, attr);
-      return(our_error(opts, NULL, "attribute data types do not match"));
+      return(trutils_error(opts, NULL, "attribute data types do not match"));
    };
 
    // compare types
@@ -299,7 +299,7 @@ my_verify_attr(
    if (attr_def->type != u8)
    {
       our_dict_diag_attr(opts, attr_def, attr);
-      return(our_error(opts, NULL, "attribute types do not match"));
+      return(trutils_error(opts, NULL, "attribute types do not match"));
    };
 
    // compare vendor ID
@@ -307,7 +307,7 @@ my_verify_attr(
    if (attr_def->vendor_id != u32)
    {
       our_dict_diag_attr(opts, attr_def, attr);
-      return(our_error(opts, NULL, "attribute vendor ID do not match"));
+      return(trutils_error(opts, NULL, "attribute vendor ID do not match"));
    };
 
    // compare vendor types
@@ -315,7 +315,7 @@ my_verify_attr(
    if (attr_def->vendor_type != u32)
    {
       our_dict_diag_attr(opts, attr_def, attr);
-      return(our_error(opts, NULL, "attribute vendor types do not match"));
+      return(trutils_error(opts, NULL, "attribute vendor types do not match"));
    };
 
    // compare flags
@@ -323,7 +323,7 @@ my_verify_attr(
    if (attr_def->flags != u32)
    {
       our_dict_diag_attr(opts, attr_def, attr);
-      return(our_error(opts, NULL, "attribute flags do not match"));
+      return(trutils_error(opts, NULL, "attribute flags do not match"));
    };
 
    return(0);

@@ -302,7 +302,7 @@ my_test_value(
 
    if ( value != ptoh)
    {
-      our_error(opts, NULL, "value parsed from buffer does not match original");
+      trutils_error(opts, NULL, "value parsed from buffer does not match original");
       return(1);
    };
 
@@ -313,13 +313,13 @@ my_test_value(
          byte = ((offset+width-pos) << 4) | ((offset+width-pos) << 0);
          if (buff[pos] != byte)
          {
-            our_error(opts, NULL, "unexpected byte in buffer at offset %zu", pos);
+            trutils_error(opts, NULL, "unexpected byte in buffer at offset %zu", pos);
             return(1);
          };
       } else {
          if (buff[pos] != 0xff)
          {
-            our_error(opts, NULL, "unexpected byte in buffer at offset %zu", pos);
+            trutils_error(opts, NULL, "unexpected byte in buffer at offset %zu", pos);
             return(1);
          };
       };

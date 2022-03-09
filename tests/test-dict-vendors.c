@@ -254,7 +254,7 @@ my_verify_vendor(
    if (!(vendor))
    {
       our_dict_diag_vendor(opts, vendor_def, NULL);
-      return(our_error(opts, NULL, "vendor was not found"));
+      return(trutils_error(opts, NULL, "vendor was not found"));
    };
 
    // compare vendor ID
@@ -262,7 +262,7 @@ my_verify_vendor(
    if (vendor_def->vendor_id != u32)
    {
       our_dict_diag_vendor(opts, vendor_def, vendor);
-      return(our_error(opts, NULL, "vendor ID do not match"));
+      return(trutils_error(opts, NULL, "vendor ID do not match"));
    };
 
    // compare vendor type octets
@@ -270,7 +270,7 @@ my_verify_vendor(
    if (vendor_def->vendor_type_octs != u8)
    {
       our_dict_diag_vendor(opts, vendor_def, vendor);
-      return(our_error(opts, NULL, "attribute type octets do not match"));
+      return(trutils_error(opts, NULL, "attribute type octets do not match"));
    };
 
    // compare vendor len octets
@@ -278,7 +278,7 @@ my_verify_vendor(
    if (vendor_def->vendor_len_octs != u8)
    {
       our_dict_diag_vendor(opts, vendor_def, vendor);
-      return(our_error(opts, NULL, "attribute len octets do not match"));
+      return(trutils_error(opts, NULL, "attribute len octets do not match"));
    };
 
    return(0);

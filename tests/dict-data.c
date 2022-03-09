@@ -319,7 +319,7 @@ our_dict_initialize(
    // initialize dictionary
    if (tinyrad_dict_initialize(dictp, 0) != TRAD_SUCCESS)
    {
-      our_error(opts, NULL, "out of virtual memory");
+      trutils_error(opts, NULL, "out of virtual memory");
       return(1);
    };
 
@@ -329,7 +329,7 @@ our_dict_initialize(
       trutils_verbose(opts, "loading default dictionary ...");
       if ((rc = tinyrad_dict_defaults(*dictp, &errs, 0)) != TRAD_SUCCESS)
       {
-         our_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
+         trutils_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
          tinyrad_strsfree(errs);
          tinyrad_free(*dictp);
          return(1);
@@ -340,7 +340,7 @@ our_dict_initialize(
    trutils_verbose(opts, "adding test dictionary vendors ...");
    if ((rc = tinyrad_dict_import(*dictp, test_dict_data_vendors, NULL, NULL, &errs, 0)) != TRAD_SUCCESS)
    {
-      our_error(opts, errs, "tinyrad_dict_import(vendors): %s", tinyrad_strerror(rc));
+      trutils_error(opts, errs, "tinyrad_dict_import(vendors): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
       tinyrad_free(*dictp);
       return(1);
@@ -350,7 +350,7 @@ our_dict_initialize(
    trutils_verbose(opts, "adding test dictionary attributes ...");
    if ((rc = tinyrad_dict_import(*dictp, NULL, test_dict_data_attrs, NULL, &errs, 0)) != TRAD_SUCCESS)
    {
-      our_error(opts, errs, "tinyrad_dict_import(attributes): %s", tinyrad_strerror(rc));
+      trutils_error(opts, errs, "tinyrad_dict_import(attributes): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
       tinyrad_free(*dictp);
       return(1);
@@ -360,7 +360,7 @@ our_dict_initialize(
    trutils_verbose(opts, "adding test dictionary values ...");
    if ((rc = tinyrad_dict_import(*dictp, NULL, NULL, test_dict_data_values, &errs, 0)) != TRAD_SUCCESS)
    {
-      our_error(opts, errs, "tinyrad_dict_import(values): %s", tinyrad_strerror(rc));
+      trutils_error(opts, errs, "tinyrad_dict_import(values): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
       tinyrad_free(*dictp);
       return(1);

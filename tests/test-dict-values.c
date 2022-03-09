@@ -193,7 +193,7 @@ main(
       );
       if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
+         trutils_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
@@ -223,7 +223,7 @@ main(
       );
       if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
+         trutils_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
@@ -253,7 +253,7 @@ main(
       );
       if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
+         trutils_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
@@ -283,7 +283,7 @@ main(
       );
       if ((attr = tinyrad_dict_attr_get(dict, value_def->attr_name, 0, NULL, 0, 0)) == NULL)
       {
-         our_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
+         trutils_error(opts, NULL, "%s: %s: unable to retrieve attribute", value_def->attr_name, value_def->value_name);
          tinyrad_free(attr);
          tinyrad_free(dict);
          return(1);
@@ -327,7 +327,7 @@ my_verify_value(
    if (!(value))
    {
       our_dict_diag_value(opts, value_def, value);
-      return(our_error(opts, NULL, "value was not found"));
+      return(trutils_error(opts, NULL, "value was not found"));
    };
 
    //// compare value names
@@ -336,7 +336,7 @@ my_verify_value(
    //{
    //   tinyrad_free(str);
    //   our_dict_diag_value(opts, def, value);
-   //   return(our_error(opts, NULL, "value names do not match"));
+   //   return(trutils_error(opts, NULL, "value names do not match"));
    //};
    //tinyrad_free(str);
 
@@ -346,7 +346,7 @@ my_verify_value(
    //{
    //   tinyrad_free(str);
    //   our_dict_diag_value(opts, def, value);
-   //   return(our_error(opts, NULL, "value names do not match"));
+   //   return(trutils_error(opts, NULL, "value names do not match"));
    //};
    //tinyrad_free(str);
 
@@ -356,7 +356,7 @@ my_verify_value(
    if (a_u8 != v_u8)
    {
       our_dict_diag_value(opts, value_def, value);
-      return(our_error(opts, NULL, "attribute type does not match"));
+      return(trutils_error(opts, NULL, "attribute type does not match"));
    };
 
    // compare attribute vendor ID
@@ -365,7 +365,7 @@ my_verify_value(
    if (a_u32 != v_u32)
    {
       our_dict_diag_value(opts, value_def, value);
-      return(our_error(opts, NULL, "attribute vendor id does not match"));
+      return(trutils_error(opts, NULL, "attribute vendor id does not match"));
    };
 
    // compare attribute vendor type
@@ -374,7 +374,7 @@ my_verify_value(
    if (a_u32 != v_u32)
    {
       our_dict_diag_value(opts, value_def, value);
-      return(our_error(opts, NULL, "attribute vendor type does not match"));
+      return(trutils_error(opts, NULL, "attribute vendor type does not match"));
    };
 
    // compare value data
@@ -382,7 +382,7 @@ my_verify_value(
    if (value_def->data != u64)
    {
       our_dict_diag_value(opts, value_def, value);
-      return(our_error(opts, NULL, "value data does not match"));
+      return(trutils_error(opts, NULL, "value data does not match"));
    };
 
    return(0);

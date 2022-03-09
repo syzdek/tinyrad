@@ -94,14 +94,6 @@ int our_urldesc_test_bad(const char * url, unsigned opts);
 int our_urldesc_test_good(const char * url, unsigned opts);
 
 
-//---------------//
-// log functions //
-//---------------//
-#pragma mark log functions
-
-int  our_error(unsigned opts, char ** errs, const char * fmt, ...);
-
-
 //----------------//
 // misc functions //
 //----------------//
