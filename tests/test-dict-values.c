@@ -150,7 +150,7 @@ main(
 
          case 'q':
          opts |=  TRUTILS_OPT_QUIET;
-         opts &= ~TRAD_TEST_VERBOSE;
+         opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'V':
@@ -158,7 +158,7 @@ main(
          return(0);
 
          case 'v':
-         opts |=  TRAD_TEST_VERBOSE;
+         opts |=  TRUTILS_OPT_VERBOSE;
          opts &= ~TRUTILS_OPT_QUIET;
          break;
 

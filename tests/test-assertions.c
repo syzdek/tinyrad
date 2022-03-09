@@ -130,7 +130,7 @@ main(
 
          case 'q':
          opts |=  TRUTILS_OPT_QUIET;
-         opts &= ~TRAD_TEST_VERBOSE;
+         opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'V':
@@ -138,7 +138,7 @@ main(
          return(0);
 
          case 'v':
-         opts |=  TRAD_TEST_VERBOSE;
+         opts |=  TRUTILS_OPT_VERBOSE;
          opts &= ~TRUTILS_OPT_QUIET;
          break;
 
@@ -155,7 +155,7 @@ main(
 
    tinyrad_assertions();
 
-   if ((opts & TRAD_TEST_VERBOSE))
+   if ((opts & TRUTILS_OPT_VERBOSE))
       printf("%s: It appears that the library's assertions appear correct.\n", PROGRAM_NAME);
 
    return(0);

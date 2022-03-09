@@ -254,7 +254,7 @@ main(
 
          case 'q':
          opts |=  TRUTILS_OPT_QUIET;
-         opts &= ~TRAD_TEST_VERBOSE;
+         opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'V':
@@ -262,7 +262,7 @@ main(
          return(0);
 
          case 'v':
-         opts |=  TRAD_TEST_VERBOSE;
+         opts |=  TRUTILS_OPT_VERBOSE;
          opts &= ~TRUTILS_OPT_QUIET;
          break;
 
@@ -303,7 +303,7 @@ main(
    assert(sizeof( void * )  ==  sizeof(    size_t ));
    assert(sizeof( void * )  ==  sizeof(   ssize_t ));
 
-   if ((opts & TRAD_TEST_VERBOSE))
+   if ((opts & TRUTILS_OPT_VERBOSE))
       printf("%s: It appears that the developer's assumptions are correct.\n", PROGRAM_NAME);
 
    return(0);

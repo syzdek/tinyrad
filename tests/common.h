@@ -57,7 +57,6 @@
 ///////////////////
 #pragma mark - Definitions
 
-#define TRAD_TEST_VERBOSE     0x0001UL
 #define TRAD_TEST_RESOLVE     0x0002UL
 #define TRAD_TEST_DESC2STR    0x0004UL
 #define TRAD_TEST_PARSE       0x0008UL

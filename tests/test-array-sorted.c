@@ -247,7 +247,7 @@ int main( int argc, char * argv[] )
 
          case 'q':
          opts |=  TRUTILS_OPT_QUIET;
-         opts &= ~TRAD_TEST_VERBOSE;
+         opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'V':
@@ -255,7 +255,7 @@ int main( int argc, char * argv[] )
          return(0);
 
          case 'v':
-         opts |=  TRAD_TEST_VERBOSE;
+         opts |=  TRUTILS_OPT_VERBOSE;
          opts &= ~TRUTILS_OPT_QUIET;
          break;
 

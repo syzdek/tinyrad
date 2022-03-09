@@ -146,7 +146,7 @@ int main(int argc, char * argv[])
 
          case 'q':
          opts |=  TRUTILS_OPT_QUIET;
-         opts &= ~TRAD_TEST_VERBOSE;
+         opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'V':
@@ -154,7 +154,7 @@ int main(int argc, char * argv[])
          return(0);
 
          case 'v':
-         opts |=  TRAD_TEST_VERBOSE;
+         opts |=  TRUTILS_OPT_VERBOSE;
          opts &= ~TRUTILS_OPT_QUIET;
          break;
 
@@ -173,19 +173,19 @@ int main(int argc, char * argv[])
    value = 0x2211;
    for(pos = 0; (pos < (sizeof(uint64_t)+1)); pos++)
       errs += my_test_value( opts, sizeof(uint16_t), pos, value );
-   if ((opts & TRAD_TEST_VERBOSE)) printf("\n");
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("\n");
 
    my_print_header(opts, sizeof(uint32_t));
    value = 0x44332211;
    for(pos = 0; (pos < (sizeof(uint64_t)+1)); pos++)
       errs += my_test_value( opts, sizeof(uint32_t), pos, value );
-   if ((opts & TRAD_TEST_VERBOSE)) printf("\n");
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("\n");
 
    my_print_header(opts, sizeof(uint64_t));
    value = 0x8877665544332211;
    for(pos = 0; (pos < (sizeof(uint64_t)+1)); pos++)
       errs += my_test_value( opts, sizeof(uint64_t), pos, value );
-   if ((opts & TRAD_TEST_VERBOSE)) printf("\n");
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("\n");
 
    return( (((errs)) ? 1 : 0) );
 }
@@ -200,7 +200,7 @@ my_print_header(
    const char *   hton_str;
    const char *   ptoh_str;
 
-   if (!(opts & TRAD_TEST_VERBOSE))
+   if (!(opts & TRUTILS_OPT_VERBOSE))
       return;
 
    switch(width)
@@ -283,11 +283,11 @@ my_test_value(
       return(1);
    };
 
-   if ((opts & TRAD_TEST_VERBOSE)) printf("%s", title);
-   if ((opts & TRAD_TEST_VERBOSE)) printf("  %zu", offset);
-   if ((opts & TRAD_TEST_VERBOSE)) printf("  0x%016" PRIx64, value);
-   if ((opts & TRAD_TEST_VERBOSE)) printf(" ");
-   if ((opts & TRAD_TEST_VERBOSE))
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("%s", title);
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("  %zu", offset);
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("  0x%016" PRIx64, value);
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf(" ");
+   if ((opts & TRUTILS_OPT_VERBOSE))
    {
       for(pos = 0; (pos < sizeof(buff)); pos++)
       {
@@ -296,9 +296,9 @@ my_test_value(
          printf("%02" PRIx8, buff[pos]);
       };
    };
-   if ((opts & TRAD_TEST_VERBOSE)) printf("     0x%016" PRIx64, ptoh);
-   if ((opts & TRAD_TEST_VERBOSE)) printf("  0x%016" PRIx64, hton);
-   if ((opts & TRAD_TEST_VERBOSE)) printf("\n");
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("     0x%016" PRIx64, ptoh);
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("  0x%016" PRIx64, hton);
+   if ((opts & TRUTILS_OPT_VERBOSE)) printf("\n");
 
    if ( value != ptoh)
    {
