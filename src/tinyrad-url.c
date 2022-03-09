@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
    int                        quiet;
    int                        resolve;
    int                        verbose;
-   uint32_t                   opts;
+   uint32_t                   tr_opts;
    TinyRadURLDesc *           trudp;
    TinyRadURLDesc **          trudpp;
    TinyRadURLDesc *           trudp_next;
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
 
    trutils_initialize(PROGRAM_NAME);
 
-   opts        = 0;
+   tr_opts     = 0;
    quiet       = 0;
    resolve     = 0;
    verbose     = 0;
@@ -128,11 +128,11 @@ int main(int argc, char * argv[])
          break;
 
          case '4':
-         opts |= TRAD_IPV4;
+         tr_opts |= TRAD_IPV4;
          break;
 
          case '6':
-         opts |= TRAD_IPV6;
+         tr_opts |= TRAD_IPV6;
          break;
 
          case 'd':
@@ -200,7 +200,7 @@ int main(int argc, char * argv[])
       };
       if ((resolve))
       {
-         if ((rc = tinyrad_urldesc_resolve(*trudpp, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_urldesc_resolve(*trudpp, tr_opts)) != TRAD_SUCCESS)
          {
             if (!(quiet))
             {
