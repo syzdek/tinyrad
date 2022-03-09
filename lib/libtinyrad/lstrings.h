@@ -62,46 +62,5 @@
 //////////////////
 #pragma mark - Prototypes
 
-char *
-tinyrad_strdup(
-         const char *                  s1 );
-
-
-size_t
-tinyrad_strlcat(
-         char * restrict               dst,
-         const char * restrict         src,
-         size_t                        dstsize );
-
-
-size_t
-tinyrad_strlcpy(
-         char * restrict               dst,
-         const char * restrict         src,
-         size_t                        dstsize );
-
-
-char *
-tinyrad_strndup(
-         const char *                  s1,
-         size_t                        n );
-
-
-int
-tinyrad_strsadd(
-         char ***                      strsp,
-         const char *                  str );
-
-
-size_t
-tinyrad_strscount(
-         char * const *                strs );
-
-
-int
-tinyrad_strsdup(
-         char ***                      dstp,
-         char * const *                src );
-
 
 #endif /* end of header */

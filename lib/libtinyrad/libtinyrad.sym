@@ -99,6 +99,13 @@ tinyrad_htonll
 tinyrad_ntohll
 #
 # string functions
+tinyrad_strdup
+tinyrad_strlcat
+tinyrad_strlcpy
+tinyrad_strndup
+tinyrad_strsadd
+tinyrad_strscount
+tinyrad_strsdup
 tinyrad_strsfree
 #
 # URL functions

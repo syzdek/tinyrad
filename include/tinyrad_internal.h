@@ -190,4 +190,51 @@ _TINYRAD_F void *
 tinyrad_assertions( void );
 
 
+//--------------------//
+// strings prototypes //
+//--------------------//
+#pragma mark strings prototypes
+
+_TINYRAD_F char *
+tinyrad_strdup(
+         const char *                  s1 );
+
+
+_TINYRAD_F size_t
+tinyrad_strlcat(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize );
+
+
+_TINYRAD_F size_t
+tinyrad_strlcpy(
+         char * restrict               dst,
+         const char * restrict         src,
+         size_t                        dstsize );
+
+
+_TINYRAD_F char *
+tinyrad_strndup(
+         const char *                  s1,
+         size_t                        n );
+
+
+_TINYRAD_F int
+tinyrad_strsadd(
+         char ***                      strsp,
+         const char *                  str );
+
+
+_TINYRAD_F size_t
+tinyrad_strscount(
+         char * const *                strs );
+
+
+_TINYRAD_F int
+tinyrad_strsdup(
+         char ***                      dstp,
+         char * const *                src );
+
+
 #endif /* end of header */
