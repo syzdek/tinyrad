@@ -131,6 +131,13 @@ trutils_print(
 
 
 _TINYRAD_F void
+trutils_verbose(
+         unsigned                      opts,
+         const char *                  fmt,
+         ... );
+
+
+_TINYRAD_F void
 trutils_version( void );
 
 void our_verbose(unsigned opts, const char * fmt, ...);
