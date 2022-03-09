@@ -114,7 +114,7 @@ trutils_open(
    fb->fd = -1;
 
    // copy filename
-   if ((fb->filename = strdup(filename)) == NULL)
+   if ((fb->filename = tinyrad_strdup(filename)) == NULL)
    {
       trutils_error(opts,  NULL, "out of virtual memory");
       trutils_close(fb);
