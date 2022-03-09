@@ -210,7 +210,7 @@ int main( int argc, char * argv[] )
 
 
    // initialize test data
-   our_verbose(opts, "initializing test data ...");
+   trutils_verbose(opts, "initializing test data ...");
    memset(data, 0, sizeof(data));
    for(len = 0; ((test_strs[len])); len++);
    for(pos = 0; (pos < MY_LIST_LEN); pos++)
@@ -233,7 +233,7 @@ int main( int argc, char * argv[] )
 
 
    // loop through test data and add to stack
-   our_verbose(opts, "pushing to stack ...");
+   trutils_verbose(opts, "pushing to stack ...");
    list     = NULL;
    list_len = 0;
    for(x = 0; (x < MY_LIST_LEN); x++)
@@ -254,7 +254,7 @@ int main( int argc, char * argv[] )
 
 
    // loop through stack and verify data
-   our_verbose(opts, "verifing stack ...");
+   trutils_verbose(opts, "verifing stack ...");
    if (list_len != ((MY_LIST_LEN / 4) * 3))
       return(our_error(opts, NULL, "stack length is incorrect"));
    for(x = 0, y = 0; (x < MY_LIST_LEN); x++)
@@ -268,7 +268,7 @@ int main( int argc, char * argv[] )
 
 
    // pop data from stack
-   our_verbose(opts, "popping from stack ...");
+   trutils_verbose(opts, "popping from stack ...");
    while (list_len > 0)
       if (tinyrad_array_pop(list, &list_len, sizeof(MyData *)) == NULL)
          return(our_error(opts, NULL, "unable to pop from stack"));

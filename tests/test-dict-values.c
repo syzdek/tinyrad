@@ -177,14 +177,14 @@ main(
    if ((our_dict_initialize(opts, &dict)))
       return(1);
 
-   our_verbose(opts, "                                 %4s %9s %7s  %s", "Type", "Vendor", "Vendor", "Name");
-   our_verbose(opts, "                                 %4s %9s %7s  %s",     "",     "ID",   "Type",     "");
+   trutils_verbose(opts, "                                 %4s %9s %7s  %s", "Type", "Vendor", "Vendor", "Name");
+   trutils_verbose(opts, "                                 %4s %9s %7s  %s",     "",     "ID",   "Type",     "");
 
    // verifies test values in dictionary by name
    for(pos = 0; ((test_dict_data_values[pos].value_name)); pos++)
    {
       value_def = &test_dict_data_values[pos];
-      our_verbose(
+      trutils_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
          value_def->attr_name,
@@ -214,7 +214,7 @@ main(
    for(pos = 0; ((test_dict_data_values[pos].value_name)); pos++)
    {
       value_def = &test_dict_data_values[pos];
-      our_verbose(
+      trutils_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
          value_def->attr_name,
@@ -244,7 +244,7 @@ main(
    for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
    {
       value_def = &tinyrad_dict_default_values[pos];
-      our_verbose(
+      trutils_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
          value_def->attr_name,
@@ -274,7 +274,7 @@ main(
    for(pos = 0; ((tinyrad_dict_default_values[pos].attr_name)); pos++)
    {
       value_def = &tinyrad_dict_default_values[pos];
-      our_verbose(
+      trutils_verbose(
          opts,
          "test    attribute search by name %25s %25s %3" PRIu64 "  ...",
          value_def->attr_name,

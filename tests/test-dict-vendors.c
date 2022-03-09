@@ -175,13 +175,13 @@ main(
    if ((our_dict_initialize(opts, &dict)))
       return(1);
 
-   our_verbose(opts, "Vendor format: vendor id/name");
+   trutils_verbose(opts, "Vendor format: vendor id/name");
 
    // verifies default attributes in dictionary by name
    for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
    {
       vendor_def = &tinyrad_dict_default_vendors[pos];
-      our_verbose( opts, "default attribute search by name %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      trutils_verbose( opts, "default attribute search by name %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
       vendor = tinyrad_dict_vendor_get(dict, vendor_def->name, 0);
       if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
@@ -195,7 +195,7 @@ main(
    for(pos = 0; ((tinyrad_dict_default_vendors[pos].name)); pos++)
    {
       vendor_def = &tinyrad_dict_default_vendors[pos];
-      our_verbose( opts, "default attribute search by id   %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      trutils_verbose( opts, "default attribute search by id   %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
       vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)vendor_def->vendor_id);
       if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
@@ -209,7 +209,7 @@ main(
    for(pos = 0; ((test_dict_data_vendors[pos].name)); pos++)
    {
       vendor_def = &test_dict_data_vendors[pos];
-      our_verbose( opts, "test attribute search by name %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      trutils_verbose( opts, "test attribute search by name %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
       vendor = tinyrad_dict_vendor_get(dict, vendor_def->name, 0);
       if ((my_verify_vendor(opts, vendor_def, vendor)))
       {
@@ -223,7 +223,7 @@ main(
    for(pos = 0; ((test_dict_data_vendors[pos].name)); pos++)
    {
       vendor_def = &test_dict_data_vendors[pos];
-      our_verbose( opts, "test attribute search by id   %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
+      trutils_verbose( opts, "test attribute search by id   %8" PRIu32 "  %s ...", vendor_def->vendor_id, vendor_def->name);
       vendor = tinyrad_dict_vendor_get(dict, NULL, (uint32_t)vendor_def->vendor_id);
       if ((my_verify_vendor(opts, vendor_def, vendor)))
       {

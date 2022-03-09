@@ -279,7 +279,7 @@ int main( int argc, char * argv[] )
 
 
    // initialize test data
-   our_verbose(opts, "initializing test data ...");
+   trutils_verbose(opts, "initializing test data ...");
    memset(data, 0, sizeof(data));
    memset(test, 0, sizeof(test));
    for(len = 0; ((test_strs[len])); len++);
@@ -303,7 +303,7 @@ int main( int argc, char * argv[] )
 
 
    // test searching by value
-   our_verbose(opts, "sorting test data by value ...");
+   trutils_verbose(opts, "sorting test data by value ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_value);
    opts = opts & ~MY_MASK;
    if ((my_test_search(opts|MY_OBJ_VALUE, test, MY_LIST_LEN)))
@@ -313,7 +313,7 @@ int main( int argc, char * argv[] )
 
 
    // test searching by name
-   our_verbose(opts, "sorting test data by name ...");
+   trutils_verbose(opts, "sorting test data by name ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_name);
    opts = opts & ~MY_MASK;
    if ((my_test_search(opts|MY_OBJ_NAME, test, MY_LIST_LEN)))
@@ -323,7 +323,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_REPLACE
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -340,7 +340,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_INSERT
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -355,7 +355,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -378,7 +378,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -401,7 +401,7 @@ int main( int argc, char * argv[] )
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_NAME;
@@ -424,12 +424,12 @@ int main( int argc, char * argv[] )
 
 
    // test searching by value
-   our_verbose(opts, "sorting test data by value ...");
+   trutils_verbose(opts, "sorting test data by value ...");
    qsort(test, MY_LIST_LEN, sizeof(MyData *), &my_compare_obj_value);
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_UNORDERED
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
@@ -452,7 +452,7 @@ int main( int argc, char * argv[] )
 
 
    // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_APPEND
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
@@ -475,7 +475,7 @@ int main( int argc, char * argv[] )
 
 
   // insert data as sorted list using TINYRAD_ARRAY_MERGE and TINYRAD_ARRAY_PREPEND
-   our_verbose(opts, "resetting list ...");
+   trutils_verbose(opts, "resetting list ...");
    list     = NULL;
    list_len = 0;
    opts     = (opts & ~MY_MASK) | MY_OBJ_VALUE;
@@ -628,7 +628,7 @@ my_test_insert(
       return(our_error(opts, NULL, "unknown dup action"));
    };
 
-   our_verbose(opts, "testing   tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   trutils_verbose(opts, "testing   tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < dat_len); x++)
    {
       if (tinyrad_array_add((void **)listp, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL, &realloc) == -1)
@@ -645,7 +645,7 @@ my_test_insert(
    if (!(arrayopt & TINYRAD_ARRAY_MERGE))
       iteration = 0;
 
-   our_verbose(opts, "verifying tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   trutils_verbose(opts, "verifying tinyrad_array_add( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    iteration++;
    for(x = 0; (x < (dat_len*iteration)); x++)
    {
@@ -724,7 +724,7 @@ my_test_remove(
       return(our_error(opts, NULL, "unknown dup action"));
    };
 
-   our_verbose(opts, "testing   tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   trutils_verbose(opts, "testing   tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; (x < dat_len); x++)
    {
       if (tinyrad_array_remove(list, list_lenp, sizeof(MyData *), &src[x], arrayopt, compar, NULL) == -1)
@@ -739,7 +739,7 @@ my_test_remove(
    if (!(arrayopt & TINYRAD_ARRAY_MERGE))
       iteration = 0;
 
-   our_verbose(opts, "verifying tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
+   trutils_verbose(opts, "verifying tinyrad_array_remove( %7s, %9s, %s ) [%s] ...", action_name, merge_type, compar_name, (((iteration)) ? "duplicate" : "unique"));
    for(x = 0; ((x < (*list_lenp)) && ((iteration))); x++)
    {
       pos = x/iteration;
@@ -787,7 +787,7 @@ my_test_search(
 
    my_compar_opts(opts, &compar_name, &compar);
 
-   our_verbose(opts, "testing   tinyrad_array_search( %s ) ...", compar_name);
+   trutils_verbose(opts, "testing   tinyrad_array_search( %s ) ...", compar_name);
    for(x = 1; (x < (len+1)); x++)
    {
       for(y = 0; (y < x); y++)
@@ -808,7 +808,7 @@ my_test_search(
       };
    };
 
-   our_verbose(opts, "testing   tinyrad_array_get(    %s ) ...", compar_name);
+   trutils_verbose(opts, "testing   tinyrad_array_get(    %s ) ...", compar_name);
    for(x = 1; (x < (len+1)); x++)
    {
       for(y = 0; (y < x); y++)

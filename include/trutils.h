@@ -140,7 +140,4 @@ trutils_verbose(
 _TINYRAD_F void
 trutils_version( void );
 
-void our_verbose(unsigned opts, const char * fmt, ...);
-
-
 #endif /* end of header */

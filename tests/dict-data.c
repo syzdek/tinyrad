@@ -161,13 +161,13 @@ our_dict_diag_attr(
 
    if ((attr_def))
    {
-      our_verbose(opts, "Attribute Definition");
-      our_verbose(opts, "   Name:             %s",       attr_def->name);
-      our_verbose(opts, "   Type:             %" PRIu8,  attr_def->type);
-      our_verbose(opts, "   Vendor ID:        %" PRIu32, attr_def->vendor_id);
-      our_verbose(opts, "   Vendor Type:      %" PRIu32, attr_def->vendor_type);
-      our_verbose(opts, "   Data Type:        %" PRIu32, attr_def->data_type);
-      our_verbose(opts, "   Flags:            0x%08x",   (unsigned)attr_def->flags);
+      trutils_verbose(opts, "Attribute Definition");
+      trutils_verbose(opts, "   Name:             %s",       attr_def->name);
+      trutils_verbose(opts, "   Type:             %" PRIu8,  attr_def->type);
+      trutils_verbose(opts, "   Vendor ID:        %" PRIu32, attr_def->vendor_id);
+      trutils_verbose(opts, "   Vendor Type:      %" PRIu32, attr_def->vendor_type);
+      trutils_verbose(opts, "   Data Type:        %" PRIu32, attr_def->data_type);
+      trutils_verbose(opts, "   Flags:            0x%08x",   (unsigned)attr_def->flags);
    };
 
    if ((attr))
@@ -190,16 +190,16 @@ our_dict_diag_attr(
       tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_TYPE_OCTS,    &attr_type_octets);
       tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_LEN_OCTS,     &attr_len_octets);
       tinyrad_dict_attr_info(attr, TRAD_DICT_OPT_REF_COUNT,    &attr_ref_count);
-      our_verbose(opts, "Attribute Object");
-      our_verbose(opts, "   Name:             %s",       (((attr_name)) ? attr_name : ""));
-      our_verbose(opts, "   Type:             %" PRIu8,  attr_type);
-      our_verbose(opts, "   Vendor ID:        %" PRIu32, attr_vendor_id);
-      our_verbose(opts, "   Vendor Type:      %" PRIu32, attr_vendor_type);
-      our_verbose(opts, "   Data Type:        %" PRIu32, attr_data_type);
-      our_verbose(opts, "   Flags:            0x%08x",   (unsigned)attr_flags);
-      our_verbose(opts, "   Type Octets:      %" PRIu32, attr_type_octets);
-      our_verbose(opts, "   Length Octets:    %" PRIu32, attr_len_octets);
-      our_verbose(opts, "   Reference Count:  %u",       attr_ref_count);
+      trutils_verbose(opts, "Attribute Object");
+      trutils_verbose(opts, "   Name:             %s",       (((attr_name)) ? attr_name : ""));
+      trutils_verbose(opts, "   Type:             %" PRIu8,  attr_type);
+      trutils_verbose(opts, "   Vendor ID:        %" PRIu32, attr_vendor_id);
+      trutils_verbose(opts, "   Vendor Type:      %" PRIu32, attr_vendor_type);
+      trutils_verbose(opts, "   Data Type:        %" PRIu32, attr_data_type);
+      trutils_verbose(opts, "   Flags:            0x%08x",   (unsigned)attr_flags);
+      trutils_verbose(opts, "   Type Octets:      %" PRIu32, attr_type_octets);
+      trutils_verbose(opts, "   Length Octets:    %" PRIu32, attr_len_octets);
+      trutils_verbose(opts, "   Reference Count:  %u",       attr_ref_count);
    };
 
    return;
@@ -222,10 +222,10 @@ our_dict_diag_value(
 
    if ((value_def))
    {
-      our_verbose(opts, "Value Definition");
-      our_verbose(opts, "   Attribute Name:   %s",       value_def->attr_name);
-      our_verbose(opts, "   Value Name:       %s",       value_def->value_name);
-      our_verbose(opts, "   Value Data:       %" PRIu64, value_def->data);
+      trutils_verbose(opts, "Value Definition");
+      trutils_verbose(opts, "   Attribute Name:   %s",       value_def->attr_name);
+      trutils_verbose(opts, "   Value Name:       %s",       value_def->value_name);
+      trutils_verbose(opts, "   Value Data:       %" PRIu64, value_def->data);
    };
 
    if ((value))
@@ -244,14 +244,14 @@ our_dict_diag_value(
       tinyrad_dict_value_info(value, TRAD_DICT_OPT_VEND_TYPE,    &vendor_type);
       tinyrad_dict_value_info(value, TRAD_DICT_OPT_DATA,         &value_data);
       tinyrad_dict_value_info(value, TRAD_DICT_OPT_REF_COUNT,    &value_ref_count);
-      our_verbose(opts, "Value Object");
-      our_verbose(opts, "   Value Name:       %s",         (((value_name)) ? value_name : ""));
-      our_verbose(opts, "   Attribute Name:   %s",         (((attr_name))  ? attr_name  : ""));
-      our_verbose(opts, "   Attribute Type:   %" PRIu8,    value_type);
-      our_verbose(opts, "   Vendor ID:        %" PRIu32,   vendor_id);
-      our_verbose(opts, "   Vendor Type:      %" PRIu32,   vendor_type);
-      our_verbose(opts, "   Value Data:       %" PRIu64,   value_data);
-      our_verbose(opts, "   Reference Count:  %u",         value_ref_count);
+      trutils_verbose(opts, "Value Object");
+      trutils_verbose(opts, "   Value Name:       %s",         (((value_name)) ? value_name : ""));
+      trutils_verbose(opts, "   Attribute Name:   %s",         (((attr_name))  ? attr_name  : ""));
+      trutils_verbose(opts, "   Attribute Type:   %" PRIu8,    value_type);
+      trutils_verbose(opts, "   Vendor ID:        %" PRIu32,   vendor_id);
+      trutils_verbose(opts, "   Vendor Type:      %" PRIu32,   vendor_type);
+      trutils_verbose(opts, "   Value Data:       %" PRIu64,   value_data);
+      trutils_verbose(opts, "   Reference Count:  %u",         value_ref_count);
    };
 
    return;
@@ -272,11 +272,11 @@ our_dict_diag_vendor(
 
    if ((vendor_def))
    {
-      our_verbose(opts, "Vendor Definition");
-      our_verbose(opts, "   Name:             %s",       vendor_def->name);
-      our_verbose(opts, "   Vendor ID:        %" PRIu32, vendor_def->vendor_id);
-      our_verbose(opts, "   Vendor Type:      %" PRIu32, vendor_def->vendor_type_octs);
-      our_verbose(opts, "   Data Type:        %" PRIu32, vendor_def->vendor_len_octs);
+      trutils_verbose(opts, "Vendor Definition");
+      trutils_verbose(opts, "   Name:             %s",       vendor_def->name);
+      trutils_verbose(opts, "   Vendor ID:        %" PRIu32, vendor_def->vendor_id);
+      trutils_verbose(opts, "   Vendor Type:      %" PRIu32, vendor_def->vendor_type_octs);
+      trutils_verbose(opts, "   Data Type:        %" PRIu32, vendor_def->vendor_len_octs);
    };
 
    if ((vendor))
@@ -291,12 +291,12 @@ our_dict_diag_vendor(
       tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_TYPE_OCTS,    &vendor_type_octets);
       tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_LEN_OCTS,     &vendor_len_octets);
       tinyrad_dict_vendor_info(vendor, TRAD_DICT_OPT_REF_COUNT,    &vendor_ref_count);
-      our_verbose(opts, "Vendor Object");
-      our_verbose(opts, "   Name:             %s",       (((vendor_name)) ? vendor_name : ""));
-      our_verbose(opts, "   Vendor ID:        %" PRIu32, vendor_id);
-      our_verbose(opts, "   Type Octets:      %" PRIu32, vendor_type_octets);
-      our_verbose(opts, "   Length Octets:    %" PRIu32, vendor_len_octets);
-      our_verbose(opts, "   Reference Count:  %u",       vendor_ref_count);
+      trutils_verbose(opts, "Vendor Object");
+      trutils_verbose(opts, "   Name:             %s",       (((vendor_name)) ? vendor_name : ""));
+      trutils_verbose(opts, "   Vendor ID:        %" PRIu32, vendor_id);
+      trutils_verbose(opts, "   Type Octets:      %" PRIu32, vendor_type_octets);
+      trutils_verbose(opts, "   Length Octets:    %" PRIu32, vendor_len_octets);
+      trutils_verbose(opts, "   Reference Count:  %u",       vendor_ref_count);
    };
 
    return;
@@ -326,7 +326,7 @@ our_dict_initialize(
    // load builtin/default dictionary objects
    if ((opts & TRAD_TEST_DFLT_DICT))
    {
-      our_verbose(opts, "loading default dictionary ...");
+      trutils_verbose(opts, "loading default dictionary ...");
       if ((rc = tinyrad_dict_defaults(*dictp, &errs, 0)) != TRAD_SUCCESS)
       {
          our_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
@@ -337,7 +337,7 @@ our_dict_initialize(
    };
 
    // load test dictionary vendors
-   our_verbose(opts, "adding test dictionary vendors ...");
+   trutils_verbose(opts, "adding test dictionary vendors ...");
    if ((rc = tinyrad_dict_import(*dictp, test_dict_data_vendors, NULL, NULL, &errs, 0)) != TRAD_SUCCESS)
    {
       our_error(opts, errs, "tinyrad_dict_import(vendors): %s", tinyrad_strerror(rc));
@@ -347,7 +347,7 @@ our_dict_initialize(
    };
 
    // load test dictionary attributes
-   our_verbose(opts, "adding test dictionary attributes ...");
+   trutils_verbose(opts, "adding test dictionary attributes ...");
    if ((rc = tinyrad_dict_import(*dictp, NULL, test_dict_data_attrs, NULL, &errs, 0)) != TRAD_SUCCESS)
    {
       our_error(opts, errs, "tinyrad_dict_import(attributes): %s", tinyrad_strerror(rc));
@@ -357,7 +357,7 @@ our_dict_initialize(
    };
 
    // load test dictionary values
-   our_verbose(opts, "adding test dictionary values ...");
+   trutils_verbose(opts, "adding test dictionary values ...");
    if ((rc = tinyrad_dict_import(*dictp, NULL, NULL, test_dict_data_values, &errs, 0)) != TRAD_SUCCESS)
    {
       our_error(opts, errs, "tinyrad_dict_import(values): %s", tinyrad_strerror(rc));

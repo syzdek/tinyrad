@@ -211,8 +211,8 @@ int main(int argc, char * argv[])
    {
       for(y = 1; (y <= test_vals[x].len); y++)
       {
-         our_verbose(opts, "testing oid %s ...", my_oidstr(test_vals[x].vals, y));
-         our_verbose(opts, "   Initializing OID from values ...");
+         trutils_verbose(opts, "testing oid %s ...", my_oidstr(test_vals[x].vals, y));
+         trutils_verbose(opts, "   Initializing OID from values ...");
          if ((oid = tinyrad_oid_init(test_vals[x].vals, y)) == NULL)
          {
             our_error(opts, NULL, "out of virtual memory");
@@ -220,7 +220,7 @@ int main(int argc, char * argv[])
             continue;
          };
 
-         our_verbose(opts, "   Testing values of OID ...");
+         trutils_verbose(opts, "   Testing values of OID ...");
          if ((rc = tinyrad_oid_values(oid, &vals, &len)) != TRAD_SUCCESS)
          {
             our_error(opts, NULL, "tinyrad_oid_values(): %s", tinyrad_strerror(rc));
@@ -308,15 +308,15 @@ my_oid_test(
    uint32_t *        newvals;
    uint32_t *        oldvals;
 
-   our_verbose(opts, "   Generating %s ...", title);
+   trutils_verbose(opts, "   Generating %s ...", title);
    if ((str = tinyrad_oid2str(oldoid, type)) == NULL)
    {
       our_error(opts, NULL, "out of virtual memory");
       return(1);
    };
-   our_verbose(opts, "      %s:  %s", title, str);
+   trutils_verbose(opts, "      %s:  %s", title, str);
 
-   our_verbose(opts, "      Generating OID from %s ...", title);
+   trutils_verbose(opts, "      Generating OID from %s ...", title);
    if ((newoid = tinyrad_str2oid(str)) == NULL)
    {
       our_error(opts, NULL, "error generating OID from %s", title);
@@ -328,7 +328,7 @@ my_oid_test(
 
    tinyrad_oid_values(newoid, &newvals, &newlen);
    tinyrad_oid_values(oldoid, &oldvals, &oldlen);
-   our_verbose(opts, "      Generated OID: %s", my_oidstr(newvals, newlen));
+   trutils_verbose(opts, "      Generated OID: %s", my_oidstr(newvals, newlen));
    if (newlen != oldlen)
    {
       our_error(opts, NULL, "old and new OID lengths do not match");
@@ -349,7 +349,7 @@ my_oid_test(
       };
    };
 
-   our_verbose(opts, "      comparing old OID and new OID ...");
+   trutils_verbose(opts, "      comparing old OID and new OID ...");
    if ((tinyrad_oid_cmp(&oldoid, &newoid)))
    {
       tinyrad_free(newoid);
