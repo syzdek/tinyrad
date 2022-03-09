@@ -65,9 +65,5 @@
 //////////////////
 #pragma mark - Prototypes
 
-void
-our_strings_free(
-         char **                       strs );
-
 
 #endif /* end of header */

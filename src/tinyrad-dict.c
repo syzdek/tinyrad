@@ -136,8 +136,8 @@ int main(int argc, char * argv[])
          if (tinyrad_strsadd(&files, optarg) != TRAD_SUCCESS)
          {
             fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
-            our_strings_free(files);
-            our_strings_free(paths);
+            tinyrad_strsfree(files);
+            tinyrad_strsfree(paths);
             return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
@@ -155,8 +155,8 @@ int main(int argc, char * argv[])
          if (tinyrad_strsadd(&paths, optarg) != TRAD_SUCCESS)
          {
             fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
-            our_strings_free(files);
-            our_strings_free(paths);
+            tinyrad_strsfree(files);
+            tinyrad_strsfree(paths);
             return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
@@ -189,8 +189,8 @@ int main(int argc, char * argv[])
    // initialize dictionary
    if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
    {
-      our_strings_free(files);
-      our_strings_free(paths);
+      tinyrad_strsfree(files);
+      tinyrad_strsfree(paths);
       fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
       return(trutils_exit_code(rc));
    };
@@ -201,8 +201,8 @@ int main(int argc, char * argv[])
       if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
       {
          trutils_error(opts, errs, NULL);
-         our_strings_free(files);
-         our_strings_free(paths);
+         tinyrad_strsfree(files);
+         tinyrad_strsfree(paths);
          tinyrad_free(dict);
          return(trutils_exit_code(rc));
       };
@@ -213,8 +213,8 @@ int main(int argc, char * argv[])
    {
       if ((rc = tinyrad_dict_add_path(dict, paths[pos])) != TRAD_SUCCESS)
       {
-         our_strings_free(paths);
-         our_strings_free(files);
+         tinyrad_strsfree(paths);
+         tinyrad_strsfree(files);
          tinyrad_free(dict);
          trutils_error(opts, NULL, "%s: %s", optarg, tinyrad_strerror(rc));
          return(trutils_exit_code(rc));
@@ -228,8 +228,8 @@ int main(int argc, char * argv[])
       {
          trutils_error(opts, errs, NULL);
          tinyrad_strsfree(errs);
-         our_strings_free(paths);
-         our_strings_free(files);
+         tinyrad_strsfree(paths);
+         tinyrad_strsfree(files);
          tinyrad_free(dict);
          return(trutils_exit_code(rc));
       };
@@ -240,8 +240,8 @@ int main(int argc, char * argv[])
       tinyrad_dict_print(dict, 0xffff);
 
    // frees resources
-   our_strings_free(paths);
-   our_strings_free(files);
+   tinyrad_strsfree(paths);
+   tinyrad_strsfree(files);
    tinyrad_free(dict);
 
    return(0);

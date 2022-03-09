@@ -70,20 +70,5 @@
 /////////////////
 #pragma mark - Functions
 
-void
-our_strings_free(
-         char **                       strs )
-{
-   int i;
-   if (!(strs))
-      return;
-   for(i = 0; ((strs[i])); i++)
-   {
-      free(strs[i]);
-      strs[i] = NULL;
-   };
-   free(strs);
-   return;
-}
 
 /* end of source */
