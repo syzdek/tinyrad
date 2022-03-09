@@ -164,4 +164,15 @@ trutils_verbose(
 _TINYRAD_F void
 trutils_version( void );
 
+
+//--------------------------//
+// miscellaneous prototypes //
+//--------------------------//
+#pragma mark miscellaneous prototypes
+
+_TINYRAD_F int
+trutils_exit_code(
+         int                           rc );
+
+
 #endif /* end of header */

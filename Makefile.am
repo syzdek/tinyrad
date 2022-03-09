@@ -279,7 +279,9 @@ lib_libtrutils_a_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  lib/libtrutils/lfile.c \
 					  lib/libtrutils/lfile.h \
 					  lib/libtrutils/llogging.c \
-					  lib/libtrutils/llogging.h
+					  lib/libtrutils/llogging.h \
+					  lib/libtrutils/lmisc.c \
+					  lib/libtrutils/lmisc.h
 
 
 # macros for src/tinyrad
