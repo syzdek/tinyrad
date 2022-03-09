@@ -115,18 +115,18 @@ extern const char * program_name;
 //-----------------//
 #pragma mark file prototypes
 
-void
+_TINYRAD_F void
 trutils_close(
          TRUtilsFile *                 fb );
 
 
-TRUtilsFile *
+_TINYRAD_F TRUtilsFile *
 trutils_open(
          unsigned                      opts,
          const char *                  filename );
 
 
-int
+_TINYRAD_F int
 trutils_readline(
          unsigned                      opts,
          TRUtilsFile *                 fb );
