@@ -65,12 +65,6 @@
 //////////////////
 #pragma mark - Prototypes
 
-int
-our_strings_append(
-         char ***                      strsp,
-         const char *                  str );
-
-
 void
 our_strings_free(
          char **                       strs );

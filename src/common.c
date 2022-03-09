@@ -70,45 +70,6 @@
 /////////////////
 #pragma mark - Functions
 
-int
-our_strings_append(
-         char ***                      strsp,
-         const char *                  str )
-{
-   size_t     count;
-   char **    strs;
-
-   assert(strsp != NULL);
-   assert(str   != NULL);
-
-   // initialize array
-   if (!(*strsp))
-   {
-      if ((*strsp = malloc(sizeof(char *))) == NULL)
-         return(TRAD_ENOMEM);
-      (*strsp)[0] = NULL;
-   };
-
-   // count elements
-   for(count = 0; (((*strsp)[count])); count++);
-
-   // increase size of array
-   if ((strs = realloc(*strsp, (sizeof(char *)*(count+2)))) == NULL)
-      return(TRAD_ENOMEM);
-   *strsp = strs;
-
-   // copy string
-   if ((strs[count] = strdup(str)) == NULL)
-      return(TRAD_ENOMEM);
-
-   // terminate array
-   count++;
-   strs[count] = NULL;
-
-   return(TRAD_SUCCESS);
-}
-
-
 void
 our_strings_free(
          char **                       strs )

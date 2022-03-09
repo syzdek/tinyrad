@@ -133,7 +133,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'D':
-         if (our_strings_append(&files, optarg) != TRAD_SUCCESS)
+         if (tinyrad_strsadd(&files, optarg) != TRAD_SUCCESS)
          {
             fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
             our_strings_free(files);
@@ -152,7 +152,7 @@ int main(int argc, char * argv[])
          return(0);
 
          case 'I':
-         if (our_strings_append(&paths, optarg) != TRAD_SUCCESS)
+         if (tinyrad_strsadd(&paths, optarg) != TRAD_SUCCESS)
          {
             fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
             our_strings_free(files);
