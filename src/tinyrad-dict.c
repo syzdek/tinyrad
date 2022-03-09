@@ -59,8 +59,8 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad"
 
-#define MY_OPT_BUILTIN        0x0002
-#define MY_OPT_DUMP           0x0004
+#define MY_OPT_DICT_DEFAULTS  0x0001
+#define MY_OPT_DICT_DUMP      0x0002
 
 
 //////////////////
@@ -125,11 +125,11 @@ int main(int argc, char * argv[])
          break;
 
          case 1:
-         opts |= MY_OPT_DUMP;
+         opts |= MY_OPT_DICT_DUMP;
          break;
 
          case 2:
-         opts |= MY_OPT_BUILTIN;
+         opts |= MY_OPT_DICT_DEFAULTS;
          break;
 
          case 'D':
@@ -196,7 +196,7 @@ int main(int argc, char * argv[])
    };
 
    // load builtin/default dictionary objects
-   if ((opts & MY_OPT_BUILTIN))
+   if ((opts & MY_OPT_DICT_DEFAULTS))
    {
       if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
       {
@@ -236,7 +236,7 @@ int main(int argc, char * argv[])
    };
 
    // dump dictionary
-   if ((opts & MY_OPT_DUMP))
+   if ((opts & MY_OPT_DICT_DUMP))
       tinyrad_dict_print(dict, 0xffff);
 
    // frees resources
