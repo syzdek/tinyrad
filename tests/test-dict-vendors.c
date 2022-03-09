@@ -147,7 +147,7 @@ main(
          return(0);
 
          case 'q':
-         opts |=  TRAD_TEST_QUIET;
+         opts |=  TRUTILS_OPT_QUIET;
          opts &= ~TRAD_TEST_VERBOSE;
          break;
 
@@ -157,7 +157,7 @@ main(
 
          case 'v':
          opts |=  TRAD_TEST_VERBOSE;
-         opts &= ~TRAD_TEST_QUIET;
+         opts &= ~TRUTILS_OPT_QUIET;
          break;
 
          case '?':

@@ -496,7 +496,7 @@ int our_error(unsigned opts, char ** errs, const char * fmt, ...)
    int     pos;
    va_list args;
 
-   if ( ((opts & TRAD_TEST_QUIET)) && ((opts & TRAD_TEST_VERBOSE)) )
+   if ( ((opts & TRUTILS_OPT_QUIET)) && ((opts & TRAD_TEST_VERBOSE)) )
       return(1);
 
    if ((errs))
@@ -516,7 +516,7 @@ int our_error(unsigned opts, char ** errs, const char * fmt, ...)
 void our_print(unsigned opts, const char * fmt, ...)
 {
    va_list args;
-   if ((opts & TRAD_TEST_QUIET))
+   if ((opts & TRUTILS_OPT_QUIET))
       return;
    printf("%s: ", program_name);
    va_start(args, fmt);
