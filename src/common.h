@@ -65,14 +65,6 @@
 //////////////////
 #pragma mark - Prototypes
 
-void
-our_error(
-         const char *                  prog_name,
-         char **                       errs,
-         const char *                  fmt,
-         ... );
-
-
 int
 our_exit_code(
          int                           rc );
