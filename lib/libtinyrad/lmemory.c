@@ -288,6 +288,7 @@ tinyrad_initialize(
    int               fd;
    uint32_t          u32;
    struct timespec   ts;
+   int               opt;
 
    TinyRadDebugTrace();
 
@@ -342,6 +343,8 @@ tinyrad_initialize(
          tinyrad_tiyrad_free(tr);
          return(rc);
       };
+      opt = TRAD_YES;
+      tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);
    };
 
    // generates initial authenticator
