@@ -178,4 +178,10 @@ trutils_exit_code(
          int                           rc );
 
 
+_TINYRAD_F char *
+trutils_strrand(
+         size_t                        min,
+         size_t                        max );
+
+
 #endif /* end of header */
