@@ -66,16 +66,11 @@
 typedef struct _tinyrad_file TinyRadFile;
 struct _tinyrad_file
 {
-   int                 line;
    int                 fd;
-   size_t              pos;
-   size_t              len;
-   size_t              argc;
+   int                 line;
    char *              path;
    char *              fullpath;
    TinyRadFile *       parent;
-   char *              argv[TRAD_ARGV_SIZE];
-   char                buff[256];
 };
 
 
