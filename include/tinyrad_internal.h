@@ -199,7 +199,8 @@ _TINYRAD_F int
 tinyrad_readline(
          int                           fd,
          char *                        str,
-         size_t                        size );
+         size_t                        size,
+         size_t *                      bytes_read );
 
 
 //--------------------//

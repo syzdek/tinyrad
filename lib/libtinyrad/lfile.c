@@ -418,7 +418,8 @@ int
 tinyrad_readline(
          int                           fd,
          char *                        str,
-         size_t                        size )
+         size_t                        size,
+         size_t *                      bytes_read )
 {
    ssize_t           rc;
    struct stat       sb;
@@ -429,6 +430,9 @@ tinyrad_readline(
       return(TRAD_EINVAL);
    if ((rc = fstat(fd, &sb)) == -1)
       return(TRAD_EINVAL);
+
+   if ((bytes_read))
+      *bytes_read = 0;
 
    // process input (slow, but works on TCP sockets, PIPE, FIFO, and  regular files)
    for(pos = 0; (pos < (size-1)); pos++)
@@ -441,6 +445,8 @@ tinyrad_readline(
       if (rc == 0)
       {
          str[pos] = '\0';
+         if ((bytes_read))
+            *bytes_read = pos;
          return(TRAD_SUCCESS);
       };
 
@@ -452,10 +458,14 @@ tinyrad_readline(
       str[pos] = '\0';
       if ((pos > 0) && (str[pos-1] == '\r'))
          str[pos-1] = '\0';
+      if ((bytes_read))
+         *bytes_read = (pos+1);
       return(TRAD_SUCCESS);
    };
 
    str[pos] = '\0';
+   if ((bytes_read))
+      *bytes_read = (pos+1);
 
    return(TRAD_ENOBUFS);
 }
