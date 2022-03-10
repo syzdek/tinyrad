@@ -286,12 +286,14 @@ tinyrad_strtoargs(
    char **        argv;
    size_t         pos;
    int            rc;
+   int            eol;
 
    assert(str != NULL);
 
    argv = NULL;
+   eol  = 0;
 
-   for(pos = 0; ((str[pos])); pos++)
+   for(pos = 0; ( ((str[pos])) && (!(eol)) ); pos++)
    {
       switch(str[pos])
       {
@@ -328,7 +330,7 @@ tinyrad_strtoargs(
          // parse unquoted argument
          default:
          bol = &str[pos];
-         for(pos = 0; ((bol[pos] != ' ')&&(bol[pos] != '\t')&&(bol[pos] != '\0')); pos++)
+         for(pos = 0; ((bol[pos] != ' ')&&(bol[pos] != '\t')&&(bol[pos] != '\0')&&(bol[pos] != '#')); pos++)
          {
             if ( (!(isalnum(bol[pos]))) && (bol[pos] != '.') && (bol[pos] != '-') && (bol[pos] != '_') )
             {
@@ -336,6 +338,8 @@ tinyrad_strtoargs(
                return(TRAD_ESYNTAX);
             };
          };
+         if (bol[pos] == '#')
+            eol = 1;
          bol[pos] = '\0';
          if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
          {
