@@ -108,12 +108,6 @@ tinyrad_file_init(
 
 
 int
-tinyrad_file_readline(
-         TinyRadFile *                file,
-         uint32_t                     opts );
-
-
-int
 tinyrad_stat(
          const char *                  path,
          struct stat *                 sbpi,
