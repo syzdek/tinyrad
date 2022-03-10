@@ -63,12 +63,6 @@
 //////////////////
 #pragma mark - Prototypes
 
-int
-tinyrad_file_readline_split(
-         TinyRadFile *                file,
-         char *                       line,
-         uint32_t                     opts );
-
 
 /////////////////
 //             //
@@ -235,79 +229,6 @@ int tinyrad_file_init(
    // open dictionary for reading
    if ((file->fd = open(fullpath, O_RDONLY)) == -1)
       return(TRAD_EACCES);
-
-   return(TRAD_SUCCESS);
-}
-
-
-/// splits line into argv and argc style elements
-///
-/// @param[in]  file          file buffer
-/// @param[in]  opts          dictionary options
-/// @return returns error code
-int
-tinyrad_file_readline_split(
-         TinyRadFile *                file,
-         char *                       line,
-         uint32_t                     opts )
-{
-   size_t         pos;
-
-   TinyRadDebugTrace();
-
-   assert(file != NULL);
-   assert(line != NULL);
-   assert(opts == 0);
-
-//file->argv[0] = line;
-//file->argc = 1;
-
-   // process line
-   pos = 0;
-   while ((line[pos] != '\0') && (file->argc < TRAD_ARGV_SIZE))
-   {
-      switch(line[pos])
-      {
-         case ' ':
-         case '\t':
-         break;
-
-         case '#':
-         case '\0':
-         line[pos] = '\0';
-         return(TRAD_SUCCESS);
-
-         default:
-         file->argv[file->argc] = &line[pos];
-         file->argc++;
-         while (line[pos] != '\0')
-         {
-            pos++;
-            switch(line[pos])
-            {
-               case '\0':
-               case '#':
-               line[pos] = '\0';
-               return(TRAD_SUCCESS);
-
-               case ' ':
-               case '\t':
-               line[pos] = '\0';
-               break;
-
-               default:
-               if (line[pos] < '!')
-                  return(TRAD_EUNKNOWN);
-               if (line[pos] > '~')
-                  return(TRAD_EUNKNOWN);
-               break;
-            };
-         };
-         break;
-      };
-
-      pos++;
-   };
 
    return(TRAD_SUCCESS);
 }
