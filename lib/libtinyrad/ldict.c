@@ -211,8 +211,9 @@ tinyrad_dict_attr_index(
 int
 tinyrad_dict_parse_attribute(
          TinyRadDict *                dict,
+         int                          argc,
+         char **                      argv,
          TinyRadDictVendor *          vendor,
-         TinyRadFile *                file,
          uint32_t                     opts );
 
 
@@ -1529,7 +1530,7 @@ tinyrad_dict_parse(
       switch(tinyrad_map_lookup_name(tinyrad_dict_options, file->argv[0], NULL))
       {
          case TRAD_DICT_KEYWORD_ATTRIBUTE:
-         if ((rc = tinyrad_dict_parse_attribute(dict, vendor, file, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_attribute(dict, (int)file->argc, file->argv, vendor, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1598,8 +1599,9 @@ tinyrad_dict_parse(
 int
 tinyrad_dict_parse_attribute(
          TinyRadDict *                dict,
+         int                          argc,
+         char **                      argv,
          TinyRadDictVendor *          vendor,
-         TinyRadFile *                file,
          uint32_t                     opts )
 {
    TinyRadDictAttr *    attr;
@@ -1615,25 +1617,24 @@ tinyrad_dict_parse_attribute(
    TinyRadDebugTrace();
 
    assert(dict != NULL);
-   assert(file != NULL);
    assert(opts == 0);
 
-   if ( (file->argc < 4) || (file->argc > 5) )
+   if ( (argc < 4) || (argc > 5) )
       return(TRAD_ESYNTAX);
 
-   if ((data_type = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, file->argv[3], NULL)) == 0)
+   if ((data_type = (uint8_t)tinyrad_map_lookup_name(tinyrad_dict_data_type, argv[3], NULL)) == 0)
       return(TRAD_ESYNTAX);
 
-   if ((attr_type = (uint32_t)strtoul(file->argv[2], &ptr, 10)) == 0)
+   if ((attr_type = (uint32_t)strtoul(argv[2], &ptr, 10)) == 0)
       return(TRAD_ESYNTAX);
 
-   if ((ptr[0] != '\0') || (file->argv[2] == ptr))
+   if ((ptr[0] != '\0') || (argv[2] == ptr))
       return(TRAD_ESYNTAX);
 
    flags = 0;
-   if (file->argc == 5)
+   if (argc == 5)
    {
-      ptr = file->argv[4];
+      ptr = argv[4];
       while ((str = ptr) != NULL)
       {
          if ((ptr = strchr(str, ',')) != NULL)
@@ -1652,7 +1653,7 @@ tinyrad_dict_parse_attribute(
    oid.oid_val[1] = ((vendor)) ? vendor->id                : 0;
    oid.oid_val[2] = ((vendor)) ? attr_type                 : 0;
 
-   if ((attr = tinyrad_dict_attr_alloc(dict, file->argv[1], &oid, data_type, flags)) == NULL)
+   if ((attr = tinyrad_dict_attr_alloc(dict, argv[1], &oid, data_type, flags)) == NULL)
       return(TRAD_ENOMEM);
    rc = tinyrad_dict_add_attr(dict, attr);
    tinyrad_obj_release(&attr->obj);
