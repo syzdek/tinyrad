@@ -242,7 +242,8 @@ tinyrad_dict_parse_include(
 int
 tinyrad_dict_parse_value(
          TinyRadDict *                dict,
-         TinyRadFile *                file,
+         int                          argc,
+         char **                      argv,
          uint32_t                     opts );
 
 
@@ -1568,7 +1569,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_VALUE:
-         if ((rc = tinyrad_dict_parse_value(dict, file, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_value(dict, (int)file->argc, file->argv, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1742,7 +1743,8 @@ tinyrad_dict_parse_include(
 int
 tinyrad_dict_parse_value(
          TinyRadDict *                dict,
-         TinyRadFile *                file,
+         int                          argc,
+         char **                      argv,
          uint32_t                     opts )
 {
    TinyRadDictAttr *    attr;
@@ -1754,18 +1756,17 @@ tinyrad_dict_parse_value(
    TinyRadDebugTrace();
 
    assert(dict != NULL);
-   assert(file != NULL);
    assert(opts == 0);
 
-   if (file->argc == 3)
+   if (argc == 3)
       return(TRAD_ESYNTAX);
-   if ((attr = tinyrad_dict_attr_lookup(dict, file->argv[1], NULL)) == NULL)
+   if ((attr = tinyrad_dict_attr_lookup(dict, argv[1], NULL)) == NULL)
       return(TRAD_ESYNTAX);
-   data = (uint64_t)strtoull(file->argv[3], &ptr, 0);
-   if ((ptr[0] != '\0') || (file->argv[3] == ptr))
+   data = (uint64_t)strtoull(argv[3], &ptr, 0);
+   if ((ptr[0] != '\0') || (argv[3] == ptr))
       return(TRAD_ESYNTAX);
 
-   if ((value = tinyrad_dict_value_alloc(dict, attr, file->argv[2], data)) == NULL)
+   if ((value = tinyrad_dict_value_alloc(dict, attr, argv[2], data)) == NULL)
       return(TRAD_ENOMEM);
 
    rc = tinyrad_dict_add_value(dict, attr, value);
