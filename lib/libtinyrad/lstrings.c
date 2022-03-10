@@ -330,21 +330,25 @@ tinyrad_strtoargs(
          // parse unquoted argument
          default:
          bol = &str[pos];
-         for(pos = 0; ((bol[pos] != ' ')&&(bol[pos] != '\t')&&(bol[pos] != '\0')&&(bol[pos] != '#')); pos++)
+         while( (str[pos] != ' ') && (str[pos] != '\t') && (str[pos] != '\0') && (str[pos] != '#') )
          {
-            if ( (!(isalnum(bol[pos]))) && (bol[pos] != '.') && (bol[pos] != '-') && (bol[pos] != '_') )
+            if ( (str[pos] < '!') || (str[pos] > '~') || (str[pos] == '"') || (str[pos] == '\'') )
             {
                tinyrad_strsfree(argv);
                return(TRAD_ESYNTAX);
             };
+            pos++;
          };
-         if (bol[pos] == '#')
+         if ((str[pos] == '#') || (str[pos] == '\0'))
             eol = 1;
-         bol[pos] = '\0';
-         if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+         str[pos] = '\0';
+         if ((bol[0]))
          {
-            tinyrad_strsfree(argv);
-            return(rc);
+            if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+            {
+               tinyrad_strsfree(argv);
+               return(rc);
+            };
          };
          break;
       };
