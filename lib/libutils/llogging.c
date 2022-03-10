@@ -94,6 +94,9 @@ trutils_error(
       for(pos = 0; ((errs[pos])); pos++)
          fprintf(stderr, "%s: %s\n", program_name, errs[pos]);
 
+   if (!(fmt))
+      return(1);
+
    fprintf(stderr, "%s: ", program_name);
    va_start(args, fmt);
    vfprintf(stderr, fmt, args);
