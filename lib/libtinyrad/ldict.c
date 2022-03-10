@@ -236,6 +236,8 @@ tinyrad_dict_parse_end_vendor(
 int
 tinyrad_dict_parse_include(
          TinyRadDict *                dict,
+         int                          argc,
+         char **                      argv,
          TinyRadFile **               filep );
 
 
@@ -1561,7 +1563,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_INCLUDE:
-         if ((rc = tinyrad_dict_parse_include(dict, &file)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_include(dict, (int)file->argc, file->argv, &file)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1716,6 +1718,8 @@ tinyrad_dict_parse_end_vendor(
 int
 tinyrad_dict_parse_include(
          TinyRadDict *                dict,
+         int                          argc,
+         char **                      argv,
          TinyRadFile **               filep )
 {
    int            rc;
@@ -1726,10 +1730,10 @@ tinyrad_dict_parse_include(
    assert(dict  != NULL);
    assert(filep != NULL);
 
-   if ((*filep)->argc != 2)
+   if (argc != 2)
       return(TRAD_ESYNTAX);
 
-   if ((rc = tinyrad_file_init(&incl, (*filep)->argv[1], dict->paths, *filep)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_file_init(&incl, argv[1], dict->paths, *filep)) != TRAD_SUCCESS)
    {
       *filep = ((incl)) ? incl : *filep;
       return(rc);
