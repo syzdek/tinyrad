@@ -250,7 +250,8 @@ tinyrad_dict_parse_value(
 int
 tinyrad_dict_parse_vendor(
          TinyRadDict *                dict,
-         TinyRadFile *                file,
+         int                          argc,
+         char **                      argv,
          uint32_t                     opts );
 
 
@@ -1578,7 +1579,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_VENDOR:
-         if ((rc = tinyrad_dict_parse_vendor(dict, file, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_vendor(dict, (int)file->argc, file->argv, opts)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1778,13 +1779,13 @@ tinyrad_dict_parse_value(
 /// Imports file into dictionary
 ///
 /// @param[in]  dict          dictionary reference
-/// @param[in]  file          path to import file
 /// @param[in]  opts          import options
 /// @return returns error code
 int
 tinyrad_dict_parse_vendor(
          TinyRadDict *                dict,
-         TinyRadFile *                file,
+         int                          argc,
+         char **                      argv,
          uint32_t                     opts )
 {
    int                     rc;
@@ -1799,11 +1800,10 @@ tinyrad_dict_parse_vendor(
    TinyRadDebugTrace();
 
    assert(dict != NULL);
-   assert(file != NULL);
    assert(opts == 0);
 
    // checks arguments
-   if ((file->argc < 3) || (file->argc > 4))
+   if ((argc < 3) || (argc > 4))
       return(TRAD_ESYNTAX);
 
    // initializes flags
@@ -1811,21 +1811,21 @@ tinyrad_dict_parse_vendor(
    len_octs  = 1;
 
    // verifies arguments list length
-   if ((file->argc < 3) || (file->argc > 4))
+   if ((argc < 3) || (argc > 4))
       return(TRAD_ESYNTAX);
 
    // process vendor-id
-   id = (uint32_t)strtoul(file->argv[2], &endptr, 10);
+   id = (uint32_t)strtoul(argv[2], &endptr, 10);
    if (endptr[0] != '\0')
       return(TRAD_ESYNTAX);
 
    // process flags
-   if (file->argc == 4)
+   if (argc == 4)
    {
       // initial string checks
-      if (!(strcmp("format=", file->argv[3])))
+      if (!(strcmp("format=", argv[3])))
          return(TRAD_ESYNTAX);
-      str = strchr(file->argv[3], '=');
+      str = strchr(argv[3], '=');
       str++;
 
       // parse type length
@@ -1849,7 +1849,7 @@ tinyrad_dict_parse_vendor(
    };
 
    // initialize vendor struct
-   if ((vendor = tinyrad_dict_vendor_alloc(dict, file->argv[1], id, type_octs, len_octs)) == NULL)
+   if ((vendor = tinyrad_dict_vendor_alloc(dict, argv[1], id, type_octs, len_octs)) == NULL)
       return(TRAD_ENOMEM);
    rc = tinyrad_dict_add_vendor(dict, vendor);
    tinyrad_obj_release(&vendor->obj);
