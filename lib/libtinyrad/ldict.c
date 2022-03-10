@@ -220,8 +220,9 @@ tinyrad_dict_parse_attribute(
 int
 tinyrad_dict_parse_begin_vendor(
          TinyRadDict *                dict,
-         TinyRadDictVendor **         vendorp,
-         TinyRadFile *                file );
+         int                          argc,
+         char **                      argv,
+         TinyRadDictVendor **         vendorp );
 
 
 int
@@ -1539,7 +1540,7 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_BEGIN_VENDOR:
-         if ((rc = tinyrad_dict_parse_begin_vendor(dict, &vendor, file)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_begin_vendor(dict, (int)file->argc, file->argv, &vendor)) != TRAD_SUCCESS)
          {
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
@@ -1664,19 +1665,20 @@ tinyrad_dict_parse_attribute(
 int
 tinyrad_dict_parse_begin_vendor(
          TinyRadDict *                dict,
-         TinyRadDictVendor **         vendorp,
-         TinyRadFile *                file )
+         int                          argc,
+         char **                      argv,
+         TinyRadDictVendor **         vendorp )
 {
    TinyRadDebugTrace();
 
    assert(dict    != NULL);
    assert(vendorp != NULL);
 
-   if (file->argc != 2)
+   if (argc != 2)
       return(TRAD_ESYNTAX);
    if ((*vendorp))
       return(TRAD_ESYNTAX);
-   if ((*vendorp = tinyrad_dict_vendor_lookup(dict, file->argv[1], 0)) == NULL)
+   if ((*vendorp = tinyrad_dict_vendor_lookup(dict, argv[1], 0)) == NULL)
       return(TRAD_ESYNTAX);
 
    return(TRAD_SUCCESS);
