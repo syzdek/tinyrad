@@ -414,6 +414,53 @@ tinyrad_file_readline_split(
 }
 
 
+int
+tinyrad_readline(
+         int                           fd,
+         char *                        str,
+         size_t                        size )
+{
+   ssize_t           rc;
+   struct stat       sb;
+   size_t            pos;
+
+   // check file descriptor
+   if (fd == -1)
+      return(TRAD_EINVAL);
+   if ((rc = fstat(fd, &sb)) == -1)
+      return(TRAD_EINVAL);
+
+   // process input (slow, but works on TCP sockets, PIPE, FIFO, and  regular files)
+   for(pos = 0; (pos < (size-1)); pos++)
+   {
+      // read data
+      if ((rc = read(fd, &str[pos], 1)) == -1)
+         return(TRAD_EUNKNOWN);
+
+      // process end of file
+      if (rc == 0)
+      {
+         str[pos] = '\0';
+         return(TRAD_SUCCESS);
+      };
+
+      // continue if not end of file
+      if (str[pos] != '\n')
+         continue;
+
+      // process end of line
+      str[pos] = '\0';
+      if ((pos > 0) && (str[pos-1] == '\r'))
+         str[pos-1] = '\0';
+      return(TRAD_SUCCESS);
+   };
+
+   str[pos] = '\0';
+
+   return(TRAD_ENOBUFS);
+}
+
+
 /// wrapper around stat() for dictionary processing
 ///
 /// @param[in]  path          file system path

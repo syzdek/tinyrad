@@ -190,6 +190,18 @@ _TINYRAD_F void *
 tinyrad_assertions( void );
 
 
+//-----------------//
+// file prototypes //
+//-----------------//
+#pragma mark file prototypes
+
+_TINYRAD_F int
+tinyrad_readline(
+         int                           fd,
+         char *                        str,
+         size_t                        size );
+
+
 //--------------------//
 // strings prototypes //
 //--------------------//

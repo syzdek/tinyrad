@@ -74,6 +74,9 @@ tinyrad_dict_vendor_info
 tinyrad_strerror
 tinyrad_strerror_r
 #
+# file functions
+tinyrad_readline
+#
 # memory functions
 tinyrad_binval_alloc
 tinyrad_binval_dup
