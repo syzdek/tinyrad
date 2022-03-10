@@ -1489,6 +1489,10 @@ tinyrad_dict_parse(
          uint32_t                     opts )
 {
    int                   rc;
+   int                   argc;
+   char **               argv;
+   char                  buff[256];
+   size_t                len;
    TinyRadFile *         file;
    TinyRadFile *         parent;
    TinyRadDictVendor *   vendor;
@@ -1518,26 +1522,39 @@ tinyrad_dict_parse(
    while((file))
    {
       // reads next line
-      if ((rc = tinyrad_file_readline(file, opts)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_readline(file->fd, buff, sizeof(buff), &len)) < 0)
       {
          tinyrad_file_error(file, rc, msgsp);
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(rc);
       };
-      if (file->argc < 1)
+      file->line++;
+      if (len == 0)
       {
          parent = file->parent;
          tinyrad_file_destroy(file, TRAD_FILE_NORECURSE);
          file = parent;
          continue;
       };
+      if ((rc = tinyrad_strtoargs(buff, &argv, &argc)) != TRAD_SUCCESS)
+      {
+         tinyrad_file_error(file, rc, msgsp);
+         tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
+         return(rc);
+      };
+      if (argc < 1)
+      {
+         tinyrad_strsfree(argv);
+         continue;
+      };
 
       // perform requested action
-      switch(tinyrad_map_lookup_name(tinyrad_dict_options, file->argv[0], NULL))
+      switch(tinyrad_map_lookup_name(tinyrad_dict_options, argv[0], NULL))
       {
          case TRAD_DICT_KEYWORD_ATTRIBUTE:
-         if ((rc = tinyrad_dict_parse_attribute(dict, (int)file->argc, file->argv, vendor, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_attribute(dict, argc, argv, vendor, opts)) != TRAD_SUCCESS)
          {
+            tinyrad_strsfree(argv);
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
@@ -1545,8 +1562,9 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_BEGIN_VENDOR:
-         if ((rc = tinyrad_dict_parse_begin_vendor(dict, (int)file->argc, file->argv, &vendor)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_begin_vendor(dict, argc, argv, &vendor)) != TRAD_SUCCESS)
          {
+            tinyrad_strsfree(argv);
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
@@ -1554,8 +1572,9 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_END_VENDOR:
-         if ((rc = tinyrad_dict_parse_end_vendor(dict, (int)file->argc, file->argv, &vendor)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_end_vendor(dict, argc, argv, &vendor)) != TRAD_SUCCESS)
          {
+            tinyrad_strsfree(argv);
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
@@ -1563,8 +1582,9 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_INCLUDE:
-         if ((rc = tinyrad_dict_parse_include(dict, (int)file->argc, file->argv, &file)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_include(dict, argc, argv, &file)) != TRAD_SUCCESS)
          {
+            tinyrad_strsfree(argv);
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
@@ -1572,8 +1592,9 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_VALUE:
-         if ((rc = tinyrad_dict_parse_value(dict, (int)file->argc, file->argv, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_value(dict, argc, argv, opts)) != TRAD_SUCCESS)
          {
+            tinyrad_strsfree(argv);
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
@@ -1581,8 +1602,9 @@ tinyrad_dict_parse(
          break;
 
          case TRAD_DICT_KEYWORD_VENDOR:
-         if ((rc = tinyrad_dict_parse_vendor(dict, (int)file->argc, file->argv, opts)) != TRAD_SUCCESS)
+         if ((rc = tinyrad_dict_parse_vendor(dict, argc, argv, opts)) != TRAD_SUCCESS)
          {
+            tinyrad_strsfree(argv);
             tinyrad_file_error(file, rc, msgsp);
             tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
             return(rc);
@@ -1590,10 +1612,13 @@ tinyrad_dict_parse(
          break;
 
          default:
+         tinyrad_strsfree(argv);
          tinyrad_file_error(file, TRAD_ESYNTAX, msgsp);
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);
          return(TRAD_ESYNTAX);
       };
+
+      tinyrad_strsfree(argv);
    };
 
    tinyrad_file_error(NULL, TRAD_SUCCESS, msgsp);
