@@ -98,6 +98,14 @@ main(
          char *                        argv[] );
 
 
+int
+my_dict_load(
+         int                           opts,
+         TinyRadDict **                dictp,
+         char **                       dict_files,
+         char **                       dict_paths );
+
+
 void
 my_usage( void );
 
@@ -115,11 +123,9 @@ int main(int argc, char * argv[])
    int            c;
    int            opt_index;
    int            rc;
-   size_t         pos;
    TinyRadDict *  dict;
    TinyRad *      tr;
    const char *   url;
-   char **        errs;
    char **        dict_files;
    char **        dict_paths;
    unsigned       opts;
@@ -228,56 +234,11 @@ int main(int argc, char * argv[])
    optind++;
 
    // load RADIUS dictionary
-   if ((dict_files))
+   if ((rc = my_dict_load(opts, &dict, dict_files, dict_paths)) != TRAD_SUCCESS)
    {
-      // initialize dictionary
-      if (tinyrad_dict_initialize(&dict, 0) != TRAD_SUCCESS)
-      {
-         trutils_error(opts, NULL, "out of virtual memory");
-         tinyrad_strsfree(dict_files);
-         tinyrad_strsfree(dict_paths);
-         return(trutils_exit_code(TRAD_ENOMEM));
-      };
-
-      // load defaults
-      if ((opts & MY_OPT_DICT_DEFAULTS))
-      {
-         if (tinyrad_dict_defaults(dict, &errs, 0) != TRAD_SUCCESS)
-         {
-            trutils_error(opts, errs, NULL);
-            tinyrad_free(dict);
-            tinyrad_strsfree(dict_files);
-            tinyrad_strsfree(dict_paths);
-            return(1);
-         };
-      };
-
-      // set paths
-      for(pos = 0; ( ((dict_paths)) && ((dict_paths[pos])) ); pos++)
-      {
-         if ((rc = tinyrad_dict_add_path(dict, dict_paths[pos])) != TRAD_SUCCESS)
-         {
-            tinyrad_strsfree(dict_paths);
-            tinyrad_strsfree(dict_files);
-            tinyrad_free(dict);
-            trutils_error(opts, NULL, "%s: %s", dict_paths[pos], tinyrad_strerror(rc));
-            return(trutils_exit_code(rc));
-         };
-      };
-
-      // parse dictionary files
-      for(pos = 0; ((dict_files[pos])); pos++)
-      {
-         if ((rc = tinyrad_dict_parse(dict, dict_files[pos], &errs, 0)) != TRAD_SUCCESS)
-         {
-            trutils_error(opts, errs, NULL);
-            tinyrad_strsfree(errs);
-            tinyrad_strsfree(dict_paths);
-            tinyrad_strsfree(dict_files);
-            tinyrad_free(dict);
-            return(trutils_exit_code(rc));
-         };
-      };
+      tinyrad_strsfree(dict_files);
+      tinyrad_strsfree(dict_paths);
+      return(trutils_exit_code(rc));
    };
    tinyrad_strsfree(dict_paths);
    tinyrad_strsfree(dict_files);
@@ -303,6 +264,73 @@ int main(int argc, char * argv[])
    tinyrad_free(tr);
 
    return(0);
+}
+
+
+int
+my_dict_load(
+         int                           opts,
+         TinyRadDict **                dictp,
+         char **                       dict_files,
+         char **                       dict_paths )
+{
+   int                  rc;
+   char **              errs;
+   size_t               pos;
+   TinyRadDict *        dict;
+
+   assert(dictp != NULL);
+
+   errs = NULL;
+
+   if (!(dict_files))
+      return(TRAD_SUCCESS);
+
+   // initialize dictionary
+   if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
+   {
+      trutils_error(opts, NULL, "out of virtual memory");
+      return(rc);
+   };
+
+   // load defaults
+   if ((opts & MY_OPT_DICT_DEFAULTS))
+   {
+      if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
+      {
+         trutils_error(opts, errs, NULL);
+         tinyrad_strsfree(errs);
+         tinyrad_free(dict);
+         return(rc);
+      };
+   };
+
+   // set paths
+   for(pos = 0; ( ((dict_paths)) && ((dict_paths[pos])) ); pos++)
+   {
+      if ((rc = tinyrad_dict_add_path(dict, dict_paths[pos])) != TRAD_SUCCESS)
+      {
+         trutils_error(opts, NULL, "%s: %s", dict_paths[pos], tinyrad_strerror(rc));
+         tinyrad_free(dict);
+         return(rc);
+      };
+   };
+
+   // parse dictionary files
+   for(pos = 0; ( ((dict_files)) && ((dict_files[pos])) ); pos++)
+   {
+      if ((rc = tinyrad_dict_parse(dict, dict_files[pos], &errs, 0)) != TRAD_SUCCESS)
+      {
+         trutils_error(opts, errs, NULL);
+         tinyrad_strsfree(errs);
+         tinyrad_free(dict);
+         return(rc);
+      };
+   };
+
+   *dictp = dict;
+
+   return(TRAD_SUCCESS);
 }
 
 
