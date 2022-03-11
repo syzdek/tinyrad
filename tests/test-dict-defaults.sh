@@ -34,12 +34,12 @@ CODE=0
 
 test -x src/tinyrad-dict || exit 77
 
-./src/tinyrad-dict --dump \
+./src/tinyrad-dict --dictionary-dump \
    --defaults \
    1> /tmp/tinyrad-dict-defaults1.$$ \
    2> /dev/null
 
-./src/tinyrad-dict --dump \
+./src/tinyrad-dict --dictionary-dump \
    -D /tmp/tinyrad-dict-defaults1.$$ \
    1> /tmp/tinyrad-dict-defaults2.$$ \
    2> /dev/null

@@ -106,7 +106,7 @@ int main(int argc, char * argv[])
       {"version",          no_argument,       NULL, 'V' },
       {"verbose",          no_argument,       NULL, 'v' },
       {"defaults",         no_argument,       NULL,  2  },
-      {"dump",             no_argument,       NULL,  1  },
+      {"dictionary-dump",  no_argument,       NULL,  1  },
       { NULL, 0, NULL, 0 }
    };
 
@@ -260,7 +260,7 @@ void my_usage(void)
    printf("  -V, --version             print version number and exit\n");
    printf("  -v, --verbose             print verbose messages\n");
    printf("  --defaults                load default dictionaries\n");
-   printf("  --dump                    print imported dictionaries\n");
+   printf("  --dictionary-dump         print imported dictionaries\n");
    printf("\n");
    return;
 }
