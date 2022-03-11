@@ -276,6 +276,62 @@ tinyrad_strsfree(
 
 
 int
+tinyrad_strsplit(
+         const char *                  str,
+         int                           delim,
+         char ***                      argvp,
+         int *                         argcp )
+{
+   int            rc;
+   size_t         pos;
+   char **        argv;
+   char *         line;
+   char *         bol;
+
+   assert(str != NULL);
+
+   if (!(str))
+   {
+      if ((argvp))
+         *argvp = NULL;
+      if ((argcp))
+         *argcp = 0;
+      return(TRAD_SUCCESS);
+   };
+
+   if ((line = tinyrad_strdup(str)) == NULL)
+      return(TRAD_ENOMEM);
+
+   argv = NULL;
+   bol  = line;
+
+   for(pos = 0; ((line[pos])); pos++)
+   {
+      if (line[pos] == delim)
+      {
+         line[pos] = '\0';
+         if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+         {
+            free(line);
+            tinyrad_strsfree(argv);
+            return(rc);
+         };
+         bol = &line[pos];
+      };
+   };
+
+   if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+   {
+      free(line);
+      tinyrad_strsfree(argv);
+      return(rc);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
 tinyrad_strtoargs(
          char *                        str,
          char ***                      argvp,

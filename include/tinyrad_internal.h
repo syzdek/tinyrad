@@ -251,6 +251,14 @@ tinyrad_strsdup(
 
 
 _TINYRAD_F int
+tinyrad_strsplit(
+         const char *                  str,
+         int                           delim,
+         char ***                      argvp,
+         int *                         argcp );
+
+
+_TINYRAD_F int
 tinyrad_strtoargs(
          char *                        str,
          char ***                      argvp,

@@ -110,6 +110,7 @@ tinyrad_strsadd
 tinyrad_strscount
 tinyrad_strsdup
 tinyrad_strsfree
+tinyrad_strsplit
 tinyrad_strtoargs
 #
 # URL functions
