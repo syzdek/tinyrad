@@ -254,7 +254,8 @@ _TINYRAD_F int
 tinyrad_strtoargs(
          char *                        str,
          char ***                      argvp,
-         int *                         argcp );
+         int *                         argcp,
+         int                           retain_quotes );
 
 
 #endif /* end of header */

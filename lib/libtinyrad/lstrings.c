@@ -279,7 +279,8 @@ int
 tinyrad_strtoargs(
          char *                        str,
          char ***                      argvp,
-         int *                         argcp )
+         int *                         argcp,
+         int                           retain_quotes )
 {
    char           quote;
    char *         bol;
@@ -306,20 +307,23 @@ tinyrad_strtoargs(
          case '"':
          case '\'':
          quote = str[pos];
-         bol   = &str[pos+1];
+         bol   = ((retain_quotes)) ? &str[pos] : &str[pos+1];
          for( pos += 1; ((bol[pos] != '\0') && (bol[pos] != quote)); pos++);
          if (bol[pos] != quote)
          {
             tinyrad_strsfree(argv);
             return(TRAD_ESYNTAX);
          };
-         bol[pos] = '\0';
+         if ((retain_quotes))
+            bol[pos] = '\0';
          pos++;
          if ( (bol[pos] != ' ') && (bol[pos] != '\t') && (bol[pos] != '\0') )
          {
             tinyrad_strsfree(argv);
             return(TRAD_ESYNTAX);
          };
+         if (!(retain_quotes))
+            bol[pos] = '\0';
          if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
          {
             tinyrad_strsfree(argv);
