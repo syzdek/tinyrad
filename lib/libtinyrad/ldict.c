@@ -1528,7 +1528,7 @@ tinyrad_dict_parse(
          file = parent;
          continue;
       };
-      if ((rc = tinyrad_strtoargs(buff, &argv, &argc, TRAD_NO)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_strtoargs(buff, &argv, &argc)) != TRAD_SUCCESS)
       {
          tinyrad_file_error(file, rc, msgsp);
          tinyrad_file_destroy(file, TRAD_FILE_RECURSE);

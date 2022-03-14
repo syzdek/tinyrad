@@ -262,8 +262,7 @@ _TINYRAD_F int
 tinyrad_strtoargs(
          char *                        str,
          char ***                      argvp,
-         int *                         argcp,
-         int                           retain_quotes );
+         int *                         argcp );
 
 
 _TINYRAD_F char *
