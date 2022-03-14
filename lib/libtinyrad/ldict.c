@@ -835,14 +835,6 @@ tinyrad_dict_initialize(
    // initializes read-only flag
    atomic_init(&dict->readonly, TRAD_NO);
 
-   // initializes paths
-   if ((dict->paths = malloc(sizeof(char *))) == NULL)
-   {
-      tinyrad_dict_free(dict);
-      return(TRAD_ENOMEM);
-   };
-   dict->paths[0] = NULL;
-
    *dictp = tinyrad_obj_retain(&dict->obj);
 
    return(TRAD_SUCCESS);
