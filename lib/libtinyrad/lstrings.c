@@ -425,5 +425,31 @@ tinyrad_strtoargs(
 }
 
 
+char *
+tinyrad_strtrim(
+         char *                        str )
+{
+   ssize_t offset;
+   ssize_t pos;
+
+   assert(str != NULL);
+
+   // find end of whitespace
+   for(offset = 0; ( ((str[offset])) && ((isspace(str[offset]))) ); offset++);
+
+   // shift string by offset
+   for(pos = offset; ((str[pos])); pos++)
+      str[pos-offset] = str[pos];
+   if (!(pos))
+      return(str);
+
+   // trim end of line
+   for(pos = pos - 1 - offset; ( ((isspace(str[pos]))) && (pos > 0) ); pos--);
+   str[pos+1] = '\0';
+
+   return(str);
+}
+
+
 
 /* end of source */

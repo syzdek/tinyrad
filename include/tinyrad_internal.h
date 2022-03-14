@@ -266,4 +266,9 @@ tinyrad_strtoargs(
          int                           retain_quotes );
 
 
+_TINYRAD_F char *
+tinyrad_strtrim(
+         char *                        str );
+
+
 #endif /* end of header */

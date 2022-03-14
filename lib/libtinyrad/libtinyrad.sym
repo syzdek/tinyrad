@@ -112,6 +112,7 @@ tinyrad_strsdup
 tinyrad_strsfree
 tinyrad_strsplit
 tinyrad_strtoargs
+tinyrad_strtrim
 #
 # URL functions
 tinyrad_is_radius_url
