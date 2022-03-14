@@ -281,7 +281,7 @@ tinyrad_initialize(
          TinyRad **                    trp,
          TinyRadDict *                 dict,
          const char *                  url,
-         uint64_t                      opts )
+         unsigned                      opts )
 {
    TinyRad *         tr;
    int               rc;
