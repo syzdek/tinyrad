@@ -432,7 +432,8 @@ tinyrad_strtrim(
    ssize_t offset;
    ssize_t pos;
 
-   assert(str != NULL);
+   if (!(str))
+      return(str);
 
    // find end of whitespace
    for(offset = 0; ( ((str[offset])) && ((isspace(str[offset]))) ); offset++);
