@@ -584,7 +584,7 @@ tinyrad_dict_import(
 _TINYRAD_F int
 tinyrad_dict_initialize(
          TinyRadDict **                dictp,
-         uint32_t                      opts );
+         unsigned                      opts );
 
 
 _TINYRAD_F int

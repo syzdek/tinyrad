@@ -820,7 +820,7 @@ tinyrad_dict_get_option(
 int
 tinyrad_dict_initialize(
          TinyRadDict **               dictp,
-         uint32_t                     opts )
+         unsigned                     opts )
 {
    TinyRadDict *    dict;
 
