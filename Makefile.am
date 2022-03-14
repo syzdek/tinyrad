@@ -440,6 +440,10 @@ doc/mans/tinyrad_queue.3: Makefile $(srcdir)/doc/mans/tinyrad_queue.3.in
 doc/mans/tinyrad_stack.3: Makefile $(srcdir)/doc/mans/tinyrad_stack.3.in
 	@$(do_subst_dt)
 
+git-clean:
+	git fsck --full --unreachable
+	git gc --auto --aggressive
+
 # local targets
 install-exec-local:
 
