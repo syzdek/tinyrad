@@ -52,6 +52,9 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <ctype.h>
+#include <pwd.h>
+#include <grp.h>
+#include <sys/utsname.h>
 #include <assert.h>
 
 #include "ldict.h"
@@ -100,6 +103,198 @@ tinyrad_strdup(
    ptr[len+0] = '\0';
    ptr[len+1] = '\0';
    return(ptr);
+}
+
+
+int
+tinyrad_strexpand(
+         char *                        dst,
+         const char * restrict         src,
+         size_t                        len )
+{
+   size_t            pos;
+   size_t            offset;
+   char              buff[4096];
+   char *            ptr;
+   struct utsname    unam;
+   struct passwd     pwd;
+   struct passwd *   pwres;
+   struct group      grp;
+   struct group *    grres;
+
+
+   assert(dst != NULL);
+   assert(src != NULL);
+   assert(len  > 0);
+
+   // expand escapes in buffer
+   offset = 0;
+   for(pos = 0; ( ((src[pos])) && (offset < (len-1)) ); pos++)
+   {
+      switch(src[pos])
+      {
+         // tokens
+         case '%':
+         // %D - domain name
+         // %d - home directory
+         // %H - hostname with domain name
+         // %h - hostname without domain name
+         // %u - username
+         pos++;
+         switch(src[pos])
+         {
+            case 'D': // domain name
+            if (uname(&unam) == -1)
+               return(TRAD_EUNKNOWN);
+            strncpy(buff, unam.nodename, sizeof(buff));
+            if ((ptr = strchr(buff, '.')) == NULL)
+               buff[0] = '\0';
+            ptr = ((ptr)) ? &ptr[1] : buff;
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, ptr, len);
+            offset += strlen(ptr);
+            break;
+
+            case 'd': // home directory
+            getpwuid_r(getuid(), &pwd, buff, sizeof(buff), &pwres);
+            if (!(pwres))
+               break;
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, pwres->pw_dir, len);
+            offset += strlen(pwres->pw_dir);
+            break;
+
+            case 'G': // gid
+            snprintf(buff, sizeof(buff), "%u", getgid());
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, buff, len);
+            offset += strlen(buff);
+            break;
+
+            case 'g': // group name
+            getgrgid_r(getgid(), &grp, buff, sizeof(buff), &grres);
+            if (!(grres))
+               break;
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, grres->gr_name, len);
+            offset += strlen(grres->gr_name);
+            break;
+
+            case 'H': // fully qualified hostname
+            if (uname(&unam) == -1)
+               break;
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, unam.nodename, len);
+            offset += strlen(unam.nodename);
+            break;
+
+            case 'h': // short hostname
+            if (uname(&unam) == -1)
+               break;
+            strncpy(buff, unam.nodename, sizeof(buff));
+            if ((ptr = strchr(buff, '.')) != NULL)
+               ptr[0] = '\0';
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, buff, len);
+            offset += strlen(buff);
+            break;
+
+            case 'p': // process name/ident
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, tinyrad_debug_ident, len);
+            offset += strlen(tinyrad_debug_ident);
+            break;
+
+            case 'U': // uid
+            snprintf(buff, sizeof(buff), "%u", getgid());
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, buff, len);
+            offset += strlen(buff);
+            break;
+
+            case 'u': // username
+            getpwuid_r(getuid(), &pwd, buff, sizeof(buff), &pwres);
+            if (!(pwres))
+               break;
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, pwres->pw_name, len);
+            offset += strlen(pwres->pw_name);
+            break;
+
+            case '%': // '%' character
+            dst[offset++] = src[pos];
+            break;
+
+            default:
+            dst[offset++] = src[pos];
+         };
+         break;
+
+         // character escape sequences
+         case '\\':
+         pos++;
+         switch(src[pos])
+         {
+            case '"':
+            case '\'':
+            case '\\':
+            case '\?':
+            dst[offset++] = src[pos];
+            break;
+
+            case 'b': dst[offset++] = '\b'; break;
+            case 'f': dst[offset++] = '\f'; break;
+            case 'n': dst[offset++] = '\n'; break;
+            case 'r': dst[offset++] = '\r'; break;
+            case 't': dst[offset++] = '\t'; break;
+            case 'v': dst[offset++] = '\v'; break;
+
+            // \xnn - treat nn as hex value
+            case 'x':
+            buff[0] = src[++pos];
+            buff[1] = src[++pos];
+            buff[2] = '\0';
+            dst[offset++] = (char)strtoul(buff, &ptr, 16);
+            if (ptr != &buff[2])
+               return(TRAD_SUCCESS);
+            break;
+
+            // \nnn - treat nnn as octal value
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            buff[0] = src[pos++];
+            buff[1] = src[pos++];
+            buff[2] = src[pos];
+            buff[3] = '\0';
+            dst[offset++] = (char)strtoul(buff, &ptr, 8);
+            if (ptr != &buff[3])
+               return(TRAD_SUCCESS);
+            break;
+
+            default:
+            dst[offset++] = src[pos];
+         };
+         break;
+
+         default:
+         dst[offset++] = src[pos];
+         break;
+      };
+   };
+   if (offset >= len)
+   {
+      dst[len-1] = '\0';
+      return(TRAD_ENOBUFS);
+   };
+   dst[offset] = '\0';
+
+   return(TRAD_SUCCESS);
 }
 
 

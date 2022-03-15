@@ -103,6 +103,7 @@ tinyrad_ntohll
 #
 # string functions
 tinyrad_strdup
+tinyrad_strexpand
 tinyrad_strlcat
 tinyrad_strlcpy
 tinyrad_strndup

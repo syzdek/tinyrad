@@ -213,6 +213,13 @@ tinyrad_strdup(
          const char *                  s1 );
 
 
+_TINYRAD_F int
+tinyrad_strexpand(
+         char *                        dst,
+         const char * restrict         src,
+         size_t                        len );
+
+
 _TINYRAD_F size_t
 tinyrad_strlcat(
          char * restrict               dst,
