@@ -569,30 +569,32 @@ tinyrad_strtoargs(
          case '\'':
          quote = str[pos];
          bol   = &str[pos];
-         for( pos += 1; ((bol[pos] != '\0') && (bol[pos] != quote)); pos++)
-         {
-            if ( (quote == '"') && (bol[pos] == '\\') )
-            {
-               if (!(bol[pos+1]))
-               {
-                  tinyrad_strsfree(argv);
-                  return(TRAD_ESYNTAX);
-               };
+         for(pos += 1; ((str[pos] != '\0') && (str[pos] != quote)); pos++)
+            if ( (quote == '"') && (str[pos] == '\\') && (str[pos+1] == '"') )
                pos++;
-            };
-         };
-         if (bol[pos] != quote)
+         if (str[pos] != quote)
          {
             tinyrad_strsfree(argv);
             return(TRAD_ESYNTAX);
          };
          pos++;
-         if ( (bol[pos] != ' ') && (bol[pos] != '\t') && (bol[pos] != '\0') )
+         switch(str[pos])
          {
+            case '\0':
+            case '#':
+            eol = 1;
+            str[pos] = '\0';
+            break;
+
+            case ' ':
+            case '\t':
+            str[pos] = '\0';
+            break;
+
+            default:
             tinyrad_strsfree(argv);
             return(TRAD_ESYNTAX);
          };
-         bol[pos] = '\0';
          if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
          {
             tinyrad_strsfree(argv);
