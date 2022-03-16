@@ -135,10 +135,16 @@ tinyrad_strexpand(
       {
          // tokens
          case '%':
+         // %% - a literal percent
          // %D - domain name
          // %d - home directory
+         // %G - group ID
+         // %g - group name
          // %H - hostname with domain name
          // %h - hostname without domain name
+         // %P - process ID
+         // %p - process name
+         // %U - user ID
          // %u - username
          pos++;
          switch(src[pos])
@@ -199,6 +205,13 @@ tinyrad_strexpand(
             offset += strlen(buff);
             break;
 
+            case 'P': // process ID
+            snprintf(buff, sizeof(buff), "%u", getppid());
+            dst[offset] = '\0';
+            tinyrad_strlcat(dst, buff, len);
+            offset += strlen(buff);
+            break;
+
             case 'p': // process name/ident
             dst[offset] = '\0';
             tinyrad_strlcat(dst, tinyrad_debug_ident, len);
@@ -242,8 +255,6 @@ tinyrad_strexpand(
             dst[offset++] = src[pos];
             break;
 
-            case 'b': dst[offset++] = '\b'; break;
-            case 'f': dst[offset++] = '\f'; break;
             case 'n': dst[offset++] = '\n'; break;
             case 'r': dst[offset++] = '\r'; break;
             case 't': dst[offset++] = '\t'; break;
