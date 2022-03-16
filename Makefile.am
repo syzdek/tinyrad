@@ -140,6 +140,7 @@ EXTRA_DIST				= DeveloperNotes.md \
 					  doc/mans/tinyrad_options.3.in \
 					  doc/mans/tinyrad_queue.3.in \
 					  doc/mans/tinyrad_stack.3.in \
+					  doc/mans/tinyrad-strings.5.in \
 					  doc/rfc/rfc-index.txt \
 					  doc/rfc/rfc2865.txt \
 					  doc/rfc/rfc2866.txt \
@@ -218,6 +219,7 @@ if ENABLE_TINYRADPROXY
    sbin_PROGRAMS			+= src/tinyradproxy
 endif
 if ENABLE_TINYRAD_COMMON
+   man_MANS				+= doc/mans/tinyrad-strings.5
 endif
 
 
@@ -452,6 +454,9 @@ doc/mans/tinyrad_queue.3: Makefile $(srcdir)/doc/mans/tinyrad_queue.3.in
 	@$(do_subst_dt)
 
 doc/mans/tinyrad_stack.3: Makefile $(srcdir)/doc/mans/tinyrad_stack.3.in
+	@$(do_subst_dt)
+
+doc/mans/tinyrad-strings.5: Makefile $(srcdir)/doc/mans/tinyrad-strings.5.in
 	@$(do_subst_dt)
 
 doc/tinyrad.conf: Makefile $(srcdir)/doc/tinyrad.conf.in

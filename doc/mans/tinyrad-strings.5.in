@@ -28,54 +28,73 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.TH "TINYRAD" "3" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
+.TH "TINYRAD-STRINGS" "5" "@RELEASE_MONTH@" "@PACKAGE_NAME@" "Library Functions Manual"
 .SH NAME
-tinyrad - Tiny RADIUS Client Library
-
-.SH LIBRARY
-TinyRad (libtinyrad, -ltinyrad)
-
-.SH SYNOPSIS
-\fB#include\fR \fB<tinyrad.h>\fR
-
-.SH DESCRIPTION
-Remote Authentication Dial-In User Service (RADIUS) (RFC 2865 and RFC 2866)
-is a networking protocol that provides authentication, authorization, and
-accounting (AAA) for users connected to network devices.  The Tiny RDAIUS
-Client Library (tinyrad) is a small, RFC compliant implementation of the
-RADIUS protocol.
-
-.SH INDEX
-
-.TP 25
-.BR tinyrad_get_option (3)
-retrieves global and instance parameters used by the TinyRad library.
-
-.TP
-.BR tinyrad_memfree (3)
-releases memory allocated by TinyRad routines.
-
-.TP
-.BR tinyrad_set_option (3)
-sets global and instance parameters used by the TinyRad library.
-
-.TP
-.BR tinyrad_strerror (3)
-returns an error message corresponding to an error code
-
-.TP
-.BR tinyrad_strerror_r (3)
-copies into a buffer an error message corresponding to an error code
-
+tinyrad-strings - Tiny RADIUS string conventions
+.PP
+.SH ESCAPE SEQUENCES
+Spme strings enclosed in double quotes make use of escape sequences, which are
+replaced at runtime:
+.RS
+.IP \fI\er\fR
+newline (hex value \fI0A\fR)
+.IP \fI\er\fR
+carriage return (hex value \fI0D\fR)
+.IP \fI\et\fR
+horizontal tab (hex value \fI09\fR)
+.IP \fI\ev\fR
+vertical tab (hex value \fI0B\fR)
+.IP \fI\e"\fR
+double quotation mark (hex value \fI22\fR)
+.IP \fI\e'\fR
+apostrophe or single quotation mark (hex value \fI27\fR)
+.IP \fI\e?\fR
+question mark (hex value \fI3f\fR)
+.IP \fI\e\e\fR
+backslash (hex value \fI5c\fR)
+.IP \fI\ennn\fR
+The byte whose numerical value is given by \fInnn\fR interpreted as an octal
+number
+.IP \fI\exnn\fR
+The byte whose numerical value is given by \fInn\fR interpreted as a
+hexadecimal number
+.RE
+.SH TOKEN EXPANSION
+Spme strings enclosed in double quotes make use of tokens, which are expanded
+at runtime:
+.RS
+.IP \fI%%\fR
+A literal `\fI%\fR' (hex value \fI25\fR)
+.IP \fI%D\fR
+The local domain name
+.IP \fI%d\fR
+The local user's home directory
+.IP \fI%G\fR
+The local group ID
+.IP \fI%g\fR
+The local group name
+.IP \fI%H\fR
+The local hostname, including the domain name.
+.IP \fI%h\fR
+The local hostname, without the domain name.
+.IP \fI%P\fR
+process ID
+.IP \fI%P\fR
+process name (set using \fITRAD_OPT_DEBUG_IDENT\fR)
+.IP \fI%U\fR
+The local user ID
+.IP \fI%u\fR
+The local username
+.RE
 .SH SEE ALSO
 .BR tinyrad (1),
-.BR tinyrad_error (3),
-.BR tinyrad_options (3)
-.BR tinyrad-strings (5)
-
+.BR tinyrad (3),
+.BR tinyrad-dict (1),
+.BR tinyrad.conf (5),
+.PP
 .SH AUTHOR
 David M. Syzdek <david@syzdek.net>
-
+.PP
 .SH ACKNOWLEDGEMENTS
 \fB@PACKAGE_NAME@\fR is developed and maintained by David M. Syzdek
 <david@syzdek.net>.
