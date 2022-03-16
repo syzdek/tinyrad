@@ -196,6 +196,7 @@ AC_TINYRAD_TINYRAD_DICT
 AC_TINYRAD_TINYRAD_URL
 AC_TINYRAD_EXAMPLES
 AC_TINYRAD_DOCUMENTATION
+AC_TINYRAD_COMMON
 
 
 # Creates outputs
@@ -223,6 +224,7 @@ AC_MSG_NOTICE([      Install tinyrad            ${ENABLE_TINYRAD}])
 AC_MSG_NOTICE([      Install tinyrad-dict       ${ENABLE_TINYRAD_DICT}])
 AC_MSG_NOTICE([      Install tinyrad-url        ${ENABLE_TINYRAD_URL}])
 AC_MSG_NOTICE([      Install tinyradproxy       ${ENABLE_TINYRADPROXY}])
+AC_MSG_NOTICE([      Install common files       ${ENABLE_TINYRAD_COMMON}])
 AC_MSG_NOTICE([ ])
 AC_MSG_NOTICE([   Please send suggestions to:   $PACKAGE_BUGREPORT])
 AC_MSG_NOTICE([ ])

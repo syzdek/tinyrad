@@ -31,6 +31,32 @@
 #   acinclude.m4 - custom m4 macros used by configure.ac
 #
 
+# AC_TINYRAD_COMMON()
+# ______________________________________________________________________________
+AC_DEFUN([AC_TINYRAD_COMMON],[dnl
+
+   # prerequists
+   AC_REQUIRE([AC_TINYRAD_DOCUMENTATION])
+   AC_REQUIRE([AC_TINYRAD_LIBTINYRAD])
+   AC_REQUIRE([AC_TINYRAD_TINYRAD])
+   AC_REQUIRE([AC_TINYRAD_TINYRAD_DICT])
+   AC_REQUIRE([AC_TINYRAD_TINYRAD_URL])
+   AC_REQUIRE([AC_TINYRAD_TINYRADPROXY])
+
+   ENABLE_TINYRAD_COMMON="no"
+   if   test "x${ENABLE_DOCUMENATION}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
+   elif test "x${ENABLE_LIBTINYRAD}"   = "xyes";then ENABLE_TINYRAD_COMMON="yes"
+   elif test "x${ENABLE_TINYRAD}"      = "xyes";then ENABLE_TINYRAD_COMMON="yes"
+   elif test "x${ENABLE_TINYRAD_DICT}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
+   elif test "x${ENABLE_TINYRAD_URL}"  = "xyes";then ENABLE_TINYRAD_COMMON="yes"
+   elif test "x${ENABLE_TINYRADPROXY}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
+   fi;
+
+   AM_CONDITIONAL([ENABLE_TINYRAD_COMMON],  [test "$ENABLE_TINYRAD_COMMON" = "yes"])
+   AM_CONDITIONAL([DISABLE_TINYRAD_COMMON], [test "$ENABLE_TINYRAD_COMMON" = "no"])
+])dnl
+
+
 # AC_TINYRAD_DOCUMENTATION()
 # ______________________________________________________________________________
 AC_DEFUN([AC_TINYRAD_DOCUMENTATION],[dnl

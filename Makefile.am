@@ -217,6 +217,8 @@ endif
 if ENABLE_TINYRADPROXY
    sbin_PROGRAMS			+= src/tinyradproxy
 endif
+if ENABLE_TINYRAD_COMMON
+endif
 
 
 # macros for examples/socket-example
