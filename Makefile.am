@@ -151,7 +151,7 @@ EXTRA_DIST				= DeveloperNotes.md \
 					  doc/rfc/rfc3575.txt \
 					  doc/rfc/rfc6929.txt \
 					  doc/rfc/rfc8044.txt \
-					  doc/tinyrad.conf.in \
+					  doc/tinyrad.conf-example.in \
 					  include/tinyrad.h \
 					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
@@ -165,7 +165,7 @@ CLEANFILES				= $(builddir)/a.out   $(srcdir)/a.out \
 					  $(bin_SCRIPTS) \
 					  $(sbin_SCRIPTS) \
 					  $(EXTRA_PROGRAMS) \
-					  doc/tinyrad.conf \
+					  doc/tinyrad.conf-example \
 					  @PACKAGE_TARNAME@-*.tar.* \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
@@ -200,7 +200,6 @@ if ENABLE_LIBTINYRAD
    man_MANS				+= doc/mans/tinyrad_options.3
    man_MANS				+= doc/mans/tinyrad_queue.3
    man_MANS				+= doc/mans/tinyrad_stack.3
-   doc_DATA				+= doc/tinyrad.conf
 else
    noinst_HEADERS			+= include/tinyrad.h
    noinst_LIBRARIES			+= lib/libtinyrad.a
@@ -219,6 +218,7 @@ if ENABLE_TINYRADPROXY
    sbin_PROGRAMS			+= src/tinyradproxy
 endif
 if ENABLE_TINYRAD_COMMON
+   doc_DATA				+= doc/tinyrad.conf-example
    man_MANS				+= doc/mans/tinyrad-strings.5
 endif
 
@@ -459,7 +459,7 @@ doc/mans/tinyrad_stack.3: Makefile $(srcdir)/doc/mans/tinyrad_stack.3.in
 doc/mans/tinyrad-strings.5: Makefile $(srcdir)/doc/mans/tinyrad-strings.5.in
 	@$(do_subst_dt)
 
-doc/tinyrad.conf: Makefile $(srcdir)/doc/tinyrad.conf.in
+doc/tinyrad.conf-example: Makefile $(srcdir)/doc/tinyrad.conf-example.in
 	@$(do_subst_dt)
 
 git-clean:
