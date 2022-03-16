@@ -1483,7 +1483,7 @@ tinyrad_dict_parse(
    int                   rc;
    int                   argc;
    char **               argv;
-   char                  buff[256];
+   char                  buff[TRAD_LINE_MAX_LEN];
    size_t                len;
    TinyRadFile *         file;
    TinyRadFile *         parent;

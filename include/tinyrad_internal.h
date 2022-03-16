@@ -61,6 +61,8 @@
 ///////////////////
 #pragma mark - Definitions
 
+#define TRAD_LINE_MAX_LEN           256
+
 // array function options
 #define TINYRAD_ARRAY_INSERT        0x0001      ///< add type: insert unique object to sorted array
 #define TINYRAD_ARRAY_REPLACE       0x0002      ///< add type: replace deplucate object in sorted array, or insert if unique
