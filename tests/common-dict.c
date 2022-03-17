@@ -336,7 +336,7 @@ our_dict_initialize(
 
    // load test dictionary vendors
    trutils_verbose(opts, "adding test dictionary vendors ...");
-   if ((rc = tinyrad_dict_import(*dictp, test_dict_data_vendors, NULL, NULL, &errs, 0)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_import(*dictp, test_dict_data_vendors, NULL, NULL, &errs)) != TRAD_SUCCESS)
    {
       trutils_error(opts, errs, "tinyrad_dict_import(vendors): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
@@ -346,7 +346,7 @@ our_dict_initialize(
 
    // load test dictionary attributes
    trutils_verbose(opts, "adding test dictionary attributes ...");
-   if ((rc = tinyrad_dict_import(*dictp, NULL, test_dict_data_attrs, NULL, &errs, 0)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_import(*dictp, NULL, test_dict_data_attrs, NULL, &errs)) != TRAD_SUCCESS)
    {
       trutils_error(opts, errs, "tinyrad_dict_import(attributes): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);
@@ -356,7 +356,7 @@ our_dict_initialize(
 
    // load test dictionary values
    trutils_verbose(opts, "adding test dictionary values ...");
-   if ((rc = tinyrad_dict_import(*dictp, NULL, NULL, test_dict_data_values, &errs, 0)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_import(*dictp, NULL, NULL, test_dict_data_values, &errs)) != TRAD_SUCCESS)
    {
       trutils_error(opts, errs, "tinyrad_dict_import(values): %s", tinyrad_strerror(rc));
       tinyrad_strsfree(errs);

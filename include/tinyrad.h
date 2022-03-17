@@ -578,8 +578,7 @@ tinyrad_dict_import(
          const TinyRadDictVendorDef *  vendor_defs,
          const TinyRadDictAttrDef *    attr_defs,
          const TinyRadDictValueDef *   value_defs,
-         char ***                      msgsp,
-         uint32_t                      opts );
+         char ***                      msgsp );
 
 
 _TINYRAD_F int

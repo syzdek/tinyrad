@@ -1363,7 +1363,7 @@ tinyrad_dict_defaults(
    assert(opts == 0);
    if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
       return(TRAD_EDICTRO);
-   return(tinyrad_dict_import(dict, tinyrad_dict_default_vendors, tinyrad_dict_default_attrs, tinyrad_dict_default_values, msgsp, opts));
+   return(tinyrad_dict_import(dict, tinyrad_dict_default_vendors, tinyrad_dict_default_attrs, tinyrad_dict_default_values, msgsp));
 }
 
 
@@ -1373,8 +1373,7 @@ tinyrad_dict_import(
          const TinyRadDictVendorDef *  vendor_defs,
          const TinyRadDictAttrDef *    attr_defs,
          const TinyRadDictValueDef *   value_defs,
-         char ***                      msgsp,
-         uint32_t                      opts )
+         char ***                      msgsp )
 {
    int                     rc;
    size_t                  pos;
@@ -1396,7 +1395,6 @@ tinyrad_dict_import(
    TinyRadDebugTrace();
 
    assert(dict != NULL);
-   assert(opts == 0);
 
    if ((msgsp))
       *msgsp = NULL;
