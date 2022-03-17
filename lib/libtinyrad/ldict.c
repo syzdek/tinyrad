@@ -51,6 +51,7 @@
 #include <errno.h>
 #include <assert.h>
 
+#include "lconf.h"
 #include "lerror.h"
 #include "lfile.h"
 #include "lmemory.h"
@@ -822,7 +823,8 @@ tinyrad_dict_initialize(
          TinyRadDict **               dictp,
          unsigned                     opts )
 {
-   TinyRadDict *    dict;
+   int               rc;
+   TinyRadDict *     dict;
 
    TinyRadDebugTrace();
 
@@ -834,6 +836,13 @@ tinyrad_dict_initialize(
 
    // initializes read-only flag
    atomic_init(&dict->readonly, TRAD_NO);
+
+   // load defaults
+   if ((rc = tinyrad_conf(NULL, dict, opts)) != TRAD_SUCCESS)
+   {
+      tinyrad_dict_free(dict);
+      return(rc);
+   };
 
    *dictp = tinyrad_obj_retain(&dict->obj);
 

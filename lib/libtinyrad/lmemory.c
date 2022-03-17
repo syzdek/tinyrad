@@ -53,6 +53,7 @@
 #include <netdb.h>
 #include <assert.h>
 
+#include "lconf.h"
 #include "ldict.h"
 #include "lstrings.h"
 
@@ -306,7 +307,7 @@ tinyrad_initialize(
    // retain or initialize dictionary
    if ((tr->dict = tinyrad_obj_retain(&dict->obj)) == NULL)
    {
-      if ((rc = tinyrad_dict_initialize(&tr->dict, 0)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_initialize(&tr->dict, TRAD_NOINIT)) != TRAD_SUCCESS)
       {
          tinyrad_tiyrad_free(tr);
          return(rc);
@@ -322,6 +323,13 @@ tinyrad_initialize(
 
    // parses and saves URL
    if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
+   {
+      tinyrad_tiyrad_free(tr);
+      return(rc);
+   };
+
+   // read init files
+   if ((rc = tinyrad_conf(tr, (((dict)) ? NULL : tr->dict), opts)) != TRAD_SUCCESS)
    {
       tinyrad_tiyrad_free(tr);
       return(rc);

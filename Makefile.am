@@ -239,6 +239,8 @@ lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
 					  lib/libtinyrad/libtinyrad.h \
 					  lib/libtinyrad/larray.c \
 					  lib/libtinyrad/larray.h \
+					  lib/libtinyrad/lconf.c \
+					  lib/libtinyrad/lconf.h \
 					  lib/libtinyrad/ldata.c \
 					  lib/libtinyrad/ldata.h \
 					  lib/libtinyrad/ldebug.c \
