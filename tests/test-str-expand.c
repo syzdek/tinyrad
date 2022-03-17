@@ -62,6 +62,8 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad-str-expand"
 
+#define TEST_OPT_FORCE     0x0040UL
+
 
 /////////////////
 //             //
@@ -74,6 +76,7 @@ typedef struct my_test_strings
 {
    const char *   origin;
    const char *   expand;
+   intptr_t       force;
 } MyTestStr;
 
 
@@ -86,20 +89,20 @@ typedef struct my_test_strings
 
 static const MyTestStr  test_strings[] =
 {
-   { "asdfghj",                                  "asdfghj" },
-   { "'asdfghj'",                                "asdfghj" },
-   { "\"asdfghj\"",                              "asdfghj" },
-   { "\"\\141\\163\\144\\146\\147\\150\\152\"",  "asdfghj" },
-   { "\"\\x61\\x73\\x64\\x66\\x67\\x68\\x6a\"",  "asdfghj" },
-   { "\"a\\163\\x64f\\147\\x68j\"",              "asdfghj" },
-   { "\"a%%sdfghj\"",                            "a%sdfghj" },
-   { "\"%u:x:%U:%G:test user:%d:/bin/false\"",   NULL },
-   { "\"%g:x:%G:%u,root\"",                      NULL },
-   { "\"Is %p running successfully?\"",          NULL },
-   { "\"Is your email address %u@%D\?\"",        NULL },
-   { "\"is your email address %u@%H\?\"",        NULL },
-   { "\"Is your email address %u@%h.%D\?\"",     NULL },
-   { NULL, NULL }
+   { "asdfghj",                                  "asdfghj",       TRAD_NO },
+   { "'asdfghj'",                                "asdfghj",       TRAD_NO },
+   { "\"asdfghj\"",                              "asdfghj",       TRAD_NO },
+   { "\"\\141\\163\\144\\146\\147\\150\\152\"",  "asdfghj",       TRAD_NO },
+   { "\"\\x61\\x73\\x64\\x66\\x67\\x68\\x6a\"",  "asdfghj",       TRAD_NO },
+   { "\"a\\163\\x64f\\147\\x68j\"",              "asdfghj",       TRAD_NO },
+   { "\"a%%sdfghj\"",                            "a%sdfghj",      TRAD_NO },
+   { "\"%u:x:%U:%G:test user:%d:/bin/false\"",   NULL,            TRAD_NO },
+   { "\"%g:x:%G:%u,root\"",                      NULL,            TRAD_NO },
+   { "\"Is %p running successfully?\"",          NULL,            TRAD_NO },
+   { "\"Is your email address %u@%D\?\"",        NULL,            TRAD_NO },
+   { "\"is your email address %u@%H\?\"",        NULL,            TRAD_NO },
+   { "\"Is your email address %u@%h.%D\?\"",     NULL,            TRAD_NO },
+   { NULL, NULL, 0 }
 };
 
 
@@ -135,6 +138,7 @@ main(
    size_t                        pos;
    unsigned                      opts;
    char                          buff[256];
+   const MyTestStr *             test_str;
 
    // getopt options
    static char          short_opt[] = "dhVvq";
@@ -146,6 +150,7 @@ main(
       {"silent",           no_argument,       NULL, 'q' },
       {"version",          no_argument,       NULL, 'V' },
       {"verbose",          no_argument,       NULL, 'v' },
+      {"force",            no_argument,       NULL, 1   },
       { NULL, 0, NULL, 0 }
    };
 
@@ -159,6 +164,10 @@ main(
       {
          case -1:       /* no more arguments */
          case 0:        /* long options toggles */
+         break;
+
+         case 1:
+         opts |= TEST_OPT_FORCE;
          break;
 
          case 'd':
@@ -175,6 +184,7 @@ main(
          printf("  -q, --quiet, --silent     do not print messages\n");
          printf("  -V, --version             print version number and exit\n");
          printf("  -v, --verbose             print verbose messages\n");
+         printf("  --force                   force expansion of user strings\n");
          printf("\n");
          return(0);
 
@@ -209,7 +219,7 @@ main(
       while (optind < argc)
       {
          trutils_verbose(opts, "test string:  %s", argv[optind]);
-         if ((rc = tinyrad_strexpand(buff,  argv[optind], sizeof(buff))) != TRAD_SUCCESS)
+         if ((rc = tinyrad_strexpand(buff,  argv[optind], sizeof(buff), (((opts&TEST_OPT_FORCE)) ? TRAD_YES : TRAD_NO))) != TRAD_SUCCESS)
          {
             trutils_error(opts, NULL, "tinyrad_strexpand(): %s", tinyrad_strerror(rc));
             return(1);
@@ -228,8 +238,9 @@ main(
    // expand and verify test strings
    for(pos = 0; ((test_strings[pos].origin)); pos++)
    {
+      test_str = &test_strings[pos];
       trutils_verbose(opts, "test string:  %s", test_strings[pos].origin);
-      if ((rc = tinyrad_strexpand(buff, test_strings[pos].origin, sizeof(buff))) != TRAD_SUCCESS)
+      if ((rc = tinyrad_strexpand(buff, test_str->origin, sizeof(buff), (int)test_str->force)) != TRAD_SUCCESS)
       {
          trutils_error(opts, NULL, "tinyrad_strexpand(): %s", tinyrad_strerror(rc));
          return(1);

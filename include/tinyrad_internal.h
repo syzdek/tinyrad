@@ -219,7 +219,8 @@ _TINYRAD_F int
 tinyrad_strexpand(
          char *                        dst,
          const char * restrict         src,
-         size_t                        len );
+         size_t                        len,
+         int                           force_expansion );
 
 
 _TINYRAD_F size_t

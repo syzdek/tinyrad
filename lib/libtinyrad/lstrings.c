@@ -110,7 +110,8 @@ int
 tinyrad_strexpand(
          char *                        dst,
          const char * restrict         src,
-         size_t                        len )
+         size_t                        len,
+         int                           force_expansion )
 {
    size_t            pos;
    size_t            offset;
@@ -134,7 +135,7 @@ tinyrad_strexpand(
    quote  = ((src[0] == '\'')||(src[0] == '"')) ? src[0] : 0;
    for(pos = (((quote)) ? 1 : 0); ( ((src[pos])) && (offset < (len-1)) ); pos++)
    {
-      if (quote != '"')
+      if ( (quote != '"') && (force_expansion != TRAD_YES) )
       {
          dst[offset++] = src[pos];
          continue;
