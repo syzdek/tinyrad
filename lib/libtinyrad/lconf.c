@@ -94,6 +94,14 @@ tinyrad_conf_opt(
          const char *                  value );
 
 
+int
+tinyrad_conf_opt_bool(
+         TinyRad *                     tr,
+         TinyRadDict *                 dict,
+         unsigned                      opt,
+         const char *                  value );
+
+
 /////////////////
 //             //
 //  Functions  //
@@ -248,16 +256,7 @@ tinyrad_conf_opt(
 
    if (!(strcasecmp(name, "builtin_dictionary")))
    {
-      if ( (!(dict)) || (( (dict->opts | dict->opts_neg) & TRAD_BUILTIN_DICT )) )
-         return(TRAD_SUCCESS);
-      if ( ((dict->opts | dict->opts_neg) & TRAD_BUILTIN_DICT) != 0 )
-         return(TRAD_SUCCESS);
-      if (!(value))
-         dict->opts |= TRAD_BUILTIN_DICT;
-      else if (!(strcasecmp(value, "yes")))
-         dict->opts |= TRAD_BUILTIN_DICT;
-      else if (!(strcasecmp(value, "no")))
-         dict->opts_neg |= TRAD_BUILTIN_DICT;
+      tinyrad_conf_opt_bool(tr, dict, TRAD_BUILTIN_DICT, value);
       return(TRAD_SUCCESS);
    };
 
@@ -309,5 +308,51 @@ tinyrad_conf_opt(
    return(TRAD_SUCCESS);
 }
 
+
+int
+tinyrad_conf_opt_bool(
+         TinyRad *                     tr,
+         TinyRadDict *                 dict,
+         unsigned                      opt,
+         const char *                  value )
+{
+   int      boolean;
+
+   if ( (!(tr)) && (!(dict)) )
+      return(TRAD_SUCCESS);
+
+   if (!(value))
+      boolean = TRAD_YES;
+   else if (!(strcasecmp(value, "yes")))
+      boolean = TRAD_YES;
+   else if (!(strcasecmp(value, "no")))
+      boolean = TRAD_NO;
+   else
+      return(TRAD_SUCCESS);
+
+   if ((dict))
+   {
+      if ( ((dict->opts | dict->opts_neg) & opt) != 0)
+      {
+         if (boolean == TRAD_YES)
+            dict->opts |= opt;
+         if (boolean == TRAD_NO)
+            dict->opts_neg |= opt;
+      };
+   };
+
+   if ((tr))
+   {
+      if ( ((tr->opts | tr->opts_neg) & opt) != 0)
+      {
+         if (boolean == TRAD_YES)
+            tr->opts |= opt;
+         if (boolean == TRAD_NO)
+            tr->opts_neg |= opt;
+      };
+   };
+
+   return(TRAD_SUCCESS);
+}
 
 /* end of source */

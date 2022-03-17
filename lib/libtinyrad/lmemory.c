@@ -304,18 +304,6 @@ tinyrad_initialize(
    tr->s          = -1;
    tr->timeout    = TRAD_DFLT_TIMEOUT;
 
-   // retain or initialize dictionary
-   if ((tr->dict = tinyrad_obj_retain(&dict->obj)) == NULL)
-   {
-      if ((rc = tinyrad_dict_initialize(&tr->dict, (TRAD_NOINIT|TRAD_BUILTIN_DICT))) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
-      opt = TRAD_YES;
-      tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);
-   };
-
    // parses and saves URL
    if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
    {
@@ -328,6 +316,18 @@ tinyrad_initialize(
    {
       tinyrad_tiyrad_free(tr);
       return(rc);
+   };
+
+   // retain or initialize dictionary
+   if ((tr->dict = tinyrad_obj_retain(&dict->obj)) == NULL)
+   {
+      if ((rc = tinyrad_dict_initialize(&tr->dict, (opts|TRAD_NOINIT))) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
+      opt = TRAD_YES;
+      tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);
    };
 
    // sets bind addresses
