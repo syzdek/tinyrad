@@ -1507,7 +1507,9 @@ tinyrad_dict_parse(
    TinyRadDebugTrace();
 
    assert(dict != NULL);
-   assert(path != NULL);
+
+   if (!(path))
+      return(TRAD_SUCCESS);
 
    if ((msgsp))
       *msgsp = NULL;
