@@ -256,7 +256,18 @@ tinyrad_conf_opt(
 
    if (!(strcasecmp(name, "builtin_dictionary")))
    {
-      tinyrad_conf_opt_bool(tr, dict, TRAD_BUILTIN_DICT, value);
+      tinyrad_conf_opt_bool(NULL, dict, TRAD_BUILTIN_DICT, value);
+      return(TRAD_SUCCESS);
+   };
+
+   if (!(strcasecmp(name, "dictionary")))
+   {
+      if (!(dict))
+         return(TRAD_SUCCESS);
+      if ((dict->default_dictfile))
+         return(TRAD_SUCCESS);
+      if ((dict->default_dictfile = tinyrad_strdup(value)) == NULL)
+         return(TRAD_ENOMEM);
       return(TRAD_SUCCESS);
    };
 

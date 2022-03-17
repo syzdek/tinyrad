@@ -311,13 +311,6 @@ tinyrad_initialize(
       return(rc);
    };
 
-   // read init files
-   if ((rc = tinyrad_conf(tr, (((dict)) ? NULL : tr->dict), opts)) != TRAD_SUCCESS)
-   {
-      tinyrad_tiyrad_free(tr);
-      return(rc);
-   };
-
    // retain or initialize dictionary
    if ((tr->dict = tinyrad_obj_retain(&dict->obj)) == NULL)
    {
@@ -325,6 +318,34 @@ tinyrad_initialize(
       {
          tinyrad_tiyrad_free(tr);
          return(rc);
+      };
+   };
+
+   // read init files
+   if ((rc = tinyrad_conf(tr, (((dict)) ? NULL : tr->dict), opts)) != TRAD_SUCCESS)
+   {
+      tinyrad_tiyrad_free(tr);
+      return(rc);
+   };
+
+   // load default dictionary file and make read-only
+   if (!(dict))
+   {
+      if ((tr->dict->default_dictfile))
+      {
+         switch(rc = tinyrad_dict_parse(tr->dict, tr->dict->default_dictfile, NULL, 0))
+         {
+            case TRAD_SUCCESS:
+            break;
+
+            case TRAD_ENOMEM:
+            case TRAD_EUNKNOWN:
+            tinyrad_tiyrad_free(tr);
+            return(rc);
+
+            default:
+            break;
+         };
       };
       opt = TRAD_YES;
       tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);

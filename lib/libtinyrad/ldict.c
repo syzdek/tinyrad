@@ -726,6 +726,9 @@ tinyrad_dict_free(
    if ((dict->paths))
       tinyrad_strsfree(dict->paths);
 
+   if ((dict->default_dictfile))
+      free(dict->default_dictfile);
+
    // free values
    if ((dict->values_data))
    {
@@ -851,6 +854,24 @@ tinyrad_dict_initialize(
       {
          tinyrad_dict_free(dict);
          return(rc);
+      };
+   };
+
+   // load default dictionary file
+   if ((dict->default_dictfile))
+   {
+      switch(rc = tinyrad_dict_parse(dict, dict->default_dictfile, NULL, 0))
+      {
+         case TRAD_SUCCESS:
+         break;
+
+         case TRAD_ENOMEM:
+         case TRAD_EUNKNOWN:
+         tinyrad_dict_free(dict);
+         return(rc);
+
+         default:
+         break;
       };
    };
 
@@ -1507,9 +1528,7 @@ tinyrad_dict_parse(
    TinyRadDebugTrace();
 
    assert(dict != NULL);
-
-   if (!(path))
-      return(TRAD_SUCCESS);
+   assert(path != NULL);
 
    if ((msgsp))
       *msgsp = NULL;

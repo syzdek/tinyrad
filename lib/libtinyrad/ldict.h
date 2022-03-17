@@ -72,9 +72,8 @@ struct _tinyrad_dict
    TinyRadObj              obj;
    unsigned                opts;
    unsigned                opts_neg;
-   uint32_t                pad32;
    atomic_int_least32_t    readonly;
-   uintptr_t               order_count;
+   uint32_t                order_count;
    size_t                  attrs_name_len;
    size_t                  attrs_type_len;
    size_t                  values_data_len;
@@ -87,6 +86,7 @@ struct _tinyrad_dict
    TinyRadDictValue **     values_name;
    TinyRadDictVendor **    vendors_name;
    TinyRadDictVendor **    vendors_id;
+   char *                  default_dictfile;
    char **                 paths;
 };
 
