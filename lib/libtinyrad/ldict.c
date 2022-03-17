@@ -1388,11 +1388,17 @@ tinyrad_dict_builtin(
          TinyRadDict *                 dict,
          char ***                      msgsp )
 {
+   int rc;
    TinyRadDebugTrace();
    assert(dict != NULL);
    if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
       return(TRAD_EDICTRO);
-   return(tinyrad_dict_import(dict, tinyrad_dict_default_vendors, tinyrad_dict_default_attrs, tinyrad_dict_default_values, msgsp));
+   if ((dict->opts & TRAD_BUILTIN_DICT_LOADED))
+      return(TRAD_SUCCESS);
+   if ((rc = tinyrad_dict_import(dict, tinyrad_dict_default_vendors, tinyrad_dict_default_attrs, tinyrad_dict_default_values, msgsp)) != TRAD_SUCCESS)
+      return(rc);
+   dict->opts |= TRAD_BUILTIN_DICT_LOADED;
+   return(TRAD_SUCCESS);
 }
 
 

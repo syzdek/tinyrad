@@ -200,6 +200,7 @@
 #define TRAD_SCHEME                 0x00F00000U
 #define TRAD_RADSEC                 (TRAD_RADIUS | TRAD_RADIUS_ACCT | TRAD_RADIUS_DYNAUTH | TRAD_TLS)
 #define TRAD_TCP                    0x01000000U
+#define TRAD_BUILTIN_DICT_LOADED    0x02000000U
 
 #define TRAD_OFF                    0
 #define TRAD_ON                     1
