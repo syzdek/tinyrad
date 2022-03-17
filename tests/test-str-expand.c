@@ -133,11 +133,10 @@ main(
 {
    int                           opt;
    int                           c;
-   int                           rc;
    int                           opt_index;
    size_t                        pos;
    unsigned                      opts;
-   char                          buff[256];
+   char                          buff[TRAD_LINE_MAX_LEN];
    const MyTestStr *             test_str;
 
    // getopt options
@@ -219,9 +218,9 @@ main(
       while (optind < argc)
       {
          trutils_verbose(opts, "test string:  %s", argv[optind]);
-         if ((rc = tinyrad_strexpand(buff,  argv[optind], sizeof(buff), (((opts&TEST_OPT_FORCE)) ? TRAD_YES : TRAD_NO))) != TRAD_SUCCESS)
+         if (!(tinyrad_strexpand(buff,  argv[optind], sizeof(buff), (((opts&TEST_OPT_FORCE)) ? TRAD_YES : TRAD_NO))))
          {
-            trutils_error(opts, NULL, "tinyrad_strexpand(): %s", tinyrad_strerror(rc));
+            trutils_error(opts, NULL, "tinyrad_strexpand(): error occurred");
             return(1);
          };
          buff[sizeof(buff)-1] = '\0';
@@ -240,9 +239,9 @@ main(
    {
       test_str = &test_strings[pos];
       trutils_verbose(opts, "test string:  %s", test_strings[pos].origin);
-      if ((rc = tinyrad_strexpand(buff, test_str->origin, sizeof(buff), (int)test_str->force)) != TRAD_SUCCESS)
+      if (!(tinyrad_strexpand(buff, test_str->origin, sizeof(buff), (int)test_str->force)))
       {
-         trutils_error(opts, NULL, "tinyrad_strexpand(): %s", tinyrad_strerror(rc));
+         trutils_error(opts, NULL, "tinyrad_strexpand(): error occurred");
          return(1);
       };
       buff[sizeof(buff)-1] = '\0';

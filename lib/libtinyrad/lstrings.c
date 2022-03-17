@@ -106,7 +106,7 @@ tinyrad_strdup(
 }
 
 
-int
+char *
 tinyrad_strexpand(
          char *                        dst,
          const char * restrict         src,
@@ -126,9 +126,10 @@ tinyrad_strexpand(
 
 
    assert(dst != NULL);
-   assert(src != NULL);
    assert(len  > 0);
 
+   if (!(src))
+      return(NULL);
 
    // expand escapes in buffer
    offset = 0;
@@ -160,7 +161,7 @@ tinyrad_strexpand(
          {
             case 'D': // domain name
             if (uname(&unam) == -1)
-               return(TRAD_EUNKNOWN);
+               return(NULL);
             strncpy(buff, unam.nodename, sizeof(buff));
             if ((ptr = strchr(buff, '.')) == NULL)
                buff[0] = '\0';
@@ -312,11 +313,11 @@ tinyrad_strexpand(
    if (offset >= len)
    {
       dst[len-1] = '\0';
-      return(TRAD_ENOBUFS);
+      return(NULL);
    };
    dst[offset] = '\0';
 
-   return(TRAD_SUCCESS);
+   return(dst);
 }
 
 

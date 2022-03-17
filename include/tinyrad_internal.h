@@ -215,7 +215,7 @@ tinyrad_strdup(
          const char *                  s1 );
 
 
-_TINYRAD_F int
+_TINYRAD_F char *
 tinyrad_strexpand(
          char *                        dst,
          const char * restrict         src,
