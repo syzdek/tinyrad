@@ -126,6 +126,7 @@ AC_TYPE_UINT64_T
 
 # check for required functions
 AC_CHECK_FUNCS([clock_gettime],  [], [AC_MSG_ERROR([missing required functions])])
+AC_CHECK_FUNCS([getcwd],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([memset],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([socket],         [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strcasecmp],     [], [AC_MSG_ERROR([missing required functions])])
@@ -137,6 +138,7 @@ AC_CHECK_FUNCS([strtol],         [], [AC_MSG_ERROR([missing required functions])
 AC_CHECK_FUNCS([strtoul],        [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strtoull],       [], [AC_MSG_ERROR([missing required functions])])
 AC_CHECK_FUNCS([strtoumax],      [], [AC_MSG_ERROR([missing required functions])])
+AC_CHECK_FUNCS([uname],          [], [AC_MSG_ERROR([missing required functions])])
 
 # check for headers
 AC_CHECK_HEADERS([arpa/inet.h],   [], [AC_MSG_ERROR([missing required headers])])
