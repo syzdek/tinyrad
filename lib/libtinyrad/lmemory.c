@@ -307,12 +307,7 @@ tinyrad_initialize(
    // retain or initialize dictionary
    if ((tr->dict = tinyrad_obj_retain(&dict->obj)) == NULL)
    {
-      if ((rc = tinyrad_dict_initialize(&tr->dict, TRAD_NOINIT)) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
-      if ((rc = tinyrad_dict_defaults(tr->dict, NULL)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_initialize(&tr->dict, (TRAD_NOINIT|TRAD_BUILTIN_DICT))) != TRAD_SUCCESS)
       {
          tinyrad_tiyrad_free(tr);
          return(rc);

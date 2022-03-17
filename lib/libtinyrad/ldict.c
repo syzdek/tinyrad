@@ -837,11 +837,21 @@ tinyrad_dict_initialize(
    // initializes read-only flag
    atomic_init(&dict->readonly, TRAD_NO);
 
-   // load defaults
+   // load configuration
    if ((rc = tinyrad_conf(NULL, dict, opts)) != TRAD_SUCCESS)
    {
       tinyrad_dict_free(dict);
       return(rc);
+   };
+
+   // load builtin dictionary
+   if ((dict->opts & TRAD_BUILTIN_DICT) == TRAD_BUILTIN_DICT)
+   {
+      if ((rc = tinyrad_dict_defaults(dict, NULL)) != TRAD_SUCCESS)
+      {
+         tinyrad_dict_free(dict);
+         return(rc);
+      };
    };
 
    *dictp = tinyrad_obj_retain(&dict->obj);

@@ -246,6 +246,21 @@ tinyrad_conf_opt(
       return(tinyrad_set_option(tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, value));
    };
 
+   if (!(strcasecmp(name, "builtin_dictionary")))
+   {
+      if ( (!(dict)) || (( (dict->opts | dict->opts_neg) & TRAD_BUILTIN_DICT )) )
+         return(TRAD_SUCCESS);
+      if ( ((dict->opts | dict->opts_neg) & TRAD_BUILTIN_DICT) != 0 )
+         return(TRAD_SUCCESS);
+      if (!(value))
+         dict->opts |= TRAD_BUILTIN_DICT;
+      else if (!(strcasecmp(value, "yes")))
+         dict->opts |= TRAD_BUILTIN_DICT;
+      else if (!(strcasecmp(value, "no")))
+         dict->opts_neg |= TRAD_BUILTIN_DICT;
+      return(TRAD_SUCCESS);
+   };
+
    if (!(strcasecmp(name, "network_timeout")))
    {
       if ( (!(tr)) || ((tr->net_timeout)) || (!(value)) )

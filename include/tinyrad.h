@@ -184,6 +184,7 @@
 // library user options
 #define TRAD_OPTS_USER              0x000FFFFFU
 #define TRAD_NOINIT                 0x00000001U
+#define TRAD_BUILTIN_DICT           0x00000002U
 #define TRAD_IPV4                   0x00000004U
 #define TRAD_IPV6                   0x00000008U
 #define TRAD_IP_UNSPEC              (TRAD_IPV4 | TRAD_IPV6)
