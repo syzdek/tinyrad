@@ -89,19 +89,20 @@ typedef struct my_test_strings
 
 static const MyTestStr  test_strings[] =
 {
-   { "asdfghj",                                  "asdfghj",       TRAD_NO },
-   { "'asdfghj'",                                "asdfghj",       TRAD_NO },
-   { "\"asdfghj\"",                              "asdfghj",       TRAD_NO },
-   { "\"\\141\\163\\144\\146\\147\\150\\152\"",  "asdfghj",       TRAD_NO },
-   { "\"\\x61\\x73\\x64\\x66\\x67\\x68\\x6a\"",  "asdfghj",       TRAD_NO },
-   { "\"a\\163\\x64f\\147\\x68j\"",              "asdfghj",       TRAD_NO },
-   { "\"a%%sdfghj\"",                            "a%sdfghj",      TRAD_NO },
-   { "\"%u:x:%U:%G:test user:%d:/bin/false\"",   NULL,            TRAD_NO },
-   { "\"%g:x:%G:%u,root\"",                      NULL,            TRAD_NO },
-   { "\"Is %p running successfully?\"",          NULL,            TRAD_NO },
-   { "\"Is your email address %u@%D\?\"",        NULL,            TRAD_NO },
-   { "\"is your email address %u@%H\?\"",        NULL,            TRAD_NO },
-   { "\"Is your email address %u@%h.%D\?\"",     NULL,            TRAD_NO },
+   { "asdfghj",                              "asdfghj",                       TRAD_NO },
+   { "'asdfghj'",                            "asdfghj",                       TRAD_NO },
+   { "\"asdfghj\"",                          "asdfghj",                       TRAD_NO },
+   { "\\141\\163\\144\\146\\147\\150\\152",  "asdfghj",                       TRAD_YES },
+   { "\\x61\\x73\\x64\\x66\\x67\\x68\\x6a",  "asdfghj",                       TRAD_YES },
+   { "a\\163\\x64f\\147\\x68j",              "asdfghj",                       TRAD_YES },
+   { "a%%sdfghj",                            "a%sdfghj",                      TRAD_YES },
+   { "zaq%%-%p-%%qaz",                       "zaq%-tinyrad-str-expand-%qaz",  TRAD_YES },
+   { "%u:x:%U:%G:test user:%d:/bin/false",   NULL,                            TRAD_YES },
+   { "%g:x:%G:%u,root",                      NULL,                            TRAD_YES },
+   { "Is %p running successfully?",          NULL,                            TRAD_YES },
+   { "Is your email address %u@%D\?",        NULL,                            TRAD_YES },
+   { "is your email address %u@%H\?",        NULL,                            TRAD_YES },
+   { "Is your email address %u@%h.%D\?",     NULL,                            TRAD_YES },
    { NULL, NULL, 0 }
 };
 
