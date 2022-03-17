@@ -116,6 +116,7 @@ tinyrad_strexpand(
    size_t            offset;
    char              buff[4096];
    char *            ptr;
+   char              quote;
    struct utsname    unam;
    struct passwd     pwd;
    struct passwd *   pwres;
@@ -127,10 +128,17 @@ tinyrad_strexpand(
    assert(src != NULL);
    assert(len  > 0);
 
+
    // expand escapes in buffer
    offset = 0;
-   for(pos = 0; ( ((src[pos])) && (offset < (len-1)) ); pos++)
+   quote  = ((src[0] == '\'')||(src[0] == '"')) ? src[0] : 0;
+   for(pos = (((quote)) ? 1 : 0); ( ((src[pos])) && (offset < (len-1)) ); pos++)
    {
+      if (quote != '"')
+      {
+         dst[offset++] = src[pos];
+         continue;
+      };
       switch(src[pos])
       {
          // tokens
@@ -298,6 +306,8 @@ tinyrad_strexpand(
          break;
       };
    };
+   if ((quote))
+      offset--;
    if (offset >= len)
    {
       dst[len-1] = '\0';

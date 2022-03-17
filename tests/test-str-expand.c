@@ -86,17 +86,19 @@ typedef struct my_test_strings
 
 static const MyTestStr  test_strings[] =
 {
-   { "asdfghj",                              "asdfghj" },
-   { "\\141\\163\\144\\146\\147\\150\\152",  "asdfghj" },
-   { "\\x61\\x73\\x64\\x66\\x67\\x68\\x6a",  "asdfghj" },
-   { "a\\163\\x64f\\147\\x68j",              "asdfghj" },
-   { "a%%sdfghj",                            "a%sdfghj" },
-   { "%u:x:%U:%G:test user:%d:/bin/false",   NULL },
-   { "%g:x:%G:%u,root",                      NULL },
-   { "Is %p running successfully?",          NULL },
-   { "Is your email address %u@%D\?",        NULL },
-   { "is your email address %u@%H\?",        NULL },
-   { "Is your email address %u@%h.%D\?",     NULL },
+   { "asdfghj",                                  "asdfghj" },
+   { "'asdfghj'",                                "asdfghj" },
+   { "\"asdfghj\"",                              "asdfghj" },
+   { "\"\\141\\163\\144\\146\\147\\150\\152\"",  "asdfghj" },
+   { "\"\\x61\\x73\\x64\\x66\\x67\\x68\\x6a\"",  "asdfghj" },
+   { "\"a\\163\\x64f\\147\\x68j\"",              "asdfghj" },
+   { "\"a%%sdfghj\"",                            "a%sdfghj" },
+   { "\"%u:x:%U:%G:test user:%d:/bin/false\"",   NULL },
+   { "\"%g:x:%G:%u,root\"",                      NULL },
+   { "\"Is %p running successfully?\"",          NULL },
+   { "\"Is your email address %u@%D\?\"",        NULL },
+   { "\"is your email address %u@%H\?\"",        NULL },
+   { "\"Is your email address %u@%h.%D\?\"",     NULL },
    { NULL, NULL }
 };
 
