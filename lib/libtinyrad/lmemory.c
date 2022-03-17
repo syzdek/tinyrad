@@ -312,7 +312,7 @@ tinyrad_initialize(
          tinyrad_tiyrad_free(tr);
          return(rc);
       };
-      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, 0)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_defaults(tr->dict, NULL)) != TRAD_SUCCESS)
       {
          tinyrad_tiyrad_free(tr);
          return(rc);

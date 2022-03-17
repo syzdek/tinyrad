@@ -561,8 +561,7 @@ tinyrad_dict_attr_info(
 _TINYRAD_F int
 tinyrad_dict_defaults(
          TinyRadDict *                 dict,
-         char ***                      msgsp,
-         uint32_t                      opts );
+         char ***                      msgsp );
 
 
 _TINYRAD_F int

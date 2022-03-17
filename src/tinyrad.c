@@ -296,7 +296,7 @@ my_dict_load(
    // load defaults
    if ((opts & MY_OPT_DICT_DEFAULTS))
    {
-      if ((rc = tinyrad_dict_defaults(dict, &errs, 0)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_defaults(dict, &errs)) != TRAD_SUCCESS)
       {
          trutils_error(opts, errs, NULL);
          tinyrad_strsfree(errs);
