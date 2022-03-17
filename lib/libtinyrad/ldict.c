@@ -850,7 +850,7 @@ tinyrad_dict_initialize(
    // load builtin dictionary
    if ((dict->opts & TRAD_BUILTIN_DICT) == TRAD_BUILTIN_DICT)
    {
-      if ((rc = tinyrad_dict_defaults(dict, NULL)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_builtin(dict, NULL)) != TRAD_SUCCESS)
       {
          tinyrad_dict_free(dict);
          return(rc);
@@ -1384,7 +1384,7 @@ tinyrad_dict_attr_oidname(
 #pragma mark dictionary import functions
 
 int
-tinyrad_dict_defaults(
+tinyrad_dict_builtin(
          TinyRadDict *                 dict,
          char ***                      msgsp )
 {

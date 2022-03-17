@@ -198,7 +198,7 @@ int main(int argc, char * argv[])
    // load builtin/default dictionary objects
    if ((opts & MY_OPT_DICT_DEFAULTS))
    {
-      if ((rc = tinyrad_dict_defaults(dict, &errs)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_builtin(dict, &errs)) != TRAD_SUCCESS)
       {
          trutils_error(opts, errs, NULL);
          tinyrad_strsfree(files);

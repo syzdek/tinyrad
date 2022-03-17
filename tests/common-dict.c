@@ -325,7 +325,7 @@ our_dict_initialize(
    if ((opts & TEST_OPT_DFLT_DICT))
    {
       trutils_verbose(opts, "loading default dictionary ...");
-      if ((rc = tinyrad_dict_defaults(*dictp, &errs)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_builtin(*dictp, &errs)) != TRAD_SUCCESS)
       {
          trutils_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
          tinyrad_strsfree(errs);
