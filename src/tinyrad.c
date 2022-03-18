@@ -101,6 +101,7 @@ main(
 int
 my_dict_load(
          int                           opts,
+         unsigned                      tr_opts,
          TinyRadDict **                dictp,
          char **                       dict_files,
          char **                       dict_paths );
@@ -123,6 +124,7 @@ int main(int argc, char * argv[])
    int            c;
    int            opt_index;
    int            rc;
+   unsigned       tr_opts;
    TinyRadDict *  dict;
    TinyRad *      tr;
    const char *   url;
@@ -149,6 +151,8 @@ int main(int argc, char * argv[])
    trutils_initialize(PROGRAM_NAME);
 
    opts        = 0;
+   tr_opts     = 0;
+   url         = NULL;
    dict        = NULL;
    dict_files  = NULL;
    dict_paths  = NULL;
@@ -166,7 +170,7 @@ int main(int argc, char * argv[])
          break;
 
          case 2:
-         opts |= MY_OPT_DICT_DEFAULTS;
+         tr_opts |= TRAD_BUILTIN_DICT;
          break;
 
          case 'D':
@@ -222,19 +226,22 @@ int main(int argc, char * argv[])
          return(1);
       };
    };
-   if (optind >= argc)
+   if (optind < argc)
    {
-      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
+      url = argv[optind];
+      optind++;
+   };
+   if (optind < argc)
+   {
+      fprintf(stderr, "%s: unrecognized argument -- %s\n", PROGRAM_NAME, argv[optind]);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       tinyrad_strsfree(dict_files);
       tinyrad_strsfree(dict_paths);
       return(1);
    };
-   url = argv[optind];
-   optind++;
 
    // load RADIUS dictionary
-   if ((rc = my_dict_load(opts, &dict, dict_files, dict_paths)) != TRAD_SUCCESS)
+   if ((rc = my_dict_load(opts, tr_opts, &dict, dict_files, dict_paths)) != TRAD_SUCCESS)
    {
       tinyrad_strsfree(dict_files);
       tinyrad_strsfree(dict_paths);
@@ -244,7 +251,7 @@ int main(int argc, char * argv[])
    tinyrad_strsfree(dict_files);
 
    // initialize tinyrad handle
-   if ((tinyrad_initialize(&tr, dict, url, 0)) != TRAD_SUCCESS)
+   if ((tinyrad_initialize(&tr, dict, url, tr_opts)) != TRAD_SUCCESS)
    {
       tinyrad_free(dict);
       return(1);
@@ -270,6 +277,7 @@ int main(int argc, char * argv[])
 int
 my_dict_load(
          int                           opts,
+         unsigned                      tr_opts,
          TinyRadDict **                dictp,
          char **                       dict_files,
          char **                       dict_paths )
@@ -287,7 +295,7 @@ my_dict_load(
       return(TRAD_SUCCESS);
 
    // initialize dictionary
-   if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_initialize(&dict, tr_opts)) != TRAD_SUCCESS)
    {
       trutils_error(opts, NULL, "out of virtual memory");
       return(rc);
@@ -336,7 +344,7 @@ my_dict_load(
 
 void my_usage(void)
 {
-   printf("Usage: %s [OPTIONS] url\n", PROGRAM_NAME);
+   printf("Usage: %s [OPTIONS] [url]\n", PROGRAM_NAME);
    printf("OPTIONS:\n");
    printf("  -D dictionary             include dictionary\n");
    printf("  -d level, --debug=level   print debug messages\n");
