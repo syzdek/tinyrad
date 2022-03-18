@@ -61,7 +61,7 @@
 #pragma mark - Prototypes
 
 int
-tinyrad_urldesc_parser(
+tinyrad_urldesc_parse_url(
          char *                        url,
          TinyRadURLDesc **             trudpp );
 
@@ -82,7 +82,7 @@ tinyrad_is_radius_url(
    assert(url    != NULL);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   ====> %s(\"%s\")", __func__, url);
    tinyrad_strlcpy(buff, url, sizeof(buff));
-   return(tinyrad_urldesc_parser(buff, NULL));
+   return(tinyrad_urldesc_parse_url(buff, NULL));
 }
 
 
@@ -271,7 +271,7 @@ tinyrad_urldesc_parse(
          str = &ptr[1];
          continue;
       };
-      if ((rc = tinyrad_urldesc_parser(str, pptr)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_urldesc_parse_url(str, pptr)) != TRAD_SUCCESS)
          return(rc);
       pptr = &(*pptr)->trud_next;
       str = &ptr[1];
@@ -279,7 +279,7 @@ tinyrad_urldesc_parse(
 
    if ((str[0]))
    {
-      if ((rc = tinyrad_urldesc_parser(str, pptr)) != TRAD_SUCCESS)
+      if ((rc = tinyrad_urldesc_parse_url(str, pptr)) != TRAD_SUCCESS)
          return(rc);
       pptr = &(*pptr)->trud_next;
    };
@@ -295,7 +295,7 @@ tinyrad_urldesc_parse(
 
 
 int
-tinyrad_urldesc_parser(
+tinyrad_urldesc_parse_url(
          char *                        url,
          TinyRadURLDesc **             trudpp )
 {
