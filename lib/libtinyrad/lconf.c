@@ -121,7 +121,6 @@ tinyrad_conf(
          TinyRadDict *                 dict,
          unsigned                      opts )
 {
-   int               rc;
    const char *      suffix;
    const char *      filename;
    const char *      prefix;
@@ -150,8 +149,7 @@ tinyrad_conf(
    {
       tinyrad_strlcat(path, "/",    sizeof(path));
       tinyrad_strlcat(path, suffix, sizeof(path));
-      if ((rc = tinyrad_conf_file(tr, dict, path)) != TRAD_SUCCESS)
-         return(TRAD_SUCCESS);
+      tinyrad_conf_file(tr, dict, path);
    };
 
    // lookup user
@@ -162,21 +160,18 @@ tinyrad_conf(
    tinyrad_strlcpy(path, prefix, sizeof(path));
    tinyrad_strlcat(path, "/.",   sizeof(path));
    tinyrad_strlcat(path, suffix, sizeof(path));
-   if ((rc = tinyrad_conf_file(tr, dict, path)) != TRAD_SUCCESS)
-      return(TRAD_SUCCESS);
+   tinyrad_conf_file(tr, dict, path);
 
    // search for RC file in home directory
    tinyrad_strlcpy(path, prefix, sizeof(path));
    tinyrad_strlcat(path, "/",    sizeof(path));
    tinyrad_strlcat(path, suffix, sizeof(path));
-   if ((rc = tinyrad_conf_file(tr, dict, path)) != TRAD_SUCCESS)
-      return(TRAD_SUCCESS);
+   tinyrad_conf_file(tr, dict, path);
 
    // load global configuration
    if ((filename = getenv("TINYRADCONF")) == NULL)
       filename = SYSCONFDIR "/tinyrad.conf";
-   if ((rc = tinyrad_conf_file(tr, dict, filename)) != TRAD_SUCCESS)
-      return(TRAD_SUCCESS);
+   tinyrad_conf_file(tr, dict, filename);
 
    return(TRAD_SUCCESS);
 }

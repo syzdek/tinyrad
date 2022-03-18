@@ -248,7 +248,7 @@ tinyrad_readline(
    // check file descriptor
    if (fd == -1)
       return(TRAD_EINVAL);
-   if ((rc = fstat(fd, &sb)) == -1)
+   if (fstat(fd, &sb) == -1)
       return(TRAD_EINVAL);
 
    if ((bytes_read))
