@@ -331,21 +331,10 @@ tinyrad_initialize(
    // load default dictionary file and make read-only
    if (!(dict))
    {
-      if ((tr->dict->default_dictfile))
+      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, (TRAD_BUILTIN_DICT|opts))) != TRAD_SUCCESS)
       {
-         switch(rc = tinyrad_dict_parse(tr->dict, tr->dict->default_dictfile, NULL, 0))
-         {
-            case TRAD_SUCCESS:
-            break;
-
-            case TRAD_ENOMEM:
-            case TRAD_EUNKNOWN:
-            tinyrad_tiyrad_free(tr);
-            return(rc);
-
-            default:
-            break;
-         };
+         tinyrad_tiyrad_free(tr);
+         return(rc);
       };
       opt = TRAD_YES;
       tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);

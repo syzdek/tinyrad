@@ -147,6 +147,13 @@ tinyrad_dict_attr_oidname(
          const TinyRadOID *            oid );
 
 
+int
+tinyrad_dict_defaults(
+         TinyRadDict *                 dict,
+         char ***                      msgsp,
+         int                           opts );
+
+
 TinyRadDictValue *
 tinyrad_dict_value_lookup(
          TinyRadDict *                 dict,

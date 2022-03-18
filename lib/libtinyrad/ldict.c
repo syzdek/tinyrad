@@ -694,6 +694,47 @@ tinyrad_dict_add_vendor(
 }
 
 
+int
+tinyrad_dict_defaults(
+         TinyRadDict *                 dict,
+         char ***                      msgsp,
+         int                           opts )
+{
+   int      rc;
+
+   if (!(dict))
+      return(TRAD_SUCCESS);
+
+   // adjust options
+   opts &= ~(dict->opts_neg);
+   opts |= dict->opts;
+
+   // load built-in dictionary
+   if ((opts & TRAD_BUILTIN_DICT))
+      if ((rc = tinyrad_dict_builtin(dict, msgsp)) != TRAD_SUCCESS)
+         return(rc);
+
+   // load default dictionary file
+   if ((dict->default_dictfile))
+   {
+      switch(rc = tinyrad_dict_parse(dict, dict->default_dictfile, NULL, 0))
+      {
+         case TRAD_SUCCESS:
+         break;
+
+         case TRAD_ENOMEM:
+         case TRAD_EUNKNOWN:
+         return(rc);
+
+         default:
+         break;
+      };
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
 /// Initialize dicitionary file buffer
 ///
 /// @param[in]  dict          dictionary reference
@@ -847,32 +888,11 @@ tinyrad_dict_initialize(
       return(rc);
    };
 
-   // load builtin dictionary
-   if ((dict->opts & TRAD_BUILTIN_DICT) == TRAD_BUILTIN_DICT)
+   // load builtin dictionary and default dictionary file
+   if ((rc = tinyrad_dict_defaults(dict, NULL, opts)) != TRAD_SUCCESS)
    {
-      if ((rc = tinyrad_dict_builtin(dict, NULL)) != TRAD_SUCCESS)
-      {
-         tinyrad_dict_free(dict);
-         return(rc);
-      };
-   };
-
-   // load default dictionary file
-   if ((dict->default_dictfile))
-   {
-      switch(rc = tinyrad_dict_parse(dict, dict->default_dictfile, NULL, 0))
-      {
-         case TRAD_SUCCESS:
-         break;
-
-         case TRAD_ENOMEM:
-         case TRAD_EUNKNOWN:
-         tinyrad_dict_free(dict);
-         return(rc);
-
-         default:
-         break;
-      };
+      tinyrad_dict_free(dict);
+      return(rc);
    };
 
    *dictp = tinyrad_obj_retain(&dict->obj);
