@@ -235,6 +235,42 @@ int tinyrad_file_init(
 
 
 int
+tinyrad_filetostr(
+         char *                        dst,
+         const char *                  filename,
+         size_t                        size )
+{
+   int            rc;
+   int            fd;
+   struct stat    sb;
+   size_t         len;
+   ssize_t        rlen;
+
+   assert(dst  != NULL);
+   assert(size  > 1);
+
+   if ((rc = tinyrad_stat(filename, &sb, S_IFREG)) != TRAD_SUCCESS)
+      return((int)rc);
+
+   len = (size > (size_t)(sb.st_size+1)) ? sb.st_size : (size - 1);
+
+   if ((fd = open(filename, O_RDONLY)) == -1)
+      return(TRAD_EACCES);
+
+   if ((rlen = read(fd, dst, len)) == -1)
+   {
+      close(fd);
+      return(TRAD_EUNKNOWN);
+   };
+   dst[rlen] = '\0';
+
+   close(fd);
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
 tinyrad_readline(
          int                           fd,
          char *                        str,

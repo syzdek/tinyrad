@@ -103,6 +103,13 @@ tinyrad_file_init(
 
 
 int
+tinyrad_filetostr(
+         char *                        dst,
+         const char *                  filename,
+         size_t                        size );
+
+
+int
 tinyrad_stat(
          const char *                  path,
          struct stat *                 sbpi,
