@@ -127,6 +127,9 @@ tinyrad_tiyrad_free(
    if ((tr->dict))
       tinyrad_obj_release(&tr->dict->obj);
 
+   if ((tr->secret))
+      free(tr->secret);
+
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
    tr->trud = NULL;
@@ -238,6 +241,13 @@ tinyrad_get_option(
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SCHEME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", tr->scheme);
       *((unsigned *)outvalue) = tr->scheme;
+      break;
+
+      case TRAD_OPT_SECRET:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET, outvalue )", __func__);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", tr->secret);
+      if (((*(char **)outvalue) = tinyrad_strdup(tr->secret)) == NULL)
+         return(TRAD_ENOMEM);
       break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
@@ -510,6 +520,14 @@ tinyrad_set_option(
       case TRAD_OPT_SCHEME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SCHEME, invalue )", __func__);
       return(TRAD_EOPTERR);
+
+      case TRAD_OPT_SECRET:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET, \"%s\" )", __func__, (const char *)invalue);
+      if ((tr->secret))
+         free(tr->secret);
+      if ((tr->secret = tinyrad_strdup(invalue)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, invalue )", __func__);

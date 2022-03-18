@@ -116,6 +116,7 @@ struct _tinyrad
    TinyRadDict *         dict;
    TinyRadURLDesc *      trud;
    TinyRadURLDesc *      trud_cur;
+   char *                secret;
    size_t                trud_pos;
    struct sockaddr_in *  bind_sa;
    struct sockaddr_in6 * bind_sa6;

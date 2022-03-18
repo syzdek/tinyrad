@@ -7,6 +7,7 @@
 
 #URI                 "radius://localhost/secret"
 #BIND_ADDRESS        "::1 127.0.0.1"
+#SECRET              "RaDiUsSeCrEt"
 
 #TIMEOUT             5
 #NETWORK_TIMEOUT     3

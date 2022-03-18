@@ -199,6 +199,9 @@ tinyrad_conf_environment(
    if ((value = getenv("TINYRAD_PATHS")) != NULL)
       tinyrad_conf_opt(tr, dict, "paths", value);
 
+   if ((value = getenv("TINYRAD_SECRET")) != NULL)
+      tinyrad_conf_opt(tr, dict, "secret", value);
+
    if ((value = getenv("TINYRAD_TIMEOUT")) != NULL)
       tinyrad_conf_opt(tr, dict, "timeout", value);
 
@@ -332,6 +335,13 @@ tinyrad_conf_opt(
       };
       dict->paths = strs;
       return(TRAD_SUCCESS);
+   };
+
+  if (!(strcasecmp(name, "secret")))
+   {
+      if ( (!(tr)) || ((tr->secret)) || (!(value)) )
+         return(TRAD_SUCCESS);
+      return(tinyrad_set_option(tr, TRAD_OPT_SECRET, value));
    };
 
    if (!(strcasecmp(name, "timeout")))
