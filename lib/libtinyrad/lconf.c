@@ -73,6 +73,12 @@
 #pragma mark - Prototypes
 
 int
+tinyrad_conf_environment(
+         TinyRad *                     tr,
+         TinyRadDict *                 dict );
+
+
+int
 tinyrad_conf_file(
          TinyRad *                     tr,
          TinyRadDict *                 dict,
@@ -132,6 +138,9 @@ tinyrad_conf(
    if ( ((opts & TRAD_NOINIT)) || ((getenv("TINYRADNOINIT"))) )
       return(TRAD_SUCCESS);
 
+   // process environment variables
+   tinyrad_conf_environment(tr, dict);
+
    // determine TINYRADRC suffix
    if ((suffix = getenv("TINYRADRC")) == NULL)
       suffix = "tinyradrc";
@@ -168,6 +177,38 @@ tinyrad_conf(
       filename = SYSCONFDIR "/tinyrad.conf";
    if ((rc = tinyrad_conf_file(tr, dict, filename)) != TRAD_SUCCESS)
       return(TRAD_SUCCESS);
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_conf_environment(
+         TinyRad *                     tr,
+         TinyRadDict *                 dict )
+{
+   char *      value;
+
+   if ((value = getenv("TINYRAD_BIND_ADDRESS")) != NULL)
+      tinyrad_conf_opt(tr, dict, "bind_address", value);
+
+   if ((value = getenv("TINYRAD_BUILTIN_DICTIONARY")) != NULL)
+      tinyrad_conf_opt(tr, dict, "builtin_dictionary", value);
+
+   if ((value = getenv("TINYRAD_DICTIONARY")) != NULL)
+      tinyrad_conf_opt(tr, dict, "dictionary", value);
+
+   if ((value = getenv("TINYRAD_NETWORK_TIMEOUT")) != NULL)
+      tinyrad_conf_opt(tr, dict, "network_timeout", value);
+
+   if ((value = getenv("TINYRAD_PATHS")) != NULL)
+      tinyrad_conf_opt(tr, dict, "paths", value);
+
+   if ((value = getenv("TINYRAD_TIMEOUT")) != NULL)
+      tinyrad_conf_opt(tr, dict, "timeout", value);
+
+   if ((value = getenv("TINYRAD_URI")) != NULL)
+      tinyrad_conf_opt(tr, dict, "uri", value);
 
    return(TRAD_SUCCESS);
 }
