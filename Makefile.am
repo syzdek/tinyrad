@@ -135,6 +135,7 @@ EXTRA_MANS				=
 EXTRA_DIST				= DeveloperNotes.md \
 					  $(doc_DATA) \
 					  doc/mans/tinyrad.3.in \
+					  doc/mans/tinyrad.conf.5.in \
 					  doc/mans/tinyrad_array.3.in \
 					  doc/mans/tinyrad_error.3.in \
 					  doc/mans/tinyrad_options.3.in \
@@ -219,6 +220,7 @@ if ENABLE_TINYRADPROXY
 endif
 if ENABLE_TINYRAD_COMMON
    doc_DATA				+= doc/tinyrad.conf-example
+   man_MANS				+= doc/mans/tinyrad.conf.5
    man_MANS				+= doc/mans/tinyrad-strings.5
 endif
 
@@ -441,6 +443,9 @@ include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-version.am
 .PHONY: examples
 
 doc/mans/tinyrad.3: Makefile $(srcdir)/doc/mans/tinyrad.3.in
+	@$(do_subst_dt)
+
+doc/mans/tinyrad.conf.5: Makefile $(srcdir)/doc/mans/tinyrad.conf.5.in
 	@$(do_subst_dt)
 
 doc/mans/tinyrad_array.3: Makefile $(srcdir)/doc/mans/tinyrad_array.3.in
