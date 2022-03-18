@@ -254,7 +254,7 @@
 #define TRAD_DEBUG_ANY              (~0x00)
 
 // library defaults
-#define TRAD_DFLT_URI                     "radius://localhost/"
+#define TRAD_DFLT_URI                     "radius://[::1]/ radius://127.0.0.1/"
 #define TRAD_DFLT_DEBUG_IDENT             "libtinyrad"
 #define TRAD_DFLT_DEBUG_LEVEL             TRAD_DEBUG_NONE
 #define TRAD_DFLT_DEBUG_SYSLOG            TRAD_OFF
