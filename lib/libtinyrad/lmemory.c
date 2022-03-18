@@ -294,7 +294,6 @@ tinyrad_initialize(
    TinyRadDebugTrace();
 
    assert(trp    != NULL);
-   assert(url    != NULL);
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( \"%s\", 0x08x )", __func__, url, opts);
 
@@ -305,10 +304,13 @@ tinyrad_initialize(
    tr->timeout    = -1;
 
    // parses and saves URL
-   if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
+   if ((url))
    {
-      tinyrad_tiyrad_free(tr);
-      return(rc);
+      if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
    };
 
    // retain or initialize dictionary
@@ -338,6 +340,16 @@ tinyrad_initialize(
       };
       opt = TRAD_YES;
       tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);
+   };
+
+   // sets default URI
+   if (!(tr->trud))
+   {
+      if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, TRAD_DFLT_URI)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
    };
 
    // sets default bind addresses
