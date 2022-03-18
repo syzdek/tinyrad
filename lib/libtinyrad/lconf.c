@@ -202,6 +202,9 @@ tinyrad_conf_environment(
    if ((value = getenv("TINYRAD_SECRET")) != NULL)
       tinyrad_conf_opt(tr, dict, "secret", value);
 
+   if ((value = getenv("TINYRAD_SECRET_FILE")) != NULL)
+      tinyrad_conf_opt(tr, dict, "secret_file", value);
+
    if ((value = getenv("TINYRAD_TIMEOUT")) != NULL)
       tinyrad_conf_opt(tr, dict, "timeout", value);
 
@@ -338,6 +341,13 @@ tinyrad_conf_opt(
    };
 
   if (!(strcasecmp(name, "secret")))
+   {
+      if ( (!(tr)) || ((tr->secret)) || (!(value)) )
+         return(TRAD_SUCCESS);
+      return(tinyrad_set_option(tr, TRAD_OPT_SECRET_FILE, value));
+   };
+
+  if (!(strcasecmp(name, "secret_file")))
    {
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);

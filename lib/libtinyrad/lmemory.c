@@ -55,6 +55,7 @@
 
 #include "lconf.h"
 #include "ldict.h"
+#include "lfile.h"
 #include "lstrings.h"
 
 
@@ -250,6 +251,10 @@ tinyrad_get_option(
          return(TRAD_ENOMEM);
       break;
 
+      case TRAD_OPT_SECRET_FILE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET_FILE, outvalue )", __func__);
+      return(TRAD_EOPTERR);
+
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, outvalue )", __func__);
       inet_ntop(AF_INET, &tr->bind_sa->sin_addr, bind_buff, sizeof(struct sockaddr_in));
@@ -431,6 +436,7 @@ tinyrad_set_option(
    uint32_t             opts;
    int                  rc;
    TinyRadURLDesc *     trud;
+   char                 buff[256];
 
    TinyRadDebugTrace();
 
@@ -526,6 +532,16 @@ tinyrad_set_option(
       if ((tr->secret))
          free(tr->secret);
       if ((tr->secret = tinyrad_strdup(invalue)) == NULL)
+         return(TRAD_ENOMEM);
+      break;
+
+      case TRAD_OPT_SECRET_FILE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET_FILE, \"%s\" )", __func__, (const char *)invalue);
+      if ((rc = tinyrad_filetostr(buff, (const char *)invalue, sizeof(buff))) != TRAD_SUCCESS)
+         return(rc);
+      if ((tr->secret))
+         free(tr->secret);
+      if ((tr->secret = tinyrad_strdup(buff)) == NULL)
          return(TRAD_ENOMEM);
       break;
 
