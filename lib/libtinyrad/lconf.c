@@ -300,7 +300,7 @@ tinyrad_conf_opt(
 
    if (!(strcasecmp(name, "timeout")))
    {
-      if ( (!(tr)) || ((tr->timeout)) || (!(value)) )
+      if ( (!(tr)) || (tr->timeout != -1) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((i = (int)strtoll(value, &endptr, 10)) < 1)
          return(TRAD_SUCCESS);

@@ -302,7 +302,7 @@ tinyrad_initialize(
       return(TRAD_ENOMEM);
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
-   tr->timeout    = TRAD_DFLT_TIMEOUT;
+   tr->timeout    = -1;
 
    // parses and saves URL
    if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, url)) != TRAD_SUCCESS)
@@ -328,7 +328,7 @@ tinyrad_initialize(
       return(rc);
    };
 
-   // load default dictionary file and make read-only
+   // load builtin dictionary, load default dictionary file, and make read-only
    if (!(dict))
    {
       if ((rc = tinyrad_dict_defaults(tr->dict, NULL, (TRAD_BUILTIN_DICT|opts))) != TRAD_SUCCESS)
@@ -340,22 +340,32 @@ tinyrad_initialize(
       tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);
    };
 
-   // sets bind addresses
-   if ((rc = tinyrad_set_option_socket_bind_addresses(tr, NULL)) != TRAD_SUCCESS)
+   // sets default bind addresses
+   if ( (!(tr->bind_sa)) || (!(tr->bind_sa6)) )
    {
-      tinyrad_tiyrad_free(tr);
-      return(rc);
+      if ((rc = tinyrad_set_option_socket_bind_addresses(tr, NULL)) != TRAD_SUCCESS)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(rc);
+      };
    };
 
-   // sets network timeout
-   if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
+   // sets default network timeout
+   if (!(tr->net_timeout))
    {
-      tinyrad_tiyrad_free(tr);
-      return(TRAD_ENOMEM);
+      if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
+      {
+         tinyrad_tiyrad_free(tr);
+         return(TRAD_ENOMEM);
+      };
+      memset(tr->net_timeout, 0, sizeof(struct timeval));
+      tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
+      tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
    };
-   memset(tr->net_timeout, 0, sizeof(struct timeval));
-   tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
-   tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
+
+   // sets default timeout
+   if (tr->timeout == -1)
+      tr->timeout = TRAD_DFLT_TIMEOUT;
 
    // generates initial authenticator
    if ((fd = open("/dev/urandom", O_RDONLY)) != -1)
