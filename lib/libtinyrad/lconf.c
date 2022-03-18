@@ -340,14 +340,14 @@ tinyrad_conf_opt(
       return(TRAD_SUCCESS);
    };
 
-  if (!(strcasecmp(name, "secret")))
+   if (!(strcasecmp(name, "secret")))
    {
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SECRET_FILE, value));
    };
 
-  if (!(strcasecmp(name, "secret_file")))
+   if (!(strcasecmp(name, "secret_file")))
    {
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);
