@@ -34,6 +34,9 @@ CODE=0
 
 test -x src/tinyrad-dict || exit 77
 
+TINYRADNOINIT=1
+export TINYRADNOINIT
+
 ./src/tinyrad-dict --dictionary-dump \
    --defaults \
    1> /tmp/tinyrad-dict-defaults1.$$ \
