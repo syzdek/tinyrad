@@ -252,7 +252,7 @@ tinyrad_filetostr(
    if ((rc = tinyrad_stat(filename, &sb, S_IFREG)) != TRAD_SUCCESS)
       return((int)rc);
 
-   len = (size > (size_t)(sb.st_size+1)) ? sb.st_size : (size - 1);
+   len = (size > (size_t)(sb.st_size+1)) ? (size_t)sb.st_size : (size - 1);
 
    if ((fd = open(filename, O_RDONLY)) == -1)
       return(TRAD_EACCES);
