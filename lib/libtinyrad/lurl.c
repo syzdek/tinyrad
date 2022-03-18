@@ -120,7 +120,7 @@ tinyrad_urldesc2str(
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s(trudp)", __func__);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_host:   %s", trudp->trud_host);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_port:   %i", trudp->trud_port);
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", trudp->trud_secret);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", (((trudp->trud_secret)) ? trudp->trud_secret : "n/a"));
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_opts:   0x%04x", trudp->trud_opts);
 
    memset(buff, 0, sizeof(buff));
@@ -162,7 +162,7 @@ tinyrad_urldesc2str(
 
       // add URL secret
       strncat(buff, "/", (sizeof(buff)-strlen(buff)-1));
-      if ( (trudp->trud_opts & TRAD_SCHEME) != TRAD_RADSEC)
+      if ( ((trudp->trud_opts & TRAD_SCHEME) != TRAD_RADSEC) && ((trudp->trud_secret)) )
       {
          len = strlen(buff);
          strncat(buff, trudp->trud_secret, (sizeof(buff)-strlen(buff)-1));
@@ -473,10 +473,10 @@ tinyrad_urldesc_parse_url(
       return(TRAD_EURL);
    if (!(trud_host[0]))
       return(TRAD_EURL);
-   if (!(trud_secret))
-      return(TRAD_EURL);
-   if (!(trud_secret[0]))
-      return(TRAD_EURL);
+
+   if ((trud_secret))
+      if (!(trud_secret[0]))
+         trud_secret = NULL;
 
    if (!(trudpp))
       return(TRAD_SUCCESS);
@@ -492,31 +492,34 @@ tinyrad_urldesc_parse_url(
       return(TRAD_ENOMEM);
    };
 
-   if ((trudp->trud_secret = tinyrad_strdup(trud_secret)) == NULL)
+   if ((trud_secret))
    {
-      tinyrad_urldesc_free(trudp);
-      return(TRAD_ENOMEM);
-   };
-   for(pos = 0; ((trudp->trud_secret[pos])); pos++)
-   {
-      switch(trudp->trud_secret[pos])
+      if ((trudp->trud_secret = tinyrad_strdup(trud_secret)) == NULL)
       {
-         case '+':
-         trudp->trud_secret[pos] = ' ';
-         break;
+         tinyrad_urldesc_free(trudp);
+         return(TRAD_ENOMEM);
+      };
+      for(pos = 0; ((trudp->trud_secret[pos])); pos++)
+      {
+         switch(trudp->trud_secret[pos])
+         {
+            case '+':
+            trudp->trud_secret[pos] = ' ';
+            break;
 
-         case '%':
-         hex[0] = trudp->trud_secret[pos+1];
-         hex[1] = trudp->trud_secret[pos+2];
-         hex[2] = '\0';
-         trudp->trud_secret[pos] = (char)strtol(hex, NULL, 16);
-         for(x = pos+1; ((trudp->trud_secret[x+2])); x++)
+            case '%':
+            hex[0] = trudp->trud_secret[pos+1];
+            hex[1] = trudp->trud_secret[pos+2];
+            hex[2] = '\0';
+            trudp->trud_secret[pos] = (char)strtol(hex, NULL, 16);
+            for(x = pos+1; ((trudp->trud_secret[x+2])); x++)
+               trudp->trud_secret[x] = trudp->trud_secret[x+2];
             trudp->trud_secret[x] = trudp->trud_secret[x+2];
-         trudp->trud_secret[x] = trudp->trud_secret[x+2];
-         break;
+            break;
 
-         default:
-         break;
+            default:
+            break;
+         };
       };
    };
 
@@ -552,7 +555,7 @@ tinyrad_urldesc_resolve(
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s(trudp)", __func__);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_host:   %s", trudp->trud_host);
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_port:   %i", trudp->trud_port);
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", trudp->trud_secret);
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", (((trudp->trud_secret)) ? trudp->trud_secret : "n/a"));
    TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_opts:   0x%04x", trudp->trud_opts);
 
    // clear existing sockaddrs

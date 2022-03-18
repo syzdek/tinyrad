@@ -259,7 +259,7 @@ int my_print_urldesc( TinyRadURLDesc * trudp)
    printf("   scheme:     %s\n", scheme);
    printf("   host:       %s\n", trudp->trud_host);
    printf("   port:       %i\n", trudp->trud_port);
-   printf("   secret:     %s\n", trudp->trud_secret);
+   printf("   secret:     %s\n", (((trudp->trud_secret)) ? trudp->trud_secret : "n/a"));
    printf("   protocol:   %s\n", ((trudp->trud_opts & TRAD_TCP)) ? "tcp" : "udp");
    if ( ((trudp->trud_sockaddrs)) && ((trudp->trud_sockaddrs[0])) )
    {
@@ -299,10 +299,10 @@ void my_usage(void)
    printf("  -r, --resolve                             resolve URLs\n");
    printf("\n");
    printf("URL Syntax:\n");
-   printf("  radius://hostport/secret[?proto]          use RFC2865 (udp/port 1812)\n");
-   printf("  radius-acct://hostport/secret[?proto]     use RFC2866 (udp/port 1813)\n");
-   printf("  radsec://hostport/[?proto]                use RFC6614/RFC7360 (tcp/port 2083)\n");
-   printf("  radius-dynauth://hostport/secret[?proto]  use RFC5176 (udp/port 3799)\n");
+   printf("  radius://hostport/[secret][?proto]         use RFC2865 (udp/port 1812)\n");
+   printf("  radius-acct://hostport/[secret][?proto]    use RFC2866 (udp/port 1813)\n");
+   printf("  radsec://hostport/[?proto]                 use RFC6614/RFC7360 (tcp/port 2083)\n");
+   printf("  radius-dynauth://hostport/[secret][?proto] use RFC5176 (udp/port 3799)\n");
    printf("\n");
    printf("  where:\n");
    printf("     'hostport' is a host name with an optional ':portnumber'\n");
