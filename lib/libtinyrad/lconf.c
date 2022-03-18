@@ -123,9 +123,9 @@ tinyrad_conf(
 {
    const char *      suffix;
    const char *      filename;
-   const char *      prefix;
    char              buff[4096];
    char              path[128];
+   const char *      home;
    struct passwd     pwd;
    struct passwd *   pwres;
 
@@ -144,7 +144,11 @@ tinyrad_conf(
    if ((suffix = getenv("TINYRADRC")) == NULL)
       suffix = "tinyradrc";
 
-   // search current directory
+   // lookup user
+   getpwuid_r(getuid(), &pwd, buff, sizeof(buff), &pwres);
+   home = (((pwres)) ? pwres->pw_dir : "/");
+
+   // process "./${TINYRADRC}"
    if ((getcwd(path, sizeof(path))))
    {
       tinyrad_strlcat(path, "/",    sizeof(path));
@@ -152,26 +156,41 @@ tinyrad_conf(
       tinyrad_conf_file(tr, dict, path);
    };
 
-   // lookup user
-   getpwuid_r(getuid(), &pwd, buff, sizeof(buff), &pwres);
-   prefix = (((pwres)) ? pwres->pw_dir : "/");
-
-   // search for hidden RC file in home directory
-   tinyrad_strlcpy(path, prefix, sizeof(path));
+   // process "~/.{$TINYRADRC}"
+   tinyrad_strlcpy(path, home,   sizeof(path));
    tinyrad_strlcat(path, "/.",   sizeof(path));
    tinyrad_strlcat(path, suffix, sizeof(path));
    tinyrad_conf_file(tr, dict, path);
 
-   // search for RC file in home directory
-   tinyrad_strlcpy(path, prefix, sizeof(path));
+   // process "~/${TINYRADRC}"
+   tinyrad_strlcpy(path, home,   sizeof(path));
    tinyrad_strlcat(path, "/",    sizeof(path));
    tinyrad_strlcat(path, suffix, sizeof(path));
    tinyrad_conf_file(tr, dict, path);
 
-   // load global configuration
-   if ((filename = getenv("TINYRADCONF")) == NULL)
-      filename = SYSCONFDIR "/tinyrad.conf";
-   tinyrad_conf_file(tr, dict, filename);
+   // process "${TINYRADCONF}"
+   if ((filename = getenv("TINYRADCONF")))
+      tinyrad_conf_file(tr, dict, filename);
+
+   // process "./tinyradrc"
+   if ((getcwd(path, sizeof(path))))
+   {
+      tinyrad_strlcat(path, "/tinyradrc", sizeof(path));
+      tinyrad_conf_file(tr, dict, path);
+   };
+
+   // process "~/.tinyradrc"
+   tinyrad_strlcpy(path, home,            sizeof(path));
+   tinyrad_strlcat(path, "/.tinyradrc",   sizeof(path));
+   tinyrad_conf_file(tr, dict, path);
+
+   // process "~/tinyradrc"
+   tinyrad_strlcpy(path, home,         sizeof(path));
+   tinyrad_strlcat(path, "/tinyradrc", sizeof(path));
+   tinyrad_conf_file(tr, dict, path);
+
+   // process "/usr/local/etc/tinyrad.conf"
+   tinyrad_conf_file(tr, dict, SYSCONFDIR "/tinyrad.conf");
 
    return(TRAD_SUCCESS);
 }
