@@ -89,6 +89,7 @@ int main(int argc, char * argv[])
    int            opt_index;
    int            rc;
    int            opts;
+   unsigned       tr_opts;
    TinyRadDict *  dict;
    size_t         pos;
    char **        errs;
@@ -113,6 +114,7 @@ int main(int argc, char * argv[])
    trutils_initialize(PROGRAM_NAME);
 
    opts     = 0;
+   tr_opts  = 0;
    paths    = NULL;
    files    = NULL;
 
@@ -129,7 +131,7 @@ int main(int argc, char * argv[])
          break;
 
          case 2:
-         opts |= MY_OPT_DICT_DEFAULTS;
+         tr_opts |= TRAD_BUILTIN_DICT;
          break;
 
          case 'D':
@@ -187,25 +189,12 @@ int main(int argc, char * argv[])
    };
 
    // initialize dictionary
-   if ((rc = tinyrad_dict_initialize(&dict, 0)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_dict_initialize(&dict, tr_opts)) != TRAD_SUCCESS)
    {
       tinyrad_strsfree(files);
       tinyrad_strsfree(paths);
       fprintf(stderr, "%s: out of virtual memory\n", PROGRAM_NAME);
       return(trutils_exit_code(rc));
-   };
-
-   // load builtin/default dictionary objects
-   if ((opts & MY_OPT_DICT_DEFAULTS))
-   {
-      if ((rc = tinyrad_dict_builtin(dict, &errs)) != TRAD_SUCCESS)
-      {
-         trutils_error(opts, errs, NULL);
-         tinyrad_strsfree(files);
-         tinyrad_strsfree(paths);
-         tinyrad_free(dict);
-         return(trutils_exit_code(rc));
-      };
    };
 
    // add paths
