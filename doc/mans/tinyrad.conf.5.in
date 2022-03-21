@@ -39,6 +39,31 @@ disabled.  System-wide defaults for TinyRad clients are set in
 or \fI.tinyradrc\fR.  Directory specific defaults are set in the
 \fItinyradrc\fR in the current working directory.
 .PP
+The path of \fItinyrad.conf\fR can be overridden with the envrionment variable
+\fBTINYRADCONF\fR. \fBTINYRADCONF\fR can be set to an absolute path or a
+path relative to the current working directory.  The base name of the
+configuration file for user specific defaults can be overridden with the
+environment variable \fBTINYRADRC\fR.
+.PP
+Environment variables may be used to define transient configurations.  The
+name of the envrionment variable is the option name in all upper case
+characters with the prefix \fBTINYRAD_\fR.  For example, to define
+\fBBIND_ADDRESS\fR via an environment variable, set the variable
+\fBTINYRAD_BIND_ADDRESS\fR to the string to use as the \fBBIND_ADDRESS\fR.
+.PP
+The following files and variables are read, in order:
+.PP
+.nf
+    variable     $TINYRADNOINIT (stops processing defaults if defined),
+    system file  $TINYRADCONF,
+    user file    $HOME/$TINYRADRC,
+    user file    $HOME/.$TINYRADRC,
+    user file    ./$TINYRADRC,
+    variables    $TINYRAD_<uppercase option name>.
+.fi
+.PP
+Duplucate parameter values override previously defined parameter values.
+.PP
 .SH OPTIONS
 .TP
 \fBBIND_ADDRESS\fR \fI<string>\fR
@@ -75,13 +100,16 @@ To be written.
 disable all defaulting
 .TP
 .I TINYRADCONF
-path to system-wide configuration file
+path to system-wide configuration file (default:
+`\fI@sysconfdir@/tinyrad.conf\fR').
 .TP
 .I TINYRADRC
-basename f the tinyrc file in $HOME or $CWD
+basename of the user configuration file in $HOME or $CWD (default:
+`\fItinyradrc\fR').
 .TP
 .I TINYRAD_<option-name>
-Set <option-name> as if set in tinyrad.conf
+Set \fI<option-name>\fR as if set in a configuration file. \fI<option-name>\fR
+must be in upper case.
 .SH FILES
 The configuration files have the following precedence.
 .TP
