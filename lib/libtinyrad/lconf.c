@@ -407,34 +407,32 @@ tinyrad_conf_opt_bool(
    if ( (!(tr)) && (!(dict)) )
       return(TRAD_SUCCESS);
 
-   if (!(value))
-      boolean = TRAD_YES;
-   else if (!(strcasecmp(value, "yes")))
-      boolean = TRAD_YES;
-   else if (!(strcasecmp(value, "no")))
-      boolean = TRAD_NO;
-   else
-      return(TRAD_SUCCESS);
+   if (!(value))                           boolean = TRAD_YES;
+   else if (!(strcasecmp(value, "1")))     boolean = TRAD_YES;
+   else if (!(strcasecmp(value, "true")))  boolean = TRAD_YES;
+   else if (!(strcasecmp(value, "yes")))   boolean = TRAD_YES;
+   else if (!(strcasecmp(value, "0")))     boolean = TRAD_NO;
+   else if (!(strcasecmp(value, "false"))) boolean = TRAD_NO;
+   else if (!(strcasecmp(value, "no")))    boolean = TRAD_NO;
+   else return(TRAD_SUCCESS);
 
-   if ((dict))
+   if ( ((dict)) && ( ((dict->opts | dict->opts_neg) & opt) != 0) )
    {
-      if ( ((dict->opts | dict->opts_neg) & opt) != 0)
+      switch(boolean)
       {
-         if (boolean == TRAD_YES)
-            dict->opts |= opt;
-         if (boolean == TRAD_NO)
-            dict->opts_neg |= opt;
+         case TRAD_YES: dict->opts     |= opt; break;
+         case TRAD_NO:  dict->opts_neg |= opt; break;
+         default:                              break;
       };
    };
 
-   if ((tr))
+   if ( ((tr)) && ( ((tr->opts | tr->opts_neg) & opt) != 0) )
    {
-      if ( ((tr->opts | tr->opts_neg) & opt) != 0)
+      switch(boolean)
       {
-         if (boolean == TRAD_YES)
-            tr->opts |= opt;
-         if (boolean == TRAD_NO)
-            tr->opts_neg |= opt;
+         case TRAD_YES: tr->opts     |= opt; break;
+         case TRAD_NO:  tr->opts_neg |= opt; break;
+         default:                            break;
       };
    };
 
