@@ -50,6 +50,7 @@
 #include <assert.h>
 
 #include "ldict.h"
+#include "lmap.h"
 #include "lstrings.h"
 
 
@@ -325,6 +326,7 @@ tinyrad_conf_opt(
 {
    int               i;
    int               rc;
+   uint64_t          optid;
    char *            endptr;
    char **           strs;
    struct timeval    tv;
@@ -336,21 +338,21 @@ tinyrad_conf_opt(
    tr   = ( ((tr))   && (!(tr->opts   & TRAD_STOPINIT)) ) ? tr   : NULL;
    dict = ( ((dict)) && (!(dict->opts & TRAD_STOPINIT)) ) ? dict : NULL;
 
-   if (!(strcasecmp(name, "bind_address")))
+   if ((optid = tinyrad_map_lookup_name(tinyrad_conf_options, name, NULL)) == 0)
+      return(TRAD_SUCCESS);
+
+   switch(optid)
    {
+      case TRAD_CONF_BIND_ADDRESS:
       if ( (!(tr)) || ((tr->bind_sa)) || ((tr->bind_sa6)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, value));
-   };
 
-   if (!(strcasecmp(name, "builtin_dictionary")))
-   {
+      case TRAD_CONF_BUILTIN_DICTIONARY:
       tinyrad_conf_opt_bool(NULL, dict, TRAD_BUILTIN_DICT, value);
       return(TRAD_SUCCESS);
-   };
 
-   if (!(strcasecmp(name, "dictionary")))
-   {
+      case TRAD_CONF_DICTIONARY:
       if (!(dict))
          return(TRAD_SUCCESS);
       if ((dict->default_dictfile))
@@ -358,10 +360,8 @@ tinyrad_conf_opt(
       if ((dict->default_dictfile = tinyrad_strdup(value)) == NULL)
          return(TRAD_ENOMEM);
       return(TRAD_SUCCESS);
-   };
 
-   if (!(strcasecmp(name, "network_timeout")))
-   {
+      case TRAD_CONF_NETWORK_TIMEOUT:
       if ( (!(tr)) || ((tr->net_timeout)) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((i = (int)strtoll(value, &endptr, 10)) < 1)
@@ -370,10 +370,8 @@ tinyrad_conf_opt(
          return(TRAD_SUCCESS);
       memset(&tv, 0, sizeof(struct timeval));
       return(tinyrad_set_option(tr, TRAD_OPT_TIMEOUT, &tv));
-   };
 
-   if (!(strcasecmp(name, "paths")))
-   {
+      case TRAD_CONF_PATHS:
       if ( (!(dict)) || ((dict->paths)) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((rc = tinyrad_strsplit(value, ':', &strs, &i)) != TRAD_SUCCESS)
@@ -385,30 +383,22 @@ tinyrad_conf_opt(
       };
       dict->paths = strs;
       return(TRAD_SUCCESS);
-   };
 
-   if (!(strcasecmp(name, "secret")))
-   {
-      if ( (!(tr)) || ((tr->secret)) || (!(value)) )
-         return(TRAD_SUCCESS);
-      return(tinyrad_set_option(tr, TRAD_OPT_SECRET_FILE, value));
-   };
-
-   if (!(strcasecmp(name, "secret_file")))
-   {
+      case TRAD_CONF_SECRET:
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SECRET, value));
-   };
 
-   if (!(strcasecmp(name, "stopinit")))
-   {
+      case TRAD_CONF_SECRET_FILE:
+      if ( (!(tr)) || ((tr->secret)) || (!(value)) )
+         return(TRAD_SUCCESS);
+      return(tinyrad_set_option(tr, TRAD_OPT_SECRET_FILE, value));
+
+      case TRAD_CONF_STOPINIT:
       tinyrad_conf_opt_bool(tr, dict, TRAD_STOPINIT, value);
       return(TRAD_SUCCESS);
-   };
 
-   if (!(strcasecmp(name, "timeout")))
-   {
+      case TRAD_CONF_TIMEOUT:
       if ( (!(tr)) || (tr->timeout != -1) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((i = (int)strtoll(value, &endptr, 10)) < 1)
@@ -416,13 +406,14 @@ tinyrad_conf_opt(
       if ((endptr[0]))
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_TIMEOUT, &i));
-   };
 
-   if (!(strcasecmp(name, "uri")))
-   {
+      case TRAD_CONF_URI:
       if ( (!(tr)) || ((tr->trud)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_URI, value));
+
+      default:
+      break;
    };
 
    return(TRAD_SUCCESS);
