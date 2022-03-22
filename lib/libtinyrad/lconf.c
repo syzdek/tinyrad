@@ -456,7 +456,7 @@ tinyrad_conf_opt_bool(
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, %u, \"%s\" )", __func__, opt, ((boolean == TRAD_YES) ? "TRAD_YES" : "TRAD_NO"));
 
-   if ( ((dict)) && ( ((dict->opts | dict->opts_neg) & opt) != 0) )
+   if ( ((dict)) && ( ((dict->opts | dict->opts_neg) & opt) == 0) )
    {
       switch(boolean)
       {
@@ -466,7 +466,7 @@ tinyrad_conf_opt_bool(
       };
    };
 
-   if ( ((tr)) && ( ((tr->opts | tr->opts_neg) & opt) != 0) )
+   if ( ((tr)) && ( ((tr->opts | tr->opts_neg) & opt) == 0) )
    {
       switch(boolean)
       {
