@@ -203,6 +203,11 @@ tinyrad_dict_attr_index(
 //------------------------------//
 #pragma mark dictionary import prototypes
 
+int
+tinyrad_dict_builtin(
+         TinyRadDict *                 dict,
+         char ***                      msgsp );
+
 
 //-----------------------------//
 // dictionary parse prototypes //

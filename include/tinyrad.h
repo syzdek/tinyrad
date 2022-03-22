@@ -565,12 +565,6 @@ tinyrad_dict_attr_info(
 
 
 _TINYRAD_F int
-tinyrad_dict_builtin(
-         TinyRadDict *                 dict,
-         char ***                      msgsp );
-
-
-_TINYRAD_F int
 tinyrad_dict_get_option(
          TinyRadDict *                 dict,
          int                           option,
