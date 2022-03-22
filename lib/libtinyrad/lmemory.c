@@ -126,6 +126,7 @@ tinyrad_tiyrad_defaults(
          unsigned                      opts )
 {
    int            rc;
+   const char *   str;
 
    assert(tr != NULL);
 
@@ -152,6 +153,12 @@ tinyrad_tiyrad_defaults(
    // sets default timeout
    if (tr->timeout == -1)
       tr->timeout = TRAD_DFLT_TIMEOUT;
+
+   // sets secret
+   str = ((tr->opts&TRAD_CATHOLIC)) ? "Dominus vobiscum" : "tinyrad";
+   if (!(tr->secret))
+      if ((tr->secret = tinyrad_strdup(str)) == NULL)
+         return(TRAD_ENOMEM);
 
    tr->opts |= opts;
 
