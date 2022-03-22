@@ -65,16 +65,16 @@
 #   define SYSCONFDIR "/etc"
 #endif
 
-#define TRAD_CONF_BIND_ADDRESS               __LINE__
-#define TRAD_CONF_BUILTIN_DICTIONARY         __LINE__
-#define TRAD_CONF_DICTIONARY                 __LINE__
-#define TRAD_CONF_NETWORK_TIMEOUT            __LINE__
-#define TRAD_CONF_PATHS                      __LINE__
-#define TRAD_CONF_SECRET                     __LINE__
-#define TRAD_CONF_SECRET_FILE                __LINE__
-#define TRAD_CONF_STOPINIT                   __LINE__
-#define TRAD_CONF_TIMEOUT                    __LINE__
-#define TRAD_CONF_URI                        __LINE__
+#define TRAD_CONF_BIND_ADDRESS               1
+#define TRAD_CONF_BUILTIN_DICTIONARY         2
+#define TRAD_CONF_DICTIONARY                 3
+#define TRAD_CONF_NETWORK_TIMEOUT            4
+#define TRAD_CONF_PATHS                      5
+#define TRAD_CONF_SECRET                     6
+#define TRAD_CONF_SECRET_FILE                7
+#define TRAD_CONF_STOPINIT                   8
+#define TRAD_CONF_TIMEOUT                    9
+#define TRAD_CONF_URI                        10
 
 
 /////////////////
