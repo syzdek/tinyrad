@@ -87,6 +87,12 @@ tinyrad_set_option_socket_bind_addresses(
          const char *                  invalue );
 
 
+int
+tinyrad_tiyrad_defaults(
+         TinyRad *                     tr,
+         unsigned                      opts );
+
+
 void
 tinyrad_tiyrad_free(
          TinyRad *                     tr );
@@ -113,6 +119,45 @@ tinyrad_verify_is_obj(
 // TinyRad functions //
 //-------------------//
 #pragma mark TinyRad functions
+
+int
+tinyrad_tiyrad_defaults(
+         TinyRad *                     tr,
+         unsigned                      opts )
+{
+   int            rc;
+
+   assert(tr != NULL);
+
+   // sets default URI
+   if (!(tr->trud))
+      if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, TRAD_DFLT_URI)) != TRAD_SUCCESS)
+         return(rc);
+
+   // sets default bind addresses
+   if ( (!(tr->bind_sa)) || (!(tr->bind_sa6)) )
+      if ((rc = tinyrad_set_option_socket_bind_addresses(tr, NULL)) != TRAD_SUCCESS)
+         return(rc);
+
+   // sets default network timeout
+   if (!(tr->net_timeout))
+   {
+      if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
+         return(TRAD_ENOMEM);
+      memset(tr->net_timeout, 0, sizeof(struct timeval));
+      tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
+      tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
+   };
+
+   // sets default timeout
+   if (tr->timeout == -1)
+      tr->timeout = TRAD_DFLT_TIMEOUT;
+
+   tr->opts |= opts;
+
+   return(TRAD_SUCCESS);
+}
+
 
 /// destroy Tiny RADIUS reference
 ///
@@ -357,42 +402,12 @@ tinyrad_initialize(
       tinyrad_dict_set_option(tr->dict, TRAD_DICT_OPT_READONLY, &opt);
    };
 
-   // sets default URI
-   if (!(tr->trud))
+   // apply defaults
+   if ((rc = tinyrad_tiyrad_defaults(tr, opts)) != TRAD_SUCCESS)
    {
-      if ((rc = tinyrad_set_option(tr, TRAD_OPT_URI, TRAD_DFLT_URI)) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
+      tinyrad_tiyrad_free(tr);
+      return(rc);
    };
-
-   // sets default bind addresses
-   if ( (!(tr->bind_sa)) || (!(tr->bind_sa6)) )
-   {
-      if ((rc = tinyrad_set_option_socket_bind_addresses(tr, NULL)) != TRAD_SUCCESS)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(rc);
-      };
-   };
-
-   // sets default network timeout
-   if (!(tr->net_timeout))
-   {
-      if ((tr->net_timeout = malloc(sizeof(struct timeval))) == NULL)
-      {
-         tinyrad_tiyrad_free(tr);
-         return(TRAD_ENOMEM);
-      };
-      memset(tr->net_timeout, 0, sizeof(struct timeval));
-      tr->net_timeout->tv_sec  = TRAD_DFLT_NET_TIMEOUT_SEC;
-      tr->net_timeout->tv_usec = TRAD_DFLT_NET_TIMEOUT_USEC;
-   };
-
-   // sets default timeout
-   if (tr->timeout == -1)
-      tr->timeout = TRAD_DFLT_TIMEOUT;
 
    // generates initial authenticator
    if ((fd = open("/dev/urandom", O_RDONLY)) != -1)
