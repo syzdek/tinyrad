@@ -94,6 +94,7 @@ tinyrad_strdup(
 {
    char *      ptr;
    size_t      len;
+   TinyRadDebugTrace();
    if (!(s1))
       return(NULL);
    len = strlen(s1);
@@ -124,6 +125,7 @@ tinyrad_strexpand(
    struct group      grp;
    struct group *    grres;
 
+   TinyRadDebugTrace();
 
    assert(dst != NULL);
    assert(len  > 0);
@@ -328,6 +330,7 @@ tinyrad_strlcpy(
          size_t                        dstsize )
 {
    size_t len;
+   TinyRadDebugTrace();
    assert(dst     != NULL);
    assert(src     != NULL);
    assert(dstsize  > 0);
@@ -348,6 +351,7 @@ tinyrad_strlcat(
    size_t      pos;
    size_t      offset;
    size_t      len;
+   TinyRadDebugTrace();
    assert(dst     != NULL);
    assert(src     != NULL);
    assert(dstsize  > 0);
@@ -368,6 +372,7 @@ tinyrad_strndup(
 {
    char *      ptr;
    size_t      len;
+   TinyRadDebugTrace();
    if (!(s1))
       return(NULL);
    len = strlen(s1);
@@ -507,6 +512,8 @@ tinyrad_strsplit(
    char *         line;
    char *         bol;
 
+   TinyRadDebugTrace();
+
    assert(str   != NULL);
    assert(delim != 0);
    assert(argvp != NULL);
@@ -577,6 +584,8 @@ tinyrad_strtoargs(
    size_t         pos;
    int            rc;
    int            eol;
+
+   TinyRadDebugTrace();
 
    assert(str != NULL);
 
@@ -674,6 +683,8 @@ tinyrad_strtrim(
 {
    ssize_t offset;
    ssize_t pos;
+
+   TinyRadDebugTrace();
 
    if (!(str))
       return(str);
