@@ -99,10 +99,11 @@ main(
 
 
 int
-my_dict_load(
+my_tinyrad_load(
          int                           opts,
          unsigned                      tr_opts,
-         TinyRadDict **                dictp,
+         TinyRad **                    trp,
+         const char *                  url,
          char **                       dict_files,
          char **                       dict_paths );
 
@@ -240,26 +241,12 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   // load RADIUS dictionary
-   if ((dict_files))
-   {
-      if ((rc = my_dict_load(opts, tr_opts, &dict, dict_files, dict_paths)) != TRAD_SUCCESS)
-      {
-         tinyrad_strsfree(dict_files);
-         tinyrad_strsfree(dict_paths);
-         return(trutils_exit_code(rc));
-      };
-   };
-   tinyrad_strsfree(dict_paths);
+   // load TinyRad handle
+   rc = my_tinyrad_load(opts, tr_opts, &tr, url, dict_files, dict_paths);
    tinyrad_strsfree(dict_files);
-
-   // initialize tinyrad handle
-   if ((rc = tinyrad_initialize(&tr, dict, url, tr_opts)) != TRAD_SUCCESS)
-   {
-      tinyrad_free(dict);
+   tinyrad_strsfree(dict_paths);
+   if (rc != TRAD_SUCCESS)
       return(trutils_exit_code(rc));
-   };
-   tinyrad_free(dict);
 
    // display dictionary
    if ((opts & MY_OPT_DICT_DUMP))
@@ -278,10 +265,11 @@ int main(int argc, char * argv[])
 
 
 int
-my_dict_load(
+my_tinyrad_load(
          int                           opts,
          unsigned                      tr_opts,
-         TinyRadDict **                dictp,
+         TinyRad **                    trp,
+         const char *                  url,
          char **                       dict_files,
          char **                       dict_paths )
 {
@@ -290,46 +278,49 @@ my_dict_load(
    size_t               pos;
    TinyRadDict *        dict;
 
-   assert(dictp != NULL);
+   assert(trp != NULL);
 
    errs = NULL;
+   dict = NULL;
+   *trp = NULL;
 
-   if (!(dict_files))
-      return(TRAD_SUCCESS);
-
-   // initialize dictionary
-   if ((rc = tinyrad_dict_initialize(&dict, tr_opts)) != TRAD_SUCCESS)
+   if ((dict_files))
    {
-      trutils_error(opts, NULL, "out of virtual memory");
-      return(rc);
-   };
-
-   // set paths
-   if ((dict_paths))
-   {
-      if ((rc = tinyrad_dict_set_option(dict, TRAD_DICT_OPT_PATHS, dict_paths)) != TRAD_SUCCESS)
+      // initialize dictionary
+      if ((rc = tinyrad_dict_initialize(&dict, tr_opts)) != TRAD_SUCCESS)
       {
-         trutils_error(opts, NULL, "tinyrad_dict_set_option(TRAD_DICT_OPT_PATHS): %s", tinyrad_strerror(rc));
-         tinyrad_free(dict);
+         trutils_error(opts, NULL, "out of virtual memory");
          return(rc);
+      };
+
+      // set paths
+      if ((dict_paths))
+      {
+         if ((rc = tinyrad_dict_set_option(dict, TRAD_DICT_OPT_PATHS, dict_paths)) != TRAD_SUCCESS)
+         {
+            trutils_error(opts, NULL, "tinyrad_dict_set_option(TRAD_DICT_OPT_PATHS): %s", tinyrad_strerror(rc));
+            tinyrad_free(dict);
+            return(rc);
+         };
+      };
+
+      // parse dictionary files
+      for(pos = 0; ( ((dict_files)) && ((dict_files[pos])) ); pos++)
+      {
+         if ((rc = tinyrad_dict_parse(dict, dict_files[pos], &errs, 0)) != TRAD_SUCCESS)
+         {
+            trutils_error(opts, errs, NULL);
+            tinyrad_strsfree(errs);
+            tinyrad_free(dict);
+            return(rc);
+         };
       };
    };
 
-   // parse dictionary files
-   for(pos = 0; ( ((dict_files)) && ((dict_files[pos])) ); pos++)
-   {
-      if ((rc = tinyrad_dict_parse(dict, dict_files[pos], &errs, 0)) != TRAD_SUCCESS)
-      {
-         trutils_error(opts, errs, NULL);
-         tinyrad_strsfree(errs);
-         tinyrad_free(dict);
-         return(rc);
-      };
-   };
-
-   *dictp = dict;
-
-   return(TRAD_SUCCESS);
+   // initialize tinyrad handle
+   rc = tinyrad_initialize(trp, dict, url, tr_opts);
+   tinyrad_free(dict);
+   return(rc);
 }
 
 
