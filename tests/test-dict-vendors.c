@@ -101,6 +101,7 @@ main(
    int                           opt_index;
    size_t                        pos;
    unsigned                      opts;
+   unsigned                      tr_opts;
    TinyRadDict *                 dict;
    TinyRadDictVendor *           vendor;
    const TinyRadDictVendorDef *  vendor_def;
@@ -120,7 +121,8 @@ main(
 
    trutils_initialize(PROGRAM_NAME);
 
-   opts  = TEST_OPT_DFLT_DICT;
+   opts     = 0;
+   tr_opts  = TRAD_NOINIT | TRAD_BUILTIN_DICT;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
@@ -172,7 +174,7 @@ main(
    };
 
    // initialize test dictionary
-   if ((our_dict_initialize(opts, &dict)))
+   if ((our_dict_initialize(opts, tr_opts, &dict)))
       return(1);
 
    trutils_verbose(opts, "Vendor format: vendor id/name");

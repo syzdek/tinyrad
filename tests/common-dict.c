@@ -304,6 +304,7 @@ our_dict_diag_vendor(
 int
 our_dict_initialize(
          unsigned                      opts,
+         unsigned                      tr_opts,
          TinyRadDict **                dictp )
 {
    int            rc;
@@ -315,23 +316,10 @@ our_dict_initialize(
    errs     = NULL;
 
    // initialize dictionary
-   if (tinyrad_dict_initialize(dictp, 0) != TRAD_SUCCESS)
+   if (tinyrad_dict_initialize(dictp, tr_opts) != TRAD_SUCCESS)
    {
       trutils_error(opts, NULL, "out of virtual memory");
       return(1);
-   };
-
-   // load builtin/default dictionary objects
-   if ((opts & TEST_OPT_DFLT_DICT))
-   {
-      trutils_verbose(opts, "loading default dictionary ...");
-      if ((rc = tinyrad_dict_builtin(*dictp, &errs)) != TRAD_SUCCESS)
-      {
-         trutils_error(opts, errs, "tinyrad_dict_defaults(): %s", tinyrad_strerror(rc));
-         tinyrad_strsfree(errs);
-         tinyrad_free(*dictp);
-         return(1);
-      };
    };
 
    // load test dictionary vendors

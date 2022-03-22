@@ -49,8 +49,6 @@
 ///////////////////
 #pragma mark - Definitions
 
-#define TEST_OPT_DFLT_DICT   0x0040UL
-
 
 /////////////////
 //             //
@@ -94,6 +92,7 @@ our_dict_diag_vendor(
 int
 our_dict_initialize(
          unsigned                      opts,
+         unsigned                      tr_opts,
          TinyRadDict **                dictp );
 
 
