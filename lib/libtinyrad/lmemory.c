@@ -128,6 +128,8 @@ tinyrad_tiyrad_defaults(
    int            rc;
    const char *   str;
 
+   TinyRadDebugTrace();
+
    assert(tr != NULL);
 
    // sets default URI
@@ -711,6 +713,8 @@ tinyrad_binval_alloc(
    TinyRadBinValue *    ptr;
    size_t               adjsize;
 
+   TinyRadDebugTrace();
+
    adjsize = size + sizeof(TinyRadBinValue);
 
    if ((ptr = malloc(adjsize)) == NULL)
@@ -728,6 +732,8 @@ tinyrad_binval_dup(
 {
    TinyRadBinValue *    binval;
    size_t               adjsize;
+
+   TinyRadDebugTrace();
 
    assert(ptr != NULL);
 
@@ -747,6 +753,7 @@ tinyrad_binval_realloc(
          size_t                        size )
 {
    size_t adjsize;
+   TinyRadDebugTrace();
    adjsize = sizeof(TinyRadBinValue) + size;
    if ((ptr = realloc(ptr, adjsize)) == NULL)
       return(ptr);
@@ -768,6 +775,8 @@ tinyrad_binval_list_add(
    TinyRadBinValue **      list;
    size_t                  len;
    size_t                  size;
+
+   TinyRadDebugTrace();
 
    assert(listp != NULL);
    assert(val   != NULL);
@@ -795,6 +804,7 @@ tinyrad_binval_list_count(
          TinyRadBinValue **            list )
 {
    size_t len;
+   TinyRadDebugTrace();
    if (!(list))
       return(0);
    for(len = 0; ((list[len])); len++);
@@ -807,6 +817,7 @@ tinyrad_binval_list_free(
          TinyRadBinValue **            list )
 {
    size_t pos;
+   TinyRadDebugTrace();
    if (!(list))
       return;
    for(pos = 0; ((list[pos])); pos++)
