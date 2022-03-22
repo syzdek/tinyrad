@@ -546,37 +546,6 @@ tinyrad_dict_add_attr(
 }
 
 
-/// Add directory to search path for dictionary files
-///
-/// @param[in]  dict          dictionary reference
-/// @param[in]  path          string contain directory name
-/// @return returns error code
-int
-tinyrad_dict_add_path(
-         TinyRadDict *                 dict,
-         const char *                  path )
-{
-   int             rc;
-   struct stat     sb;
-
-   TinyRadDebugTrace();
-
-   assert(dict != NULL);
-   assert(path != NULL);
-
-   if (tinyrad_dict_is_readonly(dict) == TRAD_YES)
-      return(TRAD_EDICTRO);
-
-   if ((rc = tinyrad_stat(path, &sb, S_IFDIR)) != TRAD_SUCCESS)
-      return(rc);
-
-   if ((rc = tinyrad_strsadd(&dict->paths, path)) != TRAD_SUCCESS)
-      return(rc);
-
-   return(TRAD_SUCCESS);
-}
-
-
 int
 tinyrad_dict_add_value(
          TinyRadDict *                 dict,

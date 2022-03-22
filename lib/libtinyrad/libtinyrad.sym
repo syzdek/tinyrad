@@ -54,7 +54,6 @@ tinyrad_pkg_name
 tinyrad_pkg_version
 #
 # dictionary functions
-tinyrad_dict_add_path
 tinyrad_dict_attr_get
 tinyrad_dict_attr_info
 tinyrad_dict_get_option

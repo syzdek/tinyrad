@@ -541,12 +541,6 @@ tinyrad_pkg_version(
 //-----------------------//
 #pragma mark dictionary prototypes
 
-_TINYRAD_F int
-tinyrad_dict_add_path(
-         TinyRadDict *                 dict,
-         const char *                  path );
-
-
 _TINYRAD_F TinyRadDictAttr *
 tinyrad_dict_attr_get(
          TinyRadDict *                 dict,
