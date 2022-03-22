@@ -335,7 +335,6 @@ tinyrad_conf_opt(
    struct timeval    tv;
 
    assert( ((tr)) || ((dict)) );
-   assert(value != NULL);
 
    TinyRadDebugTrace();
 
@@ -352,14 +351,14 @@ tinyrad_conf_opt(
 
       case TRAD_CONF_BUILTIN_DICTIONARY:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_BUILTIN_DICTIONARY, \"%s\" )", __func__, (((value)) ? value : "(null)"));
+      if ( (!(dict)) || (!(value)) )
+         return(TRAD_SUCCESS);
       tinyrad_conf_opt_bool(NULL, dict, TRAD_BUILTIN_DICT, value);
       return(TRAD_SUCCESS);
 
       case TRAD_CONF_DICTIONARY:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_DICTIONARY, \"%s\" )", __func__, (((value)) ? value : "(null)"));
-      if (!(dict))
-         return(TRAD_SUCCESS);
-      if ((dict->default_dictfile))
+      if ( (!(dict)) || ((dict->default_dictfile)) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((dict->default_dictfile = tinyrad_strdup(value)) == NULL)
          return(TRAD_ENOMEM);
