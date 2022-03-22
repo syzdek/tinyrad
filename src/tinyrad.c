@@ -241,11 +241,14 @@ int main(int argc, char * argv[])
    };
 
    // load RADIUS dictionary
-   if ((rc = my_dict_load(opts, tr_opts, &dict, dict_files, dict_paths)) != TRAD_SUCCESS)
+   if ((dict_files))
    {
-      tinyrad_strsfree(dict_files);
-      tinyrad_strsfree(dict_paths);
-      return(trutils_exit_code(rc));
+      if ((rc = my_dict_load(opts, tr_opts, &dict, dict_files, dict_paths)) != TRAD_SUCCESS)
+      {
+         tinyrad_strsfree(dict_files);
+         tinyrad_strsfree(dict_paths);
+         return(trutils_exit_code(rc));
+      };
    };
    tinyrad_strsfree(dict_paths);
    tinyrad_strsfree(dict_files);
@@ -299,18 +302,6 @@ my_dict_load(
    {
       trutils_error(opts, NULL, "out of virtual memory");
       return(rc);
-   };
-
-   // load defaults
-   if ((opts & MY_OPT_DICT_DEFAULTS))
-   {
-      if ((rc = tinyrad_dict_builtin(dict, &errs)) != TRAD_SUCCESS)
-      {
-         trutils_error(opts, errs, NULL);
-         tinyrad_strsfree(errs);
-         tinyrad_free(dict);
-         return(rc);
-      };
    };
 
    // set paths
