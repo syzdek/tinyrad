@@ -105,7 +105,6 @@ EXTRA_PROGRAMS				= examples/socket-example \
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
 					  src/tinyrad \
-					  src/tinyrad-dict \
 					  src/tinyrad-url \
 					  src/tinyradproxy \
 					  include/tinyrad.h
@@ -207,9 +206,6 @@ else
 endif
 if ENABLE_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
-endif
-if ENABLE_TINYRAD_DICT
-   bin_PROGRAMS				+= src/tinyrad-dict
    TESTS				+= tests/test-dict-defaults.sh
 endif
 if ENABLE_TINYRAD_URL
@@ -304,13 +300,6 @@ src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tinyrad.c
-
-
-# macros for src/tinyrad-dict
-src_tinyrad_dict_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_dict_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_dict_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
-					  src/tinyrad-dict.c
 
 
 # macros for src/tinyrad-url

@@ -39,7 +39,6 @@ AC_DEFUN([AC_TINYRAD_COMMON],[dnl
    AC_REQUIRE([AC_TINYRAD_DOCUMENTATION])
    AC_REQUIRE([AC_TINYRAD_LIBTINYRAD])
    AC_REQUIRE([AC_TINYRAD_TINYRAD])
-   AC_REQUIRE([AC_TINYRAD_TINYRAD_DICT])
    AC_REQUIRE([AC_TINYRAD_TINYRAD_URL])
    AC_REQUIRE([AC_TINYRAD_TINYRADPROXY])
 
@@ -47,7 +46,6 @@ AC_DEFUN([AC_TINYRAD_COMMON],[dnl
    if   test "x${ENABLE_DOCUMENATION}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_LIBTINYRAD}"   = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_TINYRAD}"      = "xyes";then ENABLE_TINYRAD_COMMON="yes"
-   elif test "x${ENABLE_TINYRAD_DICT}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_TINYRAD_URL}"  = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_TINYRADPROXY}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    fi;
@@ -215,37 +213,6 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
 
    AM_CONDITIONAL([ENABLE_TINYRAD],  [test "$ENABLE_TINYRAD" = "yes"])
    AM_CONDITIONAL([DISABLE_TINYRAD], [test "$ENABLE_TINYRAD" = "no"])
-])dnl
-
-
-# AC_TINYRAD_TINYRAD_DICT()
-# ______________________________________________________________________________
-AC_DEFUN([AC_TINYRAD_TINYRAD_DICT],[dnl
-
-   AC_REQUIRE([AC_TINYRAD_UTILITIES])
-
-   enableval=""
-   AC_ARG_ENABLE(
-      tinyrad-dict,
-      [AS_HELP_STRING([--enable-tinyrad-dict], [enable tinyrad-dict utility])],
-      [ ETINYRADDICT=$enableval ],
-      [ ETINYRADDICT=$enableval ]
-   )
-
-   if test "x${ETINYRADDICT}" == "xyes";then
-      ENABLE_TINYRAD_DICT="yes"
-   elif test "x${ETINYRADDICT}" == "xno";then
-      ENABLE_TINYRAD_DICT="no"
-   elif test "x${ENABLE_UTILITIES}" == "xyes";then
-      ENABLE_TINYRAD_DICT="yes"
-   elif test "x${ENABLE_UTILITIES}" == "xno";then
-      ENABLE_TINYRAD_DICT="no"
-   else
-      ENABLE_TINYRAD_DICT="no"
-   fi
-
-   AM_CONDITIONAL([ENABLE_TINYRAD_DICT],  [test "$ENABLE_TINYRAD_DICT" = "yes"])
-   AM_CONDITIONAL([DISABLE_TINYRAD_DICT], [test "$ENABLE_TINYRAD_DICT" = "no"])
 ])dnl
 
 

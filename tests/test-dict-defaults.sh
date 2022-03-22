@@ -32,7 +32,7 @@
 
 CODE=0
 
-test -x src/tinyrad-dict || exit 77
+test -x src/tinyrad || exit 77
 
 TINYRADNOINIT=1
 export TINYRADNOINIT

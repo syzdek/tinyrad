@@ -194,7 +194,6 @@ AC_TINYRAD_LIBTINYRAD
 AC_TINYRAD_UTILITIES
 AC_TINYRAD_TINYRAD
 AC_TINYRAD_TINYRADPROXY
-AC_TINYRAD_TINYRAD_DICT
 AC_TINYRAD_TINYRAD_URL
 AC_TINYRAD_EXAMPLES
 AC_TINYRAD_DOCUMENTATION
@@ -223,7 +222,6 @@ AC_MSG_NOTICE([      Build examples             ${ENABLE_EXAMPLES}])
 AC_MSG_NOTICE([      Install extra docs         ${ENABLE_DOCUMENATION}])
 AC_MSG_NOTICE([      Install libtinyrad.la      ${ENABLE_LIBTINYRAD}])
 AC_MSG_NOTICE([      Install tinyrad            ${ENABLE_TINYRAD}])
-AC_MSG_NOTICE([      Install tinyrad-dict       ${ENABLE_TINYRAD_DICT}])
 AC_MSG_NOTICE([      Install tinyrad-url        ${ENABLE_TINYRAD_URL}])
 AC_MSG_NOTICE([      Install tinyradproxy       ${ENABLE_TINYRADPROXY}])
 AC_MSG_NOTICE([      Install common files       ${ENABLE_TINYRAD_COMMON}])
