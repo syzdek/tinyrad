@@ -254,10 +254,10 @@ int main(int argc, char * argv[])
    tinyrad_strsfree(dict_files);
 
    // initialize tinyrad handle
-   if ((tinyrad_initialize(&tr, dict, url, tr_opts)) != TRAD_SUCCESS)
+   if ((rc = tinyrad_initialize(&tr, dict, url, tr_opts)) != TRAD_SUCCESS)
    {
       tinyrad_free(dict);
-      return(1);
+      return(trutils_exit_code(rc));
    };
    tinyrad_free(dict);
 
