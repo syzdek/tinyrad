@@ -242,6 +242,8 @@ tinyrad_conf_environment(
    char                    varname[64];
    const TinyRadMap *      opt;
 
+   TinyRadDebugTrace();
+
    for(pos = 0; ((tinyrad_conf_options[pos].map_name)); pos++)
    {
       opt = &tinyrad_conf_options[pos];
@@ -335,21 +337,26 @@ tinyrad_conf_opt(
    assert( ((tr)) || ((dict)) );
    assert(value != NULL);
 
+   TinyRadDebugTrace();
+
    tr   = ( ((tr))   && (!(tr->opts   & TRAD_STOPINIT)) ) ? tr   : NULL;
    dict = ( ((dict)) && (!(dict->opts & TRAD_STOPINIT)) ) ? dict : NULL;
 
    switch(optid)
    {
       case TRAD_CONF_BIND_ADDRESS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_BIND_ADDRESS, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(tr)) || ((tr->bind_sa)) || ((tr->bind_sa6)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, value));
 
       case TRAD_CONF_BUILTIN_DICTIONARY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_BUILTIN_DICTIONARY, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       tinyrad_conf_opt_bool(NULL, dict, TRAD_BUILTIN_DICT, value);
       return(TRAD_SUCCESS);
 
       case TRAD_CONF_DICTIONARY:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_DICTIONARY, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if (!(dict))
          return(TRAD_SUCCESS);
       if ((dict->default_dictfile))
@@ -359,6 +366,7 @@ tinyrad_conf_opt(
       return(TRAD_SUCCESS);
 
       case TRAD_CONF_NETWORK_TIMEOUT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_NETWORK_TIMEOUT, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(tr)) || ((tr->net_timeout)) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((i = (int)strtoll(value, &endptr, 10)) < 1)
@@ -369,6 +377,7 @@ tinyrad_conf_opt(
       return(tinyrad_set_option(tr, TRAD_OPT_TIMEOUT, &tv));
 
       case TRAD_CONF_PATHS:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_PATHS, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(dict)) || ((dict->paths)) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((rc = tinyrad_strsplit(value, ':', &strs, &i)) != TRAD_SUCCESS)
@@ -382,20 +391,24 @@ tinyrad_conf_opt(
       return(TRAD_SUCCESS);
 
       case TRAD_CONF_SECRET:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_SECRET, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SECRET, value));
 
       case TRAD_CONF_SECRET_FILE:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_SECRET_FILE, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SECRET_FILE, value));
 
       case TRAD_CONF_STOPINIT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_STOPINIT, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       tinyrad_conf_opt_bool(tr, dict, TRAD_STOPINIT, value);
       return(TRAD_SUCCESS);
 
       case TRAD_CONF_TIMEOUT:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_TIMEOUT, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(tr)) || (tr->timeout != -1) || (!(value)) )
          return(TRAD_SUCCESS);
       if ((i = (int)strtoll(value, &endptr, 10)) < 1)
@@ -405,6 +418,7 @@ tinyrad_conf_opt(
       return(tinyrad_set_option(tr, TRAD_OPT_TIMEOUT, &i));
 
       case TRAD_CONF_URI:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_URI, \"%s\" )", __func__, (((value)) ? value : "(null)"));
       if ( (!(tr)) || ((tr->trud)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_URI, value));
@@ -426,6 +440,8 @@ tinyrad_conf_opt_bool(
 {
    int      boolean;
 
+   TinyRadDebugTrace();
+
    if ( (!(tr)) && (!(dict)) )
       return(TRAD_SUCCESS);
 
@@ -437,6 +453,8 @@ tinyrad_conf_opt_bool(
    else if (!(strcasecmp(value, "false"))) boolean = TRAD_NO;
    else if (!(strcasecmp(value, "no")))    boolean = TRAD_NO;
    else return(TRAD_SUCCESS);
+
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, %u, \"%s\" )", __func__, opt, ((boolean == TRAD_YES) ? "TRAD_YES" : "TRAD_NO"));
 
    if ( ((dict)) && ( ((dict->opts | dict->opts_neg) & opt) != 0) )
    {
