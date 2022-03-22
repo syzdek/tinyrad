@@ -132,7 +132,7 @@ int
 tinyrad_conf_opt(
          TinyRad *                     tr,
          TinyRadDict *                 dict,
-         const char *                  name,
+         uint64_t                      optid,
          const char *                  value );
 
 
@@ -250,11 +250,11 @@ tinyrad_conf_environment(
       tinyrad_strlcpy(varname, "TINYRAD_", sizeof(varname));
       tinyrad_strlcat(varname, opt->map_name, sizeof(varname));
       if ((value = getenv(varname)) != NULL)
-         tinyrad_conf_opt(tr, dict, opt->map_name, value);
+         tinyrad_conf_opt(tr, dict, opt->map_value, value);
    };
 
    if ((value = getenv("TINYRAD_STOPINIT")) != NULL)
-      tinyrad_conf_opt(tr, dict, "stopinit", value);
+      tinyrad_conf_opt(tr, dict, TRAD_CONF_STOPINIT, value);
 
    return(TRAD_SUCCESS);
 }
@@ -274,6 +274,7 @@ tinyrad_conf_file(
    const char *   val;
    size_t         len;
    char **        argv;
+   uint64_t       optid;
 
    TinyRadDebugTrace();
 
@@ -304,7 +305,8 @@ tinyrad_conf_file(
          continue;
       };
       val = tinyrad_strexpand(value, argv[1], sizeof(value), TRAD_NO);
-      rc = tinyrad_conf_opt(tr, dict, argv[0], val);
+      if ((optid = tinyrad_map_lookup_name(tinyrad_conf_options, argv[0], NULL)) > 0)
+         rc = tinyrad_conf_opt(tr, dict, optid, val);
       tinyrad_strsfree(argv);
    };
 
@@ -321,25 +323,20 @@ int
 tinyrad_conf_opt(
          TinyRad *                     tr,
          TinyRadDict *                 dict,
-         const char *                  name,
+         uint64_t                      optid,
          const char *                  value )
 {
    int               i;
    int               rc;
-   uint64_t          optid;
    char *            endptr;
    char **           strs;
    struct timeval    tv;
 
    assert( ((tr)) || ((dict)) );
-   assert(name != NULL);
    assert(value != NULL);
 
    tr   = ( ((tr))   && (!(tr->opts   & TRAD_STOPINIT)) ) ? tr   : NULL;
    dict = ( ((dict)) && (!(dict->opts & TRAD_STOPINIT)) ) ? dict : NULL;
-
-   if ((optid = tinyrad_map_lookup_name(tinyrad_conf_options, name, NULL)) == 0)
-      return(TRAD_SUCCESS);
 
    switch(optid)
    {
