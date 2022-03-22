@@ -64,6 +64,41 @@
 #   define SYSCONFDIR "/etc"
 #endif
 
+#define TRAD_CONF_BIND_ADDRESS               __LINE__
+#define TRAD_CONF_BUILTIN_DICTIONARY         __LINE__
+#define TRAD_CONF_DICTIONARY                 __LINE__
+#define TRAD_CONF_NETWORK_TIMEOUT            __LINE__
+#define TRAD_CONF_PATHS                      __LINE__
+#define TRAD_CONF_SECRET                     __LINE__
+#define TRAD_CONF_SECRET_FILE                __LINE__
+#define TRAD_CONF_STOPINIT                   __LINE__
+#define TRAD_CONF_TIMEOUT                    __LINE__
+#define TRAD_CONF_URI                        __LINE__
+
+
+/////////////////
+//             //
+//  Variables  //
+//             //
+/////////////////
+#pragma mark - Variables
+
+#pragma mark tinyrad_conf_options[]
+static const TinyRadMap tinyrad_conf_options[] =
+{
+   { "BIND_ADDRESS",          TRAD_CONF_BIND_ADDRESS },
+   { "BUILTIN_DICTIONARY",    TRAD_CONF_BUILTIN_DICTIONARY },
+   { "DICTIONARY",            TRAD_CONF_DICTIONARY },
+   { "NETWORK_TIMEOUT",       TRAD_CONF_NETWORK_TIMEOUT },
+   { "PATHS",                 TRAD_CONF_PATHS },
+   { "SECRET",                TRAD_CONF_SECRET },
+   { "SECRET_FILE",           TRAD_CONF_SECRET_FILE },
+   { "STOPINIT",              TRAD_CONF_STOPINIT },
+   { "TIMEOUT",               TRAD_CONF_TIMEOUT },
+   { "URI",                   TRAD_CONF_URI },
+   { NULL, 0 }
+};
+
 
 //////////////////
 //              //
@@ -201,34 +236,24 @@ tinyrad_conf_environment(
          TinyRad *                     tr,
          TinyRadDict *                 dict )
 {
-   char *      value;
+   size_t                  pos;
+   char *                  value;
+   char                    varname[64];
+   const TinyRadMap *      opt;
 
-   if ((value = getenv("TINYRAD_BIND_ADDRESS")) != NULL)
-      tinyrad_conf_opt(tr, dict, "bind_address", value);
+   for(pos = 0; ((tinyrad_conf_options[pos].map_name)); pos++)
+   {
+      opt = &tinyrad_conf_options[pos];
+      if (opt->map_value == TRAD_CONF_STOPINIT)
+         continue;
+      tinyrad_strlcpy(varname, "TINYRAD_", sizeof(varname));
+      tinyrad_strlcat(varname, opt->map_name, sizeof(varname));
+      if ((value = getenv(varname)) != NULL)
+         tinyrad_conf_opt(tr, dict, opt->map_name, value);
+   };
 
-   if ((value = getenv("TINYRAD_BUILTIN_DICTIONARY")) != NULL)
-      tinyrad_conf_opt(tr, dict, "builtin_dictionary", value);
-
-   if ((value = getenv("TINYRAD_DICTIONARY")) != NULL)
-      tinyrad_conf_opt(tr, dict, "dictionary", value);
-
-   if ((value = getenv("TINYRAD_NETWORK_TIMEOUT")) != NULL)
-      tinyrad_conf_opt(tr, dict, "network_timeout", value);
-
-   if ((value = getenv("TINYRAD_PATHS")) != NULL)
-      tinyrad_conf_opt(tr, dict, "paths", value);
-
-   if ((value = getenv("TINYRAD_SECRET")) != NULL)
-      tinyrad_conf_opt(tr, dict, "secret", value);
-
-   if ((value = getenv("TINYRAD_SECRET_FILE")) != NULL)
-      tinyrad_conf_opt(tr, dict, "secret_file", value);
-
-   if ((value = getenv("TINYRAD_TIMEOUT")) != NULL)
-      tinyrad_conf_opt(tr, dict, "timeout", value);
-
-   if ((value = getenv("TINYRAD_URI")) != NULL)
-      tinyrad_conf_opt(tr, dict, "uri", value);
+   if ((value = getenv("TINYRAD_STOPINIT")) != NULL)
+      tinyrad_conf_opt(tr, dict, "stopinit", value);
 
    return(TRAD_SUCCESS);
 }
