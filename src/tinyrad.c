@@ -305,11 +305,11 @@ my_dict_load(
    };
 
    // set paths
-   for(pos = 0; ( ((dict_paths)) && ((dict_paths[pos])) ); pos++)
+   if ((dict_paths))
    {
-      if ((rc = tinyrad_dict_add_path(dict, dict_paths[pos])) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_set_option(dict, TRAD_DICT_OPT_PATHS, dict_paths)) != TRAD_SUCCESS)
       {
-         trutils_error(opts, NULL, "%s: %s", dict_paths[pos], tinyrad_strerror(rc));
+         trutils_error(opts, NULL, "tinyrad_dict_set_option(TRAD_DICT_OPT_PATHS): %s", tinyrad_strerror(rc));
          tinyrad_free(dict);
          return(rc);
       };
