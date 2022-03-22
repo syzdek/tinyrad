@@ -308,6 +308,9 @@ tinyrad_conf_opt(
    assert(name != NULL);
    assert(value != NULL);
 
+   tr   = ( ((tr))   && (!(tr->opts   & TRAD_STOPINIT)) ) ? tr   : NULL;
+   dict = ( ((dict)) && (!(dict->opts & TRAD_STOPINIT)) ) ? dict : NULL;
+
    if (!(strcasecmp(name, "bind_address")))
    {
       if ( (!(tr)) || ((tr->bind_sa)) || ((tr->bind_sa6)) || (!(value)) )
@@ -371,6 +374,12 @@ tinyrad_conf_opt(
       if ( (!(tr)) || ((tr->secret)) || (!(value)) )
          return(TRAD_SUCCESS);
       return(tinyrad_set_option(tr, TRAD_OPT_SECRET, value));
+   };
+
+   if (!(strcasecmp(name, "stopinit")))
+   {
+      tinyrad_conf_opt_bool(tr, dict, TRAD_STOPINIT, value);
+      return(TRAD_SUCCESS);
    };
 
    if (!(strcasecmp(name, "timeout")))
