@@ -393,7 +393,7 @@ tinyrad_initialize(
    // load builtin dictionary, load default dictionary file, and make read-only
    if (!(dict))
    {
-      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, (TRAD_BUILTIN_DICT|opts))) != TRAD_SUCCESS)
+      if ((rc = tinyrad_dict_defaults(tr->dict, NULL, opts)) != TRAD_SUCCESS)
       {
          tinyrad_tiyrad_free(tr);
          return(rc);
