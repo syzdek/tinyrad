@@ -121,8 +121,8 @@ tinyrad_conf(
          TinyRadDict *                 dict,
          unsigned                      opts )
 {
-   const char *      suffix;
-   const char *      filename;
+   const char *      tinradrc;
+   const char *      tinyradconf;
    char              buff[4096];
    char              path[128];
    const char *      home;
@@ -140,37 +140,37 @@ tinyrad_conf(
    // process environment variables
    tinyrad_conf_environment(tr, dict);
 
-   // determine TINYRADRC suffix
-   if ((suffix = getenv("TINYRADRC")) == NULL)
-      suffix = "tinyradrc";
-
    // lookup user
    getpwuid_r(getuid(), &pwd, buff, sizeof(buff), &pwres);
    home = (((pwres)) ? pwres->pw_dir : "/");
 
-   // process "./${TINYRADRC}"
-   if ((getcwd(path, sizeof(path))))
+   // determine TINYRADRC suffix
+   if ((tinradrc = getenv("TINYRADRC")) != NULL)
    {
-      tinyrad_strlcat(path, "/",    sizeof(path));
-      tinyrad_strlcat(path, suffix, sizeof(path));
+      // process "./${TINYRADRC}"
+      if ((getcwd(path, sizeof(path))))
+      {
+         tinyrad_strlcat(path, "/",      sizeof(path));
+         tinyrad_strlcat(path, tinradrc, sizeof(path));
+         tinyrad_conf_file(tr, dict, path);
+      };
+
+      // process "~/.{$TINYRADRC}"
+      tinyrad_strlcpy(path, home,     sizeof(path));
+      tinyrad_strlcat(path, "/.",     sizeof(path));
+      tinyrad_strlcat(path, tinradrc, sizeof(path));
+      tinyrad_conf_file(tr, dict, path);
+
+      // process "~/${TINYRADRC}"
+      tinyrad_strlcpy(path, home,     sizeof(path));
+      tinyrad_strlcat(path, "/",      sizeof(path));
+      tinyrad_strlcat(path, tinradrc, sizeof(path));
       tinyrad_conf_file(tr, dict, path);
    };
 
-   // process "~/.{$TINYRADRC}"
-   tinyrad_strlcpy(path, home,   sizeof(path));
-   tinyrad_strlcat(path, "/.",   sizeof(path));
-   tinyrad_strlcat(path, suffix, sizeof(path));
-   tinyrad_conf_file(tr, dict, path);
-
-   // process "~/${TINYRADRC}"
-   tinyrad_strlcpy(path, home,   sizeof(path));
-   tinyrad_strlcat(path, "/",    sizeof(path));
-   tinyrad_strlcat(path, suffix, sizeof(path));
-   tinyrad_conf_file(tr, dict, path);
-
    // process "${TINYRADCONF}"
-   if ((filename = getenv("TINYRADCONF")))
-      tinyrad_conf_file(tr, dict, filename);
+   if ((tinyradconf = getenv("TINYRADCONF")) != NULL)
+      tinyrad_conf_file(tr, dict, tinyradconf);
 
    // process "./tinyradrc"
    if ((getcwd(path, sizeof(path))))
