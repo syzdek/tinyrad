@@ -275,6 +275,11 @@ tinyrad_strtoargs(
          int *                         argcp );
 
 
+_TINYRAD_F int
+tinyrad_strtobool(
+         const char *                  str );
+
+
 _TINYRAD_F char *
 tinyrad_strtrim(
          char *                        str );

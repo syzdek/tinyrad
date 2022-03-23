@@ -677,6 +677,21 @@ tinyrad_strtoargs(
 }
 
 
+int
+tinyrad_strtobool(
+         const char *                  str )
+{
+   if      (!(str))                       return(-1);
+   else if (!(strcasecmp(str, "1")))      return(TRAD_YES);
+   else if (!(strcasecmp(str, "true")))   return(TRAD_YES);
+   else if (!(strcasecmp(str, "yes")))    return(TRAD_YES);
+   else if (!(strcasecmp(str, "0")))      return(TRAD_NO);
+   else if (!(strcasecmp(str, "false")))  return(TRAD_NO);
+   else if (!(strcasecmp(str, "no")))     return(TRAD_NO);
+   return(-1);
+}
+
+
 char *
 tinyrad_strtrim(
          char *                        str )
