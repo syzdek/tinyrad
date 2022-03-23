@@ -141,6 +141,37 @@ static atomic_flag tinyrad_rand_init = ATOMIC_FLAG_INIT;
 /////////////////
 #pragma mark - Functions
 
+//-------------------------//
+// miscellaneous functions //
+//-------------------------//
+#pragma mark miscellaneous functions
+
+int
+tinyrad_set_flag(
+         unsigned *                    optsp,
+         unsigned *                    opts_negp,
+         unsigned                      opt,
+         int                           val )
+{
+   unsigned    opts;
+   unsigned    opts_neg;
+
+   opts      = ((optsp))      ? *optsp       :  0;
+   opts     |= ((val))        ? opt          :  0;
+   opts     &= (!(val))       ? ~opt         : ~0;
+   opts_neg  = ((opts_negp))  ? *opts_negp   :  0;
+   opts_neg |= (!(val))       ? opt          :  0;
+   opts_neg &= ((val))        ? ~opt         : ~0;
+
+   if ((optsp))
+      *optsp = opts;
+   if ((opts_negp))
+      *opts_negp = opts_neg;
+
+   return(TRAD_SUCCESS);
+}
+
+
 //------------------//
 // random functions //
 //------------------//
@@ -705,14 +736,10 @@ tinyrad_set_option(
       if (tr->s != -1)
          return(TRAD_EOPTERR);
       opts = tr->opts;
-      if ((*((const int *)invalue)))
-         tr->opts |= TRAD_IPV4;
-      else
-         tr->opts &= ~TRAD_IPV4;
-      if (opts == tr->opts)
-         break;
-      if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
-         return(rc);
+      tinyrad_set_flag(&tr->opts, &tr->opts_neg, TRAD_IPV4, *((const int *)invalue) );
+      if (opts != tr->opts)
+         if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
+            return(rc);
       break;
 
       case TRAD_OPT_IPV6:
@@ -720,14 +747,10 @@ tinyrad_set_option(
       if (tr->s != -1)
          return(TRAD_EOPTERR);
       opts = tr->opts;
-      if ((*((const int *)invalue)))
-         tr->opts |= TRAD_IPV6;
-      else
-         tr->opts &= ~TRAD_IPV6;
-      if (opts == tr->opts)
-         break;
-      if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
-         return(rc);
+      tinyrad_set_flag(&tr->opts, &tr->opts_neg, TRAD_IPV6, *((const int *)invalue) );
+      if (opts != tr->opts)
+         if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
+            return(rc);
       break;
 
       case TRAD_OPT_NETWORK_TIMEOUT:
@@ -742,9 +765,11 @@ tinyrad_set_option(
          case TRAD_URANDOM: TinyRadDebug(TRAD_DEBUG_ARGS, "   <= invalue: %s", "TRAD_URANDOM"); break;
          default:           TinyRadDebug(TRAD_DEBUG_ARGS, "   <= invalue: %i", *((const int *)invalue)); break;
       };
+      opts      =  tr->opts;
       tr->opts &= ~(TRAD_RANDOM_MASK);
       tr->opts |=  (TRAD_RANDOM_MASK & (*((const int *)invalue)));
-      tinyrad_srandom(tr);
+      if (opts != tr->opts)
+         tinyrad_srandom(tr);
       break;
 
       case TRAD_OPT_SCHEME:

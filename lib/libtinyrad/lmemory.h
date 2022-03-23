@@ -62,6 +62,19 @@
 //////////////////
 #pragma mark - Prototypes
 
+//--------------------------//
+// miscellaneous prototypes //
+//--------------------------//
+#pragma mark miscellaneous prototypes
+
+int
+tinyrad_set_flag(
+         unsigned *                    optsp,
+         unsigned *                    opts_negp,
+         unsigned                      opt,
+         int                           val );
+
+
 //------------------//
 // random functions //
 //------------------//
