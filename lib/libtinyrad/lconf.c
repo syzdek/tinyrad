@@ -456,14 +456,8 @@ tinyrad_conf_opt_bool(
    if ( (!(tr)) && (!(dict)) )
       return(TRAD_SUCCESS);
 
-   if (!(value))                           boolean = TRAD_YES;
-   else if (!(strcasecmp(value, "1")))     boolean = TRAD_YES;
-   else if (!(strcasecmp(value, "true")))  boolean = TRAD_YES;
-   else if (!(strcasecmp(value, "yes")))   boolean = TRAD_YES;
-   else if (!(strcasecmp(value, "0")))     boolean = TRAD_NO;
-   else if (!(strcasecmp(value, "false"))) boolean = TRAD_NO;
-   else if (!(strcasecmp(value, "no")))    boolean = TRAD_NO;
-   else return(TRAD_SUCCESS);
+   if ((boolean = ((value)) ? tinyrad_strtobool(value) : TRAD_YES) == -1)
+      return(TRAD_SUCCESS);
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, %u, \"%s\" )", __func__, flag, ((boolean == TRAD_YES) ? "TRAD_YES" : "TRAD_NO"));
 
