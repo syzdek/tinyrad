@@ -127,6 +127,8 @@ struct _tinyrad
    unsigned              opts_neg;
    int                   s;
    int                   timeout;
+   int                   rand;
+   int                   padint;
 };
 
 

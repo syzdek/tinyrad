@@ -75,6 +75,7 @@
 #define TRAD_CONF_STOPINIT                   8
 #define TRAD_CONF_TIMEOUT                    9
 #define TRAD_CONF_URI                        10
+#define TRAD_CONF_RANDOM                     11
 
 
 /////////////////
@@ -92,6 +93,7 @@ static const TinyRadMap tinyrad_conf_options[] =
    { "DICTIONARY",            TRAD_CONF_DICTIONARY },
    { "NETWORK_TIMEOUT",       TRAD_CONF_NETWORK_TIMEOUT },
    { "PATHS",                 TRAD_CONF_PATHS },
+   { "RANDOM",                TRAD_CONF_RANDOM },
    { "SECRET",                TRAD_CONF_SECRET },
    { "SECRET_FILE",           TRAD_CONF_SECRET_FILE },
    { "STOPINIT",              TRAD_CONF_STOPINIT },
@@ -388,6 +390,16 @@ tinyrad_conf_opt(
       };
       dict->paths = strs;
       return(TRAD_SUCCESS);
+
+      case TRAD_CONF_RANDOM:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_RANDOM, \"%s\" )", __func__, (((value)) ? value : "(null)"));
+      if ( (!(tr)) || (!(value)) || ((tr->opts & TRAD_RANDOM_MASK)) )
+         return(TRAD_SUCCESS);
+      else if (!(strcasecmp(value, "rand")))    i = TRAD_RAND;
+      else if (!(strcasecmp(value, "random")))  i = TRAD_RANDOM;
+      else if (!(strcasecmp(value, "urandom"))) i = TRAD_URANDOM;
+      else return(TRAD_SUCCESS);
+      return(tinyrad_set_option(tr, TRAD_OPT_RANDOM, &i));
 
       case TRAD_CONF_SECRET:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_SECRET, \"%s\" )", __func__, (((value)) ? value : "(null)"));

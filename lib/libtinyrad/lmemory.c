@@ -76,6 +76,22 @@
 //////////////////
 #pragma mark - Prototypes
 
+//-------------------//
+// random prototypes //
+//-------------------//
+#pragma mark random prototypes
+
+int
+tinyrad_srandom(
+         TinyRad *                     tr );
+
+
+int
+tinyrad_srandom_seed(
+         void *                        dst,
+         size_t                        n );
+
+
 //--------------------//
 // TinyRad prototypes //
 //--------------------//
@@ -110,10 +126,181 @@ tinyrad_verify_is_obj(
 
 /////////////////
 //             //
+//  Variables  //
+//             //
+/////////////////
+#pragma mark - Variables
+
+static atomic_flag tinyrad_rand_init = ATOMIC_FLAG_INIT;
+
+
+/////////////////
+//             //
 //  Functions  //
 //             //
 /////////////////
 #pragma mark - Functions
+
+//------------------//
+// random functions //
+//------------------//
+#pragma mark random functions
+
+int
+tinyrad_random_buf(
+         TinyRad *                     tr,
+         void *                        buf,
+         size_t                        nbytes )
+{
+   long           rnd;
+   size_t         off;
+   size_t         size;
+   ssize_t        rc;
+
+   TinyRadDebugTrace();
+
+   // read from random number file
+   if (tr->rand != -1)
+      if ((rc = read(tr->rand, buf, nbytes)) == (ssize_t)nbytes)
+         return(TRAD_SUCCESS);
+
+   // fall back to random()
+   for(off = 0; (off < nbytes); off += sizeof(rnd))
+   {
+      rnd   = random();
+      size  = ((off + sizeof(rnd)) < nbytes) ? sizeof(rnd) : (nbytes - off);
+      memcpy(&((uint8_t *)buf)[off], &rnd, size);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_srandom(
+         TinyRad *                     tr )
+{
+   unsigned       seed;
+   const char *   file;
+
+   TinyRadDebugTrace();
+
+   assert(tr != NULL);
+
+   // set default random file option
+   if (!(tr->opts & TRAD_RANDOM_MASK))
+      tr->opts |= TRAD_URANDOM;
+
+   // closes existing random number file
+   if (tr->rand != -1)
+      close(tr->rand);
+   tr->rand = -1;
+
+   // initialize random number generator
+   if (!(atomic_flag_test_and_set(&tinyrad_rand_init)))
+   {
+      tinyrad_srandom_seed(&seed, sizeof(seed));
+      srandom(seed);
+   };
+
+   // determine name of random number file
+   switch(tr->opts & TRAD_RANDOM_MASK)
+   {
+      case TRAD_RAND:      return(TRAD_SUCCESS);
+      case TRAD_RANDOM:    file = "/dev/random";  break;
+      case TRAD_URANDOM:   file = "/dev/urandom"; break;
+      default:             return(TRAD_EUNKNOWN);
+   };
+
+   // open random number file
+   if ((tr->rand = open(file, O_RDONLY)) == -1)
+      return(TRAD_EUNKNOWN);
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_srandom_seed(
+         void *                        buf,
+         size_t                        nbytes )
+{
+   int               fd;
+   ssize_t           rc;
+   size_t            off;
+   uint32_t          rnd;
+   struct timespec   ts;
+   size_t            size;
+
+   TinyRadDebugTrace();
+
+   // attempt to use random file
+   if ((fd = open("/dev/unrandom", O_RDONLY)) == -1)
+      fd = open("/dev/nrandom", O_RDONLY);
+   if (fd != -1)
+   {
+      rc = read(fd, buf, nbytes);
+      close(fd);
+      if (rc == (ssize_t)nbytes)
+         return(TRAD_SUCCESS);
+   };
+
+   // fall back to using time
+   for(off = 0; (off < nbytes); off += sizeof(rnd))
+   {
+      // generate a, not random, possibly hard to predict number (there is a
+      // reason this is the fall back method and not the primary method for
+      // seeding the random number generator).  Better recommendations are
+      // welcome.
+      rnd = 0;
+      // add realtime seconds and nanoseconds to rnd
+      memset(&ts, 0, sizeof(ts));
+      clock_gettime(CLOCK_REALTIME, &ts);
+      rnd += (ts.tv_sec  % 0xffffffff);
+      rnd += (ts.tv_nsec % 0xffffffff);
+      // add monotonic time seconds and nanoseconds to rnd
+      memset(&ts, 0, sizeof(ts));
+      clock_gettime(CLOCK_MONOTONIC, &ts);
+      rnd += (ts.tv_sec  % 0xffffffff);
+      rnd += (ts.tv_nsec % 0xffffffff);
+#ifdef _POSIX_CPUTIME
+      // add process CPU time seconds and nanoseconds to rnd
+      memset(&ts, 0, sizeof(ts));
+      clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts);
+      rnd += (ts.tv_sec  % 0xffffffff);
+      rnd += (ts.tv_nsec % 0xffffffff);
+#endif
+      // reverse bits
+      rnd = ((rnd & 0xffff0000) >> 16) | ((rnd & 0x0000ffff) << 16);
+      rnd = ((rnd & 0xff00ff00) >>  8) | ((rnd & 0x00ff00ff) <<  8);
+      rnd = ((rnd & 0xf0f0f0f0) >>  4) | ((rnd & 0x0f0f0f0f) <<  4);
+      rnd = ((rnd & 0xcccccccc) >>  2) | ((rnd & 0x33333333) <<  2);
+      rnd = ((rnd & 0xaaaaaaaa) >>  1) | ((rnd & 0x55555555) <<  1);
+      // add realtime seconds and nanoseconds to rnd
+      memset(&ts, 0, sizeof(ts));
+      clock_gettime(CLOCK_REALTIME, &ts);
+      rnd += (ts.tv_sec  % 0xffffffff);
+      rnd += (ts.tv_nsec % 0xffffffff);
+      // add monotonic time seconds and nanoseconds to rnd
+      memset(&ts, 0, sizeof(ts));
+      clock_gettime(CLOCK_MONOTONIC, &ts);
+      rnd += (ts.tv_sec  % 0xffffffff);
+      rnd += (ts.tv_nsec % 0xffffffff);
+#ifdef _POSIX_CPUTIME
+      // add process CPU time seconds and nanoseconds to rnd
+      memset(&ts, 0, sizeof(ts));
+      clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts);
+      rnd += (ts.tv_sec  % 0xffffffff);
+      rnd += (ts.tv_nsec % 0xffffffff);
+#endif
+
+      size = ((off + sizeof(rnd)) < nbytes) ? sizeof(rnd) : (nbytes - off);
+      memcpy(&((uint8_t *)buf)[off], &rnd, size);
+   };
+
+   return(TRAD_SUCCESS);
+}
+
 
 //-------------------//
 // TinyRad functions //
@@ -205,6 +392,10 @@ tinyrad_tiyrad_free(
       close(tr->s);
    tr->s = -1;
 
+   if (tr->rand != -1)
+      close(tr->rand);
+   tr->rand = -1;
+
    memset(tr, 0, sizeof(TinyRad));
    free(tr);
 
@@ -292,6 +483,17 @@ tinyrad_get_option(
       ((struct timeval *)outvalue)->tv_usec  = tr->net_timeout->tv_usec;
       break;
 
+      case TRAD_OPT_RANDOM:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_RANDOM, outvalue )", __func__);
+      switch(tr->opts & TRAD_RANDOM_MASK)
+      {  case TRAD_RAND:    TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "TRAD_RAND");    break;
+         case TRAD_RANDOM:  TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "TRAD_RANDOM");  break;
+         case TRAD_URANDOM: TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", "TRAD_URANDOM"); break;
+         default:           TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", (tr->opts & TRAD_RANDOM_MASK)); break;
+      };
+      *((int *)outvalue) = tr->opts & TRAD_RANDOM_MASK;
+      break;
+
       case TRAD_OPT_SCHEME:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SCHEME, outvalue )", __func__);
       TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %i", tr->scheme);
@@ -355,9 +557,6 @@ tinyrad_initialize(
 {
    TinyRad *         tr;
    int               rc;
-   int               fd;
-   uint32_t          u32;
-   struct timespec   ts;
    int               opt;
 
    TinyRadDebugTrace();
@@ -371,6 +570,7 @@ tinyrad_initialize(
    tr->opts       = (uint32_t)(opts & TRAD_OPTS_USER);
    tr->s          = -1;
    tr->timeout    = -1;
+   tr->rand       = -1;
 
    // parses and saves URL
    if ((url))
@@ -418,32 +618,19 @@ tinyrad_initialize(
       return(rc);
    };
 
-   // generates initial authenticator
-   if ((fd = open("/dev/urandom", O_RDONLY)) != -1)
+   // initialize random number generator
+   if ((rc = tinyrad_srandom(tr)) != TRAD_SUCCESS)
    {
-      read(fd, &u32, sizeof(u32));
-      close(fd);
-   } else {
-      u32 = 0;
-      clock_gettime(CLOCK_REALTIME, &ts);
-      u32 += (ts.tv_sec  % 0xffffffff);
-      u32 += (ts.tv_nsec % 0xffffffff);
-      clock_gettime(CLOCK_MONOTONIC, &ts);
-      u32 += (ts.tv_sec  % 0xffffffff);
-      u32 += (ts.tv_nsec % 0xffffffff);
-      u32 = ((u32 & 0xffff0000) >> 16) | ((u32 & 0x0000ffff) << 16);
-      u32 = ((u32 & 0xff00ff00) >>  8) | ((u32 & 0x00ff00ff) <<  8);
-      u32 = ((u32 & 0xf0f0f0f0) >>  4) | ((u32 & 0x0f0f0f0f) <<  4);
-      u32 = ((u32 & 0xcccccccc) >>  2) | ((u32 & 0x33333333) <<  2);
-      u32 = ((u32 & 0xaaaaaaaa) >>  1) | ((u32 & 0x55555555) <<  1);
-      clock_gettime(CLOCK_REALTIME, &ts);
-      u32 += (ts.tv_sec  % 0xffffffff);
-      u32 += (ts.tv_nsec % 0xffffffff);
-      clock_gettime(CLOCK_MONOTONIC, &ts);
-      u32 += (ts.tv_sec  % 0xffffffff);
-      u32 += (ts.tv_nsec % 0xffffffff);
+      tinyrad_tiyrad_free(tr);
+      return(rc);
    };
-   tr->authenticator = u32;
+
+   // generates initial authenticator
+   if ((rc = tinyrad_random_buf(tr, &tr->authenticator, sizeof(tr->authenticator))) != TRAD_SUCCESS)
+   {
+      tinyrad_tiyrad_free(tr);
+      return(rc);
+   };
 
    *trp = tinyrad_obj_retain(&tr->obj);
 
@@ -545,6 +732,19 @@ tinyrad_set_option(
 
       case TRAD_OPT_NETWORK_TIMEOUT:
       memcpy(tr->net_timeout, ((const struct timeval *)invalue), sizeof(struct timeval));
+      break;
+
+      case TRAD_OPT_RANDOM:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_RANDOM, invalue )", __func__);
+      switch( *((const int *)invalue) & TRAD_RANDOM_MASK)
+      {  case TRAD_RAND:    TinyRadDebug(TRAD_DEBUG_ARGS, "   <= invalue: %s", "TRAD_RAND");    break;
+         case TRAD_RANDOM:  TinyRadDebug(TRAD_DEBUG_ARGS, "   <= invalue: %s", "TRAD_RANDOM");  break;
+         case TRAD_URANDOM: TinyRadDebug(TRAD_DEBUG_ARGS, "   <= invalue: %s", "TRAD_URANDOM"); break;
+         default:           TinyRadDebug(TRAD_DEBUG_ARGS, "   <= invalue: %i", *((const int *)invalue)); break;
+      };
+      tr->opts &= ~(TRAD_RANDOM_MASK);
+      tr->opts |=  (TRAD_RANDOM_MASK & (*((const int *)invalue)));
+      tinyrad_srandom(tr);
       break;
 
       case TRAD_OPT_SCHEME:

@@ -190,6 +190,10 @@
 #define TRAD_IP_UNSPEC              (TRAD_IPV4 | TRAD_IPV6)
 #define TRAD_CATHOLIC               0x00000010U
 #define TRAD_SERVER                 0x00000020U
+#define TRAD_RAND                   0x00000040U
+#define TRAD_URANDOM                0x00000100U
+#define TRAD_RANDOM                 (TRAD_RAND | TRAD_URANDOM)
+#define TRAD_RANDOM_MASK            (TRAD_RAND | TRAD_URANDOM)
 
 // library internal options
 #define TRAD_OPTS_INTERNAL          (~TRAD_OPTS_USER)
@@ -225,6 +229,7 @@
 #define TRAD_OPT_DICTIONARY            13
 #define TRAD_OPT_SECRET                14
 #define TRAD_OPT_SECRET_FILE           15
+#define TRAD_OPT_RANDOM                16
 
 // dictionary get options
 #define TRAD_DICT_OPT_REF_COUNT           1  // used by TinyRadDict, TinyRadDictVendor and TinyRadDictAttr

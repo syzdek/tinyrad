@@ -62,6 +62,18 @@
 //////////////////
 #pragma mark - Prototypes
 
+//------------------//
+// random functions //
+//------------------//
+#pragma mark random functions
+
+int
+tinyrad_random_buf(
+         TinyRad *                     tr,
+         void *                        buf,
+         size_t                        nbytes );
+
+
 //--------------------------------//
 // TinyRadBinValue list functions //
 //--------------------------------//
