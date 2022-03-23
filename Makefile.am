@@ -86,7 +86,8 @@ pkgdata_DATA				=
 rfcdoc_DATA				=
 sbin_SCRIPTS				=
 sbin_PROGRAMS				=
-EXTRA_PROGRAMS				= examples/socket-example \
+EXTRA_PROGRAMS				= examples/seed-by-clock \
+					  examples/socket-example \
 					  tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
@@ -189,6 +190,7 @@ if ENABLE_DOCUMENATION
    rfcdoc_DATA				+= doc/rfc/rfc8044.txt
 endif
 if ENABLE_EXAMPLES
+   noinst_PROGRAMS			+= examples/seed-by-clock
    noinst_PROGRAMS			+= examples/socket-example
 endif
 if ENABLE_LIBTINYRAD
@@ -219,6 +221,10 @@ if ENABLE_TINYRAD_COMMON
    man_MANS				+= doc/mans/tinyrad.conf.5
    man_MANS				+= doc/mans/tinyrad-strings.5
 endif
+
+
+# macros for examples/seed-by-clock
+examples_seed_by_clock_SOURCES		= examples/seed-by-clock.c
 
 
 # macros for examples/socket-example
