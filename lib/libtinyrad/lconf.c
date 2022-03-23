@@ -76,6 +76,8 @@
 #define TRAD_CONF_TIMEOUT                    9
 #define TRAD_CONF_URI                        10
 #define TRAD_CONF_RANDOM                     11
+#define TRAD_CONF_IPV4                       12
+#define TRAD_CONF_IPV6                       13
 
 
 /////////////////
@@ -91,6 +93,8 @@ static const TinyRadMap tinyrad_conf_options[] =
    { "BIND_ADDRESS",          TRAD_CONF_BIND_ADDRESS },
    { "BUILTIN_DICTIONARY",    TRAD_CONF_BUILTIN_DICTIONARY },
    { "DICTIONARY",            TRAD_CONF_DICTIONARY },
+   { "IPV4",                  TRAD_CONF_IPV4 },
+   { "IPV6",                  TRAD_CONF_IPV6 },
    { "NETWORK_TIMEOUT",       TRAD_CONF_NETWORK_TIMEOUT },
    { "PATHS",                 TRAD_CONF_PATHS },
    { "RANDOM",                TRAD_CONF_RANDOM },
@@ -364,6 +368,28 @@ tinyrad_conf_opt(
          return(TRAD_SUCCESS);
       if ((dict->default_dictfile = tinyrad_strdup(value)) == NULL)
          return(TRAD_ENOMEM);
+      return(TRAD_SUCCESS);
+
+      case TRAD_CONF_IPV4:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_IPV4, \"%s\" )", __func__, (((value)) ? value : "(null)"));
+      if ( (!(tr)) || ((tr->opts & TRAD_IPV4)) || ((tr->opts_neg & TRAD_IPV4)) )
+         return(TRAD_SUCCESS);
+      switch(i = ((value)) ? tinyrad_strtobool(value) : TRAD_YES)
+      {  case TRAD_NO:  tinyrad_set_option(tr, TRAD_IPV4, &i); break;
+         case TRAD_YES: tinyrad_set_option(tr, TRAD_IPV4, &i); break;
+         default: break;
+      };
+      return(TRAD_SUCCESS);
+
+      case TRAD_CONF_IPV6:
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_CONF_IPV6, \"%s\" )", __func__, (((value)) ? value : "(null)"));
+      if ( (!(tr)) || ((tr->opts & TRAD_IPV6)) || ((tr->opts_neg & TRAD_IPV6)) )
+         return(TRAD_SUCCESS);
+      switch(i = ((value)) ? tinyrad_strtobool(value) : TRAD_YES)
+      {  case TRAD_NO:  tinyrad_set_option(tr, TRAD_IPV6, &i); break;
+         case TRAD_YES: tinyrad_set_option(tr, TRAD_IPV6, &i); break;
+         default: break;
+      };
       return(TRAD_SUCCESS);
 
       case TRAD_CONF_NETWORK_TIMEOUT:

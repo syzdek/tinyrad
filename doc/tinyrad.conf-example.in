@@ -10,6 +10,9 @@
 #SECRET              "RaDiUsSeCrEt"
 #SECRET_FILE         "%d/.tinyrad.secret"
 
+#IPV4                yes
+#IPV6                yes
+
 # TinyRad has three methods for generating psuedo random numbers/data. Specify
 # either # "rand" to use the random() function, "random" to use the kernel
 # psuedo random number generator /dev/random, or "urandom" to use the kernel
