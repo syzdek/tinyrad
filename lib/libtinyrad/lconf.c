@@ -142,7 +142,7 @@ int
 tinyrad_conf_opt_bool(
          TinyRad *                     tr,
          TinyRadDict *                 dict,
-         unsigned                      opt,
+         unsigned                      flag,
          const char *                  value );
 
 
@@ -446,7 +446,7 @@ int
 tinyrad_conf_opt_bool(
          TinyRad *                     tr,
          TinyRadDict *                 dict,
-         unsigned                      opt,
+         unsigned                      flag,
          const char *                  value )
 {
    int      boolean;
@@ -465,25 +465,25 @@ tinyrad_conf_opt_bool(
    else if (!(strcasecmp(value, "no")))    boolean = TRAD_NO;
    else return(TRAD_SUCCESS);
 
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, %u, \"%s\" )", __func__, opt, ((boolean == TRAD_YES) ? "TRAD_YES" : "TRAD_NO"));
+   TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, %u, \"%s\" )", __func__, flag, ((boolean == TRAD_YES) ? "TRAD_YES" : "TRAD_NO"));
 
-   if ( ((dict)) && ( ((dict->opts | dict->opts_neg) & opt) == 0) )
+   if ( ((dict)) && ( ((dict->opts | dict->opts_neg) & flag) == 0) )
    {
       switch(boolean)
       {
-         case TRAD_YES: dict->opts     |= opt; break;
-         case TRAD_NO:  dict->opts_neg |= opt; break;
-         default:                              break;
+         case TRAD_YES: dict->opts     |= flag; break;
+         case TRAD_NO:  dict->opts_neg |= flag; break;
+         default:                               break;
       };
    };
 
-   if ( ((tr)) && ( ((tr->opts | tr->opts_neg) & opt) == 0) )
+   if ( ((tr)) && ( ((tr->opts | tr->opts_neg) & flag) == 0) )
    {
       switch(boolean)
       {
-         case TRAD_YES: tr->opts     |= opt; break;
-         case TRAD_NO:  tr->opts_neg |= opt; break;
-         default:                            break;
+         case TRAD_YES: tr->opts     |= flag; break;
+         case TRAD_NO:  tr->opts_neg |= flag; break;
+         default:                             break;
       };
    };
 
