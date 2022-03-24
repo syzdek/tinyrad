@@ -143,6 +143,11 @@ main(
          char *                        argv[] );
 
 
+void
+tinyrad_cleanup(
+         TinyRadConf *                 cnf );
+
+
 int
 tinyrad_load_dict(
          int                           opts,
@@ -244,8 +249,7 @@ int main(int argc, char * argv[])
          if (tinyrad_strsadd(&cnf->dict_files, optarg) != TRAD_SUCCESS)
          {
             trutils_error(cnf->opts, NULL, "out of virtual memory");
-            tinyrad_strsfree(cnf->dict_files);
-            tinyrad_strsfree(cnf->dict_paths);
+            tinyrad_cleanup(cnf);
             return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
@@ -263,8 +267,7 @@ int main(int argc, char * argv[])
          if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
          {
             trutils_error(cnf->opts, NULL, "out of virtual memory");
-            tinyrad_strsfree(cnf->dict_files);
-            tinyrad_strsfree(cnf->dict_paths);
+            tinyrad_cleanup(cnf);
             return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
@@ -302,24 +305,24 @@ int main(int argc, char * argv[])
    {
       fprintf(stderr, "%s: unrecognized argument -- %s\n", PROGRAM_NAME, argv[optind]);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      tinyrad_strsfree(cnf->dict_files);
-      tinyrad_strsfree(cnf->dict_paths);
+      tinyrad_cleanup(cnf);
       return(1);
    };
 
    // load TinyRad handle
    rc = tinyrad_load_dict(cnf->opts, cnf->tr_opts, &tr, cnf->url, cnf->dict_files, cnf->dict_paths);
-   tinyrad_strsfree(cnf->dict_files);
-   tinyrad_strsfree(cnf->dict_paths);
    if (rc != TRAD_SUCCESS)
+   {
+      tinyrad_cleanup(cnf);
       return(trutils_exit_code(rc));
+   };
 
    // display dictionary
    if ((cnf->opts & MY_OPT_DICT_DUMP))
    {
       tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
       tinyrad_dict_print(dict, 0xffff);
-      tinyrad_free(tr);
+      tinyrad_cleanup(cnf);
       tinyrad_free(dict);
       return(0);
    };
@@ -329,14 +332,25 @@ int main(int argc, char * argv[])
    {
       tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
       tinyrad_conf_print(tr, dict);
-      tinyrad_free(tr);
+      tinyrad_cleanup(cnf);
       tinyrad_free(dict);
       return(0);
    };
 
-   tinyrad_free(tr);
+   tinyrad_cleanup(cnf);
 
    return(0);
+}
+
+
+void
+tinyrad_cleanup(
+         TinyRadConf *                 cnf )
+{
+   tinyrad_free(cnf->tr);
+   tinyrad_strsfree(cnf->dict_files);
+   tinyrad_strsfree(cnf->dict_paths);
+   return;
 }
 
 
