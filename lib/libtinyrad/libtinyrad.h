@@ -117,6 +117,8 @@ struct _tinyrad
    TinyRadURLDesc *      trud;
    TinyRadURLDesc *      trud_cur;
    char *                secret;
+   char *                secret_file;
+   void *                padptr;
    size_t                trud_pos;
    struct sockaddr_in *  bind_sa;
    struct sockaddr_in6 * bind_sa6;

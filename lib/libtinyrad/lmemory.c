@@ -403,6 +403,9 @@ tinyrad_tiyrad_free(
    if ((tr->secret))
       free(tr->secret);
 
+   if ((tr->secret_file))
+      free(tr->secret_file);
+
    if ((tr->trud))
       tinyrad_urldesc_free(tr->trud);
    tr->trud = NULL;
@@ -533,14 +536,21 @@ tinyrad_get_option(
 
       case TRAD_OPT_SECRET:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET, outvalue )", __func__);
-      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", tr->secret);
-      if (((*(char **)outvalue) = tinyrad_strdup(tr->secret)) == NULL)
-         return(TRAD_ENOMEM);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", ((tr->secret)) ? tr->secret : "(null)");
+      *((char **)outvalue) = NULL;
+      if ((tr->secret))
+         if (((*(char **)outvalue) = tinyrad_strdup(tr->secret)) == NULL)
+            return(TRAD_ENOMEM);
       break;
 
       case TRAD_OPT_SECRET_FILE:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET_FILE, outvalue )", __func__);
-      return(TRAD_EOPTERR);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   <= outvalue: %s", ((tr->secret_file)) ? tr->secret_file : "(null)");
+      *((char **)outvalue) = NULL;
+      if ((tr->secret_file))
+         if (((*(char **)outvalue) = tinyrad_strdup(tr->secret_file)) == NULL)
+            return(TRAD_ENOMEM);
+      break;
 
       case TRAD_OPT_SOCKET_BIND_ADDRESSES:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, outvalue )", __func__);
@@ -778,6 +788,9 @@ tinyrad_set_option(
 
       case TRAD_OPT_SECRET:
       TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s( tr, TRAD_OPT_SECRET, \"%s\" )", __func__, (const char *)invalue);
+      if ((tr->secret_file))
+         free(tr->secret_file);
+      tr->secret_file = NULL;
       if ((tr->secret))
          free(tr->secret);
       if ((tr->secret = tinyrad_strdup(invalue)) == NULL)
@@ -790,7 +803,11 @@ tinyrad_set_option(
          return(rc);
       if ((tr->secret))
          free(tr->secret);
-      if ((tr->secret = tinyrad_strdup(buff)) == NULL)
+      if ((tr->secret_file))
+         free(tr->secret_file);
+      tr->secret      = tinyrad_strdup(buff);
+      tr->secret_file = tinyrad_strdup((const char *)invalue);
+      if ( (!(tr->secret)) || (!(tr->secret_file)) )
          return(TRAD_ENOMEM);
       break;
 
