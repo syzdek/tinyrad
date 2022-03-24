@@ -198,7 +198,6 @@ int main(int argc, char * argv[])
    int            opt_index;
    int            rc;
    TinyRadDict *  dict;
-   TinyRad *      tr;
    TinyRadConf    cnfdata;
    TinyRadConf *  cnf;
 
@@ -310,7 +309,7 @@ int main(int argc, char * argv[])
    };
 
    // load TinyRad handle
-   rc = tinyrad_load_dict(cnf->opts, cnf->tr_opts, &tr, cnf->url, cnf->dict_files, cnf->dict_paths);
+   rc = tinyrad_load_dict(cnf->opts, cnf->tr_opts, &cnf->tr, cnf->url, cnf->dict_files, cnf->dict_paths);
    if (rc != TRAD_SUCCESS)
    {
       tinyrad_cleanup(cnf);
@@ -320,7 +319,7 @@ int main(int argc, char * argv[])
    // display dictionary
    if ((cnf->opts & MY_OPT_DICT_DUMP))
    {
-      tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
+      tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
       tinyrad_dict_print(dict, 0xffff);
       tinyrad_cleanup(cnf);
       tinyrad_free(dict);
@@ -330,8 +329,8 @@ int main(int argc, char * argv[])
    // display configuration
    if ((cnf->opts & MY_OPT_CONFIG_PRINT))
    {
-      tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
-      tinyrad_conf_print(tr, dict);
+      tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
+      tinyrad_conf_print(cnf->tr, dict);
       tinyrad_cleanup(cnf);
       tinyrad_free(dict);
       return(0);
