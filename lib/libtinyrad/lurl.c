@@ -612,7 +612,10 @@ tinyrad_urldesc_resolve(
       if ((sasp = trudp->trud_sockaddrs) == NULL)
       {
          if ((sasp = malloc(sizeof(struct sockaddr_storage *))) == NULL)
+         {
+            freeaddrinfo(res);
             return(TRAD_ENOMEM);
+         };
          sasp[0]                    = NULL;
          trudp->trud_sockaddrs      = sasp;
          sas_len                    = 0;
@@ -624,13 +627,19 @@ tinyrad_urldesc_resolve(
       {
          size = sizeof(struct sockaddr_storage *) * (sas_len+2);
          if ((ptr = realloc(sasp, size)) == NULL)
+         {
+            freeaddrinfo(res);
             return(TRAD_ENOMEM);
+         };
          sasp                    = ptr;
          trudp->trud_sockaddrs   = ptr;
          sasp[sas_len+1]         = NULL;
 
          if ((sasp[sas_len] = malloc(sizeof(struct sockaddr_storage))) == NULL)
+         {
+            freeaddrinfo(res);
             return(TRAD_ENOMEM);
+         };
          memset(sasp[sas_len], 0, sizeof(struct sockaddr_storage));
          memcpy(sasp[sas_len], next->ai_addr, next->ai_addrlen);
 
