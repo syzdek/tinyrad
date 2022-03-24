@@ -538,6 +538,7 @@ tinyrad_urldesc_resolve(
    size_t                        pos;
    int                           ai_family;
    int                           ai_flags;
+   int                           resolved;
    size_t                        size;
    struct addrinfo               hints;
    struct addrinfo *             hintsp;
@@ -589,7 +590,10 @@ tinyrad_urldesc_resolve(
       break;
    };
 
-   while ((trudp))
+   resolved = TRAD_NO;
+
+   // loop through URL descriptors
+   for(; ((trudp)); trudp = trudp->trud_next)
    {
       TinyRadDebug(TRAD_DEBUG_ARGS, "   => %s members", "trudp");
       TinyRadDebug(TRAD_DEBUG_ARGS, "      => trudp->trud_host:   %s", trudp->trud_host);
@@ -605,7 +609,8 @@ tinyrad_urldesc_resolve(
       hintsp            = &hints;
 
       if (getaddrinfo(trudp->trud_host, NULL, hintsp, &res) != 0)
-         return(TRAD_ERESOLVE);
+         continue;
+      resolved = TRAD_YES;
 
       // initialize memory
       sas_len = ((trudp->trud_sockaddrs_len)) ? trudp->trud_sockaddrs_len : 0;
@@ -664,9 +669,10 @@ tinyrad_urldesc_resolve(
       };
 
       freeaddrinfo(res);
-
-      trudp = trudp->trud_next;
    };
+
+   if (resolved == TRAD_NO)
+      return(TRAD_ERESOLVE);
 
    return(TRAD_SUCCESS);
 }
