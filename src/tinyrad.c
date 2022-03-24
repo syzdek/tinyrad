@@ -72,6 +72,21 @@
 #define MY_OPT_CONFIG_PRINT   0x0008UL
 
 
+#define TINYRAD_GETOPT_SHORT "h"
+#define TINYRAD_GETOPT_LONG \
+   { "debug",            optional_argument, NULL, 'd' }, \
+   { "file",             optional_argument, NULL, 'f' }, \
+   { "help",             no_argument,       NULL, 'h' }, \
+   { "quiet",            no_argument,       NULL, 'q' }, \
+   { "silent",           no_argument,       NULL, 'q' }, \
+   { "version",          no_argument,       NULL, 'V' }, \
+   { "verbose",          no_argument,       NULL, 'v' }, \
+   { "configuration",    no_argument,       NULL,  3  }, \
+   { "defaults",         no_argument,       NULL,  2  }, \
+   { "dictionary-dump",  no_argument,       NULL,  1  }, \
+   { NULL, 0, NULL, 0 }
+
+
 //////////////////
 //              //
 //  Data Types  //
@@ -79,11 +94,36 @@
 //////////////////
 #pragma mark - Data Types
 
+typedef struct tinyrad_config       TinyRadConf;
+typedef struct tinyrad_command      TinyRadCommand;
+
+
 typedef struct my_request_av
 {
    char * attr_name;
    char * attr_value;
 } MyRequestAV;
+
+
+struct tinyrad_config
+{
+   unsigned                opts;
+   unsigned                padint;
+   TinyRadCommand *        cmd;
+};
+
+
+struct tinyrad_command
+{
+   const char *            cmd_name;
+   int  (*cmd_func)(TinyRadConf * cnf);
+   const char *            cmd_shortopts;
+   struct option *         cmd_longopts;
+   int                     cmd_min_arg;
+   int                     cmd_max_arg;
+   const char *            cmd_help;
+   const char *            cmd_desc;
+};
 
 
 //////////////////
@@ -109,9 +149,31 @@ tinyrad_load_dict(
          char **                       dict_paths );
 
 
-void
-tinyrad_usage( void );
+int
+tinyrad_usage(
+         TinyRadConf *                 cnf );
 
+
+/////////////////
+//             //
+//  Variables  //
+//             //
+/////////////////
+#pragma mark - Variables
+
+static const TinyRadCommand tinyrad_cmdmap[] =
+{
+   {
+      "help",                                         // command name
+      &tinyrad_usage,                                 // entry function
+      TINYRAD_GETOPT_SHORT,                           // getopt short options
+      (struct option []) { TINYRAD_GETOPT_LONG },     // getopt long options
+      0, 0,                                           // min/max arguments
+      NULL,                                           // extra cli usage
+      "print command usage"                           // command description
+   },
+   { NULL, NULL, NULL, NULL, -1, -1, NULL, NULL }
+};
 
 /////////////////
 //             //
@@ -133,6 +195,7 @@ int main(int argc, char * argv[])
    char **        dict_files;
    char **        dict_paths;
    unsigned       opts;
+   TinyRadConf    cnf;
 
    // getopt options
    static char          short_opt[] = "D:d:f:hI:qVv";
@@ -153,6 +216,7 @@ int main(int argc, char * argv[])
 
    trutils_initialize(PROGRAM_NAME);
 
+   memset(&cnf, 0, sizeof(cnf));
    opts        = 0;
    tr_opts     = 0;
    url         = NULL;
@@ -196,7 +260,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'h':
-         tinyrad_usage();
+         tinyrad_usage(&cnf);
          return(0);
 
          case 'I':
@@ -340,8 +404,11 @@ tinyrad_load_dict(
 }
 
 
-void tinyrad_usage(void)
+int
+tinyrad_usage(
+         TinyRadConf *                 cnf )
 {
+   int i;
    printf("Usage: %s [OPTIONS] [url]\n", PROGRAM_NAME);
    printf("OPTIONS:\n");
    printf("  -D dictionary             include dictionary\n");
@@ -355,8 +422,15 @@ void tinyrad_usage(void)
    printf("  --defaults                load default dictionaries\n");
    printf("  --dictionary-dump         print imported dictionaries\n");
    printf("  --configuration           print configuration\n");
+   if (!(cnf->cmd))
+   {
+      printf("COMMANDS:\n");
+      for(i = 0; tinyrad_cmdmap[i].cmd_name != NULL; i++)
+         if ((tinyrad_cmdmap[i].cmd_desc))
+            printf("  %-25s %s\n", tinyrad_cmdmap[i].cmd_name, tinyrad_cmdmap[i].cmd_desc);
+   };
    printf("\n");
-   return;
+   return(0);
 }
 
 
