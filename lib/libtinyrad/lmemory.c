@@ -748,7 +748,7 @@ tinyrad_set_option(
          return(TRAD_EOPTERR);
       opts = tr->opts;
       tinyrad_set_flag(&tr->opts, &tr->opts_neg, TRAD_IPV6, *((const int *)invalue) );
-      if (opts != tr->opts)
+      if ( (opts != tr->opts) && ((tr->trud)) )
          if ((rc = tinyrad_urldesc_resolve(tr->trud, tr->opts)) != TRAD_SUCCESS)
             return(rc);
       break;
