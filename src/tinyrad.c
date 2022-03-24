@@ -69,6 +69,7 @@
 #define MY_OPT_DICT_DEFAULTS  0x0001UL
 #define MY_OPT_DICT_DUMP      0x0002UL
 #define MY_OPT_DICT_LOADED    0x0004UL
+#define MY_OPT_CONFIG_PRINT   0x0008UL
 
 
 //////////////////
@@ -144,6 +145,7 @@ int main(int argc, char * argv[])
       {"silent",           no_argument,       NULL, 'q' },
       {"version",          no_argument,       NULL, 'V' },
       {"verbose",          no_argument,       NULL, 'v' },
+      {"configuration",    no_argument,       NULL,  3  },
       {"defaults",         no_argument,       NULL,  2  },
       {"dictionary-dump",  no_argument,       NULL,  1  },
       { NULL, 0, NULL, 0 }
@@ -172,6 +174,10 @@ int main(int argc, char * argv[])
 
          case 2:
          tr_opts |= TRAD_BUILTIN_DICT;
+         break;
+
+         case 3:
+         opts |= MY_OPT_CONFIG_PRINT;
          break;
 
          case 'D':
@@ -258,6 +264,16 @@ int main(int argc, char * argv[])
       return(0);
    };
 
+   // display configuration
+   if ((opts & MY_OPT_CONFIG_PRINT))
+   {
+      tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
+      tinyrad_conf_print(tr, dict);
+      tinyrad_free(tr);
+      tinyrad_free(dict);
+      return(0);
+   };
+
    tinyrad_free(tr);
 
    return(0);
@@ -338,6 +354,7 @@ void my_usage(void)
    printf("  -v, --verbose             print verbose messages\n");
    printf("  --defaults                load default dictionaries\n");
    printf("  --dictionary-dump         print imported dictionaries\n");
+   printf("  --configuration           print configuration\n");
    printf("\n");
    return;
 }
