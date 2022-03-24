@@ -110,7 +110,7 @@ tinyrad_load_dict(
 
 
 void
-my_usage( void );
+tinyrad_usage( void );
 
 
 /////////////////
@@ -196,7 +196,7 @@ int main(int argc, char * argv[])
          break;
 
          case 'h':
-         my_usage();
+         tinyrad_usage();
          return(0);
 
          case 'I':
@@ -340,7 +340,7 @@ tinyrad_load_dict(
 }
 
 
-void my_usage(void)
+void tinyrad_usage(void)
 {
    printf("Usage: %s [OPTIONS] [url]\n", PROGRAM_NAME);
    printf("OPTIONS:\n");
