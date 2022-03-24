@@ -37,14 +37,12 @@ test -x src/tinyrad || exit 77
 TINYRADNOINIT=1
 export TINYRADNOINIT
 
-./src/tinyrad \
-   --dictionary-dump \
-   --defaults \
+./src/tinyrad dictionary \
+   --builtin-dict \
    1> /tmp/tinyrad-dict-defaults1.$$ \
    2> /dev/null
 
-./src/tinyrad \
-   --dictionary-dump \
+./src/tinyrad dictionary \
    -D /tmp/tinyrad-dict-defaults1.$$ \
    1> /tmp/tinyrad-dict-defaults2.$$ \
    2> /dev/null
