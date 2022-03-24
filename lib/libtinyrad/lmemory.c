@@ -156,12 +156,12 @@ tinyrad_set_flag(
    unsigned    opts;
    unsigned    opts_neg;
 
-   opts      = ((optsp))      ? *optsp       :  0;
-   opts     |= ((val))        ? opt          :  0;
-   opts     &= (!(val))       ? ~opt         : ~0;
-   opts_neg  = ((opts_negp))  ? *opts_negp   :  0;
-   opts_neg |= (!(val))       ? opt          :  0;
-   opts_neg &= ((val))        ? ~opt         : ~0;
+   opts      = ((optsp))      ? *optsp       :  (0U);
+   opts     |= ((val))        ? opt          :  (0U);
+   opts     &= (!(val))       ? ~opt         : ~(0U);
+   opts_neg  = ((opts_negp))  ? *opts_negp   :  (0U);
+   opts_neg |= (!(val))       ? opt          :  (0U);
+   opts_neg &= ((val))        ? ~opt         : ~(0U);
 
    if ((optsp))
       *optsp = opts;
