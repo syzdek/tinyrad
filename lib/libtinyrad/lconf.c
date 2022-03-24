@@ -386,8 +386,8 @@ tinyrad_conf_opt(
       if ( (!(tr)) || ((tr->opts & TRAD_IPV6)) || ((tr->opts_neg & TRAD_IPV6)) )
          return(TRAD_SUCCESS);
       switch(i = ((value)) ? tinyrad_strtobool(value) : TRAD_YES)
-      {  case TRAD_NO:  tinyrad_set_option(tr, TRAD_IPV6, &i); break;
-         case TRAD_YES: tinyrad_set_option(tr, TRAD_IPV6, &i); break;
+      {  case TRAD_NO:  tinyrad_set_option(tr, TRAD_OPT_IPV6, &i); break;
+         case TRAD_YES: tinyrad_set_option(tr, TRAD_OPT_IPV6, &i); break;
          default: break;
       };
       return(TRAD_SUCCESS);
