@@ -613,10 +613,10 @@ tinyrad_urldesc_resolve(
       {
          if ((sasp = malloc(sizeof(struct sockaddr_storage *))) == NULL)
             return(TRAD_ENOMEM);
-         sasp[0]              = NULL;
-         trudp->trud_sockaddrs     = sasp;
-         sas_len              = 0;
-         trudp->trud_sockaddrs_len = sas_len;
+         sasp[0]                    = NULL;
+         trudp->trud_sockaddrs      = sasp;
+         sas_len                    = 0;
+         trudp->trud_sockaddrs_len  = sas_len;
       };
 
       next = res;
@@ -625,9 +625,9 @@ tinyrad_urldesc_resolve(
          size = sizeof(struct sockaddr_storage *) * (sas_len+2);
          if ((ptr = realloc(sasp, size)) == NULL)
             return(TRAD_ENOMEM);
-         sasp              = ptr;
-         trudp->trud_sockaddrs  = ptr;
-         sasp[sas_len+1]   = NULL;
+         sasp                    = ptr;
+         trudp->trud_sockaddrs   = ptr;
+         sasp[sas_len+1]         = NULL;
 
          if ((sasp[sas_len] = malloc(sizeof(struct sockaddr_storage))) == NULL)
             return(TRAD_ENOMEM);
