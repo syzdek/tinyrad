@@ -194,9 +194,6 @@ int main(int argc, char * argv[])
    int            rc;
    TinyRadDict *  dict;
    TinyRad *      tr;
-   const char *   url;
-   char **        dict_files;
-   char **        dict_paths;
    TinyRadConf    cnfdata;
    TinyRadConf *  cnf;
 
@@ -221,10 +218,7 @@ int main(int argc, char * argv[])
 
    memset(&cnfdata, 0, sizeof(cnfdata));
    cnf         = &cnfdata;
-   url         = NULL;
    dict        = NULL;
-   dict_files  = NULL;
-   dict_paths  = NULL;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
@@ -247,11 +241,11 @@ int main(int argc, char * argv[])
          break;
 
          case 'D':
-         if (tinyrad_strsadd(&dict_files, optarg) != TRAD_SUCCESS)
+         if (tinyrad_strsadd(&cnf->dict_files, optarg) != TRAD_SUCCESS)
          {
             trutils_error(cnf->opts, NULL, "out of virtual memory");
-            tinyrad_strsfree(dict_files);
-            tinyrad_strsfree(dict_paths);
+            tinyrad_strsfree(cnf->dict_files);
+            tinyrad_strsfree(cnf->dict_paths);
             return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
@@ -266,11 +260,11 @@ int main(int argc, char * argv[])
          return(0);
 
          case 'I':
-         if (tinyrad_strsadd(&dict_paths, optarg) != TRAD_SUCCESS)
+         if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
          {
             trutils_error(cnf->opts, NULL, "out of virtual memory");
-            tinyrad_strsfree(dict_files);
-            tinyrad_strsfree(dict_paths);
+            tinyrad_strsfree(cnf->dict_files);
+            tinyrad_strsfree(cnf->dict_paths);
             return(trutils_exit_code(TRAD_ENOMEM));
          };
          break;
@@ -301,22 +295,22 @@ int main(int argc, char * argv[])
    };
    if (optind < argc)
    {
-      url = argv[optind];
+      cnf->url = argv[optind];
       optind++;
    };
    if (optind < argc)
    {
       fprintf(stderr, "%s: unrecognized argument -- %s\n", PROGRAM_NAME, argv[optind]);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      tinyrad_strsfree(dict_files);
-      tinyrad_strsfree(dict_paths);
+      tinyrad_strsfree(cnf->dict_files);
+      tinyrad_strsfree(cnf->dict_paths);
       return(1);
    };
 
    // load TinyRad handle
-   rc = tinyrad_load_dict(cnf->opts, cnf->tr_opts, &tr, url, dict_files, dict_paths);
-   tinyrad_strsfree(dict_files);
-   tinyrad_strsfree(dict_paths);
+   rc = tinyrad_load_dict(cnf->opts, cnf->tr_opts, &tr, cnf->url, cnf->dict_files, cnf->dict_paths);
+   tinyrad_strsfree(cnf->dict_files);
+   tinyrad_strsfree(cnf->dict_paths);
    if (rc != TRAD_SUCCESS)
       return(trutils_exit_code(rc));
 
