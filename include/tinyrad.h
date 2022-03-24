@@ -191,7 +191,7 @@
 #define TRAD_CATHOLIC               0x00000010U
 #define TRAD_SERVER                 0x00000020U
 #define TRAD_RAND                   0x00000040U
-#define TRAD_URANDOM                0x00000100U
+#define TRAD_URANDOM                0x00000080U
 #define TRAD_RANDOM                 (TRAD_RAND | TRAD_URANDOM)
 #define TRAD_RANDOM_MASK            (TRAD_RAND | TRAD_URANDOM)
 
@@ -512,6 +512,17 @@ typedef struct tinyrad_url_desc
 //              //
 //////////////////
 #pragma mark - Prototypes
+
+//-----------------//
+// conf prototypes //
+//-----------------//
+#pragma mark conf prototypes
+
+void
+tinyrad_conf_print(
+         TinyRad *                     tr,
+         TinyRadDict *                 dict );
+
 
 //------------------//
 // debug prototypes //

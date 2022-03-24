@@ -41,6 +41,9 @@ tinyrad_array_push
 tinyrad_array_remove
 tinyrad_array_search
 #
+# conf functions
+tinyrad_conf_print
+#
 # data variables
 tinyrad_dict_default_vendors
 tinyrad_dict_default_attrs

@@ -150,6 +150,41 @@ tinyrad_conf_opt_bool(
          const char *                  value );
 
 
+void
+tinyrad_conf_print_bool(
+         int                           comment,
+         const char *                  name,
+         int                           value );
+
+
+void
+tinyrad_conf_print_hex(
+         int                           comment,
+         const char *                  name,
+         unsigned                      value );
+
+
+void
+tinyrad_conf_print_int(
+         int                           comment,
+         const char *                  name,
+         int                           value);
+
+
+void
+tinyrad_conf_print_line(
+         int                           comment,
+         const char *                  name,
+         const char *                  value );
+
+
+void
+tinyrad_conf_print_str(
+         int                           comment,
+         const char *                  name,
+         const char *                  str );
+
+
 /////////////////
 //             //
 //  Functions  //
@@ -509,5 +544,141 @@ tinyrad_conf_opt_bool(
 
    return(TRAD_SUCCESS);
 }
+
+
+void
+tinyrad_conf_print(
+         TinyRad *                     tr,
+         TinyRadDict *                 dict )
+{
+   size_t      pos;
+   char *      str;
+   char        buff[TRAD_LINE_MAX_LEN];
+
+   if ((tr))
+   {
+      printf("# TinyRad Library Configuration:\n");
+      if ((tinyrad_get_option(tr, TRAD_OPT_URI, &str)) == TRAD_SUCCESS)
+      {
+         printf("%-20s '%s'\n", "URI", str);
+         tinyrad_free(str);
+      };
+      if ((tinyrad_get_option(tr, TRAD_OPT_SOCKET_BIND_ADDRESSES, &str)) == TRAD_SUCCESS)
+      {
+         printf("%-20s '%s'\n", "BIND_ADDRESS:", str);
+         tinyrad_free(str);
+      };
+      if ( (!(tr->opts & TRAD_IPV4)) && (!(tr->opts & TRAD_IPV6)) )
+      {
+         tinyrad_conf_print_bool( 1,                        "IPV4",           TRAD_YES );
+         tinyrad_conf_print_bool( 1,                        "IPV6",           TRAD_YES );
+      } else {
+         tinyrad_conf_print_bool( 0,                        "IPV4",           ((tr->opts & TRAD_IPV4)) );
+         tinyrad_conf_print_bool( 0,                        "IPV6",           ((tr->opts & TRAD_IPV6)) );
+      };
+      tinyrad_conf_print_str(  0,                           "SECRET_FILE",    tr->secret_file);
+      tinyrad_conf_print_str(  (tr->secret_file != NULL),   "SECRET",         tr->secret);
+      tinyrad_conf_print_int(  0,                           "NETWORK_TIMEOUT", (int)(((tr->net_timeout)) ? tr->net_timeout->tv_sec : 0));
+      tinyrad_conf_print_int(  0,                           "TIMEOUT",         (int)tr->timeout);
+      tinyrad_conf_print_hex(  1,                           "authenticator",   tr->authenticator);
+      switch(tr->opts & TRAD_RANDOM_MASK)
+      {  case TRAD_RAND:    tinyrad_conf_print_line(  0, "RANDOM", "rand");    break;
+         case TRAD_RANDOM:  tinyrad_conf_print_line(  0, "RANDOM", "random");  break;
+         case TRAD_URANDOM: tinyrad_conf_print_line(  0, "RANDOM", "urandom"); break;
+         default:           tinyrad_conf_print_int(   0, "RANDOM", (tr->opts | TRAD_RANDOM_MASK)); break;
+      };
+      printf("\n");
+   };
+
+   if ((dict))
+   {
+      printf("# TinyRad Dictionary Configuration:\n");
+      tinyrad_conf_print_bool( 0,                        "BUILTIN_DICTIONARY",   ((dict->opts & TRAD_BUILTIN_DICT)) );
+      tinyrad_conf_print_str(  (dict->default_dictfile == NULL),  "DICTIONARY",   dict->default_dictfile );
+      tinyrad_conf_print_bool( 1,                        "IPV4",           TRAD_YES );
+      if ( ((dict->paths)) && ((dict->paths[0])) )
+      {
+         buff[0] = '\0';
+         for(pos = 0; ((dict->paths[pos])); pos++)
+         {
+            if (!(dict->paths[pos][0]))
+               continue;
+            if ((buff[0]))
+               tinyrad_strlcat(buff, ":", sizeof(buff));
+            tinyrad_strlcat(buff, dict->paths[pos], sizeof(buff));
+         };
+         tinyrad_conf_print_str( 0,  "PATHS", buff );
+      };
+      printf("\n");
+   };
+
+   printf("STOPINIT\n\n");
+
+   return;
+}
+
+
+void
+tinyrad_conf_print_bool(
+         int                           comment,
+         const char *                  name,
+         int                           value)
+{
+   tinyrad_conf_print_line(comment, name, (((value)) ? "yes" : "no"));
+   return;
+}
+
+
+void
+tinyrad_conf_print_hex(
+         int                           comment,
+         const char *                  name,
+         unsigned                      value )
+{
+   char buff[9];
+   snprintf(buff, sizeof(buff), "%08x", value);;
+   tinyrad_conf_print_line(comment, name, buff);
+   return;
+}
+
+
+void
+tinyrad_conf_print_int(
+         int                           comment,
+         const char *                  name,
+         int                           value )
+{
+   char buff[32];
+   snprintf(buff, sizeof(buff), "%i", value);;
+   tinyrad_conf_print_line(comment, name, buff);
+   return;
+}
+
+
+void
+tinyrad_conf_print_line(
+         int                           comment,
+         const char *                  name,
+         const char *                  value )
+{
+   printf("%s%-20s %s\n", (((comment)) ? "#" : ""), name, value);
+   return;
+}
+
+
+void
+tinyrad_conf_print_str(
+         int                           comment,
+         const char *                  name,
+         const char *                  value )
+{
+   char buff[TRAD_LINE_MAX_LEN];
+   if (!(value))
+      return;
+   snprintf(buff, sizeof(buff), "'%s'", value);
+   tinyrad_conf_print_line(comment, name, buff);
+   return;
+}
+
 
 /* end of source */
