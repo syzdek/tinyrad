@@ -72,19 +72,30 @@
 #define MY_OPT_CONFIG_PRINT   0x0008UL
 
 
-#define TINYRAD_GETOPT_SHORT "h"
+#define MY_GETOPT_MATCHED     -2
+#define MY_GETOPT_ERROR       -3
+#define MY_GETOPT_EXIT        -4
+
+
+#define TINYRAD_GETOPT_SHORT "d:f:hqVv"
 #define TINYRAD_GETOPT_LONG \
    { "debug",            optional_argument, NULL, 'd' }, \
-   { "file",             optional_argument, NULL, 'f' }, \
    { "help",             no_argument,       NULL, 'h' }, \
    { "quiet",            no_argument,       NULL, 'q' }, \
    { "silent",           no_argument,       NULL, 'q' }, \
    { "version",          no_argument,       NULL, 'V' }, \
    { "verbose",          no_argument,       NULL, 'v' }, \
-   { "configuration",    no_argument,       NULL,  3  }, \
-   { "defaults",         no_argument,       NULL,  2  }, \
-   { "dictionary-dump",  no_argument,       NULL,  1  }, \
    { NULL, 0, NULL, 0 }
+
+
+#define TINYRAD_DICT_GETOPT_SHORT "bD:I:"
+#define TINYRAD_DICT_GETOPT_LONG \
+   { "builtin-dict",     no_argument,       NULL, 'b' }, \
+
+
+#define TINYRAD_REQ_GETOPT_SHORT "D:I:"
+#define TINYRAD_REQ_GETOPT_LONG \
+   { "file",             optional_argument, NULL, 'f' }, \
 
 
 //////////////////
@@ -109,7 +120,13 @@ struct tinyrad_config
 {
    unsigned                opts;
    unsigned                tr_opts;
-   TinyRadCommand *        cmd;
+   int                     padint;
+   int                     cmd_argc;
+   char **                 cmd_argv;
+   const char *            cmd_name;
+   size_t                  cmd_len;
+   void *                  padptr;
+   const TinyRadCommand *  cmd;
    TinyRad *               tr;
    const char *            url;
    char **                 dict_files;
@@ -149,6 +166,26 @@ tinyrad_cleanup(
 
 
 int
+tinyrad_cmd_config(
+         TinyRadConf *                 cnf );
+
+
+int
+tinyrad_cmd_dict(
+         TinyRadConf *                 cnf );
+
+
+int
+tinyrad_getopt(
+         TinyRadConf *                 cnf,
+         int                           argc,
+         char * const *                argv,
+         const char *                  short_opt,
+         const struct option *         long_opt,
+         int *                         opt_index );
+
+
+int
 tinyrad_load_dict(
          TinyRadConf *                 cnf );
 
@@ -165,8 +202,35 @@ tinyrad_usage(
 /////////////////
 #pragma mark - Variables
 
+#pragma mark tinyrad_cmdmap[]
 static const TinyRadCommand tinyrad_cmdmap[] =
 {
+   {
+      "configuration",                                // command name
+      &tinyrad_cmd_config,                            // entry function
+      TINYRAD_DICT_GETOPT_SHORT
+      TINYRAD_GETOPT_SHORT,                           // getopt short options
+      (struct option [])
+      {  TINYRAD_DICT_GETOPT_LONG
+         TINYRAD_GETOPT_LONG
+      },                                              // getopt long options
+      0, 0,                                           // min/max arguments
+      NULL,                                           // extra cli usage
+      "print configuration"                           // command description
+   },
+   {
+      "dictionary",                                   // command name
+      &tinyrad_cmd_dict,                              // entry function
+      TINYRAD_DICT_GETOPT_SHORT
+      TINYRAD_GETOPT_SHORT,                           // getopt short options
+      (struct option [])
+      {  TINYRAD_DICT_GETOPT_LONG
+         TINYRAD_GETOPT_LONG
+      },                                              // getopt long options
+      0, 0,                                           // min/max arguments
+      NULL,                                           // extra cli usage
+      "print processed dictionary"                    // command description
+   },
    {
       "help",                                         // command name
       &tinyrad_usage,                                 // entry function
@@ -179,6 +243,7 @@ static const TinyRadCommand tinyrad_cmdmap[] =
    { NULL, NULL, NULL, NULL, -1, -1, NULL, NULL }
 };
 
+
 /////////////////
 //             //
 //  Functions  //
@@ -188,30 +253,17 @@ static const TinyRadCommand tinyrad_cmdmap[] =
 
 int main(int argc, char * argv[])
 {
-   int            opt;
    int            c;
    int            opt_index;
    int            rc;
+   size_t         pos;
    TinyRadDict *  dict;
    TinyRadConf    cnfdata;
    TinyRadConf *  cnf;
 
    // getopt options
-   static char          short_opt[] = "D:d:f:hI:qVv";
-   static struct option long_opt[] =
-   {
-      {"debug",            optional_argument, NULL, 'd' },
-      {"file",             optional_argument, NULL, 'f' },
-      {"help",             no_argument,       NULL, 'h' },
-      {"quiet",            no_argument,       NULL, 'q' },
-      {"silent",           no_argument,       NULL, 'q' },
-      {"version",          no_argument,       NULL, 'V' },
-      {"verbose",          no_argument,       NULL, 'v' },
-      {"configuration",    no_argument,       NULL,  3  },
-      {"defaults",         no_argument,       NULL,  2  },
-      {"dictionary-dump",  no_argument,       NULL,  1  },
-      { NULL, 0, NULL, 0 }
-   };
+   static char          short_opt[] = "+" TINYRAD_GETOPT_SHORT;
+   static struct option long_opt[]  = { TINYRAD_GETOPT_LONG };
 
    trutils_initialize(PROGRAM_NAME);
 
@@ -219,66 +271,22 @@ int main(int argc, char * argv[])
    cnf         = &cnfdata;
    dict        = NULL;
 
-   while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
+   while((c = tinyrad_getopt(cnf, argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
       switch(c)
       {
-         case -1:       /* no more arguments */
-         case 0:        /* long options toggles */
+         case MY_GETOPT_MATCHED: /* captured by common options */
+         case -1:                /* no more arguments */
+         case 0:                 /* long options toggles */
          break;
 
-         case 1:
-         cnf->opts |= MY_OPT_DICT_DUMP;
-         break;
-
-         case 2:
-         cnf->tr_opts |= TRAD_BUILTIN_DICT;
-         break;
-
-         case 3:
-         cnf->opts |= MY_OPT_CONFIG_PRINT;
-         break;
-
-         case 'D':
-         if (tinyrad_strsadd(&cnf->dict_files, optarg) != TRAD_SUCCESS)
-         {
-            trutils_error(cnf->opts, NULL, "out of virtual memory");
-            tinyrad_cleanup(cnf);
-            return(trutils_exit_code(TRAD_ENOMEM));
-         };
-         break;
-
-         case 'd':
-         opt = ((optarg)) ? (int)strtol(optarg, NULL, 0) : TRAD_DEBUG_ANY;
-         tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
-         break;
-
-         case 'h':
-         tinyrad_usage(cnf);
+         case MY_GETOPT_EXIT:
+         tinyrad_cleanup(cnf);
          return(0);
 
-         case 'I':
-         if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
-         {
-            trutils_error(cnf->opts, NULL, "out of virtual memory");
-            tinyrad_cleanup(cnf);
-            return(trutils_exit_code(TRAD_ENOMEM));
-         };
-         break;
-
-         case 'q':
-         cnf->opts |=  TRUTILS_OPT_QUIET;
-         cnf->opts &= ~TRUTILS_OPT_VERBOSE;
-         break;
-
-         case 'V':
-         trutils_version();
-         return(0);
-
-         case 'v':
-         cnf->opts |=  TRUTILS_OPT_VERBOSE;
-         cnf->opts &= ~TRUTILS_OPT_QUIET;
-         break;
+         case MY_GETOPT_ERROR:
+         tinyrad_cleanup(cnf);
+         return(1);
 
          case '?':
          fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
@@ -290,50 +298,90 @@ int main(int argc, char * argv[])
          return(1);
       };
    };
-   if (optind < argc)
+   if ((argc - optind) < 1)
    {
-      cnf->url = argv[optind];
-      optind++;
-   };
-   if (optind < argc)
-   {
-      fprintf(stderr, "%s: unrecognized argument -- %s\n", PROGRAM_NAME, argv[optind]);
+      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      tinyrad_cleanup(cnf);
+      return(1);
+   };
+   cnf->cmd_argc = (argc - optind);
+   cnf->cmd_argv = &argv[optind];
+   cnf->cmd_name = cnf->cmd_argv[0];
+   cnf->cmd_len  = strlen(cnf->cmd_name);
+
+   // looks up widget
+   for(pos = 0; (tinyrad_cmdmap[pos].cmd_name != NULL); pos++)
+   {
+      if ((strncmp(cnf->cmd_name, tinyrad_cmdmap[pos].cmd_name, cnf->cmd_len)))
+         continue;
+      if ((cnf->cmd))
+      {
+         fprintf(stderr, "%s: ambiguous command -- \"%s\"\n", PROGRAM_NAME, cnf->cmd_name);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+      };
+      cnf->cmd = &tinyrad_cmdmap[pos];
+   };
+   if (!(cnf->cmd))
+   {
+      fprintf(stderr, "%s: unknown command -- \"%s\"\n", PROGRAM_NAME, cnf->cmd_name);
+      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+      return(1);
+   };
+   if (!(cnf->cmd->cmd_func))
+   {
+      fprintf(stderr, "%s: command not implemented -- \"%s\"\n", PROGRAM_NAME, cnf->cmd->cmd_name);
+      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
 
-   // load TinyRad handle
-   rc = tinyrad_load_dict(cnf);
-   if (rc != TRAD_SUCCESS)
+   // process widget cli options
+   optind = 1;
+   opt_index = 0;
+   while((c = tinyrad_getopt(cnf, cnf->cmd_argc, cnf->cmd_argv, cnf->cmd->cmd_shortopts, cnf->cmd->cmd_longopts, &opt_index)) != -1)
    {
-      tinyrad_cleanup(cnf);
-      return(trutils_exit_code(rc));
+      switch(c)
+      {
+         case -2: /* captured by common options */
+         case -1:	/* no more arguments */
+         case 0:	/* long options toggles */
+         break;
+
+         case MY_GETOPT_EXIT:
+         tinyrad_cleanup(cnf);
+         return(0);
+
+         case MY_GETOPT_ERROR:
+         tinyrad_cleanup(cnf);
+         return(1);
+
+         case '?':
+         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+         return(1);
+
+         default:
+         fprintf(stderr, "%s: %s: unrecognized option `--%c'\n", PROGRAM_NAME, cnf->cmd_name, c);
+         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+         return(1);
+      };
+   };
+   if ((cnf->cmd_argc - optind) < cnf->cmd->cmd_min_arg)
+   {
+      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
+      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+      return(1);
+   };
+   if ((optind+cnf->cmd->cmd_max_arg) > cnf->cmd_argc)
+   {
+      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->cmd_argv[optind+1]);
+      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+      return(1);
    };
 
-   // display dictionary
-   if ((cnf->opts & MY_OPT_DICT_DUMP))
-   {
-      tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
-      tinyrad_dict_print(dict, 0xffff);
-      tinyrad_cleanup(cnf);
-      tinyrad_free(dict);
-      return(0);
-   };
-
-   // display configuration
-   if ((cnf->opts & MY_OPT_CONFIG_PRINT))
-   {
-      tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
-      tinyrad_conf_print(cnf->tr, dict);
-      tinyrad_cleanup(cnf);
-      tinyrad_free(dict);
-      return(0);
-   };
-
+   // call widget
+   rc = cnf->cmd->cmd_func(cnf);
    tinyrad_cleanup(cnf);
-
-   return(0);
+   return(trutils_exit_code(rc));
 }
 
 
@@ -345,6 +393,101 @@ tinyrad_cleanup(
    tinyrad_strsfree(cnf->dict_files);
    tinyrad_strsfree(cnf->dict_paths);
    return;
+}
+
+
+int
+tinyrad_cmd_config(
+         TinyRadConf *                 cnf )
+{
+   int               rc;
+   TinyRadDict *     dict;
+   if ((rc = tinyrad_load_dict(cnf)) != TRAD_SUCCESS)
+      return(rc);
+   tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
+   tinyrad_conf_print(cnf->tr, dict);
+   tinyrad_free(dict);
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_cmd_dict(
+         TinyRadConf *                 cnf )
+{
+   int               rc;
+   TinyRadDict *     dict;
+   if ((rc = tinyrad_load_dict(cnf)) != TRAD_SUCCESS)
+      return(rc);
+   tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
+   tinyrad_dict_print(dict, 0xffff);
+   tinyrad_free(dict);
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tinyrad_getopt(
+         TinyRadConf *                 cnf,
+         int                           argc,
+         char * const *                argv,
+         const char *                  short_opt,
+         const struct option *         long_opt,
+         int *                         opt_index )
+{
+   int   c;
+   int   opt;
+
+   switch(c = getopt_long(argc, argv, short_opt, long_opt, opt_index))
+   {
+      case 'b':
+      cnf->tr_opts |= TRAD_BUILTIN_DICT;
+      return(MY_GETOPT_MATCHED);
+
+      case 'D':
+      if (tinyrad_strsadd(&cnf->dict_files, optarg) != TRAD_SUCCESS)
+      {
+         trutils_error(cnf->opts, NULL, "out of virtual memory");
+         return(MY_GETOPT_ERROR);
+      };
+      return(MY_GETOPT_MATCHED);
+
+      case 'd':
+      opt = ((optarg)) ? (int)strtol(optarg, NULL, 0) : TRAD_DEBUG_ANY;
+      tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
+      return(MY_GETOPT_MATCHED);
+
+      case 'h':
+      tinyrad_usage(cnf);
+      return(MY_GETOPT_EXIT);
+
+      case 'I':
+      if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
+      {
+         trutils_error(cnf->opts, NULL, "out of virtual memory");
+         return(MY_GETOPT_ERROR);
+      };
+      return(MY_GETOPT_MATCHED);
+
+      case 'q':
+      cnf->opts |=  TRUTILS_OPT_QUIET;
+      cnf->opts &= ~TRUTILS_OPT_VERBOSE;
+      return(MY_GETOPT_MATCHED);
+
+      case 'V':
+      trutils_version();
+      return(MY_GETOPT_EXIT);
+
+      case 'v':
+      cnf->opts |=  TRUTILS_OPT_VERBOSE;
+      cnf->opts &= ~TRUTILS_OPT_QUIET;
+      return(MY_GETOPT_MATCHED);
+
+      default:
+      break;
+   };
+
+   return(c);
 }
 
 
@@ -404,20 +547,33 @@ int
 tinyrad_usage(
          TinyRadConf *                 cnf )
 {
-   int i;
-   printf("Usage: %s [OPTIONS] [url]\n", PROGRAM_NAME);
+   int            i;
+   const char *   name;
+   const char *   help;
+   const char *   s;
+
+   name  = "COMMAND";
+   help  = " ...";
+   s     = TINYRAD_GETOPT_SHORT;
+
+   if ((cnf->cmd))
+   {
+      name  = cnf->cmd->cmd_name;
+      help  = ((cnf->cmd->cmd_help))      ? cnf->cmd->cmd_help      : "";
+      s     = ((cnf->cmd->cmd_shortopts)) ? cnf->cmd->cmd_shortopts : TINYRAD_GETOPT_SHORT;
+   };
+
+   printf("Usage: %s %s [OPTIONS]%s\n", PROGRAM_NAME, name, help);
    printf("OPTIONS:\n");
-   printf("  -D dictionary             include dictionary\n");
-   printf("  -d level, --debug=level   print debug messages\n");
-   printf("  -f file, --file=file      attribute list\n");
-   printf("  -h, --help                print this help and exit\n");
-   printf("  -I path                   add path to dictionary search paths\n");
-   printf("  -q, --quiet, --silent     do not print messages\n");
-   printf("  -V, --version             print version number and exit\n");
-   printf("  -v, --verbose             print verbose messages\n");
-   printf("  --defaults                load default dictionaries\n");
-   printf("  --dictionary-dump         print imported dictionaries\n");
-   printf("  --configuration           print configuration\n");
+   if ((strchr(s, 'b'))) printf("  -b, --builtin-dict        load built-in dictionary\n");
+   if ((strchr(s, 'D'))) printf("  -D dictionary             include dictionary\n");
+   if ((strchr(s, 'd'))) printf("  -d level, --debug=level   print debug messages\n");
+   if ((strchr(s, 'f'))) printf("  -f file, --file=file      attribute list\n");
+   if ((strchr(s, 'h'))) printf("  -h, --help                print this help and exit\n");
+   if ((strchr(s, 'I'))) printf("  -I path                   add path to dictionary search paths\n");
+   if ((strchr(s, 'q'))) printf("  -q, --quiet, --silent     do not print messages\n");
+   if ((strchr(s, 'V'))) printf("  -V, --version             print version number and exit\n");
+   if ((strchr(s, 'v'))) printf("  -v, --verbose             print verbose messages\n");
    if (!(cnf->cmd))
    {
       printf("COMMANDS:\n");
