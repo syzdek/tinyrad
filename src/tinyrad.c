@@ -108,8 +108,12 @@ typedef struct my_request_av
 struct tinyrad_config
 {
    unsigned                opts;
-   unsigned                padint;
+   unsigned                tr_opts;
    TinyRadCommand *        cmd;
+   TinyRad *               tr;
+   const char *            url;
+   char **                 dict_files;
+   char **                 dict_paths;
 };
 
 
@@ -188,14 +192,13 @@ int main(int argc, char * argv[])
    int            c;
    int            opt_index;
    int            rc;
-   unsigned       tr_opts;
    TinyRadDict *  dict;
    TinyRad *      tr;
    const char *   url;
    char **        dict_files;
    char **        dict_paths;
-   unsigned       opts;
-   TinyRadConf    cnf;
+   TinyRadConf    cnfdata;
+   TinyRadConf *  cnf;
 
    // getopt options
    static char          short_opt[] = "D:d:f:hI:qVv";
@@ -216,9 +219,8 @@ int main(int argc, char * argv[])
 
    trutils_initialize(PROGRAM_NAME);
 
-   memset(&cnf, 0, sizeof(cnf));
-   opts        = 0;
-   tr_opts     = 0;
+   memset(&cnfdata, 0, sizeof(cnfdata));
+   cnf         = &cnfdata;
    url         = NULL;
    dict        = NULL;
    dict_files  = NULL;
@@ -233,21 +235,21 @@ int main(int argc, char * argv[])
          break;
 
          case 1:
-         opts |= MY_OPT_DICT_DUMP;
+         cnf->opts |= MY_OPT_DICT_DUMP;
          break;
 
          case 2:
-         tr_opts |= TRAD_BUILTIN_DICT;
+         cnf->tr_opts |= TRAD_BUILTIN_DICT;
          break;
 
          case 3:
-         opts |= MY_OPT_CONFIG_PRINT;
+         cnf->opts |= MY_OPT_CONFIG_PRINT;
          break;
 
          case 'D':
          if (tinyrad_strsadd(&dict_files, optarg) != TRAD_SUCCESS)
          {
-            trutils_error(opts, NULL, "out of virtual memory");
+            trutils_error(cnf->opts, NULL, "out of virtual memory");
             tinyrad_strsfree(dict_files);
             tinyrad_strsfree(dict_paths);
             return(trutils_exit_code(TRAD_ENOMEM));
@@ -260,13 +262,13 @@ int main(int argc, char * argv[])
          break;
 
          case 'h':
-         tinyrad_usage(&cnf);
+         tinyrad_usage(cnf);
          return(0);
 
          case 'I':
          if (tinyrad_strsadd(&dict_paths, optarg) != TRAD_SUCCESS)
          {
-            trutils_error(opts, NULL, "out of virtual memory");
+            trutils_error(cnf->opts, NULL, "out of virtual memory");
             tinyrad_strsfree(dict_files);
             tinyrad_strsfree(dict_paths);
             return(trutils_exit_code(TRAD_ENOMEM));
@@ -274,8 +276,8 @@ int main(int argc, char * argv[])
          break;
 
          case 'q':
-         opts |=  TRUTILS_OPT_QUIET;
-         opts &= ~TRUTILS_OPT_VERBOSE;
+         cnf->opts |=  TRUTILS_OPT_QUIET;
+         cnf->opts &= ~TRUTILS_OPT_VERBOSE;
          break;
 
          case 'V':
@@ -283,8 +285,8 @@ int main(int argc, char * argv[])
          return(0);
 
          case 'v':
-         opts |=  TRUTILS_OPT_VERBOSE;
-         opts &= ~TRUTILS_OPT_QUIET;
+         cnf->opts |=  TRUTILS_OPT_VERBOSE;
+         cnf->opts &= ~TRUTILS_OPT_QUIET;
          break;
 
          case '?':
@@ -312,14 +314,14 @@ int main(int argc, char * argv[])
    };
 
    // load TinyRad handle
-   rc = tinyrad_load_dict(opts, tr_opts, &tr, url, dict_files, dict_paths);
+   rc = tinyrad_load_dict(cnf->opts, cnf->tr_opts, &tr, url, dict_files, dict_paths);
    tinyrad_strsfree(dict_files);
    tinyrad_strsfree(dict_paths);
    if (rc != TRAD_SUCCESS)
       return(trutils_exit_code(rc));
 
    // display dictionary
-   if ((opts & MY_OPT_DICT_DUMP))
+   if ((cnf->opts & MY_OPT_DICT_DUMP))
    {
       tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
       tinyrad_dict_print(dict, 0xffff);
@@ -329,7 +331,7 @@ int main(int argc, char * argv[])
    };
 
    // display configuration
-   if ((opts & MY_OPT_CONFIG_PRINT))
+   if ((cnf->opts & MY_OPT_CONFIG_PRINT))
    {
       tinyrad_get_option(tr, TRAD_OPT_DICTIONARY, &dict);
       tinyrad_conf_print(tr, dict);
