@@ -553,10 +553,6 @@ tinyrad_urldesc_resolve(
    assert(trudp->trud_host != NULL);
 
    TinyRadDebug(TRAD_DEBUG_ARGS, "   == %s(trudp)", __func__);
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_host:   %s", trudp->trud_host);
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_port:   %i", trudp->trud_port);
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_secret: %s", (((trudp->trud_secret)) ? trudp->trud_secret : "n/a"));
-   TinyRadDebug(TRAD_DEBUG_ARGS, "   => trudp->trud_opts:   0x%04x", trudp->trud_opts);
 
    // clear existing sockaddrs
    for(trudp_ptr = trudp; ((trudp_ptr)); trudp_ptr = trudp_ptr->trud_next)
@@ -595,6 +591,12 @@ tinyrad_urldesc_resolve(
 
    while ((trudp))
    {
+      TinyRadDebug(TRAD_DEBUG_ARGS, "   => %s members", "trudp");
+      TinyRadDebug(TRAD_DEBUG_ARGS, "      => trudp->trud_host:   %s", trudp->trud_host);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "      => trudp->trud_port:   %i", trudp->trud_port);
+      TinyRadDebug(TRAD_DEBUG_ARGS, "      => trudp->trud_secret: %s", (((trudp->trud_secret)) ? trudp->trud_secret : "n/a"));
+      TinyRadDebug(TRAD_DEBUG_ARGS, "      => trudp->trud_opts:   0x%04x", trudp->trud_opts);
+
       memset(&hints, 0, sizeof(struct addrinfo));
       hints.ai_flags    = ai_flags;
       hints.ai_family   = ai_family;
