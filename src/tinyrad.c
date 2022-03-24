@@ -100,7 +100,7 @@ main(
 
 
 int
-my_tinyrad_load(
+tinyrad_load_dict(
          int                           opts,
          unsigned                      tr_opts,
          TinyRad **                    trp,
@@ -248,7 +248,7 @@ int main(int argc, char * argv[])
    };
 
    // load TinyRad handle
-   rc = my_tinyrad_load(opts, tr_opts, &tr, url, dict_files, dict_paths);
+   rc = tinyrad_load_dict(opts, tr_opts, &tr, url, dict_files, dict_paths);
    tinyrad_strsfree(dict_files);
    tinyrad_strsfree(dict_paths);
    if (rc != TRAD_SUCCESS)
@@ -281,7 +281,7 @@ int main(int argc, char * argv[])
 
 
 int
-my_tinyrad_load(
+tinyrad_load_dict(
          int                           opts,
          unsigned                      tr_opts,
          TinyRad **                    trp,
