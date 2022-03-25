@@ -29,6 +29,7 @@
  *  SUCH DAMAGE.
  */
 #define _SRC_TINYRADUTIL_TINYRADUTIL_C 1
+#include "tinyradutil.h"
 
 ///////////////
 //           //
@@ -62,40 +63,6 @@
 ///////////////////
 #pragma mark - Definitions
 
-#undef PROGRAM_NAME
-#define PROGRAM_NAME "tinyrad"
-
-#define MY_OPT_DICT_DEFAULTS  0x0001UL
-#define MY_OPT_DICT_DUMP      0x0002UL
-#define MY_OPT_DICT_LOADED    0x0004UL
-#define MY_OPT_CONFIG_PRINT   0x0008UL
-
-
-#define MY_GETOPT_MATCHED     -2
-#define MY_GETOPT_ERROR       -3
-#define MY_GETOPT_EXIT        -4
-
-
-#define TINYRAD_GETOPT_SHORT "d:f:hqVv"
-#define TINYRAD_GETOPT_LONG \
-   { "debug",            optional_argument, NULL, 'd' }, \
-   { "help",             no_argument,       NULL, 'h' }, \
-   { "quiet",            no_argument,       NULL, 'q' }, \
-   { "silent",           no_argument,       NULL, 'q' }, \
-   { "version",          no_argument,       NULL, 'V' }, \
-   { "verbose",          no_argument,       NULL, 'v' }, \
-   { NULL, 0, NULL, 0 }
-
-
-#define TINYRAD_DICT_GETOPT_SHORT "bD:I:"
-#define TINYRAD_DICT_GETOPT_LONG \
-   { "builtin-dict",     no_argument,       NULL, 'b' }, \
-
-
-#define TINYRAD_REQ_GETOPT_SHORT "D:I:"
-#define TINYRAD_REQ_GETOPT_LONG \
-   { "file",             optional_argument, NULL, 'f' }, \
-
 
 //////////////////
 //              //
@@ -104,47 +71,6 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct tinyrad_util_config     TinyRadUtilConf;
-typedef struct tinyrad_util_widget     TinyRadUtilWidget;
-
-
-typedef struct my_request_av
-{
-   char * attr_name;
-   char * attr_value;
-} MyRequestAV;
-
-
-struct tinyrad_util_config
-{
-   unsigned                   opts;
-   unsigned                   tr_opts;
-   int                        padint;
-   int                        cmd_argc;
-   char **                    cmd_argv;
-   const char *               cmd_name;
-   size_t                     cmd_len;
-   void *                     padptr;
-   const TinyRadUtilWidget *  cmd;
-   TinyRad *                  tr;
-   const char *               url;
-   char **                    dict_files;
-   char **                    dict_paths;
-};
-
-
-struct tinyrad_util_widget
-{
-   const char *            name;
-   int  (*func)(TinyRadUtilConf * cnf);
-   const char *            shortopts;
-   struct option *         longopts;
-   int                     min_arg;
-   int                     max_arg;
-   const char *            usage;
-   const char *            desc;
-};
-
 
 //////////////////
 //              //
@@ -152,46 +78,6 @@ struct tinyrad_util_widget
 //              //
 //////////////////
 #pragma mark - Prototypes
-
-int
-main(
-         int                           argc,
-         char *                        argv[] );
-
-
-void
-tru_cleanup(
-         TinyRadUtilConf *                 cnf );
-
-
-int
-tru_widget_config(
-         TinyRadUtilConf *                 cnf );
-
-
-int
-tru_widget_dict(
-         TinyRadUtilConf *                 cnf );
-
-
-int
-tru_getopt(
-         TinyRadUtilConf *                 cnf,
-         int                           argc,
-         char * const *                argv,
-         const char *                  short_opt,
-         const struct option *         long_opt,
-         int *                         opt_index );
-
-
-int
-tru_load_tinyrad(
-         TinyRadUtilConf *                 cnf );
-
-
-int
-tru_usage(
-         TinyRadUtilConf *                 cnf );
 
 
 /////////////////
@@ -202,7 +88,7 @@ tru_usage(
 #pragma mark - Variables
 
 #pragma mark tinyrad_cmdmap[]
-static const TinyRadUtilWidget tru_widget_map[] =
+const TinyRadUtilWidget tru_widget_map[] =
 {
    {
       .name       = "configuration",
