@@ -293,36 +293,6 @@ tru_cleanup(
 
 
 int
-tru_widget_config(
-         TinyRadUtilConf *                 cnf )
-{
-   int               rc;
-   TinyRadDict *     dict;
-   if ((rc = tru_load_tinyrad(cnf)) != TRAD_SUCCESS)
-      return(rc);
-   tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
-   tinyrad_conf_print(cnf->tr, dict);
-   tinyrad_free(dict);
-   return(TRAD_SUCCESS);
-}
-
-
-int
-tru_widget_dict(
-         TinyRadUtilConf *                 cnf )
-{
-   int               rc;
-   TinyRadDict *     dict;
-   if ((rc = tru_load_tinyrad(cnf)) != TRAD_SUCCESS)
-      return(rc);
-   tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
-   tinyrad_dict_print(dict, 0xffff);
-   tinyrad_free(dict);
-   return(TRAD_SUCCESS);
-}
-
-
-int
 tru_getopt(
          TinyRadUtilConf *                 cnf,
          int                           argc,

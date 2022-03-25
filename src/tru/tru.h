@@ -187,6 +187,11 @@ tru_widget_dict(
 
 
 int
+tru_widget_url(
+         TinyRadUtilConf *                 cnf );
+
+
+int
 tru_getopt(
          TinyRadUtilConf *                 cnf,
          int                           argc,
