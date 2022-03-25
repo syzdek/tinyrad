@@ -99,11 +99,8 @@ const TinyRadUtilWidget tru_widget_map[] =
    {
       .name       = "configuration",
       .func       = &tru_widget_config,
-      .shortopts  = TINYRAD_DICT_GETOPT_SHORT TINYRAD_GETOPT_SHORT,
-      .longopts   = (struct option [])
-                  {  TINYRAD_DICT_GETOPT_LONG
-                     TINYRAD_GETOPT_LONG
-                  },
+      .shortopts  = TRU_COMMON_SHORT TRU_DICT_SHORT,
+      .longopts   = (struct option []) { TRU_DICT_LONG TRU_COMMON_LONG },
       .min_arg    = 0,
       .max_arg    = 0,
       .usage      = NULL,
@@ -112,11 +109,8 @@ const TinyRadUtilWidget tru_widget_map[] =
    {
       .name       = "dictionary",
       .func       = &tru_widget_dict,
-      .shortopts  = TINYRAD_DICT_GETOPT_SHORT TINYRAD_GETOPT_SHORT,
-      .longopts   = (struct option [])
-                  {  TINYRAD_DICT_GETOPT_LONG
-                     TINYRAD_GETOPT_LONG
-                  },
+      .shortopts  = TRU_COMMON_SHORT TRU_DICT_SHORT,
+      .longopts   = (struct option []) { TRU_DICT_LONG TRU_COMMON_LONG },
       .min_arg    = 0,
       .max_arg    = 0,
       .usage      = NULL,
@@ -125,8 +119,8 @@ const TinyRadUtilWidget tru_widget_map[] =
    {
       .name       = "help",
       .func       = &tru_usage,
-      .shortopts  = TINYRAD_GETOPT_SHORT,
-      .longopts   = (struct option []) { TINYRAD_GETOPT_LONG },
+      .shortopts  = TRU_COMMON_SHORT,
+      .longopts   = (struct option []) { TRU_COMMON_LONG },
       .min_arg    = 0,
       .max_arg    = 0,
       .usage      = NULL,
@@ -162,8 +156,8 @@ int main(int argc, char * argv[])
    TinyRadUtilConf *  cnf;
 
    // getopt options
-   static char          short_opt[] = "+" TINYRAD_GETOPT_SHORT;
-   static struct option long_opt[]  = { TINYRAD_GETOPT_LONG };
+   static char          short_opt[] = "+" TRU_COMMON_SHORT;
+   static struct option long_opt[]  = { TRU_COMMON_LONG };
 
    trutils_initialize(PROGRAM_NAME);
 
@@ -175,16 +169,16 @@ int main(int argc, char * argv[])
    {
       switch(c)
       {
-         case MY_GETOPT_MATCHED: /* captured by common options */
-         case -1:                /* no more arguments */
-         case 0:                 /* long options toggles */
+         case TRU_GETOPT_MATCHED: /* captured by common options */
+         case -1:                 /* no more arguments */
+         case 0:                  /* long options toggles */
          break;
 
-         case MY_GETOPT_EXIT:
+         case TRU_GETOPT_EXIT:
          tru_cleanup(cnf);
          return(0);
 
-         case MY_GETOPT_ERROR:
+         case TRU_GETOPT_ERROR:
          tru_cleanup(cnf);
          return(1);
 
@@ -228,11 +222,11 @@ int main(int argc, char * argv[])
          case 0:	/* long options toggles */
          break;
 
-         case MY_GETOPT_EXIT:
+         case TRU_GETOPT_EXIT:
          tru_cleanup(cnf);
          return(0);
 
-         case MY_GETOPT_ERROR:
+         case TRU_GETOPT_ERROR:
          tru_cleanup(cnf);
          return(1);
 
@@ -293,46 +287,46 @@ tru_getopt(
    {
       case 'b':
       cnf->tr_opts |= TRAD_BUILTIN_DICT;
-      return(MY_GETOPT_MATCHED);
+      return(TRU_GETOPT_MATCHED);
 
       case 'D':
       if (tinyrad_strsadd(&cnf->dict_files, optarg) != TRAD_SUCCESS)
       {
          trutils_error(cnf->opts, NULL, "out of virtual memory");
-         return(MY_GETOPT_ERROR);
+         return(TRU_GETOPT_ERROR);
       };
-      return(MY_GETOPT_MATCHED);
+      return(TRU_GETOPT_MATCHED);
 
       case 'd':
       opt = ((optarg)) ? (int)strtol(optarg, NULL, 0) : TRAD_DEBUG_ANY;
       tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
-      return(MY_GETOPT_MATCHED);
+      return(TRU_GETOPT_MATCHED);
 
       case 'h':
       tru_usage(cnf);
-      return(MY_GETOPT_EXIT);
+      return(TRU_GETOPT_EXIT);
 
       case 'I':
       if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
       {
          trutils_error(cnf->opts, NULL, "out of virtual memory");
-         return(MY_GETOPT_ERROR);
+         return(TRU_GETOPT_ERROR);
       };
-      return(MY_GETOPT_MATCHED);
+      return(TRU_GETOPT_MATCHED);
 
       case 'q':
       cnf->opts |=  TRUTILS_OPT_QUIET;
       cnf->opts &= ~TRUTILS_OPT_VERBOSE;
-      return(MY_GETOPT_MATCHED);
+      return(TRU_GETOPT_MATCHED);
 
       case 'V':
       trutils_version();
-      return(MY_GETOPT_EXIT);
+      return(TRU_GETOPT_EXIT);
 
       case 'v':
       cnf->opts |=  TRUTILS_OPT_VERBOSE;
       cnf->opts &= ~TRUTILS_OPT_QUIET;
-      return(MY_GETOPT_MATCHED);
+      return(TRU_GETOPT_MATCHED);
 
       default:
       break;
@@ -403,16 +397,9 @@ tru_usage(
    const char *   help;
    const char *   s;
 
-   name  = "COMMAND";
-   help  = " ...";
-   s     = TINYRAD_GETOPT_SHORT;
-
-   if ((cnf->cmd))
-   {
-      name  = cnf->cmd->name;
-      help  = ((cnf->cmd->usage))      ? cnf->cmd->usage      : "";
-      s     = ((cnf->cmd->shortopts)) ? cnf->cmd->shortopts : TINYRAD_GETOPT_SHORT;
-   };
+   name  = (!(cnf->cmd)) ? "widget"         : cnf->cmd->name;
+   help  = (!(cnf->cmd)) ? " ..."           : (((cnf->cmd->usage))     ? cnf->cmd->usage     : "");
+   s     = (!(cnf->cmd)) ? TRU_COMMON_SHORT : (((cnf->cmd->shortopts)) ? cnf->cmd->shortopts : TRU_COMMON_SHORT);
 
    printf("Usage: %s %s [OPTIONS]%s\n", PROGRAM_NAME, name, help);
    printf("OPTIONS:\n");
@@ -467,7 +454,7 @@ tru_widget_lookup(
       };
    };
 
-   return(NULL);
+   return(match);
 }
 
 /* end of source */

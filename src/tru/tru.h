@@ -66,19 +66,14 @@
 #undef PROGRAM_NAME
 #define PROGRAM_NAME "tinyrad"
 
-#define MY_OPT_DICT_DEFAULTS  0x0001UL
-#define MY_OPT_DICT_DUMP      0x0002UL
-#define MY_OPT_DICT_LOADED    0x0004UL
-#define MY_OPT_CONFIG_PRINT   0x0008UL
+
+#define TRU_GETOPT_MATCHED    -2
+#define TRU_GETOPT_ERROR      -3
+#define TRU_GETOPT_EXIT       -4
 
 
-#define MY_GETOPT_MATCHED     -2
-#define MY_GETOPT_ERROR       -3
-#define MY_GETOPT_EXIT        -4
-
-
-#define TINYRAD_GETOPT_SHORT "d:f:hqVv"
-#define TINYRAD_GETOPT_LONG \
+#define TRU_COMMON_SHORT "d:f:hqVv"
+#define TRU_COMMON_LONG \
    { "debug",            optional_argument, NULL, 'd' }, \
    { "help",             no_argument,       NULL, 'h' }, \
    { "quiet",            no_argument,       NULL, 'q' }, \
@@ -88,13 +83,13 @@
    { NULL, 0, NULL, 0 }
 
 
-#define TINYRAD_DICT_GETOPT_SHORT "bD:I:"
-#define TINYRAD_DICT_GETOPT_LONG \
+#define TRU_DICT_SHORT "bD:I:"
+#define TRU_DICT_LONG \
    { "builtin-dict",     no_argument,       NULL, 'b' }, \
 
 
-#define TINYRAD_REQ_GETOPT_SHORT "D:I:"
-#define TINYRAD_REQ_GETOPT_LONG \
+#define TRU_REQ_SHORT "I:"
+#define TRU_REQ_LONG \
    { "file",             optional_argument, NULL, 'f' }, \
 
 
