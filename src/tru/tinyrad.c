@@ -80,6 +80,11 @@
 //////////////////
 #pragma mark - Prototypes
 
+static const TinyRadUtilWidget *
+tru_widget_lookup(
+         const char *                     wname,
+         int                              exact );
+
 
 /////////////////
 //             //
@@ -152,7 +157,6 @@ int main(int argc, char * argv[])
    int            c;
    int            opt_index;
    int            rc;
-   size_t         pos;
    TinyRadDict *  dict;
    TinyRadUtilConf    cnfdata;
    TinyRadUtilConf *  cnf;
@@ -203,30 +207,11 @@ int main(int argc, char * argv[])
    cnf->cmd_argc = (argc - optind);
    cnf->cmd_argv = &argv[optind];
    cnf->cmd_name = cnf->cmd_argv[0];
-   cnf->cmd_len  = strlen(cnf->cmd_name);
 
    // looks up widget
-   for(pos = 0; (tru_widget_map[pos].name != NULL); pos++)
+   if ((cnf->cmd = tru_widget_lookup(cnf->cmd_argv[0], TRAD_NO)) == NULL)
    {
-      if ((strncmp(cnf->cmd_name, tru_widget_map[pos].name, cnf->cmd_len)))
-         continue;
-      if ((cnf->cmd))
-      {
-         fprintf(stderr, "%s: ambiguous command -- \"%s\"\n", PROGRAM_NAME, cnf->cmd_name);
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-         return(1);
-      };
-      cnf->cmd = &tru_widget_map[pos];
-   };
-   if (!(cnf->cmd))
-   {
-      fprintf(stderr, "%s: unknown command -- \"%s\"\n", PROGRAM_NAME, cnf->cmd_name);
-      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      return(1);
-   };
-   if (!(cnf->cmd->func))
-   {
-      fprintf(stderr, "%s: command not implemented -- \"%s\"\n", PROGRAM_NAME, cnf->cmd->name);
+      fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", PROGRAM_NAME, cnf->cmd_argv[0]);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
@@ -451,5 +436,38 @@ tru_usage(
    return(0);
 }
 
+
+static const TinyRadUtilWidget *
+tru_widget_lookup(
+         const char *                     wname,
+         int                              exact )
+{
+   size_t                     wname_len;
+   size_t                     x;
+   const TinyRadUtilWidget *  widget;
+   const TinyRadUtilWidget *  match;
+
+   match       = NULL;
+   wname_len   = strlen(wname);
+
+   for(x = 0; ((tru_widget_map[x].name)); x++)
+   {
+      widget = &tru_widget_map[x];
+      if (widget->func == NULL)
+         continue;
+
+      if (!(strncmp(widget->name, wname, wname_len)))
+      {
+         if (widget->name[wname_len] == '\0')
+            return(widget);
+         if ((match))
+            return(NULL);
+         if (exact == TRAD_NO)
+            match = widget;
+      };
+   };
+
+   return(NULL);
+}
 
 /* end of source */
