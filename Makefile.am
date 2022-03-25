@@ -305,8 +305,8 @@ lib_libutils_a_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
-					  src/tinyradutil/tinyradutil.c \
-					  src/tinyradutil/tinyradutil.h
+					  src/tru/tinyrad.c \
+					  src/tru/tru.h
 
 
 # macros for src/tinyrad-url

@@ -29,7 +29,6 @@
  *  SUCH DAMAGE.
  */
 #define _SRC_TINYRADUTIL_TINYRADUTIL_C 1
-#include "tinyradutil.h"
 
 ///////////////
 //           //
@@ -37,6 +36,8 @@
 //           //
 ///////////////
 #pragma mark - Headers
+
+#include "tru.h"
 
 #include <tinyrad_utils.h>
 
