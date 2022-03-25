@@ -306,7 +306,7 @@ src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tru/tru.h \
-					  src/tru/tinyrad.c \
+					  src/tru/tru.c \
 					  src/tru/widget-config.c \
 					  src/tru/widget-dict.c \
 					  src/tru/widget-url.c
