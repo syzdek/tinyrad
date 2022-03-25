@@ -206,41 +206,51 @@ tru_usage(
 static const TinyRadUtilWidget tru_widget_map[] =
 {
    {
-      "configuration",                                // command name
-      &tru_widget_config,                             // entry function
-      TINYRAD_DICT_GETOPT_SHORT
-      TINYRAD_GETOPT_SHORT,                           // getopt short options
-      (struct option [])
-      {  TINYRAD_DICT_GETOPT_LONG
-         TINYRAD_GETOPT_LONG
-      },                                              // getopt long options
-      0, 0,                                           // min/max arguments
-      NULL,                                           // extra cli usage
-      "print configuration"                           // command description
+      .name       = "configuration",
+      .func       = &tru_widget_config,
+      .shortopts  = TINYRAD_DICT_GETOPT_SHORT TINYRAD_GETOPT_SHORT,
+      .longopts   = (struct option [])
+                  {  TINYRAD_DICT_GETOPT_LONG
+                     TINYRAD_GETOPT_LONG
+                  },
+      .min_arg    = 0,
+      .max_arg    = 0,
+      .usage      = NULL,
+      .desc       = "print configuration"
    },
    {
-      "dictionary",                                   // command name
-      &tru_widget_dict,                               // entry function
-      TINYRAD_DICT_GETOPT_SHORT
-      TINYRAD_GETOPT_SHORT,                           // getopt short options
-      (struct option [])
-      {  TINYRAD_DICT_GETOPT_LONG
-         TINYRAD_GETOPT_LONG
-      },                                              // getopt long options
-      0, 0,                                           // min/max arguments
-      NULL,                                           // extra cli usage
-      "print processed dictionary"                    // command description
+      .name       = "dictionary",
+      .func       = &tru_widget_dict,
+      .shortopts  = TINYRAD_DICT_GETOPT_SHORT TINYRAD_GETOPT_SHORT,
+      .longopts   = (struct option [])
+                  {  TINYRAD_DICT_GETOPT_LONG
+                     TINYRAD_GETOPT_LONG
+                  },
+      .min_arg    = 0,
+      .max_arg    = 0,
+      .usage      = NULL,
+      .desc       = "print processed dictionary"
    },
    {
-      "help",                                         // command name
-      &tru_usage,                                     // entry function
-      TINYRAD_GETOPT_SHORT,                           // getopt short options
-      (struct option []) { TINYRAD_GETOPT_LONG },     // getopt long options
-      0, 0,                                           // min/max arguments
-      NULL,                                           // extra cli usage
-      "print command usage"                           // command description
+      .name       = "help",
+      .func       = &tru_usage,
+      .shortopts  = TINYRAD_GETOPT_SHORT,
+      .longopts   = (struct option []) { TINYRAD_GETOPT_LONG },
+      .min_arg    = 0,
+      .max_arg    = 0,
+      .usage      = NULL,
+      .desc       = "print command usage"
    },
-   { NULL, NULL, NULL, NULL, -1, -1, NULL, NULL }
+   {
+      .name       = NULL,
+      .func       = NULL,
+      .shortopts  = NULL,
+      .longopts   = NULL,
+      .min_arg    = -1,
+      .max_arg    = -1,
+      .usage      = NULL,
+      .desc       = NULL
+   }
 };
 
 
