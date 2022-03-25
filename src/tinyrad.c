@@ -105,8 +105,8 @@
 //////////////////
 #pragma mark - Data Types
 
-typedef struct tinyrad_config       TinyRadConf;
-typedef struct tinyrad_command      TinyRadCommand;
+typedef struct tinyrad_util_config     TinyRadUtilConf;
+typedef struct tinyrad_util_widget     TinyRadUtilWidget;
 
 
 typedef struct my_request_av
@@ -116,28 +116,28 @@ typedef struct my_request_av
 } MyRequestAV;
 
 
-struct tinyrad_config
+struct tinyrad_util_config
 {
-   unsigned                opts;
-   unsigned                tr_opts;
-   int                     padint;
-   int                     cmd_argc;
-   char **                 cmd_argv;
-   const char *            cmd_name;
-   size_t                  cmd_len;
-   void *                  padptr;
-   const TinyRadCommand *  cmd;
-   TinyRad *               tr;
-   const char *            url;
-   char **                 dict_files;
-   char **                 dict_paths;
+   unsigned                   opts;
+   unsigned                   tr_opts;
+   int                        padint;
+   int                        cmd_argc;
+   char **                    cmd_argv;
+   const char *               cmd_name;
+   size_t                     cmd_len;
+   void *                     padptr;
+   const TinyRadUtilWidget *  cmd;
+   TinyRad *                  tr;
+   const char *               url;
+   char **                    dict_files;
+   char **                    dict_paths;
 };
 
 
-struct tinyrad_command
+struct tinyrad_util_widget
 {
    const char *            cmd_name;
-   int  (*cmd_func)(TinyRadConf * cnf);
+   int  (*cmd_func)(TinyRadUtilConf * cnf);
    const char *            cmd_shortopts;
    struct option *         cmd_longopts;
    int                     cmd_min_arg;
@@ -161,23 +161,23 @@ main(
 
 
 void
-tinyrad_cleanup(
-         TinyRadConf *                 cnf );
+tru_cleanup(
+         TinyRadUtilConf *                 cnf );
 
 
 int
-tinyrad_cmd_config(
-         TinyRadConf *                 cnf );
+tru_widget_config(
+         TinyRadUtilConf *                 cnf );
 
 
 int
-tinyrad_cmd_dict(
-         TinyRadConf *                 cnf );
+tru_widget_dict(
+         TinyRadUtilConf *                 cnf );
 
 
 int
-tinyrad_getopt(
-         TinyRadConf *                 cnf,
+tru_getopt(
+         TinyRadUtilConf *                 cnf,
          int                           argc,
          char * const *                argv,
          const char *                  short_opt,
@@ -186,13 +186,13 @@ tinyrad_getopt(
 
 
 int
-tinyrad_load_dict(
-         TinyRadConf *                 cnf );
+tru_load_tinyrad(
+         TinyRadUtilConf *                 cnf );
 
 
 int
-tinyrad_usage(
-         TinyRadConf *                 cnf );
+tru_usage(
+         TinyRadUtilConf *                 cnf );
 
 
 /////////////////
@@ -203,11 +203,11 @@ tinyrad_usage(
 #pragma mark - Variables
 
 #pragma mark tinyrad_cmdmap[]
-static const TinyRadCommand tinyrad_cmdmap[] =
+static const TinyRadUtilWidget tru_widget_map[] =
 {
    {
       "configuration",                                // command name
-      &tinyrad_cmd_config,                            // entry function
+      &tru_widget_config,                             // entry function
       TINYRAD_DICT_GETOPT_SHORT
       TINYRAD_GETOPT_SHORT,                           // getopt short options
       (struct option [])
@@ -220,7 +220,7 @@ static const TinyRadCommand tinyrad_cmdmap[] =
    },
    {
       "dictionary",                                   // command name
-      &tinyrad_cmd_dict,                              // entry function
+      &tru_widget_dict,                               // entry function
       TINYRAD_DICT_GETOPT_SHORT
       TINYRAD_GETOPT_SHORT,                           // getopt short options
       (struct option [])
@@ -233,7 +233,7 @@ static const TinyRadCommand tinyrad_cmdmap[] =
    },
    {
       "help",                                         // command name
-      &tinyrad_usage,                                 // entry function
+      &tru_usage,                                     // entry function
       TINYRAD_GETOPT_SHORT,                           // getopt short options
       (struct option []) { TINYRAD_GETOPT_LONG },     // getopt long options
       0, 0,                                           // min/max arguments
@@ -258,8 +258,8 @@ int main(int argc, char * argv[])
    int            rc;
    size_t         pos;
    TinyRadDict *  dict;
-   TinyRadConf    cnfdata;
-   TinyRadConf *  cnf;
+   TinyRadUtilConf    cnfdata;
+   TinyRadUtilConf *  cnf;
 
    // getopt options
    static char          short_opt[] = "+" TINYRAD_GETOPT_SHORT;
@@ -271,7 +271,7 @@ int main(int argc, char * argv[])
    cnf         = &cnfdata;
    dict        = NULL;
 
-   while((c = tinyrad_getopt(cnf, argc, argv, short_opt, long_opt, &opt_index)) != -1)
+   while((c = tru_getopt(cnf, argc, argv, short_opt, long_opt, &opt_index)) != -1)
    {
       switch(c)
       {
@@ -281,11 +281,11 @@ int main(int argc, char * argv[])
          break;
 
          case MY_GETOPT_EXIT:
-         tinyrad_cleanup(cnf);
+         tru_cleanup(cnf);
          return(0);
 
          case MY_GETOPT_ERROR:
-         tinyrad_cleanup(cnf);
+         tru_cleanup(cnf);
          return(1);
 
          case '?':
@@ -310,9 +310,9 @@ int main(int argc, char * argv[])
    cnf->cmd_len  = strlen(cnf->cmd_name);
 
    // looks up widget
-   for(pos = 0; (tinyrad_cmdmap[pos].cmd_name != NULL); pos++)
+   for(pos = 0; (tru_widget_map[pos].cmd_name != NULL); pos++)
    {
-      if ((strncmp(cnf->cmd_name, tinyrad_cmdmap[pos].cmd_name, cnf->cmd_len)))
+      if ((strncmp(cnf->cmd_name, tru_widget_map[pos].cmd_name, cnf->cmd_len)))
          continue;
       if ((cnf->cmd))
       {
@@ -320,7 +320,7 @@ int main(int argc, char * argv[])
          fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
          return(1);
       };
-      cnf->cmd = &tinyrad_cmdmap[pos];
+      cnf->cmd = &tru_widget_map[pos];
    };
    if (!(cnf->cmd))
    {
@@ -338,7 +338,7 @@ int main(int argc, char * argv[])
    // process widget cli options
    optind = 1;
    opt_index = 0;
-   while((c = tinyrad_getopt(cnf, cnf->cmd_argc, cnf->cmd_argv, cnf->cmd->cmd_shortopts, cnf->cmd->cmd_longopts, &opt_index)) != -1)
+   while((c = tru_getopt(cnf, cnf->cmd_argc, cnf->cmd_argv, cnf->cmd->cmd_shortopts, cnf->cmd->cmd_longopts, &opt_index)) != -1)
    {
       switch(c)
       {
@@ -348,11 +348,11 @@ int main(int argc, char * argv[])
          break;
 
          case MY_GETOPT_EXIT:
-         tinyrad_cleanup(cnf);
+         tru_cleanup(cnf);
          return(0);
 
          case MY_GETOPT_ERROR:
-         tinyrad_cleanup(cnf);
+         tru_cleanup(cnf);
          return(1);
 
          case '?':
@@ -380,14 +380,14 @@ int main(int argc, char * argv[])
 
    // call widget
    rc = cnf->cmd->cmd_func(cnf);
-   tinyrad_cleanup(cnf);
+   tru_cleanup(cnf);
    return(trutils_exit_code(rc));
 }
 
 
 void
-tinyrad_cleanup(
-         TinyRadConf *                 cnf )
+tru_cleanup(
+         TinyRadUtilConf *                 cnf )
 {
    tinyrad_free(cnf->tr);
    tinyrad_strsfree(cnf->dict_files);
@@ -397,12 +397,12 @@ tinyrad_cleanup(
 
 
 int
-tinyrad_cmd_config(
-         TinyRadConf *                 cnf )
+tru_widget_config(
+         TinyRadUtilConf *                 cnf )
 {
    int               rc;
    TinyRadDict *     dict;
-   if ((rc = tinyrad_load_dict(cnf)) != TRAD_SUCCESS)
+   if ((rc = tru_load_tinyrad(cnf)) != TRAD_SUCCESS)
       return(rc);
    tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
    tinyrad_conf_print(cnf->tr, dict);
@@ -412,12 +412,12 @@ tinyrad_cmd_config(
 
 
 int
-tinyrad_cmd_dict(
-         TinyRadConf *                 cnf )
+tru_widget_dict(
+         TinyRadUtilConf *                 cnf )
 {
    int               rc;
    TinyRadDict *     dict;
-   if ((rc = tinyrad_load_dict(cnf)) != TRAD_SUCCESS)
+   if ((rc = tru_load_tinyrad(cnf)) != TRAD_SUCCESS)
       return(rc);
    tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
    tinyrad_dict_print(dict, 0xffff);
@@ -427,8 +427,8 @@ tinyrad_cmd_dict(
 
 
 int
-tinyrad_getopt(
-         TinyRadConf *                 cnf,
+tru_getopt(
+         TinyRadUtilConf *                 cnf,
          int                           argc,
          char * const *                argv,
          const char *                  short_opt,
@@ -458,7 +458,7 @@ tinyrad_getopt(
       return(MY_GETOPT_MATCHED);
 
       case 'h':
-      tinyrad_usage(cnf);
+      tru_usage(cnf);
       return(MY_GETOPT_EXIT);
 
       case 'I':
@@ -492,8 +492,8 @@ tinyrad_getopt(
 
 
 int
-tinyrad_load_dict(
-         TinyRadConf *                 cnf )
+tru_load_tinyrad(
+         TinyRadUtilConf *                 cnf )
 {
    int                  rc;
    char **              errs;
@@ -544,8 +544,8 @@ tinyrad_load_dict(
 
 
 int
-tinyrad_usage(
-         TinyRadConf *                 cnf )
+tru_usage(
+         TinyRadUtilConf *                 cnf )
 {
    int            i;
    const char *   name;
@@ -577,9 +577,9 @@ tinyrad_usage(
    if (!(cnf->cmd))
    {
       printf("COMMANDS:\n");
-      for(i = 0; tinyrad_cmdmap[i].cmd_name != NULL; i++)
-         if ((tinyrad_cmdmap[i].cmd_desc))
-            printf("  %-25s %s\n", tinyrad_cmdmap[i].cmd_name, tinyrad_cmdmap[i].cmd_desc);
+      for(i = 0; tru_widget_map[i].cmd_name != NULL; i++)
+         if ((tru_widget_map[i].cmd_desc))
+            printf("  %-25s %s\n", tru_widget_map[i].cmd_name, tru_widget_map[i].cmd_desc);
    };
    printf("\n");
    return(0);
