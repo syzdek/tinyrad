@@ -136,14 +136,14 @@ struct tinyrad_util_config
 
 struct tinyrad_util_widget
 {
-   const char *            cmd_name;
-   int  (*cmd_func)(TinyRadUtilConf * cnf);
-   const char *            cmd_shortopts;
-   struct option *         cmd_longopts;
-   int                     cmd_min_arg;
-   int                     cmd_max_arg;
-   const char *            cmd_help;
-   const char *            cmd_desc;
+   const char *            name;
+   int  (*func)(TinyRadUtilConf * cnf);
+   const char *            shortopts;
+   struct option *         longopts;
+   int                     min_arg;
+   int                     max_arg;
+   const char *            usage;
+   const char *            desc;
 };
 
 
@@ -310,9 +310,9 @@ int main(int argc, char * argv[])
    cnf->cmd_len  = strlen(cnf->cmd_name);
 
    // looks up widget
-   for(pos = 0; (tru_widget_map[pos].cmd_name != NULL); pos++)
+   for(pos = 0; (tru_widget_map[pos].name != NULL); pos++)
    {
-      if ((strncmp(cnf->cmd_name, tru_widget_map[pos].cmd_name, cnf->cmd_len)))
+      if ((strncmp(cnf->cmd_name, tru_widget_map[pos].name, cnf->cmd_len)))
          continue;
       if ((cnf->cmd))
       {
@@ -328,9 +328,9 @@ int main(int argc, char * argv[])
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
-   if (!(cnf->cmd->cmd_func))
+   if (!(cnf->cmd->func))
    {
-      fprintf(stderr, "%s: command not implemented -- \"%s\"\n", PROGRAM_NAME, cnf->cmd->cmd_name);
+      fprintf(stderr, "%s: command not implemented -- \"%s\"\n", PROGRAM_NAME, cnf->cmd->name);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
@@ -338,7 +338,7 @@ int main(int argc, char * argv[])
    // process widget cli options
    optind = 1;
    opt_index = 0;
-   while((c = tru_getopt(cnf, cnf->cmd_argc, cnf->cmd_argv, cnf->cmd->cmd_shortopts, cnf->cmd->cmd_longopts, &opt_index)) != -1)
+   while((c = tru_getopt(cnf, cnf->cmd_argc, cnf->cmd_argv, cnf->cmd->shortopts, cnf->cmd->longopts, &opt_index)) != -1)
    {
       switch(c)
       {
@@ -365,13 +365,13 @@ int main(int argc, char * argv[])
          return(1);
       };
    };
-   if ((cnf->cmd_argc - optind) < cnf->cmd->cmd_min_arg)
+   if ((cnf->cmd_argc - optind) < cnf->cmd->min_arg)
    {
       fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
       fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
       return(1);
    };
-   if ((optind+cnf->cmd->cmd_max_arg) > cnf->cmd_argc)
+   if ((optind+cnf->cmd->max_arg) > cnf->cmd_argc)
    {
       fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->cmd_argv[optind+1]);
       fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
@@ -379,7 +379,7 @@ int main(int argc, char * argv[])
    };
 
    // call widget
-   rc = cnf->cmd->cmd_func(cnf);
+   rc = cnf->cmd->func(cnf);
    tru_cleanup(cnf);
    return(trutils_exit_code(rc));
 }
@@ -558,9 +558,9 @@ tru_usage(
 
    if ((cnf->cmd))
    {
-      name  = cnf->cmd->cmd_name;
-      help  = ((cnf->cmd->cmd_help))      ? cnf->cmd->cmd_help      : "";
-      s     = ((cnf->cmd->cmd_shortopts)) ? cnf->cmd->cmd_shortopts : TINYRAD_GETOPT_SHORT;
+      name  = cnf->cmd->name;
+      help  = ((cnf->cmd->usage))      ? cnf->cmd->usage      : "";
+      s     = ((cnf->cmd->shortopts)) ? cnf->cmd->shortopts : TINYRAD_GETOPT_SHORT;
    };
 
    printf("Usage: %s %s [OPTIONS]%s\n", PROGRAM_NAME, name, help);
@@ -577,9 +577,9 @@ tru_usage(
    if (!(cnf->cmd))
    {
       printf("COMMANDS:\n");
-      for(i = 0; tru_widget_map[i].cmd_name != NULL; i++)
-         if ((tru_widget_map[i].cmd_desc))
-            printf("  %-25s %s\n", tru_widget_map[i].cmd_name, tru_widget_map[i].cmd_desc);
+      for(i = 0; tru_widget_map[i].name != NULL; i++)
+         if ((tru_widget_map[i].desc))
+            printf("  %-25s %s\n", tru_widget_map[i].name, tru_widget_map[i].desc);
    };
    printf("\n");
    return(0);
