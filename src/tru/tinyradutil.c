@@ -86,6 +86,11 @@ main(
          char *                        argv[] );
 
 
+const char *
+tru_basename(
+         const char *                     path );
+
+
 void
 tru_cleanup(
          TinyRadUtilConf *             cnf );
@@ -111,14 +116,14 @@ const TinyRadUtilWidget tru_widget_map[] =
       .name       = "configuration",
       .desc       = "print configuration",
       .usage      = NULL,
-      .aliases    = NULL,
+      .aliases    = (const char * const[]) { TRU_PREFIX"-conf", TRU_PREFIX"-configuration", NULL },
       .func       = &tru_widget_config
    },
    {
       .name       = "dictionary",
       .desc       = "print processed dictionary",
       .usage      = NULL,
-      .aliases    = NULL,
+      .aliases    = (const char * const[]) { TRU_PREFIX"-dict", TRU_PREFIX"-dictionary", NULL },
       .func       = &tru_widget_dict
    },
    {
@@ -156,31 +161,44 @@ int main(int argc, char * argv[])
    trutils_initialize(PROGRAM_NAME);
 
    memset(&cnfdata, 0, sizeof(cnfdata));
-   cnf         = &cnfdata;
-   dict        = NULL;
+   cnf            = &cnfdata;
+   dict           = NULL;
+   cnf->prog_name = tru_basename(argv[0]);
 
-   // process common cli options
-   if ((rc = tru_cli_parse(cnf, argc, argv, short_opt, long_opt)) != 0)
+   // skip argument processing if called via alias
+   if ((cnf->widget = tru_widget_lookup(cnf->prog_name, 1)) != NULL)
    {
-      tru_cleanup(cnf);
-      return((rc == 0) ? 0 : 1);
+      cnf->argc        = argc;
+      cnf->argv        = argv;
+      cnf->widget_name = cnf->prog_name;
    };
-   if ((argc - optind) < 1)
-   {
-      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
-      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      return(1);
-   };
-   cnf->argc        = (argc - optind);
-   cnf->argv        = &argv[optind];
-   cnf->widget_name = cnf->argv[0];
 
-   // looks up widget
-   if ((cnf->widget = tru_widget_lookup(cnf->argv[0], TRAD_NO)) == NULL)
+   if (!(cnf->widget))
    {
-      fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", PROGRAM_NAME, cnf->argv[0]);
-      fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-      return(1);
+      // process common cli options
+      if ((rc = tru_cli_parse(cnf, argc, argv, short_opt, long_opt)) != 0)
+      {
+         tru_cleanup(cnf);
+         return((rc == 0) ? 0 : 1);
+      };
+      if ((argc - optind) < 1)
+      {
+         fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+      };
+
+      cnf->widget_name = argv[optind];
+      cnf->argc        = (argc - optind);
+      cnf->argv        = &argv[optind];
+
+      // looks up widget
+      if ((cnf->widget = tru_widget_lookup(argv[optind], TRAD_NO)) == NULL)
+      {
+         fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", PROGRAM_NAME, cnf->argv[0]);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(1);
+      };
    };
 
    // call widget
@@ -195,9 +213,21 @@ int main(int argc, char * argv[])
 //-------------------------//
 #pragma mark miscellaneous functions
 
+const char *
+tru_basename(
+         const char *                     path )
+{
+   const char * ptr;
+   assert(path != NULL);
+   if ((ptr = strrchr(path, '/')))
+      return(&ptr[1]);
+   return(path);
+}
+
+
 void
 tru_cleanup(
-         TinyRadUtilConf *                 cnf )
+         TinyRadUtilConf *                cnf )
 {
    tinyrad_free(cnf->tr);
    tinyrad_strsfree(cnf->dict_files);
@@ -377,16 +407,31 @@ tru_usage(
          TinyRadUtilConf *             cnf,
          const char *                  short_opt )
 {
-   int            i;
+   int                        x;
+   int                        y;
+   const TinyRadUtilWidget *  widget;
 
    tru_usage_summary(cnf);
    tru_usage_options(short_opt);
    if (!(cnf->widget))
    {
       printf("WIDGETS:\n");
-      for(i = 0; tru_widget_map[i].name != NULL; i++)
-         if ((tru_widget_map[i].desc))
-            printf("  %-25s %s\n", tru_widget_map[i].name, tru_widget_map[i].desc);
+      for(x = 0; tru_widget_map[x].name != NULL; x++)
+      {
+         widget = &tru_widget_map[x];
+         if ((widget->desc))
+            printf("  %-25s %s\n", widget->name, widget->desc);
+      };
+
+      printf("WIDGETS ALIASES:\n");
+      for(x = 0; tru_widget_map[x].name != NULL; x++)
+      {
+         widget = &tru_widget_map[x];
+         if (!(widget->aliases))
+            continue;
+         for(y = 0; ((widget->aliases[y])); y++)
+            printf("  %-25s %s\n", ((!(y)) ? widget->name : ""), widget->aliases[y]);
+      };
    };
    printf("\n");
    return(0);
@@ -429,6 +474,9 @@ tru_usage_summary(
       widget_help = ((cnf->widget->usage)) ? cnf->widget->usage : "";
 
    printf("Usage: %s [OPTIONS] %s [WIDGETOPTIONS]%s\n", PROGRAM_NAME, widget_name, widget_help);
+   if ( (!(cnf->widget)) || (!(cnf->widget->aliases)) || (!(cnf->widget->aliases[0])) )
+      return;
+   printf("       %s [WIDGETOPTIONS]%s\n", cnf->widget->aliases[0], widget_help);
 
    return;
 }
@@ -441,6 +489,8 @@ tru_widget_lookup(
 {
    size_t                     wname_len;
    size_t                     x;
+   size_t                     y;
+   const char *               alias;
    const TinyRadUtilWidget *  widget;
    const TinyRadUtilWidget *  match;
 
@@ -461,6 +511,23 @@ tru_widget_lookup(
             return(NULL);
          if (exact == TRAD_NO)
             match = widget;
+      };
+
+      if (!(widget->aliases))
+         continue;
+
+      for(y = 0; ((widget->aliases[y])); y++)
+      {
+         alias = widget->aliases[y];
+         if (!(strncmp(alias, wname, wname_len)))
+         {
+            if (alias[wname_len] == '\0')
+               return(widget);
+            if ((match))
+               return(NULL);
+            if (exact == TRAD_NO)
+               match = widget;
+         };
       };
    };
 

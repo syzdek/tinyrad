@@ -478,6 +478,11 @@ install-exec-local:
 install-data-local:
 
 install-data-hook:
+	if test -f $(DESTDIR)/$(bindir)/tinyrad;then\
+           cd $(DESTDIR)/$(bindir) && \
+           ln -fs tinyrad tinyrad-conf && \
+           ln -fs tinyrad tinyrad-dict; \
+	fi;
 	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_array.3;then\
            cd $(DESTDIR)/$(mandir)/man3 && \
            ln -fs tinyrad_array.3 tinyrad_array_get.3 && \
@@ -513,6 +518,8 @@ uninstall-local:
 
 
 uninstall-hook:
+	rm -f $(DESTDIR)/$(bindir)/tinyrad-conf
+	rm -f $(DESTDIR)/$(bindir)/tinyrad-dict
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_add.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_dequeue.3
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_enqueue.3

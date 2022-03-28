@@ -67,6 +67,10 @@
 #define PROGRAM_NAME "tinyrad"
 
 
+#undef TRU_PREFIX
+#define TRU_PREFIX "tinyrad"
+
+
 #define TRU_GETOPT_MATCHED    -2
 #define TRU_GETOPT_ERROR      -3
 #define TRU_GETOPT_EXIT       -4
@@ -120,7 +124,7 @@ struct tinyrad_util_config
    char **                    argv;
    const char *               widget_name;
    size_t                     widget_name_len;
-   void *                     padptr;
+   const char *               prog_name;
    const TinyRadUtilWidget *  widget;
    TinyRad *                  tr;
    const char *               url;
