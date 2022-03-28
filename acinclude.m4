@@ -39,14 +39,12 @@ AC_DEFUN([AC_TINYRAD_COMMON],[dnl
    AC_REQUIRE([AC_TINYRAD_DOCUMENTATION])
    AC_REQUIRE([AC_TINYRAD_LIBTINYRAD])
    AC_REQUIRE([AC_TINYRAD_TINYRAD])
-   AC_REQUIRE([AC_TINYRAD_TINYRAD_URL])
    AC_REQUIRE([AC_TINYRAD_TINYRADPROXY])
 
    ENABLE_TINYRAD_COMMON="no"
    if   test "x${ENABLE_DOCUMENATION}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_LIBTINYRAD}"   = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_TINYRAD}"      = "xyes";then ENABLE_TINYRAD_COMMON="yes"
-   elif test "x${ENABLE_TINYRAD_URL}"  = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    elif test "x${ENABLE_TINYRADPROXY}" = "xyes";then ENABLE_TINYRAD_COMMON="yes"
    fi;
 
@@ -213,37 +211,6 @@ AC_DEFUN([AC_TINYRAD_TINYRAD],[dnl
 
    AM_CONDITIONAL([ENABLE_TINYRAD],  [test "$ENABLE_TINYRAD" = "yes"])
    AM_CONDITIONAL([DISABLE_TINYRAD], [test "$ENABLE_TINYRAD" = "no"])
-])dnl
-
-
-# AC_TINYRAD_TINYRAD_URL()
-# ______________________________________________________________________________
-AC_DEFUN([AC_TINYRAD_TINYRAD_URL],[dnl
-
-   AC_REQUIRE([AC_TINYRAD_UTILITIES])
-
-   enableval=""
-   AC_ARG_ENABLE(
-      tinyrad-url,
-      [AS_HELP_STRING([--enable-tinyrad-url], [enable tinyrad-url utility])],
-      [ ETINYRADURL=$enableval ],
-      [ ETINYRADURL=$enableval ]
-   )
-
-   if test "x${ETINYRADURL}" == "xyes";then
-      ENABLE_TINYRAD_URL="yes"
-   elif test "x${ETINYRADURL}" == "xno";then
-      ENABLE_TINYRAD_URL="no"
-   elif test "x${ENABLE_UTILITIES}" == "xyes";then
-      ENABLE_TINYRAD_URL="yes"
-   elif test "x${ENABLE_UTILITIES}" == "xno";then
-      ENABLE_TINYRAD_URL="no"
-   else
-      ENABLE_TINYRAD_URL="no"
-   fi
-
-   AM_CONDITIONAL([ENABLE_TINYRAD_URL],  [test "$ENABLE_TINYRAD_URL" = "yes"])
-   AM_CONDITIONAL([DISABLE_TINYRAD_URL], [test "$ENABLE_TINYRAD_URL" = "no"])
 ])dnl
 
 

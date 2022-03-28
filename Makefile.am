@@ -106,7 +106,6 @@ EXTRA_PROGRAMS				= examples/seed-by-clock \
 EXTRA					= lib/libtinyrad.a \
 					  lib/libtinyrad.la \
 					  src/tinyrad \
-					  src/tinyrad-url \
 					  src/tinyradproxy \
 					  include/tinyrad.h
 
@@ -210,9 +209,6 @@ if ENABLE_TINYRAD
    bin_PROGRAMS				+= src/tinyrad
    TESTS				+= tests/test-dict-defaults.sh
 endif
-if ENABLE_TINYRAD_URL
-   bin_PROGRAMS				+= src/tinyrad-url
-endif
 if ENABLE_TINYRADPROXY
    sbin_PROGRAMS			+= src/tinyradproxy
 endif
@@ -310,13 +306,6 @@ src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tru/widget-config.c \
 					  src/tru/widget-dict.c \
 					  src/tru/widget-url.c
-
-
-# macros for src/tinyrad-url
-src_tinyrad_url_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_url_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
-src_tinyrad_url_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
-					  src/tinyrad-url.c
 
 
 # macros for src/tinyradproxy
