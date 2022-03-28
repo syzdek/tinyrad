@@ -481,7 +481,8 @@ install-data-hook:
 	if test -f $(DESTDIR)/$(bindir)/tinyrad;then\
            cd $(DESTDIR)/$(bindir) && \
            ln -fs tinyrad tinyrad-conf && \
-           ln -fs tinyrad tinyrad-dict; \
+           ln -fs tinyrad tinyrad-dict && \
+           ln -fs tinyrad tinyrad-url; \
 	fi;
 	if test -f $(DESTDIR)/$(mandir)/man3/tinyrad_array.3;then\
            cd $(DESTDIR)/$(mandir)/man3 && \

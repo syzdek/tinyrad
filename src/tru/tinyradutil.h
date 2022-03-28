@@ -76,6 +76,9 @@
 #define TRU_GETOPT_EXIT       -4
 
 
+#define TRU_OPT_RESOLVE       0x0001
+
+
 #define TRU_COMMON_SHORT "d:hqVv"
 #define TRU_COMMON_LONG \
    { "debug",            optional_argument, NULL, 'd' }, \
@@ -90,6 +93,10 @@
 #define TRU_DICT_SHORT "bD:I:"
 #define TRU_DICT_LONG \
    { "builtin-dict",     no_argument,       NULL, 'b' }, \
+
+
+#define TRU_NET_SHORT "46"
+#define TRU_NET_LONG \
 
 
 #define TRU_REQ_SHORT "f:"

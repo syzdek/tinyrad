@@ -127,6 +127,13 @@ const TinyRadUtilWidget tru_widget_map[] =
       .func       = &tru_widget_dict
    },
    {
+      .name       = "url",
+      .desc       = "process TinyRad URL",
+      .usage      = NULL,
+      .aliases    = (const char * const[]) { TRU_PREFIX"-url", NULL },
+      .func       = &tru_widget_url
+   },
+   {
       .name       = NULL,
       .func       = NULL,
       .usage      = NULL,
@@ -356,6 +363,14 @@ tru_getopt(
 
    switch(c = getopt_long(argc, argv, short_opt, long_opt, opt_index))
    {
+      case '4':
+      cnf->tr_opts |= TRAD_IPV4;
+      return(TRU_GETOPT_MATCHED);
+
+      case '6':
+      cnf->tr_opts |= TRAD_IPV6;
+      return(TRU_GETOPT_MATCHED);
+
       case 'b':
       cnf->tr_opts |= TRAD_BUILTIN_DICT;
       return(TRU_GETOPT_MATCHED);
@@ -384,6 +399,10 @@ tru_getopt(
       case 'q':
       cnf->opts |=  TRUTILS_OPT_QUIET;
       cnf->opts &= ~TRUTILS_OPT_VERBOSE;
+      return(TRU_GETOPT_MATCHED);
+
+      case 'r':
+      cnf->opts |= TRU_OPT_RESOLVE;
       return(TRU_GETOPT_MATCHED);
 
       case 'V':
@@ -448,6 +467,8 @@ tru_usage_options(
    s = short_opt;
 
    printf("OPTIONS:\n");
+   if ((strchr(s, '4'))) printf("  -4                        use IPv4 addresses\n");
+   if ((strchr(s, '6'))) printf("  -6                        use IPv6 addresses\n");
    if ((strchr(s, 'b'))) printf("  -b, --builtin-dict        load built-in dictionary\n");
    if ((strchr(s, 'D'))) printf("  -D dictionary             include dictionary\n");
    if ((strchr(s, 'd'))) printf("  -d level, --debug=level   print debug messages\n");
@@ -455,6 +476,7 @@ tru_usage_options(
    if ((strchr(s, 'h'))) printf("  -h, --help                print this help and exit\n");
    if ((strchr(s, 'I'))) printf("  -I path                   add path to dictionary search paths\n");
    if ((strchr(s, 'q'))) printf("  -q, --quiet, --silent     do not print messages\n");
+   if ((strchr(s, 'r'))) printf("  -r, --resolve             resolve URLs\n");
    if ((strchr(s, 'V'))) printf("  -V, --version             print version number and exit\n");
    if ((strchr(s, 'v'))) printf("  -v, --verbose             print verbose messages\n");
 
