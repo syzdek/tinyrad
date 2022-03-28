@@ -393,15 +393,31 @@ tru_usage(
          TinyRadUtilConf *                 cnf )
 {
    int            i;
-   const char *   name;
-   const char *   help;
+
+   tru_usage_summary(cnf);
+   tru_usage_options(cnf);
+   if (!(cnf->widget))
+   {
+      printf("WIDGETS:\n");
+      for(i = 0; tru_widget_map[i].name != NULL; i++)
+         if ((tru_widget_map[i].desc))
+            printf("  %-25s %s\n", tru_widget_map[i].name, tru_widget_map[i].desc);
+   };
+   printf("\n");
+   return(0);
+}
+
+
+void
+tru_usage_options(
+         TinyRadUtilConf *                 cnf )
+{
    const char *   s;
 
-   name  = (!(cnf->widget)) ? "widget"         : cnf->widget->name;
-   help  = (!(cnf->widget)) ? " ..."           : (((cnf->widget->usage))     ? cnf->widget->usage     : "");
-   s     = (!(cnf->widget)) ? TRU_COMMON_SHORT : (((cnf->widget->shortopts)) ? cnf->widget->shortopts : TRU_COMMON_SHORT);
+   s = TRU_COMMON_SHORT;
+   if ((cnf->widget))
+      s = ((cnf->widget->shortopts)) ? cnf->widget->shortopts : TRU_COMMON_SHORT;
 
-   printf("Usage: %s %s [OPTIONS]%s\n", PROGRAM_NAME, name, help);
    printf("OPTIONS:\n");
    if ((strchr(s, 'b'))) printf("  -b, --builtin-dict        load built-in dictionary\n");
    if ((strchr(s, 'D'))) printf("  -D dictionary             include dictionary\n");
@@ -412,15 +428,26 @@ tru_usage(
    if ((strchr(s, 'q'))) printf("  -q, --quiet, --silent     do not print messages\n");
    if ((strchr(s, 'V'))) printf("  -V, --version             print version number and exit\n");
    if ((strchr(s, 'v'))) printf("  -v, --verbose             print verbose messages\n");
-   if (!(cnf->widget))
-   {
-      printf("WIDGETS:\n");
-      for(i = 0; tru_widget_map[i].name != NULL; i++)
-         if ((tru_widget_map[i].desc))
-            printf("  %-25s %s\n", tru_widget_map[i].name, tru_widget_map[i].desc);
-   };
-   printf("\n");
-   return(0);
+
+   return;
+}
+
+
+void
+tru_usage_summary(
+         TinyRadUtilConf *                 cnf )
+{
+   const char *   widget_name;
+   const char *   widget_help;
+
+   widget_name  = (!(cnf->widget)) ? "widget" : cnf->widget->name;
+   widget_help  = "";
+   if ((cnf->widget))
+      widget_help = ((cnf->widget->usage)) ? cnf->widget->usage : "";
+
+   printf("Usage: %s [OPTIONS] %s [WIDGETOPTIONS]%s\n", PROGRAM_NAME, widget_name, widget_help);
+
+   return;
 }
 
 

@@ -171,6 +171,16 @@ tru_cleanup(
          TinyRadUtilConf *                 cnf );
 
 
+void
+tru_usage_options(
+         TinyRadUtilConf *                 cnf );
+
+
+void
+tru_usage_summary(
+         TinyRadUtilConf *                 cnf );
+
+
 int
 tru_widget_config(
          TinyRadUtilConf *                 cnf );
