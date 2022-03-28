@@ -63,9 +63,7 @@ tru_widget_config(
 
    // process widget cli options
    if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, short_opt, long_opt, &tru_usage)) != 0)
-   {
-      return((rc == 0) ? 0 : 1);
-   };
+      return((rc == TRU_GETOPT_EXIT) ? 0 : 1);
    if (optind < cnf->argc)
    {
       fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->argv[optind+1]);

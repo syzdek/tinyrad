@@ -186,7 +186,7 @@ int main(int argc, char * argv[])
       if ((rc = tru_cli_parse(cnf, argc, argv, short_opt, long_opt, &tru_usage)) != 0)
       {
          tru_cleanup(cnf);
-         return((rc == 0) ? 0 : 1);
+         return((rc == TRU_GETOPT_EXIT) ? 0 : 1);
       };
       if ((argc - optind) < 1)
       {

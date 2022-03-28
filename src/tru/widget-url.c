@@ -98,9 +98,7 @@ tru_widget_url(
 
    // process widget cli options
    if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, short_opt, long_opt, &tru_widget_url_usage)) != 0)
-   {
-      return((rc == 0) ? 0 : 1);
-   };
+      return((rc == TRU_GETOPT_EXIT) ? 0 : 1);
    if (optind >= cnf->argc)
    {
       fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
