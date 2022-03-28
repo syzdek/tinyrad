@@ -203,25 +203,6 @@ int main(int argc, char * argv[])
       return(1);
    };
 
-   // process widget cli options
-   if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, cnf->widget->shortopts, cnf->widget->longopts)) != 0)
-   {
-      tru_cleanup(cnf);
-      return((rc == 0) ? 0 : 1);
-   };
-   if ((cnf->argc - optind) < cnf->widget->min_arg)
-   {
-      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
-      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
-      return(1);
-   };
-   if ((optind+cnf->widget->max_arg) > cnf->argc)
-   {
-      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->argv[optind+1]);
-      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
-      return(1);
-   };
-
    // call widget
    rc = cnf->widget->func(cnf);
    tru_cleanup(cnf);

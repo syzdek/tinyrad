@@ -56,11 +56,29 @@ tru_widget_dict(
 {
    int               rc;
    TinyRadDict *     dict;
+
+   // getopt options
+   static char          short_opt[] = TRU_COMMON_SHORT TRU_DICT_SHORT;
+   static struct option long_opt[]  = { TRU_DICT_LONG TRU_COMMON_LONG };
+
+   // process widget cli options
+   if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, short_opt, long_opt)) != 0)
+   {
+      return((rc == 0) ? 0 : 1);
+   };
+   if (optind < cnf->argc)
+   {
+      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->argv[optind+1]);
+      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
+      return(1);
+   };
+
    if ((rc = tru_load_tinyrad(cnf)) != TRAD_SUCCESS)
       return(rc);
    tinyrad_get_option(cnf->tr, TRAD_OPT_DICTIONARY, &dict);
    tinyrad_dict_print(dict, 0xffff);
    tinyrad_free(dict);
+
    return(TRAD_SUCCESS);
 }
 
