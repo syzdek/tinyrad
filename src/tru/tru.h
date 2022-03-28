@@ -72,7 +72,7 @@
 #define TRU_GETOPT_EXIT       -4
 
 
-#define TRU_COMMON_SHORT "d:f:hqVv"
+#define TRU_COMMON_SHORT "d:hqVv"
 #define TRU_COMMON_LONG \
    { "debug",            optional_argument, NULL, 'd' }, \
    { "help",             no_argument,       NULL, 'h' }, \
@@ -88,7 +88,7 @@
    { "builtin-dict",     no_argument,       NULL, 'b' }, \
 
 
-#define TRU_REQ_SHORT "I:"
+#define TRU_REQ_SHORT "f:"
 #define TRU_REQ_LONG \
    { "file",             optional_argument, NULL, 'f' }, \
 
