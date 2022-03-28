@@ -160,45 +160,24 @@ extern const TinyRadUtilWidget tru_widget_map[];
 //////////////////
 #pragma mark - Prototypes
 
-int
-main(
-         int                           argc,
-         char *                        argv[] );
-
-
-void
-tru_cleanup(
-         TinyRadUtilConf *                 cnf );
-
-
-void
-tru_usage_options(
-         TinyRadUtilConf *                 cnf );
-
-
-void
-tru_usage_summary(
-         TinyRadUtilConf *                 cnf );
-
+//--------------------------//
+// miscellaneous prototypes //
+//--------------------------//
+#pragma mark miscellaneous prototypes
 
 int
-tru_widget_config(
-         TinyRadUtilConf *                 cnf );
+tru_load_tinyrad(
+         TinyRadUtilConf *             cnf );
 
 
-int
-tru_widget_dict(
-         TinyRadUtilConf *                 cnf );
-
-
-int
-tru_widget_url(
-         TinyRadUtilConf *                 cnf );
-
+//------------------//
+// usage prototypes //
+//------------------//
+#pragma mark usage prototypes
 
 int
 tru_getopt(
-         TinyRadUtilConf *                 cnf,
+         TinyRadUtilConf *             cnf,
          int                           argc,
          char * const *                argv,
          const char *                  short_opt,
@@ -207,13 +186,38 @@ tru_getopt(
 
 
 int
-tru_load_tinyrad(
-         TinyRadUtilConf *                 cnf );
+tru_usage(
+         TinyRadUtilConf *             cnf );
+
+
+void
+tru_usage_options(
+         TinyRadUtilConf *             cnf );
+
+
+void
+tru_usage_summary(
+         TinyRadUtilConf *             cnf );
+
+
+//-------------------//
+// widget prototypes //
+//-------------------//
+#pragma mark widget prototypes
+
+int
+tru_widget_config(
+         TinyRadUtilConf *             cnf );
 
 
 int
-tru_usage(
-         TinyRadUtilConf *                 cnf );
+tru_widget_dict(
+         TinyRadUtilConf *             cnf );
+
+
+int
+tru_widget_url(
+         TinyRadUtilConf *             cnf );
 
 
 #endif /* end of header */
