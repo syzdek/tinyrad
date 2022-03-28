@@ -176,7 +176,7 @@ int main(int argc, char * argv[])
    if (!(cnf->widget))
    {
       // process common cli options
-      if ((rc = tru_cli_parse(cnf, argc, argv, short_opt, long_opt)) != 0)
+      if ((rc = tru_cli_parse(cnf, argc, argv, short_opt, long_opt, &tru_usage)) != 0)
       {
          tru_cleanup(cnf);
          return((rc == 0) ? 0 : 1);
@@ -299,7 +299,8 @@ tru_cli_parse(
          int                           argc,
          char * const *                argv,
          const char *                  short_opt,
-         const struct option *         long_opt )
+         const struct option *         long_opt,
+         int (*usage_func)(TinyRadUtilConf * cnf, const char * short_opt ) )
 {
    int            c;
    int            opt_index;
@@ -323,7 +324,7 @@ tru_cli_parse(
          return(TRU_GETOPT_ERROR);
 
          case 'h':
-         tru_usage(cnf, short_opt);
+         usage_func(cnf, short_opt);
          return(TRU_GETOPT_EXIT);
 
          case '?':

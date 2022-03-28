@@ -182,7 +182,8 @@ tru_cli_parse(
          int                           argc,
          char * const *                argv,
          const char *                  short_opt,
-         const struct option *         long_opt );
+         const struct option *         long_opt,
+         int (*usage_func)(TinyRadUtilConf * cnf, const char * short_opt ) );
 
 
 int

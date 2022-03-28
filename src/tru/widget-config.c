@@ -62,7 +62,7 @@ tru_widget_config(
    static struct option long_opt[]  = { TRU_DICT_LONG TRU_COMMON_LONG };
 
    // process widget cli options
-   if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, short_opt, long_opt)) != 0)
+   if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, short_opt, long_opt, &tru_usage)) != 0)
    {
       return((rc == 0) ? 0 : 1);
    };
