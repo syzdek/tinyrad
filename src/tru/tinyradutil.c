@@ -109,31 +109,21 @@ const TinyRadUtilWidget tru_widget_map[] =
 {
    {
       .name       = "configuration",
-      .func       = &tru_widget_config,
-      .shortopts  = TRU_COMMON_SHORT TRU_DICT_SHORT,
-      .longopts   = (struct option []) { TRU_DICT_LONG TRU_COMMON_LONG },
-      .min_arg    = 0,
-      .max_arg    = 0,
+      .desc       = "print configuration",
       .usage      = NULL,
-      .desc       = "print configuration"
+      .aliases    = NULL,
+      .func       = &tru_widget_config
    },
    {
       .name       = "dictionary",
-      .func       = &tru_widget_dict,
-      .shortopts  = TRU_COMMON_SHORT TRU_DICT_SHORT,
-      .longopts   = (struct option []) { TRU_DICT_LONG TRU_COMMON_LONG },
-      .min_arg    = 0,
-      .max_arg    = 0,
+      .desc       = "print processed dictionary",
       .usage      = NULL,
-      .desc       = "print processed dictionary"
+      .aliases    = NULL,
+      .func       = &tru_widget_dict
    },
    {
       .name       = NULL,
       .func       = NULL,
-      .shortopts  = NULL,
-      .longopts   = NULL,
-      .min_arg    = -1,
-      .max_arg    = -1,
       .usage      = NULL,
       .desc       = NULL
    }
@@ -303,7 +293,7 @@ tru_cli_parse(
          return(TRU_GETOPT_ERROR);
 
          case 'h':
-         tru_usage(cnf);
+         tru_usage(cnf, short_opt);
          return(TRU_GETOPT_EXIT);
 
          case '?':
@@ -384,12 +374,13 @@ tru_getopt(
 
 int
 tru_usage(
-         TinyRadUtilConf *                 cnf )
+         TinyRadUtilConf *             cnf,
+         const char *                  short_opt )
 {
    int            i;
 
    tru_usage_summary(cnf);
-   tru_usage_options(cnf);
+   tru_usage_options(short_opt);
    if (!(cnf->widget))
    {
       printf("WIDGETS:\n");
@@ -404,13 +395,11 @@ tru_usage(
 
 void
 tru_usage_options(
-         TinyRadUtilConf *                 cnf )
+         const char *                  short_opt )
 {
    const char *   s;
 
-   s = TRU_COMMON_SHORT;
-   if ((cnf->widget))
-      s = ((cnf->widget->shortopts)) ? cnf->widget->shortopts : TRU_COMMON_SHORT;
+   s = short_opt;
 
    printf("OPTIONS:\n");
    if ((strchr(s, 'b'))) printf("  -b, --builtin-dict        load built-in dictionary\n");

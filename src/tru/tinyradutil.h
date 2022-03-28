@@ -131,14 +131,11 @@ struct tinyrad_util_config
 
 struct tinyrad_util_widget
 {
-   const char *            name;
+   const char *               name;
+   const char *               desc;
+   const char *               usage;
+   const char * const *       aliases;
    int  (*func)(TinyRadUtilConf * cnf);
-   const char *            shortopts;
-   struct option *         longopts;
-   int                     min_arg;
-   int                     max_arg;
-   const char *            usage;
-   const char *            desc;
 };
 
 
@@ -196,12 +193,13 @@ tru_getopt(
 
 int
 tru_usage(
-         TinyRadUtilConf *             cnf );
+         TinyRadUtilConf *             cnf,
+         const char *                  short_opt );
 
 
 void
 tru_usage_options(
-         TinyRadUtilConf *             cnf );
+         const char *                  short_opt );
 
 
 void
