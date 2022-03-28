@@ -28,7 +28,7 @@
  *  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  *  SUCH DAMAGE.
  */
-#define _SRC_TINYRADUTIL_TINYRADUTIL_C 1
+#define _SRC_TRU_TINYRADUTIL_C 1
 
 ///////////////
 //           //
@@ -37,7 +37,7 @@
 ///////////////
 #pragma mark - Headers
 
-#include "tru.h"
+#include "tinyradutil.h"
 
 #include <tinyrad_utils.h>
 

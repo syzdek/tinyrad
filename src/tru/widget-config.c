@@ -37,9 +37,7 @@
 ///////////////
 #pragma mark - Headers
 
-#include "tru.h"
-
-#include <tinyrad_utils.h>
+#include "tinyradutil.h"
 
 #include <stdio.h>
 #include <assert.h>

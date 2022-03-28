@@ -305,8 +305,8 @@ lib_libutils_a_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 src_tinyrad_DEPENDENCIES		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
-					  src/tru/tru.h \
-					  src/tru/tru.c \
+					  src/tru/tinyradutil.h \
+					  src/tru/tinyradutil.c \
 					  src/tru/widget-config.c \
 					  src/tru/widget-dict.c \
 					  src/tru/widget-url.c
