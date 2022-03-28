@@ -116,12 +116,12 @@ struct tinyrad_util_config
    unsigned                   opts;
    unsigned                   tr_opts;
    int                        padint;
-   int                        cmd_argc;
-   char **                    cmd_argv;
-   const char *               cmd_name;
-   size_t                     cmd_len;
+   int                        argc;
+   char **                    argv;
+   const char *               widget_name;
+   size_t                     widget_name_len;
    void *                     padptr;
-   const TinyRadUtilWidget *  cmd;
+   const TinyRadUtilWidget *  widget;
    TinyRad *                  tr;
    const char *               url;
    char **                    dict_files;

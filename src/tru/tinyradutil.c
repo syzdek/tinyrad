@@ -198,14 +198,14 @@ int main(int argc, char * argv[])
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
-   cnf->cmd_argc = (argc - optind);
-   cnf->cmd_argv = &argv[optind];
-   cnf->cmd_name = cnf->cmd_argv[0];
+   cnf->argc        = (argc - optind);
+   cnf->argv        = &argv[optind];
+   cnf->widget_name = cnf->argv[0];
 
    // looks up widget
-   if ((cnf->cmd = tru_widget_lookup(cnf->cmd_argv[0], TRAD_NO)) == NULL)
+   if ((cnf->widget = tru_widget_lookup(cnf->argv[0], TRAD_NO)) == NULL)
    {
-      fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", PROGRAM_NAME, cnf->cmd_argv[0]);
+      fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", PROGRAM_NAME, cnf->argv[0]);
       fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
       return(1);
    };
@@ -213,7 +213,7 @@ int main(int argc, char * argv[])
    // process widget cli options
    optind = 1;
    opt_index = 0;
-   while((c = tru_getopt(cnf, cnf->cmd_argc, cnf->cmd_argv, cnf->cmd->shortopts, cnf->cmd->longopts, &opt_index)) != -1)
+   while((c = tru_getopt(cnf, cnf->argc, cnf->argv, cnf->widget->shortopts, cnf->widget->longopts, &opt_index)) != -1)
    {
       switch(c)
       {
@@ -231,30 +231,30 @@ int main(int argc, char * argv[])
          return(1);
 
          case '?':
-         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
          return(1);
 
          default:
-         fprintf(stderr, "%s: %s: unrecognized option `--%c'\n", PROGRAM_NAME, cnf->cmd_name, c);
-         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+         fprintf(stderr, "%s: %s: unrecognized option `--%c'\n", PROGRAM_NAME, cnf->widget_name, c);
+         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
          return(1);
       };
    };
-   if ((cnf->cmd_argc - optind) < cnf->cmd->min_arg)
+   if ((cnf->argc - optind) < cnf->widget->min_arg)
    {
       fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
-      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
       return(1);
    };
-   if ((optind+cnf->cmd->max_arg) > cnf->cmd_argc)
+   if ((optind+cnf->widget->max_arg) > cnf->argc)
    {
-      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->cmd_argv[optind+1]);
-      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->cmd_name);
+      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->argv[optind+1]);
+      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
       return(1);
    };
 
    // call widget
-   rc = cnf->cmd->func(cnf);
+   rc = cnf->widget->func(cnf);
    tru_cleanup(cnf);
    return(trutils_exit_code(rc));
 }
@@ -397,9 +397,9 @@ tru_usage(
    const char *   help;
    const char *   s;
 
-   name  = (!(cnf->cmd)) ? "widget"         : cnf->cmd->name;
-   help  = (!(cnf->cmd)) ? " ..."           : (((cnf->cmd->usage))     ? cnf->cmd->usage     : "");
-   s     = (!(cnf->cmd)) ? TRU_COMMON_SHORT : (((cnf->cmd->shortopts)) ? cnf->cmd->shortopts : TRU_COMMON_SHORT);
+   name  = (!(cnf->widget)) ? "widget"         : cnf->widget->name;
+   help  = (!(cnf->widget)) ? " ..."           : (((cnf->widget->usage))     ? cnf->widget->usage     : "");
+   s     = (!(cnf->widget)) ? TRU_COMMON_SHORT : (((cnf->widget->shortopts)) ? cnf->widget->shortopts : TRU_COMMON_SHORT);
 
    printf("Usage: %s %s [OPTIONS]%s\n", PROGRAM_NAME, name, help);
    printf("OPTIONS:\n");
@@ -412,9 +412,9 @@ tru_usage(
    if ((strchr(s, 'q'))) printf("  -q, --quiet, --silent     do not print messages\n");
    if ((strchr(s, 'V'))) printf("  -V, --version             print version number and exit\n");
    if ((strchr(s, 'v'))) printf("  -v, --verbose             print verbose messages\n");
-   if (!(cnf->cmd))
+   if (!(cnf->widget))
    {
-      printf("COMMANDS:\n");
+      printf("WIDGETS:\n");
       for(i = 0; tru_widget_map[i].name != NULL; i++)
          if ((tru_widget_map[i].desc))
             printf("  %-25s %s\n", tru_widget_map[i].name, tru_widget_map[i].desc);
