@@ -128,16 +128,6 @@ const TinyRadUtilWidget tru_widget_map[] =
       .desc       = "print processed dictionary"
    },
    {
-      .name       = "help",
-      .func       = &tru_usage,
-      .shortopts  = TRU_COMMON_SHORT,
-      .longopts   = (struct option []) { TRU_COMMON_LONG },
-      .min_arg    = 0,
-      .max_arg    = 0,
-      .usage      = NULL,
-      .desc       = "print command usage"
-   },
-   {
       .name       = NULL,
       .func       = NULL,
       .shortopts  = NULL,
