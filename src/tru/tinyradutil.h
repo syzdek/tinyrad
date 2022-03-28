@@ -176,6 +176,15 @@ tru_load_tinyrad(
 #pragma mark usage prototypes
 
 int
+tru_cli_parse(
+         TinyRadUtilConf *             cnf,
+         int                           argc,
+         char * const *                argv,
+         const char *                  short_opt,
+         const struct option *         long_opt );
+
+
+int
 tru_getopt(
          TinyRadUtilConf *             cnf,
          int                           argc,

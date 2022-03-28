@@ -164,8 +164,6 @@ const TinyRadUtilWidget tru_widget_map[] =
 
 int main(int argc, char * argv[])
 {
-   int            c;
-   int            opt_index;
    int            rc;
    TinyRadDict *  dict;
    TinyRadUtilConf    cnfdata;
@@ -181,32 +179,11 @@ int main(int argc, char * argv[])
    cnf         = &cnfdata;
    dict        = NULL;
 
-   while((c = tru_getopt(cnf, argc, argv, short_opt, long_opt, &opt_index)) != -1)
+   // process common cli options
+   if ((rc = tru_cli_parse(cnf, argc, argv, short_opt, long_opt)) != 0)
    {
-      switch(c)
-      {
-         case TRU_GETOPT_MATCHED: /* captured by common options */
-         case -1:                 /* no more arguments */
-         case 0:                  /* long options toggles */
-         break;
-
-         case TRU_GETOPT_EXIT:
-         tru_cleanup(cnf);
-         return(0);
-
-         case TRU_GETOPT_ERROR:
-         tru_cleanup(cnf);
-         return(1);
-
-         case '?':
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-         return(1);
-
-         default:
-         fprintf(stderr, "%s: unrecognized option `--%c'\n", PROGRAM_NAME, c);
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
-         return(1);
-      };
+      tru_cleanup(cnf);
+      return((rc == 0) ? 0 : 1);
    };
    if ((argc - optind) < 1)
    {
@@ -227,34 +204,10 @@ int main(int argc, char * argv[])
    };
 
    // process widget cli options
-   optind = 1;
-   opt_index = 0;
-   while((c = tru_getopt(cnf, cnf->argc, cnf->argv, cnf->widget->shortopts, cnf->widget->longopts, &opt_index)) != -1)
+   if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, cnf->widget->shortopts, cnf->widget->longopts)) != 0)
    {
-      switch(c)
-      {
-         case -2: /* captured by common options */
-         case -1:	/* no more arguments */
-         case 0:	/* long options toggles */
-         break;
-
-         case TRU_GETOPT_EXIT:
-         tru_cleanup(cnf);
-         return(0);
-
-         case TRU_GETOPT_ERROR:
-         tru_cleanup(cnf);
-         return(1);
-
-         case '?':
-         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
-         return(1);
-
-         default:
-         fprintf(stderr, "%s: %s: unrecognized option `--%c'\n", PROGRAM_NAME, cnf->widget_name, c);
-         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
-         return(1);
-      };
+      tru_cleanup(cnf);
+      return((rc == 0) ? 0 : 1);
    };
    if ((cnf->argc - optind) < cnf->widget->min_arg)
    {
@@ -350,6 +303,54 @@ tru_load_tinyrad(
 #pragma mark usage functions
 
 int
+tru_cli_parse(
+         TinyRadUtilConf *             cnf,
+         int                           argc,
+         char * const *                argv,
+         const char *                  short_opt,
+         const struct option *         long_opt )
+{
+   int            c;
+   int            opt_index;
+
+   optind    = 1;
+   opt_index = 0;
+
+   while((c = tru_getopt(cnf, argc, argv, short_opt, long_opt, &opt_index)) != -1)
+   {
+      switch(c)
+      {
+         case TRU_GETOPT_MATCHED: /* captured by common options */
+         case -1:                 /* no more arguments */
+         case 0:                  /* long options toggles */
+         break;
+
+         case TRU_GETOPT_EXIT:
+         return(TRU_GETOPT_EXIT);
+
+         case TRU_GETOPT_ERROR:
+         return(TRU_GETOPT_ERROR);
+
+         case 'h':
+         tru_usage(cnf);
+         return(TRU_GETOPT_EXIT);
+
+         case '?':
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(TRU_GETOPT_ERROR);
+
+         default:
+         fprintf(stderr, "%s: unrecognized option `--%c'\n", PROGRAM_NAME, c);
+         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         return(TRU_GETOPT_ERROR);
+      };
+   };
+
+   return(0);
+}
+
+
+int
 tru_getopt(
          TinyRadUtilConf *                 cnf,
          int                           argc,
@@ -379,10 +380,6 @@ tru_getopt(
       opt = ((optarg)) ? (int)strtol(optarg, NULL, 0) : TRAD_DEBUG_ANY;
       tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
       return(TRU_GETOPT_MATCHED);
-
-      case 'h':
-      tru_usage(cnf);
-      return(TRU_GETOPT_EXIT);
 
       case 'I':
       if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
