@@ -518,24 +518,19 @@ tinyrad_strsplit(
    assert(delim != 0);
    assert(argvp != NULL);
 
+   argv = NULL;
+   argc = 0;
+   if ((argvp))
+      *argvp   = NULL;
+   if ((argcp))
+      *argcp = 0;
+
    if (!(str))
-   {
-      if ((argvp))
-         *argvp = NULL;
-      if ((argcp))
-         *argcp = 0;
       return(TRAD_SUCCESS);
-   };
 
    if ((line = tinyrad_strdup(str)) == NULL)
       return(TRAD_ENOMEM);
-
-   argv     = NULL;
-   bol      = line;
-   argc     = 0;
-   *argvp   = NULL;
-   if ((argcp))
-      *argcp = 0;
+   bol = line;
 
    for(pos = 0; ((line[pos])); pos++)
    {
@@ -549,12 +544,12 @@ tinyrad_strsplit(
             tinyrad_strsfree(argv);
             return(rc);
          };
-         bol = &line[pos];
+         bol = &line[pos+1];
       };
    };
 
-   if ( (bol == line) && (!(bol[0])) )
-      return(TRAD_SUCCESS);
+//   if ( (bol == line) && (!(bol[0])) )
+//      return(TRAD_SUCCESS);
 
    if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
    {
@@ -564,7 +559,8 @@ tinyrad_strsplit(
    };
    argc++;
 
-   *argvp = argv;
+   if ((argvp))
+      *argvp = argv;
    if ((argcp))
       *argcp = argc;
 
