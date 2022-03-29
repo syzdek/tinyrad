@@ -100,6 +100,7 @@ EXTRA_PROGRAMS				= examples/seed-by-clock \
 					  tests/test-options \
 					  tests/test-pckt-byte-order \
 					  tests/test-str-expand \
+					  tests/test-str-split \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
 					  tests/test-url-resolve
@@ -126,6 +127,7 @@ TESTS					= tests/test-array-sorted \
 					  tests/test-options \
 					  tests/test-pckt-byte-order \
 					  tests/test-str-expand \
+					  tests/test-str-split \
 					  tests/test-url-desc2str \
 					  tests/test-url-parse \
 					  tests/test-url-resolve
@@ -393,6 +395,13 @@ tests_test_str_expand_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_str_expand_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 tests_test_str_expand_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 					  tests/test-str-expand.c
+
+
+# macros for tests/test-str-split
+tests_test_str_split_DEPENDENCIES	= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_str_split_LDADD		= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
+tests_test_str_split_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
+					  tests/test-str-split.c
 
 
 # macros for tests/test-url-desc2str
