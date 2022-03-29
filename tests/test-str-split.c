@@ -70,26 +70,23 @@
 /////////////////
 #pragma mark - Variables
 
-static const char * test_delim[] =
-{
-   ":",
-   "-",
-   ",",
-   "_",
-   " ",
-   NULL
-};
-
 static const char * const * test_strings[] =
 {
-   (const char * const[]) { "test", "string", "1", NULL },
-   (const char * const[]) { "test", "empty", "", "string", NULL },
-   (const char * const[]) { "test", NULL },
-   (const char * const[]) { "", "test", NULL },
-   (const char * const[]) { "test", "", NULL },
-   (const char * const[]) { "", NULL },
-   (const char * const[]) { "", "", NULL },
-   (const char * const[]) { "", "", "", NULL },
+   (const char * const[]) { ":", "test", "string", "1", NULL },
+   (const char * const[]) { "-", "test", "string", "1", NULL },
+   (const char * const[]) { ",", "test", "string", "1", NULL },
+   (const char * const[]) { "_", "test", "string", "1", NULL },
+   (const char * const[]) { " ", "test", "string", "1", NULL },
+   (const char * const[]) { ":", "test", "empty", "", "string", NULL },
+   (const char * const[]) { ":", "test", NULL },
+   (const char * const[]) { ":", "", "test", NULL },
+   (const char * const[]) { ":", "test", "", NULL },
+   (const char * const[]) { ":", "", NULL },
+   (const char * const[]) { ":", "", "", NULL },
+   (const char * const[]) { ":", "", "", "", NULL },
+   (const char * const[]) { ":", "'This-is-a'", "'test:of'", "\"quoted,strings\"to\"split.\"", NULL },
+   (const char * const[]) { "\"", "'This-is-a'", "'test:of'", "quoted,strings to split.", NULL },
+   (const char * const[]) { "'", "\"This'is'a\"", "\"test:of\"", "\"quoted\\\"strings\\\"to\\\"split.\"", NULL },
    NULL
 };
 
@@ -126,15 +123,13 @@ main(
          int                           argc,
          char *                        argv[] )
 {
-   int         opt;
-   int         c;
-   int         opt_index;
-   int         x;
-   int         y;
-   int         rc;
-   unsigned    opts;
-   static const char * const *   delims;
-   const char *                  user_delim[2];
+   int            opt;
+   int            c;
+   int            opt_index;
+   int            x;
+   int            rc;
+   unsigned       opts;
+   const char *   delim;
 
    // getopt options
    static char          short_opt[] = "dD:hVvq";
@@ -151,7 +146,6 @@ main(
 
    trutils_initialize(PROGRAM_NAME);
 
-   delims = test_delim;
    opts   = 0;
 
    while((c = getopt_long(argc, argv, short_opt, long_opt, &opt_index)) != -1)
@@ -163,9 +157,7 @@ main(
          break;
 
          case 'D':
-         user_delim[0] = optarg;
-         user_delim[1] = NULL;
-         delims        = user_delim;
+         delim = optarg;
          break;
 
          case 'd':
@@ -213,16 +205,15 @@ main(
 
    if (optind < argc)
    {
-      for(y = 0; ((delims[y])); y++)
-         if ((rc = my_test_array(opts, (const char *const *)&argv[optind], delims[y])) != 0)
-            return(1);
+      delim = ((delim)) ? delim : ":";
+      if ((rc = my_test_array(opts, (const char *const *)&argv[optind], delim)) != 0)
+         return(1);
       return(0);
    };
 
    for(x = 0; ((test_strings[x])); x++)
-      for(y = 0; ((delims[y])); y++)
-         if ((rc = my_test_array(opts, test_strings[x], delims[y])) != 0)
-            return(1);
+      if ((rc = my_test_array(opts, &test_strings[x][1], test_strings[x][0])) != 0)
+         return(1);
 
    return(0);
 }

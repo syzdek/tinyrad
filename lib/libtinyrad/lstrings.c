@@ -511,6 +511,7 @@ tinyrad_strsplit(
    char **        argv;
    char *         line;
    char *         bol;
+   char           quote;
 
    TinyRadDebugTrace();
 
@@ -534,22 +535,40 @@ tinyrad_strsplit(
 
    for(pos = 0; ((line[pos])); pos++)
    {
-      if (line[pos] == delim)
+      switch(line[pos])
       {
-         argc++;
-         line[pos] = '\0';
-         if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+         case '"':
+         case '\'':
+         if (line[pos] != delim)
          {
-            free(line);
-            tinyrad_strsfree(argv);
-            return(rc);
+            quote = str[pos];
+            for(pos += 1; ((line[pos] != '\0') && (line[pos] != quote)); pos++)
+               if ( (quote == '"') && (str[pos] == '\\') && (str[pos+1] == '"') )
+                  pos++;
+            if (str[pos] != quote)
+            {
+               tinyrad_strsfree(argv);
+               return(TRAD_ESYNTAX);
+            };
+            break;
          };
-         bol = &line[pos+1];
+
+         default:
+         if (line[pos] == delim)
+         {
+            argc++;
+            line[pos] = '\0';
+            if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
+            {
+               free(line);
+               tinyrad_strsfree(argv);
+               return(rc);
+            };
+            bol = &line[pos+1];
+         };
+         break;
       };
    };
-
-//   if ( (bol == line) && (!(bol[0])) )
-//      return(TRAD_SUCCESS);
 
    if ((rc = tinyrad_strsadd(&argv, bol)) != TRAD_SUCCESS)
    {
