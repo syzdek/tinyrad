@@ -129,7 +129,7 @@ const TinyRadUtilWidget tru_widget_map[] =
    {
       .name       = "url",
       .desc       = "process TinyRad URL",
-      .usage      = NULL,
+      .usage      = " [ url url ... url ]",
       .aliases    = (const char * const[]) { TRU_PREFIX"-url", NULL },
       .func       = &tru_widget_url
    },
@@ -388,6 +388,10 @@ tru_getopt(
       tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
       return(TRU_GETOPT_MATCHED);
 
+      case 'H':
+      cnf->url = optarg;
+      return(TRU_GETOPT_MATCHED);
+
       case 'I':
       if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
       {
@@ -467,12 +471,13 @@ tru_usage_options(
    s = short_opt;
 
    printf("OPTIONS:\n");
-   if ((strchr(s, '4'))) printf("  -4                        use IPv4 addresses\n");
-   if ((strchr(s, '6'))) printf("  -6                        use IPv6 addresses\n");
+   if ((strchr(s, '4'))) printf("  -4, --ipv4                use IPv4 addresses\n");
+   if ((strchr(s, '6'))) printf("  -6, --ipv6                use IPv6 addresses\n");
    if ((strchr(s, 'b'))) printf("  -b, --builtin-dict        load built-in dictionary\n");
    if ((strchr(s, 'D'))) printf("  -D dictionary             include dictionary\n");
    if ((strchr(s, 'd'))) printf("  -d level, --debug=level   print debug messages\n");
    if ((strchr(s, 'f'))) printf("  -f file, --file=file      attribute list\n");
+   if ((strchr(s, 'H'))) printf("  -H uri                    RADIUS URI\n");
    if ((strchr(s, 'h'))) printf("  -h, --help                print this help and exit\n");
    if ((strchr(s, 'I'))) printf("  -I path                   add path to dictionary search paths\n");
    if ((strchr(s, 'q'))) printf("  -q, --quiet, --silent     do not print messages\n");

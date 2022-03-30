@@ -95,8 +95,10 @@
    { "builtin-dict",     no_argument,       NULL, 'b' }, \
 
 
-#define TRU_NET_SHORT "46"
+#define TRU_NET_SHORT "H:46"
 #define TRU_NET_LONG \
+   { "ipv4",             no_argument,       NULL, '4' }, \
+   { "ipv6",             no_argument,       NULL, '6' }, \
 
 
 #define TRU_REQ_SHORT "f:"

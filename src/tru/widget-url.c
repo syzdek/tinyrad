@@ -57,6 +57,13 @@
 #pragma mark - Prototypes
 
 int
+tru_widget_url_parse(
+         TinyRadUtilConf *             cnf,
+         const char *                  url,
+         TinyRadURLDesc **             trudpp );
+
+
+int
 tru_widget_url_print(
          TinyRadURLDesc *              trudp );
 
@@ -95,11 +102,12 @@ tru_widget_url(
 
    trudp       = NULL;
    trudp_next  = NULL;
+   trudpp      = &trudp;
 
    // process widget cli options
    if ((rc = tru_cli_parse(cnf, cnf->argc, cnf->argv, short_opt, long_opt, &tru_widget_url_usage)) != 0)
       return((rc == TRU_GETOPT_EXIT) ? 0 : 1);
-   if (optind >= cnf->argc)
+   if ( (optind >= cnf->argc) && (!(cnf->url)) )
    {
       fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
       fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
@@ -107,29 +115,21 @@ tru_widget_url(
    };
 
    // parse and resolve URLs
-   trudpp = &trudp;
-   for(pos = optind; (pos < cnf->argc); pos++)
+   if ((cnf->url))
    {
-      if ((rc = tinyrad_urldesc_parse(cnf->argv[pos], trudpp)) != TRAD_SUCCESS)
+      if ((tru_widget_url_parse(cnf, cnf->url, trudpp)) != TRAD_SUCCESS)
       {
-         if (!(cnf->opts & TRUTILS_OPT_QUIET))
-         {
-            fprintf(stderr, "%s: %s: %s: %s\n", PROGRAM_NAME, cnf->widget_name, cnf->argv[pos], tinyrad_strerror(rc));
-            fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
-         };
+         tinyrad_urldesc_free(trudp);
          return(1);
       };
-      if ((cnf->opts & TRU_OPT_RESOLVE))
+      trudpp = &(*trudpp)->trud_next;
+   };
+   for(pos = optind; (pos < cnf->argc); pos++)
+   {
+      if ((tru_widget_url_parse(cnf, cnf->argv[pos], trudpp)) != TRAD_SUCCESS)
       {
-         if ((rc = tinyrad_urldesc_resolve(*trudpp, cnf->tr_opts)) != TRAD_SUCCESS)
-         {
-            if (!(cnf->opts & TRUTILS_OPT_QUIET))
-            {
-               fprintf(stderr, "%s: %s: %s: %s\n", PROGRAM_NAME, cnf->widget_name, cnf->argv[pos], tinyrad_strerror(rc));
-               fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
-            };
-            return(1);
-         };
+         tinyrad_urldesc_free(trudp);
+         return(1);
       };
       trudpp = &(*trudpp)->trud_next;
    };
@@ -154,6 +154,42 @@ tru_widget_url(
    };
 
    tinyrad_urldesc_free(trudp);
+
+   return(TRAD_SUCCESS);
+}
+
+
+int
+tru_widget_url_parse(
+         TinyRadUtilConf *             cnf,
+         const char *                  url,
+         TinyRadURLDesc **             trudpp )
+{
+   int rc;
+
+   // parse URL
+   if ((rc = tinyrad_urldesc_parse(url, trudpp)) != TRAD_SUCCESS)
+   {
+      if (!(cnf->opts & TRUTILS_OPT_QUIET))
+      {
+         fprintf(stderr, "%s: %s: %s: %s\n", PROGRAM_NAME, cnf->widget_name, url, tinyrad_strerror(rc));
+         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
+      };
+      return(1);
+   };
+
+   // resolve URL
+   if (!(cnf->opts & TRU_OPT_RESOLVE))
+      return(TRAD_SUCCESS);
+   if ((rc = tinyrad_urldesc_resolve(*trudpp, cnf->tr_opts)) != TRAD_SUCCESS)
+   {
+      if (!(cnf->opts & TRUTILS_OPT_QUIET))
+      {
+         fprintf(stderr, "%s: %s: %s: %s\n", PROGRAM_NAME, cnf->widget_name, url, tinyrad_strerror(rc));
+         fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
+      };
+      return(1);
+   };
 
    return(TRAD_SUCCESS);
 }
