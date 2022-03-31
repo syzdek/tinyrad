@@ -294,6 +294,23 @@ tru_printf(
 }
 
 
+int
+tru_verbose(
+         TinyRadUtilConf *                cnf,
+         const char *                     fmt,
+         ... )
+{
+   int            rc;
+   va_list        args;
+   if (!(cnf->opts & TRUTILS_OPT_VERBOSE))
+      return(0);
+   va_start(args, fmt);
+   rc = vprintf(fmt, args);
+   va_end(args);
+   return(rc);
+}
+
+
 //-------------------------//
 // miscellaneous functions //
 //-------------------------//

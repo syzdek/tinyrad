@@ -201,6 +201,13 @@ tru_printf(
          ... );
 
 
+int
+tru_verbose(
+         TinyRadUtilConf *                cnf,
+         const char *                     fmt,
+         ... );
+
+
 //--------------------------//
 // miscellaneous prototypes //
 //--------------------------//
