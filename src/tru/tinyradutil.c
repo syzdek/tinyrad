@@ -460,6 +460,10 @@ tru_getopt(
       };
       return(TRU_GETOPT_MATCHED);
 
+      case 'n':
+      cnf->opts |= TRU_OPT_DRY_RUN;
+      return(TRU_GETOPT_MATCHED);
+
       case 'q':
       cnf->opts |=  TRUTILS_OPT_QUIET;
       cnf->opts &= ~TRUTILS_OPT_VERBOSE;
@@ -529,6 +533,7 @@ tru_usage_options(
    if ((strchr(s, 'H'))) printf("  -H uri                    RADIUS URI\n");
    if ((strchr(s, 'h'))) printf("  -h, --help                print this help and exit\n");
    if ((strchr(s, 'I'))) printf("  -I path                   add path to dictionary search paths\n");
+   if ((strchr(s, 'n'))) printf("  -n, --dry-run             generate request without transmitting request\n");
    if ((strchr(s, 'q'))) printf("  -q, --quiet, --silent     do not print messages\n");
    if ((strchr(s, 'r'))) printf("  -r, --resolve             resolve URLs\n");
    if ((strchr(s, 'V'))) printf("  -V, --version             print version number and exit\n");

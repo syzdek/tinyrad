@@ -77,6 +77,7 @@
 
 
 #define TRU_OPT_RESOLVE       0x0001
+#define TRU_OPT_DRY_RUN       0x0002
 
 
 #define TRU_COMMON_SHORT "d:hqVv"
@@ -101,8 +102,9 @@
    { "ipv6",             no_argument,       NULL, '6' }, \
 
 
-#define TRU_REQ_SHORT "f:"
+#define TRU_REQ_SHORT "f:n"
 #define TRU_REQ_LONG \
+   { "dry-run",          no_argument,       NULL, 'n' }, \
    { "file",             optional_argument, NULL, 'f' }, \
 
 
