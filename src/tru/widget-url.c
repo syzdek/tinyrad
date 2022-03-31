@@ -109,8 +109,8 @@ tru_widget_url(
       return((rc == TRU_GETOPT_EXIT) ? 0 : 1);
    if ( (optind >= cnf->argc) && (!(cnf->url)) )
    {
-      fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
-      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
+      fprintf(stderr, "%s: missing required argument\n", cnf->prog_name);
+      fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
       return(1);
    };
 

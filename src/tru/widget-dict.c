@@ -66,8 +66,8 @@ tru_widget_dict(
       return((rc == TRU_GETOPT_EXIT) ? 0 : 1);
    if (optind < cnf->argc)
    {
-      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", PROGRAM_NAME, cnf->argv[optind+1]);
-      fprintf(stderr, "Try `%s %s --help' for more information.\n", PROGRAM_NAME, cnf->widget_name);
+      fprintf(stderr, "%s: unrecognized argument `-- %s'\n", cnf->prog_name, cnf->argv[optind+1]);
+      fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
       return(1);
    };
 

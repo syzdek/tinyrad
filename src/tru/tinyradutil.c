@@ -160,6 +160,7 @@ int main(int argc, char * argv[])
    TinyRadDict *        dict;
    TinyRadUtilConf      cnfdata;
    TinyRadUtilConf *    cnf;
+   char                 prog_name[128];
 
    // getopt options
    static char          short_opt[] = "+" TRU_COMMON_SHORT;
@@ -190,8 +191,8 @@ int main(int argc, char * argv[])
       };
       if ((argc - optind) < 1)
       {
-         fprintf(stderr, "%s: missing required argument\n", PROGRAM_NAME);
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         fprintf(stderr, "%s: missing required argument\n", cnf->prog_name);
+         fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
          return(1);
       };
 
@@ -202,10 +203,12 @@ int main(int argc, char * argv[])
       // looks up widget
       if ((cnf->widget = tru_widget_lookup(argv[optind], TRAD_NO)) == NULL)
       {
-         fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", PROGRAM_NAME, cnf->argv[0]);
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         fprintf(stderr, "%s: unknown or ambiguous widget -- \"%s\"\n", cnf->prog_name, cnf->argv[0]);
+         fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
          return(1);
       };
+      snprintf(prog_name, sizeof(prog_name), "%s %s", cnf->prog_name, argv[optind]);
+      cnf->prog_name = prog_name;
    };
 
    // call widget
@@ -335,12 +338,12 @@ tru_cli_parse(
          return(TRU_GETOPT_EXIT);
 
          case '?':
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
          return(TRU_GETOPT_ERROR);
 
          default:
-         fprintf(stderr, "%s: unrecognized option `--%c'\n", PROGRAM_NAME, c);
-         fprintf(stderr, "Try `%s --help' for more information.\n", PROGRAM_NAME);
+         fprintf(stderr, "%s: unrecognized option `--%c'\n", cnf->prog_name, c);
+         fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
          return(TRU_GETOPT_ERROR);
       };
    };
