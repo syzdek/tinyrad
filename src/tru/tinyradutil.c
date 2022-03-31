@@ -113,14 +113,14 @@ tru_widget_lookup(
 const TinyRadUtilWidget tru_widget_map[] =
 {
    {
-      .name       = "configuration",
+      .name       = "config",
       .desc       = "print configuration",
       .usage      = NULL,
       .aliases    = (const char * const[]) { TRU_PREFIX"-conf", TRU_PREFIX"-configuration", NULL },
       .func       = &tru_widget_config
    },
    {
-      .name       = "dictionary",
+      .name       = "dict",
       .desc       = "print processed dictionary",
       .usage      = NULL,
       .aliases    = (const char * const[]) { TRU_PREFIX"-dict", TRU_PREFIX"-dictionary", NULL },
