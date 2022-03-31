@@ -218,6 +218,65 @@ int main(int argc, char * argv[])
 }
 
 
+//-------------------//
+// logging functions //
+//-------------------//
+#pragma mark logging functions
+
+int
+tru_error(
+         TinyRadUtilConf *                cnf,
+         int                              rc,
+         const char *                     fmt,
+         ... )
+{
+   va_list        args;
+   const char *   prog_name;
+
+   if ((cnf->opts & TRUTILS_OPT_QUIET))
+      return(rc);
+
+   prog_name = ((cnf->prog_name)) ? cnf->prog_name : PROGRAM_NAME;
+
+   fprintf(stderr, "%s: ", prog_name);
+
+   if (!(fmt))
+   {
+      fprintf(stderr, "%s\n", tinyrad_strerror(rc));
+      return(rc);
+   }
+
+   va_start(args, fmt);
+   vfprintf(stderr, fmt, args);
+   va_end(args);
+   fprintf(stderr, "\n");
+
+   return(rc);
+}
+
+
+int
+tru_errors(
+         TinyRadUtilConf *                cnf,
+         int                              rc,
+         char **                          errs )
+{
+   int            pos;
+   const char *   prog_name;
+
+   if ((cnf->opts & TRUTILS_OPT_QUIET))
+      return(rc);
+
+   prog_name = ((cnf->prog_name)) ? cnf->prog_name : PROGRAM_NAME;
+
+   if ((errs))
+      for(pos = 0; ((errs[pos])); pos++)
+         fprintf(stderr, "%s: %s\n", prog_name, errs[pos]);
+
+   return(rc);
+}
+
+
 //-------------------------//
 // miscellaneous functions //
 //-------------------------//
@@ -262,17 +321,14 @@ tru_load_tinyrad(
    {
       // initialize dictionary
       if ((rc = tinyrad_dict_initialize(&dict, cnf->tr_opts)) != TRAD_SUCCESS)
-      {
-         trutils_error(cnf->opts, NULL, "out of virtual memory");
-         return(rc);
-      };
+         return(tru_error(cnf, rc, "out of virtual memory"));
 
       // set paths
       if ((cnf->dict_paths))
       {
          if ((rc = tinyrad_dict_set_option(dict, TRAD_DICT_OPT_PATHS, cnf->dict_paths)) != TRAD_SUCCESS)
          {
-            trutils_error(cnf->opts, NULL, "tinyrad_dict_set_option(TRAD_DICT_OPT_PATHS): %s", tinyrad_strerror(rc));
+            tru_error(cnf, rc, "tinyrad_dict_set_option(TRAD_DICT_OPT_PATHS): %s", tinyrad_strerror(rc));
             tinyrad_free(dict);
             return(rc);
          };
@@ -283,7 +339,7 @@ tru_load_tinyrad(
       {
          if ((rc = tinyrad_dict_parse(dict, cnf->dict_files[pos], &errs, 0)) != TRAD_SUCCESS)
          {
-            trutils_error(cnf->opts, errs, NULL);
+            tru_errors(cnf, rc, errs);
             tinyrad_strsfree(errs);
             tinyrad_free(dict);
             return(rc);
@@ -361,6 +417,7 @@ tru_getopt(
          const struct option *         long_opt,
          int *                         opt_index )
 {
+   int   rc;
    int   c;
    int   opt;
 
@@ -379,9 +436,9 @@ tru_getopt(
       return(TRU_GETOPT_MATCHED);
 
       case 'D':
-      if (tinyrad_strsadd(&cnf->dict_files, optarg) != TRAD_SUCCESS)
+      if ((rc = tinyrad_strsadd(&cnf->dict_files, optarg)) != TRAD_SUCCESS)
       {
-         trutils_error(cnf->opts, NULL, "out of virtual memory");
+         tru_error(cnf, rc, "out of virtual memory");
          return(TRU_GETOPT_ERROR);
       };
       return(TRU_GETOPT_MATCHED);
@@ -396,9 +453,9 @@ tru_getopt(
       return(TRU_GETOPT_MATCHED);
 
       case 'I':
-      if (tinyrad_strsadd(&cnf->dict_paths, optarg) != TRAD_SUCCESS)
+      if ((rc = tinyrad_strsadd(&cnf->dict_paths, optarg)) != TRAD_SUCCESS)
       {
-         trutils_error(cnf->opts, NULL, "out of virtual memory");
+         tru_error(cnf, rc, "out of virtual memory");
          return(TRU_GETOPT_ERROR);
       };
       return(TRU_GETOPT_MATCHED);

@@ -170,6 +170,26 @@ extern const TinyRadUtilWidget tru_widget_map[];
 //////////////////
 #pragma mark - Prototypes
 
+//--------------------//
+// logging prototypes //
+//--------------------//
+#pragma mark logging prototypes
+
+int
+tru_error(
+         TinyRadUtilConf *                cnf,
+         int                              rc,
+         const char *                     fmt,
+         ... );
+
+
+int
+tru_errors(
+         TinyRadUtilConf *                cnf,
+         int                              rc,
+         char **                          errs );
+
+
 //--------------------------//
 // miscellaneous prototypes //
 //--------------------------//
