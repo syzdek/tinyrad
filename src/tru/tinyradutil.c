@@ -116,21 +116,21 @@ const TinyRadUtilWidget tru_widget_map[] =
       .name       = "config",
       .desc       = "print configuration",
       .usage      = NULL,
-      .aliases    = (const char * const[]) { TRU_PREFIX"-conf", TRU_PREFIX"-configuration", NULL },
+      .aliases    = (const char * const[]) { "configuration", NULL },
       .func       = &tru_widget_config
    },
    {
       .name       = "dict",
       .desc       = "print processed dictionary",
       .usage      = NULL,
-      .aliases    = (const char * const[]) { TRU_PREFIX"-dict", TRU_PREFIX"-dictionary", NULL },
+      .aliases    = (const char * const[]) { "dictionary", NULL },
       .func       = &tru_widget_dict
    },
    {
       .name       = "url",
       .desc       = "process TinyRad URL",
       .usage      = " [ url url ... url ]",
-      .aliases    = (const char * const[]) { TRU_PREFIX"-url", NULL },
+      .aliases    = NULL,
       .func       = &tru_widget_url
    },
    {
@@ -174,7 +174,7 @@ int main(int argc, char * argv[])
    cnf->prog_name = tru_basename(argv[0]);
 
    // skip argument processing if called via alias
-   if ((cnf->widget = tru_widget_lookup(cnf->prog_name, 1)) != NULL)
+   if ((cnf->widget = tru_widget_lookup(cnf->prog_name, TRAD_YES)) != NULL)
    {
       cnf->argc        = argc;
       cnf->argv        = argv;
@@ -207,7 +207,7 @@ int main(int argc, char * argv[])
          fprintf(stderr, "Try `%s --help' for more information.\n", cnf->prog_name);
          return(1);
       };
-      snprintf(prog_name, sizeof(prog_name), "%s %s", cnf->prog_name, argv[optind]);
+      snprintf(prog_name, sizeof(prog_name), "%s %s", PROGRAM_NAME, cnf->widget->name);
       cnf->prog_name = prog_name;
    };
 
@@ -435,7 +435,6 @@ tru_usage(
          const char *                  short_opt )
 {
    int                        x;
-   int                        y;
    const TinyRadUtilWidget *  widget;
 
    tru_usage_summary(cnf);
@@ -448,16 +447,6 @@ tru_usage(
          widget = &tru_widget_map[x];
          if ((widget->desc))
             printf("  %-25s %s\n", widget->name, widget->desc);
-      };
-
-      printf("WIDGETS ALIASES:\n");
-      for(x = 0; tru_widget_map[x].name != NULL; x++)
-      {
-         widget = &tru_widget_map[x];
-         if (!(widget->aliases))
-            continue;
-         for(y = 0; ((widget->aliases[y])); y++)
-            printf("  %-25s %s\n", ((!(y)) ? widget->name : ""), widget->aliases[y]);
       };
    };
    printf("\n");
@@ -504,10 +493,9 @@ tru_usage_summary(
    if ((cnf->widget))
       widget_help = ((cnf->widget->usage)) ? cnf->widget->usage : "";
 
-   printf("Usage: %s [OPTIONS] %s [WIDGETOPTIONS]%s\n", PROGRAM_NAME, widget_name, widget_help);
-   if ( (!(cnf->widget)) || (!(cnf->widget->aliases)) || (!(cnf->widget->aliases[0])) )
-      return;
-   printf("       %s [WIDGETOPTIONS]%s\n", cnf->widget->aliases[0], widget_help);
+   printf("Usage: %s [OPTIONS] %s [OPTIONS]%s\n", PROGRAM_NAME, widget_name, widget_help);
+   printf("       %s-%s [OPTIONS]%s\n", PROGRAM_NAME, widget_name, widget_help);
+   printf("       %s%s [OPTIONS]%s\n", PROGRAM_NAME, widget_name, widget_help);
 
    return;
 }
@@ -521,9 +509,18 @@ tru_widget_lookup(
    size_t                     wname_len;
    size_t                     x;
    size_t                     y;
+   size_t                     len;
    const char *               alias;
    const TinyRadUtilWidget *  widget;
    const TinyRadUtilWidget *  match;
+
+   len = strlen(PROGRAM_NAME);
+   if (!(strncasecmp(wname, PROGRAM_NAME, len)))
+      wname = &wname[len];
+   if (wname[0] == '-')
+      wname = &wname[1];
+   if (!(wname[0]))
+      return(NULL);
 
    match       = NULL;
    wname_len   = strlen(wname);
@@ -538,7 +535,7 @@ tru_widget_lookup(
       {
          if (widget->name[wname_len] == '\0')
             return(widget);
-         if ((match))
+         if ( ((match)) && (match != widget) )
             return(NULL);
          if (exact == TRAD_NO)
             match = widget;
@@ -554,7 +551,7 @@ tru_widget_lookup(
          {
             if (alias[wname_len] == '\0')
                return(widget);
-            if ((match))
+            if ( ((match)) && (match != widget) )
                return(NULL);
             if (exact == TRAD_NO)
                match = widget;
