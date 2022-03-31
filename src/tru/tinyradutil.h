@@ -141,6 +141,8 @@ struct tinyrad_util_config
    const char *               url;
    char **                    dict_files;
    char **                    dict_paths;
+   const char *               attr_file;
+   void *                     padptr;
 };
 
 

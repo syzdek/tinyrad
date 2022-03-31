@@ -448,6 +448,10 @@ tru_getopt(
       tinyrad_set_option(NULL, TRAD_OPT_DEBUG_LEVEL, &opt);
       return(TRU_GETOPT_MATCHED);
 
+      case 'f':
+      cnf->attr_file = optarg;
+      return(TRU_GETOPT_MATCHED);
+
       case 'H':
       cnf->url = optarg;
       return(TRU_GETOPT_MATCHED);
