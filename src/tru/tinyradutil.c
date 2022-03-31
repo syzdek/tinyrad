@@ -156,10 +156,10 @@ const TinyRadUtilWidget tru_widget_map[] =
 
 int main(int argc, char * argv[])
 {
-   int            rc;
-   TinyRadDict *  dict;
-   TinyRadUtilConf    cnfdata;
-   TinyRadUtilConf *  cnf;
+   int                  rc;
+   TinyRadDict *        dict;
+   TinyRadUtilConf      cnfdata;
+   TinyRadUtilConf *    cnf;
 
    // getopt options
    static char          short_opt[] = "+" TRU_COMMON_SHORT;
