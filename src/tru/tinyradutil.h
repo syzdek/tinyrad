@@ -194,6 +194,13 @@ tru_errors(
          char **                          errs );
 
 
+int
+tru_printf(
+         TinyRadUtilConf *                cnf,
+         const char *                     fmt,
+         ... );
+
+
 //--------------------------//
 // miscellaneous prototypes //
 //--------------------------//
