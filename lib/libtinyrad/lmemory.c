@@ -186,13 +186,12 @@ tinyrad_random_buf(
    long           rnd;
    size_t         off;
    size_t         size;
-   ssize_t        rc;
 
    TinyRadDebugTrace();
 
    // read from random number file
    if (tr->rand != -1)
-      if ((rc = read(tr->rand, buf, nbytes)) == (ssize_t)nbytes)
+      if (read(tr->rand, buf, nbytes) == (ssize_t)nbytes)
          return(TRAD_SUCCESS);
 
    // fall back to random()

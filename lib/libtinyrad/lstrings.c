@@ -547,6 +547,7 @@ tinyrad_strsplit(
                   pos++;
             if (str[pos] != quote)
             {
+               free(line);
                tinyrad_strsfree(argv);
                return(TRAD_ESYNTAX);
             };
