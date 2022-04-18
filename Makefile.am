@@ -238,7 +238,7 @@ lib_libtinyrad_a_DEPENDENCIES		= Makefile \
 lib_libtinyrad_a_CPPFLAGS		= $(AM_CPPFLAGS) \
 					  -I$(srcdir)/lib/libtinyrad
 lib_libtinyrad_a_CFLAGS			= $(AM_CFLAGS)
-lib_libtinyrad_a_SOURCES		= $(lib_libtinytac_a_SOURCES) \
+lib_libtinyrad_a_SOURCES		= $(lib_libbindle_a_SOURCES) \
 					  include/bindle_prefix.h \
 					  include/tinyrad.h \
 					  include/tinyrad_internal.h \
