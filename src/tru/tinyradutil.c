@@ -113,6 +113,13 @@ tru_widget_lookup(
 const TinyRadUtilWidget tru_widget_map[] =
 {
    {
+      .name       = "client",
+      .desc       = "RADIUS client",
+      .usage      = " reqtype [ attr=val attr=val ... attr=val ]",
+      .aliases    = NULL,
+      .func       = &tru_widget_client
+   },
+   {
       .name       = "config",
       .desc       = "print configuration",
       .usage      = NULL,

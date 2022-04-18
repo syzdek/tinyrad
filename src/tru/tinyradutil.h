@@ -108,6 +108,18 @@
    { "file",             optional_argument, NULL, 'f' }, \
 
 
+#define TRU_ALL_SHORT \
+   TRU_COMMON_SHORT \
+   TRU_DICT_SHORT \
+   TRU_NET_SHORT \
+   TRU_REQ_SHORT
+#define TRU_ALL_LONG \
+   TRU_DICT_LONG \
+   TRU_NET_LONG \
+   TRU_REQ_LONG \
+   TRU_COMMON_LONG
+
+
 //////////////////
 //              //
 //  Data Types  //
@@ -263,6 +275,11 @@ tru_usage_summary(
 // widget prototypes //
 //-------------------//
 #pragma mark widget prototypes
+
+int
+tru_widget_client(
+         TinyRadUtilConf *             cnf );
+
 
 int
 tru_widget_config(

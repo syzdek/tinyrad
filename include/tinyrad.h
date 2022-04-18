@@ -420,6 +420,7 @@
 #define TRAD_ACCESS_REJECT          3     // RFC 2865 Section 4.3.  Access-Reject
 #define TRAD_ACCOUNT_REQ            4     // RFC 2866 Section 4.1.  Accounting-Request
 #define TRAD_ACCOUNT_RES            5     // RFC 2866 Section 4.2.  Accounting-Response
+#define TRAD_ACCOUNT_STATUS         6     // RFC 2866 Section 4.2.  Accounting-Response
 #define TRAD_ACCESS_CHALLENGE      11     // RFC 2865 Section 4.4.  Access-Challenge
 #define TRAD_DISCONNECT_REQ        40     // RFC 3576 Section 2.3.  Packet Format
 #define TRAD_DISCONNECT_ACK        41     // RFC 3576 Section 2.3.  Packet Format
@@ -444,6 +445,15 @@ typedef struct _tinyrad_dict_vendor       TinyRadDictVendor;
 typedef struct _tinyrad_attr_list         TinyRadAttrList;
 typedef struct _tinyrad_oid               TinyRadOID;
 typedef struct sockaddr_storage           tinyrad_sockaddr_t;
+
+
+typedef struct tinyrad_pkt_type
+{
+   uintptr_t               type;
+   const char *            alias;
+   const char *            name;
+   const char *            desc;
+} TinyRadPktType;
 
 
 typedef struct tinyrad_binval
