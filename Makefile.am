@@ -75,8 +75,10 @@ lib_LIBRARIES				=
 man_MANS				=
 info_TEXINFOS				=
 noinst_LTLIBRARIES			=
-noinst_LIBRARIES			= lib/libutils.a
-noinst_HEADERS				= include/tinyrad_compat.h \
+noinst_LIBRARIES			= lib/libbindle.a \
+					  lib/libutils.a
+noinst_HEADERS				= include/bindle_prefix.h \
+					  include/tinyrad_compat.h \
 					  include/tinyrad_internal.h \
 					  include/tinyrad_utils.h
 noinst_PROGRAMS				=
@@ -113,7 +115,7 @@ EXTRA					= lib/libtinyrad.a \
 
 # lists
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT	=
-BUILT_SOURCES				=
+BUILT_SOURCES				= include/bindle_prefix.h
 TESTS					= tests/test-array-sorted \
 					  tests/test-array-stack \
 					  tests/test-array-queue \
@@ -168,6 +170,7 @@ CLEANFILES				= $(builddir)/a.out   $(srcdir)/a.out \
 					  $(sbin_SCRIPTS) \
 					  $(EXTRA_PROGRAMS) \
 					  doc/tinyrad.conf-example \
+					  include/bindle_prefix.h \
 					  @PACKAGE_TARNAME@-*.tar.* \
 					  @PACKAGE_TARNAME@-*.txz \
 					  @PACKAGE_TARNAME@-*.zip
@@ -235,7 +238,9 @@ lib_libtinyrad_a_DEPENDENCIES		= Makefile \
 lib_libtinyrad_a_CPPFLAGS		= $(AM_CPPFLAGS) \
 					  -I$(srcdir)/lib/libtinyrad
 lib_libtinyrad_a_CFLAGS			= $(AM_CFLAGS)
-lib_libtinyrad_a_SOURCES		= include/tinyrad.h \
+lib_libtinyrad_a_SOURCES		= $(lib_libtinytac_a_SOURCES) \
+					  include/bindle_prefix.h \
+					  include/tinyrad.h \
 					  include/tinyrad_internal.h \
 					  include/tinyrad_compat.h \
 					  lib/libtinyrad/libtinyrad.h \
@@ -290,6 +295,7 @@ lib_libutils_a_CPPFLAGS			= $(AM_CPPFLAGS) \
 					  -I$(srcdir)/lib/libtinyrad
 lib_libutils_a_CFLAGS			= $(AM_CFLAGS)
 lib_libutils_a_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
+					  include/bindle_prefix.h \
 					  lib/libutils/libutils.h \
 					  lib/libutils/lfile.c \
 					  lib/libutils/lfile.h \
@@ -305,6 +311,7 @@ src_tinyrad_LDADD			= $(lib_LTLIBRARIES) $(noinst_LIBRARIES)
 src_tinyrad_SOURCES			= $(noinst_HEADERS) $(include_HEADERS) \
 					  src/tru/tinyradutil.h \
 					  src/tru/tinyradutil.c \
+					  src/tru/widget-client.c \
 					  src/tru/widget-config.c \
 					  src/tru/widget-dict.c \
 					  src/tru/widget-url.c
@@ -431,13 +438,16 @@ tests_test_url_resolve_SOURCES		= $(noinst_HEADERS) $(include_HEADERS) \
 # Makefile includes
 GIT_PACKAGE_VERSION_DIR=include
 SUBST_EXPRESSIONS =
-include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-autotools.am
-include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-subst.am
-include $(srcdir)/@bindletools_srcdir@/build-aux/makefile-version.am
+include contrib/bindletools/build-aux/makefile-autotools.am
+include contrib/bindletools/build-aux/makefile-subst.am
+include contrib/bindletools/build-aux/makefile-version.am
+include contrib/bindletools/build-aux/makefile-libbindle.am
 
 
 # custom targets
 .PHONY: examples
+
+dep: include/bindle_prefix.h
 
 doc/mans/tinyrad.3: Makefile $(srcdir)/doc/mans/tinyrad.3.in
 	@$(do_subst_dt)
@@ -478,6 +488,7 @@ install-data-local:
 install-data-hook:
 	if test -f $(DESTDIR)/$(bindir)/tinyrad;then\
            cd $(DESTDIR)/$(bindir) && \
+           ln -fs tinyrad tinyradclient && \
            ln -fs tinyrad tinyrad-conf && \
            ln -fs tinyrad tinyrad-dict && \
            ln -fs tinyrad tinyrad-url; \
@@ -517,6 +528,7 @@ uninstall-local:
 
 
 uninstall-hook:
+	rm -f $(DESTDIR)/$(bindir)/tinyradclient
 	rm -f $(DESTDIR)/$(bindir)/tinyrad-conf
 	rm -f $(DESTDIR)/$(bindir)/tinyrad-dict
 	rm -f $(DESTDIR)/$(mandir)/man3/tinyrad_array_add.3

@@ -2,6 +2,7 @@
 /bindle-doxygen.m4
 /bindle-gcc.m4
 /bindle-git.m4
+/bindle-libbindle.m4
 /bindle-libtool.m4
 /bindle-perl.m4
 /bindle-postgresql.m4
